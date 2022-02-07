@@ -1,0 +1,61 @@
+{
+    "heading": "Bringing back lost objects.",
+    "description": "A unique QR code is linked to your account informations. Did you lose your object ? A list of checkpoints will be displayed to the finder willing to bring the object, by scanning the QR. The object is then shipped to your address. You can decide to reward the finder.",
+    "nav": {
+        "how": "How It Works",
+        "prod": "Products",
+        "contact": "Contact",
+        "sign": "Sign In",
+        "gotodash": "Go to dashboard"
+    },
+    "hiw": {
+        "title": "How It Works",
+        "step1": "Once you received your product at home, scan the QR code with your phone. Open the website and follow the instructions.",
+        "step2": "Did you lose your object ? If someone scan the QR and is willing to bring it to the nearest partner drop off point, it will be shipped to your address.",
+        "step3": "Retrieve your object at home and decide to wether reward or not the founder of your precious object.",
+        "activate": "Activate",
+        "lost": "Lost",
+        "found": "Found"
+    },
+    "prod": {
+        "title":"Model configurator",
+        "configurator":{
+            "h1" : "Select your model",
+            "h2": "Select your color",
+            "h3" : "Your model",
+            "price": "Price : € 24.99",
+            "shipping": "Free shipping",
+            "packaging": "Premium packaging",
+            "material": "Anodized aluminium",
+            "holder": "Keychain holder provided",
+            "activate": "Need to activate when received",
+            "checkout": "Checkout",
+            "stock": "In Stock",
+            "outStock": "Out Of Stock"
+        }
+    },
+    "contact":{
+        "heading":"Any questions ?",
+        "subtitle":"Contact us.",
+        "name":"Full name",
+        "email":"Email address ",
+        "msg": "Your message",
+        "submit": "Submit",
+        "success": "Your message has been sent !",
+        "error": "Error, please try again"
+    },
+    "footer":{
+        "company" : "Company",
+        "companyAbout" : "About us",
+        "companyCareer" : "Career",
+        "companyTerms" : "Terms and conditions",
+        "companyPrivacy" : "Privacy policy",
+        "help" : "Help",
+        "helpFaq" : "FAQ",
+        "helpContact" : "Contact",
+        "social" : "Social"
+    },
+    "stripe": {
+        "error": "Error, please try again"
+    }
+}

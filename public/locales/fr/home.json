@@ -1,0 +1,62 @@
+{
+    "heading": "Bringing back lost objects.",
+    "description": "Un code QR est connecté à votre compte. Avez-vous perdu votre objet ? Une liste de points relais sera montré à celui qui retrouve l'objet en scannant le code QR. L'objet est ensuite envoyé à votre adresse.",
+    "nav": {
+        "how": "Comment ça fonctionne",
+        "prod": "Produits",
+        "contact": "Contact",
+        "sign": "Se connecter",
+        "gotodash": "Mon compte"
+    },
+    "hiw": {
+        "title": "Comment ça fonctionne ?",
+        "step1": "Once you received your product at home, scan the QR code with your phone. Open the website and follow the instructions.",
+        "step2": "Did you lose your object ? If someone scan the QR and is willing to bring it to the nearest partner drop off point, it will be shipped to your address.",
+        "step3": "Retrieve your object at home and decide to wether reward or not the founder of your precious object.",
+        "activate": "Activation",
+        "lost": "Perte",
+        "found": "Retrouve"
+    },
+    "prod": {
+        "title":"Configurateur de modèle",
+        "configurator":{
+            "h1" : "Choisissez votre modèle",
+            "h2": "Choisissez votre couleur",
+            "h3" : "Votre modèle",
+            "price": "Prix : € 24.99",
+            "shipping": "Livraison gratuite",
+            "packaging": "Packaging premium",
+            "material": "Aluminium anodisé",
+            "holder": "Anneau du porte-clef fourni",
+            "activate": "Activation après achat",
+            "checkout": "Acheter",
+            "stock": "En stock",
+            "outStock": "Hors stock"
+        }
+    },
+    "contact":{
+        "heading":"Avez-vous une question ?",
+        "subtitle":"Contactez-nous.",
+        "name":"Nom et prénom",
+        "email":"Adresse email",
+        "msg": "Votre message",
+        "submit": "Envoyer",
+        "success": "Votre message a été envoyé !",
+        "error": "Erreur, veuillez réessayer plus tard"
+    },
+    "footer":{
+        "company" : "Entreprise",
+        "companyAbout" : "À propos de nous",
+        "companyCareer" : "Emplois",
+        "companyTerms" : "CGV et CGU",
+        "companyPrivacy" : "Politique de confidentialité",
+        "help" : "Aide",
+        "helpFaq" : "FAQ",
+        "helpContact" : "Contact",
+        "social" : "Réseaux"
+    },
+    "stripe": {
+        "error": "Erreur"
+    }
+
+}
