@@ -10,6 +10,7 @@ export async function getServerSideProps({locale}) {
   }
 }
 
+
 export default function Home() {
 
   const { t } = useTranslation();
