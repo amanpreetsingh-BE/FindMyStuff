@@ -1,7 +1,15 @@
 import Head from 'next/head'
 
-export default function Home() {
 
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      ssr : "Hello SSR"
+    }, // will be passed to the page component as props
+  }
+}
+
+export default function Home({ssr}) {
   return (
     <div>
       <Head>
@@ -11,7 +19,7 @@ export default function Home() {
       </Head>
 
       <main className=''>
-        {"Hello"}
+        {ssr}
       </main>
 
     </div>
