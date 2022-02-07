@@ -1,15 +1,19 @@
 import Head from 'next/head'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
-
-export async function getServerSideProps(context) {
+export async function getServerSideProps({locale}) {
   return {
     props: {
-      ssr : "Hello SSR"
-    }, // will be passed to the page component as props
+      ...(await serverSideTranslations(locale, ['index'])),
+    },
   }
 }
 
-export default function Home({ssr}) {
+export default function Home() {
+
+  const { t } = useTranslation();
+
   return (
     <div>
       <Head>
@@ -19,7 +23,7 @@ export default function Home({ssr}) {
       </Head>
 
       <main className=''>
-        {ssr}
+        {t('index:hello')}
       </main>
 
     </div>
