@@ -23,7 +23,7 @@ function MobileNav({ toggle,  isOpen }) {
             <div className="flex flex-col space-y-36">
                 <Link passHref href="/" >
                         <div onClick={toggle} className="flex h-full justify-center items-center">
-                            <Image className={"cursor-pointer"} src={logo} width={'250'} height={'50'} alt={'logo'}/>
+                            <Image className={"cursor-pointer"} src={logo} width={'300'} height={'55'} alt={'logo'}/>
                         </div>
                 </Link>
 

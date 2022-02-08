@@ -9,6 +9,10 @@ import Image from 'next/image'
 import MobileNav from '@components/navbar/MobileNav'
 import Nav from '@components/navbar/Nav'
 import HeroSection from '@components/index/HeroSection'
+import HiwSection from '@components/index/HiwSection'
+// import ProductsSection from '@components/index/ProductsSection'
+import ContactSection from '@components/index/ContactSection'
+import FooterSection from '@components/index/FooterSection'
 
 /* Various animations imports TOAST, AOS, REACT-SCROLL FRAMER-MOTION */
 import toast from 'react-hot-toast'
@@ -21,15 +25,25 @@ import {useTranslation} from 'next-i18next';
 import {hostname} from '@lib/host'
 
 export async function getServerSideProps({locale}) {
+  // Get products (stocks, models, colors, etc.) ; If internal error -> null
+  let productsJSON
+
+  try {
+    let products = await (fetch(`${hostname}/api/products`))
+    productsJSON = (await products.json())
+  } catch(err){
+    productsJSON = null
+  }
   return {
     props: {
       ...(await serverSideTranslations(locale, ['home'])),
       locale,
+      productsJSON,
     },
   }
 }
 
-export default function Home({locale}) {
+export default function Home({locale, productsJSON}) {
 
   /* Handle language */
   const {t} = useTranslation()
@@ -40,6 +54,8 @@ export default function Home({locale}) {
       setIsOpen(!isOpen)
   };
 
+  /* Import images */
+  const separator = require('@images/home/separator.svg');
 
   return (
     <div>
@@ -62,6 +78,27 @@ export default function Home({locale}) {
         {/* Hero Section  */}
         <HeroSection motion={motion} useState={useState} useEffect={useEffect} t={t} Image={Image} />
 
+        {/* How It Works Section  */}
+        <HiwSection motion={motion} useState={useState} useEffect={useEffect} t={t} Image={Image} />
+
+        { /*Separator*/ }
+        <div className="w-full bg-gray-50 border-none outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#151515" fillOpacity="1" d="M0,160L80,144C160,128,320,96,480,106.7C640,117,800,171,960,197.3C1120,224,1280,224,1360,224L1440,224L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path></svg>
+        </div>
+
+        {/* Products */}
+        {/* <ProductsSection motion={motion} toast={toast} useState={useState} t={t} Image={Image} productsJSON={productsJSON} locale={locale} /> */}
+
+        {/* Contact */}
+        <ContactSection useState={useState} t={t} toast={toast} />
+
+        {/* Separator */}
+        <div className="relative w-full h-[529px] min-h-[529px] bg-primary">
+          <Image objectFit="cover" loading='eager' layout="fill" src={separator} alt="separator"/>
+        </div>
+
+        {/* Footer */}
+        <FooterSection useState={useState} t={t} Image={Image} />
       </main>
 
     </div>
