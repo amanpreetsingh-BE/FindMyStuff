@@ -1,0 +1,30 @@
+{
+    "notVerified":{
+        "verifyEmail": "An email with an activation link has been sent to your inbox, please click on the link to activate your account",
+        "resendMsgBtn" : "Resend activation link",
+        "successResend": "Email sent",
+        "errorResend": "Error while sending email"
+    },
+    "verified": {
+        "welcome": "Welcome again, ",
+        "signout": "Sign Out",
+        "myproducts": "My Products",
+        "mynotifications": "My Notifications",
+        "myparameters": "My Parameters"
+    },
+    "admin":{
+        "welcome" : "Welcome to the admin page",
+        "manage": "Manage",
+        "mProducts" : "Manage products",
+        "mOrders" : "Manage orders",
+        "messsagesClient" : "Messages from client",
+        "newAdmin" : "New admin",
+        "stats": "Statistics",
+        "users": "Users",
+        "orders": "Orders",
+        "stockTitle": "Products management",
+        "addProducts": "Add a product",
+        "delProducts": "Delete a product"
+    }
+
+}
