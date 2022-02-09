@@ -32,7 +32,7 @@ export async function getServerSideProps({ req, locale, query }) {
     
     const userEmail = query.user
     const firebaseToken = req.cookies.firebaseToken
-    const credential = await (fetch(`/api/credential/?userEmail=${userEmail}&token=${firebaseToken}`))
+    const credential = await (fetch(`${process.env.HOSTNAME}/api/credential/?userEmail=${userEmail}&token=${firebaseToken}`))
     const credentialJSON = (await credential.json())
     const invalid = credentialJSON.type == "invalid" ? true : false
     const admin = credentialJSON.type == "admin" ? true : false
@@ -47,19 +47,19 @@ export async function getServerSideProps({ req, locale, query }) {
     /* FETCH sensitive data only if ADMIN user */
 
     // Get products
-    const products = admin ? (await (fetch(`/api/products`))) : null
+    const products = admin ? (await (fetch(`${process.env.HOSTNAME}/api/products`))) : null
     const productsJSON = admin ? (await products.json()) : null
 
     // Get orders
-    const orders = admin ? (await (fetch(`/api/orders`))) : null
+    const orders = admin ? (await (fetch(`${process.env.HOSTNAME}/api/orders`))) : null
     const ordersJSON = admin ? (await orders.json()) : null
 
     // Get messages
-    const messages = admin ? (await (fetch(`/api/messages`))) : null
+    const messages = admin ? (await (fetch(`${process.env.HOSTNAME}/api/messages`))) : null
     const messagesJSON = admin ? (await messages.json()) : null
 
     // Get messages
-    const stats = admin ? (await (fetch(`/api/statistics`))) : null
+    const stats = admin ? (await (fetch(`${process.env.HOSTNAME}/api/statistics`))) : null
     const statsJSON = admin ? (await stats.json()) : null
 
     return {

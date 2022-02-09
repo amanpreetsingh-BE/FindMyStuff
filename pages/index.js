@@ -23,11 +23,12 @@ import {useTranslation} from 'next-i18next';
 
 
 export async function getServerSideProps({locale}) {
+
   // Get products (stocks, models, colors, etc.) ; If internal error -> null
   let productsJSON
 
   try {
-    let products = await (fetch(`/api/products`))
+    let products = await (fetch(`${process.env.HOSTNAME}/api/products`))
     productsJSON = (await products.json())
   } catch(err){
     productsJSON = null
