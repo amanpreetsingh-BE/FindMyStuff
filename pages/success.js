@@ -10,11 +10,11 @@ import {useTranslation} from 'next-i18next'
 
 export async function getServerSideProps({ query, locale }){
     const URL_session_id = query.session_id
-    const checkout = await (fetch(`${process.env.HOST}/api/checkout/${URL_session_id}`))
+    const checkout = await (fetch(`/api/checkout/${URL_session_id}`))
     const checkoutJSON = await checkout.json()
     
     if(checkoutJSON.id && !(checkoutJSON.payment_status=="unpaid")){
-        const order = await (fetch(`${process.env.HOST}/api/orders/${URL_session_id}`))
+        const order = await (fetch(`/api/orders/${URL_session_id}`))
         const orderJSON = await order.json()
 
         if(!orderJSON.emailSent){

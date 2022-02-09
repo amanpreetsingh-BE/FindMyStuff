@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin'
 import Stripe from 'stripe'
 
-const serviceAccount = require('@root/permissions.json')
+const serviceAccount = JSON.parse(Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, 'base64'))
 
 const app = !admin.apps.length ? admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)

@@ -27,7 +27,7 @@ export async function getServerSideProps({locale}) {
   let productsJSON
 
   try {
-    let products = await (fetch(`${process.env.HOST}/api/products`))
+    let products = await (fetch(`/api/products`))
     productsJSON = (await products.json())
   } catch(err){
     productsJSON = null
