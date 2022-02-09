@@ -47,19 +47,19 @@ export async function getServerSideProps({ req, locale, query }) {
     /* FETCH sensitive data only if ADMIN user */
 
     // Get products
-    const products = admin ? (await (fetch(`${process.env.HOST}/api/products`))) : null
+    const products = admin ? (await (fetch(`/api/products`))) : null
     const productsJSON = admin ? (await products.json()) : null
 
     // Get orders
-    const orders = admin ? (await (fetch(`${process.env.HOST}/api/orders`))) : null
+    const orders = admin ? (await (fetch(`/api/orders`))) : null
     const ordersJSON = admin ? (await orders.json()) : null
 
     // Get messages
-    const messages = admin ? (await (fetch(`${process.env.HOST}/api/messages`))) : null
+    const messages = admin ? (await (fetch(`/api/messages`))) : null
     const messagesJSON = admin ? (await messages.json()) : null
 
     // Get messages
-    const stats = admin ? (await (fetch(`${process.env.HOST}/api/statistics`))) : null
+    const stats = admin ? (await (fetch(`/api/statistics`))) : null
     const statsJSON = admin ? (await stats.json()) : null
 
     return {
