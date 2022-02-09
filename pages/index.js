@@ -21,15 +21,13 @@ import {motion} from 'framer-motion';
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 import {useTranslation} from 'next-i18next';
 
-/* Import hostname */
-import {hostname} from '@lib/host'
 
 export async function getServerSideProps({locale}) {
   // Get products (stocks, models, colors, etc.) ; If internal error -> null
   let productsJSON
 
   try {
-    let products = await (fetch(`${hostname}/api/products`))
+    let products = await (fetch(`${process.env.HOST}/api/products`))
     productsJSON = (await products.json())
   } catch(err){
     productsJSON = null

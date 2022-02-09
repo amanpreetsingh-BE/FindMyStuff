@@ -26,8 +26,6 @@ import toast from 'react-hot-toast'
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations'
 import {useTranslation} from 'next-i18next'
 
-import { hostname } from '@lib/host'
-
 /* Handle language */
 export async function getServerSideProps({ req, locale, query }) {
     // verify the state of the user if USER or ADMIN or INVALID
@@ -35,7 +33,7 @@ export async function getServerSideProps({ req, locale, query }) {
     const userEmail = query.user
     const firebaseToken = req.cookies.firebaseToken
     console.log(firebaseToken)
-    const credential = await (fetch(`${hostname}/api/credential/?userEmail=${userEmail}&token=${firebaseToken}`))
+    const credential = await (fetch(`${process.env.HOST}/api/credential/?userEmail=${userEmail}&token=${firebaseToken}`))
     const credentialJSON = (await credential.json())
     const invalid = credentialJSON.type == "invalid" ? true : false
     const admin = credentialJSON.type == "admin" ? true : false
@@ -50,19 +48,19 @@ export async function getServerSideProps({ req, locale, query }) {
     /* FETCH sensitive data only if ADMIN user */
 
     // Get products
-    const products = admin ? (await (fetch(`${hostname}/api/products`))) : null
+    const products = admin ? (await (fetch(`${process.env.HOST}/api/products`))) : null
     const productsJSON = admin ? (await products.json()) : null
 
     // Get orders
-    const orders = admin ? (await (fetch(`${hostname}/api/orders`))) : null
+    const orders = admin ? (await (fetch(`${process.env.HOST}/api/orders`))) : null
     const ordersJSON = admin ? (await orders.json()) : null
 
     // Get messages
-    const messages = admin ? (await (fetch(`${hostname}/api/messages`))) : null
+    const messages = admin ? (await (fetch(`${process.env.HOST}/api/messages`))) : null
     const messagesJSON = admin ? (await messages.json()) : null
 
     // Get messages
-    const stats = admin ? (await (fetch(`${hostname}/api/statistics`))) : null
+    const stats = admin ? (await (fetch(`${process.env.HOST}/api/statistics`))) : null
     const statsJSON = admin ? (await stats.json()) : null
 
     return {
