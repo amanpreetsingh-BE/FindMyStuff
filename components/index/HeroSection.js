@@ -26,8 +26,8 @@ function HeroSection({ useState, useEffect, Image, motion, t }) {
     return(
         <section className="relative flex flex-col items-center justify-evenly bg-primary w-full h-screen -mt-20">
             <motion.div whileHover={{ scale: 1.05 }} initial={{opacity:0}} animate={{opacity:1}}>
-                <div className={"relative group mt-40 w-56 h-56 min-h-[14rem] sm:w-72 sm:h-72 sm:min-h-[18rem] transition ease-in-out duration-[200ms] " + opacity}>
-                    <div className="absolute -inset-6 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full blur-xl opacity-75 group-hover:opacity-100 group-hover:duration-200 transition duration-200 animate-tilt"></div>
+                <div className={"relative flex justify-center items-center group mt-40 w-56 h-56 min-h-[14rem] sm:w-64 sm:h-64 transition ease-in-out duration-[200ms] " + opacity}>
+                    <div className="absolute -inset-5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full blur-xl opacity-75 group-hover:opacity-100 group-hover:duration-200 transition duration-200 animate-tilt"></div>
                     <Image src={homeIllustration} priority layout="fill" alt="home"/>
                 </div>
             </motion.div>

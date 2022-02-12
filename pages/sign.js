@@ -208,7 +208,7 @@ export default function Sign() {
             </div>
 
             <div className="mx-auto w-full max-w-xs sm:max-w-lg">
-              <div className="bg-white py-8 px-8 shadow rounded-xl sm:px-10 text-gray-800">
+              <div className="bg-white py-8 px-8 mb-8 shadow rounded-xl sm:px-10 text-gray-800">
                 <form className="mb-0 space-y-4" onSubmit={onSubmit}>
                   {signupState ? 
                     <>

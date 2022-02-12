@@ -24,7 +24,15 @@
         "orders": "Orders",
         "stockTitle": "Products management",
         "addProducts": "Add a product",
-        "delProducts": "Delete a product"
+        "delProducts": "Delete a product",
+        "promo": "Coupons",
+        "newsletter": "Newsletter"
+    },
+    "user":{
+        "manage": "Manage",
+        "prod": "My products",
+        "notif": "My notifications",
+        "param": "My parameters"
     }
 
 }

@@ -6,7 +6,7 @@ import {CheckCircleIcon, TruckIcon} from '@heroicons/react/solid'
 import axios from 'axios'
 import getStripe from '@lib/stripe'
 
-function ProductsSection({ motion, toast, Image, useState, t, productsJSON, locale }) {
+function ProductsSection({ motion, hostname, toast, Image, useState, t, productsJSON, locale }) {
     /* Handle products */
     const [selectedModel, setSelectedModel] = useState([null, null])
     const [configurationStep, setConfigurationStep] = useState(1)
@@ -21,7 +21,7 @@ function ProductsSection({ motion, toast, Image, useState, t, productsJSON, loca
       try{
         const {
           data: {id}
-        } = await axios.post('/api/checkout', {
+        } = await axios.post(`${hostname}/api/checkout`, {
           cat: cat,
           priceID: cat== "Keychain" ? selectedModel[1].priceID : product.data.priceID,
           model: cat== "Keychain" ? selectedModel[0].id : product.id,
@@ -61,7 +61,7 @@ function ProductsSection({ motion, toast, Image, useState, t, productsJSON, loca
         return (
           <section id="products">
             <div className='mt-10 text-gray-800 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>{t('home:prod:configurator:h1')}</div>
-              <div className='w-full'>
+              <div className='w-full mt-32 mb-52'>
                 {productsJSON ? <div className='grid place-items-center grid-cols-1 lg:grid-cols-2'>
                   {renderKeychains()} 
                 </div>:<div className='text-center text-sm'>Oops something is wrong .. Please try again by refreshing !</div>}
@@ -77,7 +77,7 @@ function ProductsSection({ motion, toast, Image, useState, t, productsJSON, loca
             </div>
             
   
-              <div className='w-full'>
+              <div className='w-full mb-52'>
                 <div className='h-full flex flex-col sm:flex-row items-center justify-center'>
                   
                   <div className="cursor-pointer relative w-52 h-52 sm:w-60 sm:h-60 md:w-72 md:h-72 mt-14 mb-12">

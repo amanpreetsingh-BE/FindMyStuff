@@ -5,7 +5,7 @@ import {CloudUploadIcon, BackspaceIcon} from '@heroicons/react/outline'
 import {storage} from '@lib/firebase'
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
 
-function AddProducts({ useRef, useState, Image, toast }) {
+function AddProducts({ useRef, useState, hostname, Image, toast }) {
 
     /* handle form values through ref */
     const type = useRef()
@@ -29,6 +29,7 @@ function AddProducts({ useRef, useState, Image, toast }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        
         const t = type.current.value.split(" ")
         if(!image && !file){
             return toast.error("Image du produit vide")
@@ -52,7 +53,7 @@ function AddProducts({ useRef, useState, Image, toast }) {
                         price: price.current.value,
                         imageURL: url
                     }
-                    const response = await (fetch("/api/products/add", {
+                    const response = await (fetch(`${hostname}/api/products/add`, {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -163,21 +164,21 @@ function AddProducts({ useRef, useState, Image, toast }) {
 
                 <div className={"flex justify-center items-center flex-col w-[300px] h-[250px] mt-4 lg:mt-0 lg:w-full lg:h-full col-span-2 lg:col-span-1 "+dashedBorder}>
                     { image ? 
-                        <>
+                        <div>
                             <div className="flex justify-end items-center w-full mb-4 text-sm">
                                 <div className='flex justify-center items-center' onClick={handleReset}><BackspaceIcon className='w-7 h-7 mr-1'/> Reset</div>
                             </div>
 
                             <Image src={image} priority width={150} height={150} alt="imageProduct" /> 
-                        </>
+                        </div>
                         : 
                         
-                        <>
-                            <input type="file" name="file" id="file" className="w-[0.1px] h-[0.1px] opacity-0 overflow-hidden absolute -z-10 " onChange={handleChange} accept="image/png, image/jpeg"  />
+                        <div>
+                            <input type="file" name="file" id="file" className="w-[0.1px] h-[0.1px] opacity-0 overflow-hidden absolute -z-10 " onChange={handleChange} accept="image/png, image/jpeg, image/webp"  />
                             <label htmlFor="file" className="font-medium cursor-pointer bg-red-500 hover:bg-red-600 px-12 py-4 flex justify-center items-center"> 
                                 <CloudUploadIcon className="w-8 h-8 mr-1 " />Upload image
                             </label>
-                        </>
+                        </div>
                     }
                 </div>
 

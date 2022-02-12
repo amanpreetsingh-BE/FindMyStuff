@@ -20,9 +20,9 @@
     "prod": {
         "title":"Configurateur de modèle",
         "configurator":{
-            "h1" : "Choisissez votre modèle",
+            "h1" : "Produits",
             "h2": "Choisissez votre couleur",
-            "h3" : "Votre modèle",
+            "h3" : "Votre selection",
             "price": "Prix : € 24.99",
             "shipping": "Livraison gratuite",
             "packaging": "Packaging premium",

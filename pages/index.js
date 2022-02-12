@@ -10,7 +10,7 @@ import MobileNav from '@components/navbar/MobileNav'
 import Nav from '@components/navbar/Nav'
 import HeroSection from '@components/index/HeroSection'
 import HiwSection from '@components/index/HiwSection'
-// import ProductsSection from '@components/index/ProductsSection'
+import ProductsSection from '@components/index/ProductsSection'
 import ContactSection from '@components/index/ContactSection'
 import FooterSection from '@components/index/FooterSection'
 
@@ -33,16 +33,19 @@ export async function getServerSideProps({locale}) {
   } catch(err){
     productsJSON = null
   }
+
+  const hostname = process.env.HOSTNAME
   return {
     props: {
       ...(await serverSideTranslations(locale, ['home'])),
       locale,
       productsJSON,
+      hostname
     },
   }
 }
 
-export default function Home({locale, productsJSON}) {
+export default function Home({locale, productsJSON, hostname}) {
 
   /* Handle language */
   const {t} = useTranslation()
@@ -86,10 +89,10 @@ export default function Home({locale, productsJSON}) {
         </div>
 
         {/* Products */}
-        {/* <ProductsSection motion={motion} toast={toast} useState={useState} t={t} Image={Image} productsJSON={productsJSON} locale={locale} /> */}
+        <ProductsSection hostname={hostname} motion={motion} toast={toast} useState={useState} t={t} Image={Image} productsJSON={productsJSON} locale={locale} />
 
         {/* Contact */}
-        <ContactSection useState={useState} t={t} toast={toast} />
+        <ContactSection useState={useState} hostname={hostname} t={t} toast={toast} />
 
         {/* Separator */}
         <div className="relative w-full h-[529px] min-h-[529px] bg-primary">

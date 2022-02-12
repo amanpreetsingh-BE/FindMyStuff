@@ -62,6 +62,12 @@ export async function getServerSideProps({ req, locale, query }) {
     const stats = admin ? (await (fetch(`${process.env.HOSTNAME}/api/statistics`))) : null
     const statsJSON = admin ? (await stats.json()) : null
 
+    // Get coupons
+    const coupons = admin ? (await (fetch(`${process.env.HOSTNAME}/api/promo`))) : null
+    const couponsJSON = admin ? (await coupons.json()) : null
+
+    const hostname = process.env.HOSTNAME
+
     return {
         props: {
             ...(await serverSideTranslations(locale, ['dashboard'])),
@@ -70,15 +76,17 @@ export async function getServerSideProps({ req, locale, query }) {
             ordersJSON,
             messagesJSON,
             statsJSON,
-            admin
+            couponsJSON,
+            admin,
+            hostname
         }
     }
 }
 
 export default function Dashboard(props) {
+
     /* Handle language */
     const {t} = useTranslation();
-    
     /* Handle user info through hook */
     const { user, loading, firstName, lastName, address, email } = useContext(UserContext)
     const [loaded, setLoaded] = useState(false)
@@ -130,12 +138,12 @@ export default function Dashboard(props) {
     } else if (loaded && !props.admin){
         console.log("user logged in")
         return (
-            <UserLayout useState={useState} Link={Link} Image={Image} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} t={t} />
+            <UserLayout useState={useState} toast={toast} Link={Link} Image={Image} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} t={t} />
         )
     } else if (loaded && props.admin){
         console.log("admin logged in")
         return (
-            <AdminLayout useState={useState} Image={Image} Link={Link} toast={toast} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} t={t} productsJSON={props.productsJSON} ordersJSON={props.ordersJSON} messagesJSON={props.messagesJSON} statsJSON={props.statsJSON}/>
+            <AdminLayout useState={useState} Image={Image} Link={Link} toast={toast} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} t={t} hostname={props.hostname} productsJSON={props.productsJSON} ordersJSON={props.ordersJSON} messagesJSON={props.messagesJSON} statsJSON={props.statsJSON} couponsJSON={props.couponsJSON}/>
         )
     } else {
         console.log("loading")

@@ -24,7 +24,15 @@
         "orders": "Commandes",
         "stockTitle": "Gestion des produits",
         "addProducts": "Ajouter un produit",
-        "delProducts": "Supprimer un produit"
+        "delProducts": "Supprimer un produit",
+        "promo": "Code promo",
+        "newsletter": "Newsletter"
+    },
+    "user":{
+        "manage": "Gérer",
+        "prod": "Mes produits",
+        "notif": "Mes notifications",
+        "param": "Mes paramètres"
     }
 
 }

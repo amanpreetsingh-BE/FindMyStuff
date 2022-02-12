@@ -20,9 +20,9 @@
     "prod": {
         "title":"Model configurator",
         "configurator":{
-            "h1" : "Select your model",
+            "h1" : "Products",
             "h2": "Select your color",
-            "h3" : "Your model",
+            "h3" : "Your selection",
             "price": "Price : € 24.99",
             "shipping": "Free shipping",
             "packaging": "Premium packaging",

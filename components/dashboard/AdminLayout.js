@@ -7,6 +7,8 @@ import AddProducts from './adminComponents/AddProducts'
 import ManageProducts from './adminComponents/ManageProducts'
 import ManageOrders from './adminComponents/ManageOrders'
 import ManageMessages from './adminComponents/ManageMessages'
+import Promo from './adminComponents/Promo'
+import Newsletter from './adminComponents/Newsletter'
 import NewAdmin from './adminComponents/NewAdmin'
 import StatsOrders from './adminComponents/StatsOrders'
 import StatsUsers from './adminComponents/StatsUsers'
@@ -17,14 +19,14 @@ import {ArrowCircleLeftIcon} from '@heroicons/react/outline'
 /* Import motion for animation */
 import {motion} from 'framer-motion'
 
+
 /* variants states for animation menu open or closed, make it as global */
 const variants = {
     open: { opacity: 1, x: 0 },
     closed: { opacity: 0, x: "-100%" },
 }
 
-function AdminLayout({useState, Link, Image, toast, SignOutButton, firstName, lastName, address, email, t, productsJSON, ordersJSON, messagesJSON, statsJSON }) {
-
+function AdminLayout({useState, Link, Image, toast, SignOutButton, firstName, lastName, address, email, t, hostname, productsJSON, ordersJSON, messagesJSON, statsJSON, couponsJSON }) {
     /* States for managing open and close of menu */
     const [isMenu, setIsMenu] = useState(true)
     const [triggerComponent, setTriggerComponent] = useState(false)
@@ -45,6 +47,12 @@ function AdminLayout({useState, Link, Image, toast, SignOutButton, firstName, la
                 break;
             case 'messages':
                 setRenderOption('messages')
+                break;
+            case 'promo':
+                setRenderOption('promo')
+                break;
+            case 'newsletter':
+                setRenderOption('newsletter')
                 break;
             case 'newAdmin':
                 setRenderOption('newAdmin')
@@ -115,10 +123,12 @@ function AdminLayout({useState, Link, Image, toast, SignOutButton, firstName, la
                 {triggerComponent ? 
                     <div> 
                         {renderOption == "products" ? <ManageProducts useState={useState} useRef={useRef} Image={Image} motion={motion} Modal={Modal} productsJSON={productsJSON} toast={toast} t={t} /> : 
-                         renderOption == "addProducts" ? <AddProducts useRef={useRef} useState={useState} Image={Image} toast={toast} /> : 
+                         renderOption == "addProducts" ? <AddProducts useRef={useRef} useState={useState} hostname={hostname} Image={Image} toast={toast} /> : 
                          renderOption == "orders" ? <ManageOrders useState={useState} Modal={Modal} ordersJSON={ordersJSON} t={t} toast={toast} /> : 
-                         renderOption == "messages" ? <ManageMessages useState={useState} useRef={useRef} Modal={Modal} messagesJSON={messagesJSON} t={t} toast={toast} /> : 
-                         renderOption == "newAdmin" ? <NewAdmin /> : 
+                         renderOption == "messages" ? <ManageMessages useState={useState} hostname={hostname} useRef={useRef} Modal={Modal} messagesJSON={messagesJSON} t={t} toast={toast} /> : 
+                         renderOption == "promo" ? <Promo useState={useState} useRef={useRef} Modal={Modal} hostname={hostname} toast={toast} couponsJSON={couponsJSON} /> : 
+                         renderOption == "newsletter" ? <Newsletter /> : 
+                         renderOption == "newAdmin" ? <NewAdmin useRef={useRef} hostname={hostname} toast={toast}  /> : 
                          renderOption == "statsUsers" ? <StatsUsers /> : 
                          renderOption == "statsOrders" ? <StatsOrders /> : 
                          "oops .. Something went wrong"}
@@ -145,7 +155,15 @@ function AdminLayout({useState, Link, Image, toast, SignOutButton, firstName, la
                         <div className={"absolute top-2 right-2 " + (computeNewMessages() >0 ? "text-red-400" : "text-white")}>{computeNewMessages()}</div>
                     </motion.div>
 
-                    <motion.div transition={{ duration: 1 }} onClick={()=>closeMenu("newAdmin")} animate={isMenu ? "open" : "closed"} variants={variants} whileHover={{scale:1.05, transition:{duration:0.1}}} className='bg-[#64cd83] text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-xl h-44 rounded-2xl col-span-1 sm:col-span-3 '>
+                    <motion.div transition={{ duration: 1 }} onClick={()=>closeMenu("promo")} animate={isMenu ? "open" : "closed"} variants={variants} whileHover={{scale:1.05, transition:{duration:0.1}}} className='bg-[#64cd83] relative text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-xl h-44 rounded-2xl'>
+                        <h2 className='mx-4'>{t('dashboard:admin:promo')}</h2>
+                    </motion.div>
+
+                    <motion.div transition={{ duration: 1 }} onClick={()=>closeMenu("newsletter")} animate={isMenu ? "open" : "closed"} variants={variants} whileHover={{scale:1.05, transition:{duration:0.1}}} className='bg-[#64cd83] relative text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-xl h-44 rounded-2xl'>
+                        <h2 className='mx-4'>{t('dashboard:admin:newsletter')}</h2>
+                    </motion.div>
+
+                    <motion.div transition={{ duration: 1 }} onClick={()=>closeMenu("newAdmin")} animate={isMenu ? "open" : "closed"} variants={variants} whileHover={{scale:1.05, transition:{duration:0.1}}} className='bg-[#64cd83] text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-xl h-44 rounded-2xl '>
                         <h2 className='mx-4 '>{t('dashboard:admin:newAdmin')}</h2>
                     </motion.div>
 

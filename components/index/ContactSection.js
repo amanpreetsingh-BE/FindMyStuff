@@ -1,7 +1,7 @@
 /* React imports */
 import {useRef} from 'react'
 
-function ContactSection({t, useState, toast}) {
+function ContactSection({t, hostname, useState, toast}) {
 
     /* Handle contact form */
     const formEmail = useRef()
@@ -11,14 +11,14 @@ function ContactSection({t, useState, toast}) {
 
     const postMessage = async (e) => {
         e.preventDefault()
-
+        setContacted(true)
         const data = {
             email: formEmail.current.value,
             fullname: formFullName.current.value,
             message: formMessage.current.value,
         }
         try {
-        const response = await (fetch('/api/messages/post-message', {
+        const response = await (fetch(`${hostname}/api/messages/post-message`, {
             method: 'POST',
             headers: {
             'Accept': 'application/json',
@@ -28,10 +28,20 @@ function ContactSection({t, useState, toast}) {
         }));
         const responseJSON = await (response.json())
 
+        const notify = await (fetch(`${hostname}/api/mailer/notify-message`, {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }));
+        const notifyJSON = await (notify.json())
+
         formEmail.current.value = ""
         formFullName.current.value = ""
         formMessage.current.value = ""
-        setContacted(true)
+        
     
         if(responseJSON.received){
             return toast.success(t('home:contact:success'))

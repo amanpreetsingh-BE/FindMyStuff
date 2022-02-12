@@ -3,15 +3,17 @@ import {CloudUploadIcon, BackspaceIcon} from '@heroicons/react/outline'
 import {storage} from '@lib/firebase'
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
 
-function ManageMessages({ useState, useRef, Modal, messagesJSON, t, toast }) {
+function ManageMessages({ useState, hostname, useRef, Modal, messagesJSON, t, toast }) {
 
     /* Modal variables states for orders */
     const [modalContactMessage, setModalContactMessage] = useState('')
     const [modalContactID, setModalContactID] = useState('')
+    const [modalFullname, setModalFullname] = useState('')
     const [modalReplied, setModalReplied] = useState(null)
     const [showModalMessage, setShowModalMessage] = useState(false)
     const [modalEmail, setModalEmail] = useState("")
     const [replyState, setReplyState] = useState(false)
+    const [replied, setReplied] = useState(false)
     const [file, setFile] = useState(null)
     const formTitle = useRef()
     const formMessage = useRef()
@@ -21,8 +23,9 @@ function ManageMessages({ useState, useRef, Modal, messagesJSON, t, toast }) {
     }
     var tr = []
 
-    function openContactModal(message, id, replied, email){
+    function openContactModal(message, id, replied, email, fullname){
         setModalContactMessage(message)
+        setModalFullname(fullname)
         setModalContactID(id)
         setModalReplied(replied)
         setModalEmail(email)
@@ -32,6 +35,7 @@ function ManageMessages({ useState, useRef, Modal, messagesJSON, t, toast }) {
 
     const updateMessage = async (e) => {
         e.preventDefault()
+       
         if(!formTitle.current.value || !formMessage.current.value){
             return toast.error("Title and message is mandatory !")
         }
@@ -40,18 +44,20 @@ function ManageMessages({ useState, useRef, Modal, messagesJSON, t, toast }) {
                 return toast.error("Error, already marked as replied")
             }
             if(file){
+                setReplied(true)
                 const storageRef = ref(storage, `mailer/${modalContactID}/${file.name}`)
                 uploadBytes(storageRef, file).then((snapshot) => {
                     getDownloadURL(storageRef).then(async (url) => {
                         const data = {
                             id: modalContactID,
+                            fullname: modalFullname,
                             modalEmail: modalEmail,
                             formTitle: formTitle.current.value,
                             formMessage: formMessage.current.value,
                             fileURL: url,
                             fileName : file.name
                         }
-                        const response = await (fetch("/api/messages/post-replied", {
+                        const response = await (fetch(`${hostname}/api/mailer/send-message`, {
                             method: 'POST',
                             headers: {
                                 'Accept': 'application/json',
@@ -68,15 +74,17 @@ function ManageMessages({ useState, useRef, Modal, messagesJSON, t, toast }) {
                     })  
                 })
             } else {
+                setReplied(true)
                 const data = {
                     id: modalContactID,
+                    fullname: modalFullname,
                     modalEmail: modalEmail,
                     formTitle: formTitle.current.value,
                     formMessage: formMessage.current.value,
                     fileURL : null,
                     fileName : null
                 }
-                const response = await (fetch("/api/messages/post-replied", {
+                const response = await (fetch(`${hostname}/api/mailer/send-message`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -110,15 +118,16 @@ function ManageMessages({ useState, useRef, Modal, messagesJSON, t, toast }) {
     messagesJSON.forEach(element => {
         const message = element.message
         const id = element.id
+        const fullname = element.fullname
         const email = element.email
         const replied = element.replied
         const bgColor = element.replied ? 'bg-emerald-600' :'bg-red-500'
         tr.push(
-            <tr key={element.timestamp} onClick={()=>openContactModal(message, id, replied, email)} className={'cursor-pointer border-b-2 border-b-[#1B212E] text-white font-medium last-of-type:border-b-emerald-600   ' + bgColor}>
-                <td className='px-4 py-7'>{element.email}</td>
-                <td className='px-4 py-7'>{element.fullname}</td>
+            <tr key={element.timestamp} onClick={()=>openContactModal(message, id, replied, email, fullname)} className={'cursor-pointer border-b-2 border-b-[#1B212E] text-white font-medium last-of-type:border-b-emerald-600   ' + bgColor}>
+                <td className='px-4 py-7'>{email}</td>
+                <td className='px-4 py-7'>{fullname}</td>
                 <td className='px-4 py-7'>{new Date(element.timestamp* 1000).toLocaleString()}</td>
-                <td className='px-4 py-7'>{element.replied ? 'Replied':'Not replied'}</td>
+                <td className='px-4 py-7'>{replied ? 'Replied':'Not replied'}</td>
             </tr>
         )
     });
@@ -182,7 +191,7 @@ function ManageMessages({ useState, useRef, Modal, messagesJSON, t, toast }) {
                             </>}
                         </div>
                         <div className='col-span-2'>
-                            <button onClick={updateMessage} className='px-8 py-4 bg-emerald-600 hover:bg-emerald-500 rounded-md text-white'>
+                            <button disabled={replied} onClick={updateMessage} className='px-8 py-4 bg-emerald-600 hover:bg-emerald-500 rounded-md text-white'>
                                 Send email
                             </button>
                         </div>

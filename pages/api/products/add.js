@@ -42,7 +42,7 @@ export default async function handler(req, res) {
                 var docNameRef = app.firestore().doc(`products/${type}/id/${name}`).set({})
                 var docColorRef = app.firestore().doc(`products/${type}/id/${name}/colors/${color}`).set({
                         priceID: priceID,
-                        quantity: quantity,
+                        quantity: parseInt(quantity),
                         color: color,
                         colorHex: colorHex,
                         price: price,
@@ -54,7 +54,7 @@ export default async function handler(req, res) {
                 var docRefType = app.firestore().doc(`products/${type}`).set({})
                 var docNameRef = app.firestore().doc(`products/${type}/id/${name}`).set({
                     priceID: priceID,
-                    quantity: quantity,
+                    quantity: parseInt(quantity),
                     color: color,
                     colorHex: colorHex,
                     price: price,
