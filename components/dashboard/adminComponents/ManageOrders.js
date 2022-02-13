@@ -1,4 +1,4 @@
-function ManageOrders({ useState, Modal, ordersJSON, toast, t  }) {
+function ManageOrders({ useState, hostname, Modal, ordersJSON, toast, t  }) {
 
     /* Modal variables states for orders */
     const [modalOrderCustomerEmail, setModalOrderCustomerEmail] = useState('') 
@@ -64,13 +64,13 @@ function ManageOrders({ useState, Modal, ordersJSON, toast, t  }) {
             id: modalOrderCS,
         }
         try{
-            const response = await (fetch("/api/orders/post-shipped", {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data) 
+            const response = await (fetch(`${hostname}/api/mailer/send-shipping-confirmation`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data) 
                 }));
             const responseJSON = await (response.json())
             if(responseJSON.received){
@@ -79,7 +79,7 @@ function ManageOrders({ useState, Modal, ordersJSON, toast, t  }) {
                 toast.error("Error .. Please contact amanpreet@outlook.be")
             }
         } catch(err){
-            toast.error("Shipping email sent !")
+            toast.error(err.message)
         }
     }
 

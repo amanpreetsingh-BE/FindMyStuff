@@ -18,19 +18,6 @@ export default async function handler(req, res) {
                 replied : false,
                 id : docRef.id
             })
-            await (fetch('https://us-central1-findmystuff-74e93.cloudfunctions.net/api/mailer/newmsg', {
-                method: 'POST',
-                headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: req.body.email,
-                    fullname: req.body.fullname,
-                    message: req.body.message,
-                    replied : false,
-                })
-            }));
         } catch (err) {
             res.status(400).json({ received: false });
         }

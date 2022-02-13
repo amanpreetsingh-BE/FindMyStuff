@@ -81,20 +81,6 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
       timestamp: admin.firestore.FieldValue.serverTimestamp(),
       shipped: false
     })
-    .then(async () => {
-      await (fetch('https://us-central1-findmystuff-74e93.cloudfunctions.net/api/mailer/neworder', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            order_id: order_id,
-            paymentType: paymentType,
-        })
-      }));
-      console.log(`SUCCESS : Order ${session.id} has been added to the DB`)
-    })
     .catch((err) =>{
       console.log(err.message)
     })

@@ -24,7 +24,7 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
         } = await axios.post(`${hostname}/api/checkout`, {
           cat: cat,
           priceID: cat== "Keychain" ? selectedModel[1].priceID : product.data.priceID,
-          model: cat== "Keychain" ? selectedModel[0].id : product.id,
+          model: cat== "Keychain" ? "Square keychain" : product.id, // to be changed in V2 to selectedModel[0].model
           color: cat== "Keychain" ? selectedModel[1].color : product.data.color,
           locale: locale
         })

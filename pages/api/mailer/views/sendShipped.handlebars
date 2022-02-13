@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+
+    <style>
+        h3 { 
+            color: #20b075;
+            font-weight: 700;
+        }
+        .conf{
+            height: 50px;
+            width: 100%;
+            margin: auto;
+            font-weight: 700;
+            text-align: center;
+        }
+        .top{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color:#333;
+            font-weight: bold;
+            height:1000px;
+            width: 100%;
+        }
+        .logo{
+            text-align: center;
+
+        }
+        .bottom{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color:#333;
+            font-weight: bold;
+        }
+        .hr{
+            color:black;
+            width: 80%;
+        }
+        .shipping{
+            background-color: #f4f4f4;
+            height: 280px;
+            width: 20%;
+            margin: auto;
+            min-width: 300px;
+            max-width: 600px;
+            color: white;
+            border-radius: 10px;
+            color:#171717;
+        }
+        .order{
+            background-color: #f4f4f4;
+            margin: auto;
+            height: 200px;
+            width: 20%;
+            min-width: 300px;
+            max-width: 600px;
+            color: white;
+            border-radius: 10px;
+            color:#171717;
+        }
+        .ship1{
+            display: flex;
+            flex-direction: rows;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 10px;
+        }
+        .bottomText{
+            text-align: center;
+            font-weight: bold;
+            margin-top: 40px;
+        }
+        .topText{
+            font-size: 1rem;
+            max-width: 600px;
+        }
+
+    </style>
+</head>
+<body>
+
+        <h2>Hi, {{fullname}}</h2>
+        <div class="conf"><h3>✔ Your order {{orderID}} has been shipped !</h3></div>
+        <p class="topText"> You will receive your keychain by post in 1-2 business day
+        </p>
+
+        <p class="bottomText"> If you have any questions, please contact our support at team@findmystuff.io </p>
+        <hr class="hr"/>
+        <p style="text-align:center;"><img class="logo" src="./logo_white.svg" width="250px" alt="logo"/></p>
+</body>
+</html>

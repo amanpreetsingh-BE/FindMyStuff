@@ -124,10 +124,10 @@ function AdminLayout({useState, Link, Image, toast, SignOutButton, firstName, la
                     <div> 
                         {renderOption == "products" ? <ManageProducts useState={useState} useRef={useRef} Image={Image} motion={motion} Modal={Modal} productsJSON={productsJSON} toast={toast} t={t} /> : 
                          renderOption == "addProducts" ? <AddProducts useRef={useRef} useState={useState} hostname={hostname} Image={Image} toast={toast} /> : 
-                         renderOption == "orders" ? <ManageOrders useState={useState} Modal={Modal} ordersJSON={ordersJSON} t={t} toast={toast} /> : 
+                         renderOption == "orders" ? <ManageOrders useState={useState} hostname={hostname} Modal={Modal} ordersJSON={ordersJSON} t={t} toast={toast} /> : 
                          renderOption == "messages" ? <ManageMessages useState={useState} hostname={hostname} useRef={useRef} Modal={Modal} messagesJSON={messagesJSON} t={t} toast={toast} /> : 
                          renderOption == "promo" ? <Promo useState={useState} useRef={useRef} Modal={Modal} hostname={hostname} toast={toast} couponsJSON={couponsJSON} /> : 
-                         renderOption == "newsletter" ? <Newsletter /> : 
+                         renderOption == "newsletter" ? <Newsletter useState={useState} useRef={useRef} hostname={hostname} toast={toast} /> : 
                          renderOption == "newAdmin" ? <NewAdmin useRef={useRef} hostname={hostname} toast={toast}  /> : 
                          renderOption == "statsUsers" ? <StatsUsers /> : 
                          renderOption == "statsOrders" ? <StatsOrders /> : 

@@ -9,16 +9,27 @@ import {serverSideTranslations} from 'next-i18next/serverSideTranslations'
 import {useTranslation} from 'next-i18next'
 
 export async function getServerSideProps({ query, locale }){
+
     const URL_session_id = query.session_id
     const checkout = await (fetch(`${process.env.HOSTNAME}/api/checkout/${URL_session_id}`))
     const checkoutJSON = await checkout.json()
-    
-    if(checkoutJSON.id && !(checkoutJSON.payment_status=="unpaid")){
+    if(checkoutJSON.id && (checkoutJSON.payment_status=="paid")){
         const order = await (fetch(`${process.env.HOSTNAME}/api/orders/${URL_session_id}`))
         const orderJSON = await order.json()
 
-        if(!orderJSON.emailSent){
-            await (fetch('https://us-central1-findmystuff-74e93.cloudfunctions.net/api/checkout/send-email', {
+        if(!orderJSON.emailSent) {
+            /* Send notification to ADMIN */
+            await (fetch(`${process.env.HOSTNAME}/api/mailer/notify-order`, {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderJSON)
+            }));
+
+            /* Send confirmation to the client */
+            await (fetch(`${process.env.HOSTNAME}/api/mailer/send-receipt`, {
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
