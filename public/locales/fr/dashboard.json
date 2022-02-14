@@ -26,7 +26,8 @@
         "addProducts": "Ajouter un produit",
         "delProducts": "Supprimer un produit",
         "promo": "Code promo",
-        "newsletter": "Newsletter"
+        "newsletter": "Newsletter",
+        "manageQR": "Gérer les QR"
     },
     "user":{
         "manage": "Gérer",

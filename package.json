@@ -32,7 +32,8 @@
     "react-intersection-observer": "^8.33.1",
     "react-scroll": "^1.8.4",
     "react-spring": "^9.4.2",
-    "stripe": "^8.202.0"
+    "stripe": "^8.202.0",
+    "swiper": "^6.8.4"
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^4.2.5",

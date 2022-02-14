@@ -137,7 +137,7 @@ export default function Promo({ useState, useRef, toast, hostname, Modal, coupon
                 Add coupons
             </div>
             {isAddMenu ? <div>
-                <div className="mx-auto px-2 border-white ">
+                <div className="mx-auto px-20 border-white ">
                     <label htmlFor="coupon" className="block text-sm font-medium">Coupon name</label>
                     <div className="mt-1 max-w-sm">
                         <input id="coupon" name="coupon" type="text" ref={formCoupon} required/>

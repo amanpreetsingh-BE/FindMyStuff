@@ -46,8 +46,8 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
         sw.push(
             <div key={keychain.priceID} className='h-full flex items-center justify-center w-full'>
               <motion.div whileHover={{ scale: 1.1 }}  whileTap={{ scale: 0.9 }}>
-                <div onClick={()=>next(keychain, keychain)} className="cursor-pointer relative w-52 h-52 sm:w-60 sm:h-60 md:w-72 md:h-72 mt-14 mb-16 ">
-                    <Image src={keychain.imageURL} layout="fill" alt=""/>
+                <div onClick={()=>next(keychain, keychain)} className="cursor-pointer bg-[#1B212E] relative px-12 py-12 mt-12 rounded-lg ">
+                    <Image src={keychain.imageURL} width={240} height={240} alt=""/>
                 </div> 
               </motion.div>
             </div>
@@ -59,9 +59,9 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
     function renderKeychainCat(){
       if(configurationStep==1){
         return (
-          <section id="products">
-            <div className='mt-10 text-gray-800 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>{t('home:prod:configurator:h1')}</div>
-              <div className='w-full mt-32 mb-52'>
+          <section id="products" className='bg-[#171C26]'>
+            <div className='pt-10 text-gray-300 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>{t('home:prod:configurator:h1')}</div>
+              <div className='w-full mt-32 pb-52'>
                 {productsJSON ? <div className='grid place-items-center grid-cols-1 lg:grid-cols-2'>
                   {renderKeychains()} 
                 </div>:<div className='text-center text-sm'>Oops something is wrong .. Please try again by refreshing !</div>}
@@ -70,14 +70,14 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
         )
       } else {
         return (
-          <section id="products">
-            <div className='mt-10 text-gray-800 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>
+          <section id="products" className='bg-[#171C26]' >
+            <div className='pt-10 text-gray-300 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>
               <span>{t('home:prod:configurator:h3')}</span>
-              <ArrowCircleLeftIcon onClick={()=>setConfigurationStep(configurationStep-1)} className="text-gray-800 cursor-pointer inline-block absolute right-12 w-8 h-8 sm:w-9 sm:h-9"/>
+              <ArrowCircleLeftIcon onClick={()=>setConfigurationStep(configurationStep-1)} className="text-gray-300 cursor-pointer inline-block absolute right-12 w-8 h-8 sm:w-9 sm:h-9"/>
             </div>
             
   
-              <div className='w-full mb-52'>
+              <div className='w-full mt-32 pb-52'>
                 <div className='h-full flex flex-col sm:flex-row items-center justify-center'>
                   
                   <div className="cursor-pointer relative w-52 h-52 sm:w-60 sm:h-60 md:w-72 md:h-72 mt-14 mb-12">
@@ -85,16 +85,16 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
                   </div>
   
                   <div>
-                    <div className='text-xl w-full font-semibold px-12'>
+                    <div className='text-xl text-gray-300 w-full font-semibold px-12'>
                       {selectedModel[1].price}
                     </div>
   
-                    <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
+                    <div className='text-xs text-gray-300 w-full flex items-center justify-start font-semibold px-12'>
                       <TruckIcon className='w-4 h-4 mr-1'/> {t('home:prod:configurator:shipping')}
                     </div>
   
-                    <div className='my-4 space-y-1'>
-                      <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
+                    <div className='my-4 text-gray-300 space-y-1'>
+                      <div className='text-xs  w-full flex items-center justify-start font-semibold px-12'>
                         <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:packaging')}
                       </div>
                       <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
@@ -219,12 +219,12 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
   }
 
     return (
-      <>
+      <div>
         {renderKeychainCat()}
         {renderStickerCat()}
         {renderTrackerCat()}
         {renderOtherCat()}
-      </>
+      </div>
 
     )
 

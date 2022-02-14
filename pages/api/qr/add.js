@@ -7,14 +7,25 @@ const app = !admin.apps.length ? admin.initializeApp({
   
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        const id = req.body
+        const NumberQR = req.body.formNumberQR
+        const allQR = []
+        const newQR = []
         try {
-            console.log(id)
-            //var rs = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+            const qrCollection = await (await app.firestore().collection("QR").listDocuments()).forEach(doc => {
+                allQR.push(doc.id)
+            })
             
-            const verified = true
-            const qrCollection = await app.firestore().collection("qr").listDocuments()
-            res.json({verified})
+            for (let i = 0 ; i < NumberQR ; i++) {
+                while(true){
+                    var rs = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+                    if(!allQR.includes(rs)){
+                        newQR.push(rs)
+                        break;
+                    }
+                }
+            }
+            addQRtoDB(newQR)
+            res.status(200).json({success:true, newQR: newQR})
         } catch (err) {
             console.log(err)
             res.status(err.statusCode || 500).json(err.message);
@@ -37,4 +48,24 @@ function getInitialQR() {
     const arr3 = ['4eN3xvMS', '4kvC0VdO', '4lSHJ0OA', '4lmwev2d', '4moFQgz3', '4rruNvRw', '4tu15V8n', '4wD4ruwW', '4weh0yme', '4xI7YDEY', '4yiiHaMH', '53JYWy2I', '555HcIT2', '5HGWasj0', '5HORuWO4', '5OSR3uP8', '5QjGgs5h', '5SwwaVjW', '5TPMt2ea', '5V4HFOHn', '5YuUaCTj', '5bGobkAD', '5cgVyL5C', '5eDuj5EU', '5fjhcAiB', '5iB11SXD', '5jQ1OcCP', '5jn8lDY6', '5l16ustX', '5m55VNcU', '5mSgegnh', '5nXoBP28', '5rKvhqAc', '5siXL6pg', '5tEAb9Rr', '5tugJOuw', '5uZmVuxi', '5utw2f2q', '5xQg3qv0', '67L0kSBP', '6ErMjHV2', '6FL31LiY', '6N1ghdAH', '6UJo15nk', '6ZYhCdb6', '6hfMOUpR', '6n9kZD6x', '6prp3QAh', '6rpEHUKG', '6uLFniWT']
     const initial = [...arr1, ...arr2, ...arr3]
     return initial
+}
+
+function addQRtoDB(arr) {
+    arr.forEach(element => {
+            app.firestore().collection("QR").doc(element).set({
+                email: "",
+                activate: false
+            })
+    });
+}
+
+/* First 150 QR nemesis QR codes */
+function generateNemesis() {
+    var N = getInitialQR()
+    N.forEach(element => {
+            app.firestore().collection("QR").doc(element).set({
+                email: "",
+                activate: false
+            })
+    });
 }

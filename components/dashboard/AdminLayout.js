@@ -10,6 +10,7 @@ import ManageMessages from './adminComponents/ManageMessages'
 import Promo from './adminComponents/Promo'
 import Newsletter from './adminComponents/Newsletter'
 import NewAdmin from './adminComponents/NewAdmin'
+import ManageQR from './adminComponents/ManageQR'
 import StatsOrders from './adminComponents/StatsOrders'
 import StatsUsers from './adminComponents/StatsUsers'
 
@@ -56,6 +57,9 @@ function AdminLayout({useState, Link, Image, toast, SignOutButton, firstName, la
                 break;
             case 'newAdmin':
                 setRenderOption('newAdmin')
+                break;
+            case 'manageQR':
+                setRenderOption('manageQR')
                 break;
             case 'statsUsers':
                 setRenderOption('statsUsers')
@@ -129,6 +133,7 @@ function AdminLayout({useState, Link, Image, toast, SignOutButton, firstName, la
                          renderOption == "promo" ? <Promo useState={useState} useRef={useRef} Modal={Modal} hostname={hostname} toast={toast} couponsJSON={couponsJSON} /> : 
                          renderOption == "newsletter" ? <Newsletter useState={useState} useRef={useRef} hostname={hostname} toast={toast} /> : 
                          renderOption == "newAdmin" ? <NewAdmin useRef={useRef} hostname={hostname} toast={toast}  /> : 
+                         renderOption == "manageQR" ? <ManageQR useState={useState} useRef={useRef} hostname={hostname} toast={toast}  /> : 
                          renderOption == "statsUsers" ? <StatsUsers /> : 
                          renderOption == "statsOrders" ? <StatsOrders /> : 
                          "oops .. Something went wrong"}
@@ -167,6 +172,10 @@ function AdminLayout({useState, Link, Image, toast, SignOutButton, firstName, la
                         <h2 className='mx-4 '>{t('dashboard:admin:newAdmin')}</h2>
                     </motion.div>
 
+                    <motion.div transition={{ duration: 1 }} onClick={()=>closeMenu("manageQR")} animate={isMenu ? "open" : "closed"} variants={variants} whileHover={{scale:1.05, transition:{duration:0.1}}} className='bg-[#64cd83] text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-xl h-44 rounded-2xl col-span-2 sm:col-span-3'>
+                        <h2 className='mx-4 '>{t('dashboard:admin:manageQR')}</h2>
+                    </motion.div>
+                    
 
                     <motion.h1 transition={{ duration: 1 }} animate={isMenu ? "open" : "closed"} variants={variants} className='tracking-wide text-xl sm:text-2xl sm:gap-4 flex justify-center items-center font-extrabold text-center col-span-2 my-4 sm:col-span-1 '>{t('dashboard:admin:stats')}</motion.h1>
                     <motion.div transition={{ duration: 1 }} onClick={()=>closeMenu("statsUsers")} animate={isMenu ? "open" : "closed"} variants={variants} whileHover={{scale:1.05, transition:{duration:0.1}}} className='bg-[#DBB457] text-lg sm:text-xl text-center font-bold cursor-pointer flex flex-col justify-center items-center shadow-xl hover:shadow-xl h-44 rounded-2xl'>
