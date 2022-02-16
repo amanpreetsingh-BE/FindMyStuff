@@ -1,0 +1,39 @@
+{   
+    "notVerified":{
+        "verifyEmail": "Un email avec un lien d'activation à été envoyé sur votre boîte de reception, merci d'activer votre compte en cliquant sur le lien",
+        "resendMsgBtn" : "Renvoyer le lien d'activation",
+        "successResend": "Email envoyé",
+        "errorResend": "Erreur lors de l'envoie de l'email"
+    },
+    "verified": {
+        "welcome": "Bonjour, ",
+        "signout": "Se déconnecter",
+        "myproducts": "Mes produits",
+        "mynotifications": "Mes notifications",
+        "myparameters": "Mes paramètres"
+    },
+    "admin":{
+        "welcome": "Bienvenue sur la page admin",
+        "manage" : "Gestion",
+        "mProducts" : "Gérer les produits",
+        "mOrders" : "Gérer les commandes",
+        "messsagesClient" : "Messages des clients",
+        "newAdmin" : "Nouveau admin",
+        "stats": "Statistiques",
+        "users": "Utilisateurs",
+        "orders": "Commandes",
+        "stockTitle": "Gestion des produits",
+        "addProducts": "Ajouter un produit",
+        "delProducts": "Supprimer un produit",
+        "promo": "Code promo",
+        "newsletter": "Newsletter",
+        "manageQR": "Gérer les QR"
+    },
+    "user":{
+        "manage": "Gérer",
+        "prod": "Mes produits",
+        "notif": "Mes notifications",
+        "param": "Mes paramètres"
+    }
+
+}
