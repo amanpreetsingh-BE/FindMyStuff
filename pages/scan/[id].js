@@ -28,8 +28,6 @@ export async function getServerSideProps({ req, params, locale }) {
     const hostname = process.env.HOSTNAME
     const verify = await (fetch(`${hostname}/api/qr/${id}`))
     const verifyJSON = (await verify.json())
-    
-    console.log(locale)
 
     if(verifyJSON.verified){
         const activate = verifyJSON.activate
@@ -50,11 +48,14 @@ export async function getServerSideProps({ req, params, locale }) {
     }
 }
 
-export default function ScanPage({id, activate, hostname}) {
+export default function ScanPage({id, activate, hostname, locale}) {
   /* Handle language */
   const {t} = useTranslation();
+  
   /* Import images */
   const icon = require('@images/icons/icon_white.svg');
+  const en_flag = require('@images/icons/gb.svg')
+  const fr_flag = require('@images/icons/fr.svg')
 
   /* handle signup or sigin state and loaded user */
   const [signupState, setSignupState] = useState(true)
@@ -212,6 +213,46 @@ export default function ScanPage({id, activate, hostname}) {
     });
   }
 
+  function LanguageBox(id, locale, fr_flag, en_flag){
+    const flag = (locale === "en" ? en_flag : fr_flag)
+    return (
+      <nav className="flex -mt-12 justify-end items-center top-0 w-full h-20">
+          <div className="group inline-block relative">
+              <button
+              className="bg-transparent text-gray-700 font-semibold py-3 px-4 rounded inline-flex items-center"
+              >
+              
+                  <span className="mr-2 pt-1">
+                      <Image src={flag} priority quality="100" width={30} height={22} alt="flag"/>
+                  </span>
+
+                  <svg
+                      className="fill-current h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                  >
+                      <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                      />
+                  </svg>
+              </button>
+              <ul className="absolute hidden text-gray-700 pt-1 group-hover:block">
+                  <li className="">
+                      <a href={`/en/scan/${id}`}
+                      className="rounded-t cursor-pointer bg-transparent hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                      ><Image src={en_flag} priority quality="100" width={30} height={22} alt="flag"/></a>
+                  </li>
+                  <li className="">
+                    <a href={`/fr/scan/${id}`}
+                      className="bg-transparent cursor-pointer hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                      ><Image src={fr_flag} priority quality="100" width={30} height={22} alt="flag"/></a>
+                  </li>
+              </ul>
+          </div>
+      </nav>
+    )
+  }
+
   if(activate){
     return (
         <main>
@@ -222,6 +263,7 @@ export default function ScanPage({id, activate, hostname}) {
     return (
       <>
         <main className="w-full py-12 flex flex-col space-y-8 justify-center items-center bg-primary min-h-screen">
+              {LanguageBox(id, locale, fr_flag, en_flag)}
 
               <Link passHref href="/">
                 <div className="flex justify-center">
@@ -445,5 +487,4 @@ function SignInGoogleButton(id) {
         <Image src={'/images/icons/f_logo_RGB-White_512.png'} alt={'logoFacebook'} width={20} height={20}/> <span className="ml-2">{t('scan:signInWithFacebook')}</span>
       </button>
     );
-  }
-  
+}

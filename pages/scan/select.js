@@ -31,13 +31,56 @@ export async function getServerSideProps({ req, params, locale }) {
     }
 }
 
-export default function SelectPage({ hostname }) {
+export default function SelectPage({ hostname, locale }) {
+
+  const en_flag = require('@images/icons/gb.svg')
+  const fr_flag = require('@images/icons/fr.svg')
 
   const cp = useRef()
   const [center, setCenter] = useState([50.850340, 4.351710])
   const [listPt, setListPt] = useState(null)
   const [selected, setSelected] = useState(false)
   const [selection, setSelection] = useState("")
+
+  function LanguageBox(locale, fr_flag, en_flag){
+    const flag = (locale === "en" ? en_flag : fr_flag)
+    return (
+      <nav className="flex -mt-12 justify-end items-center top-0 w-full h-20">
+          <div className="group inline-block relative">
+              <button
+              className="bg-transparent text-gray-700 font-semibold py-3 px-4 rounded inline-flex items-center"
+              >
+              
+                  <span className="mr-2 pt-1">
+                      <Image src={flag} priority quality="100" width={30} height={22} alt="flag"/>
+                  </span>
+
+                  <svg
+                      className="fill-current h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                  >
+                      <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                      />
+                  </svg>
+              </button>
+              <ul className="absolute hidden text-gray-700 pt-1 group-hover:block">
+                  <li className="">
+                      <a href={`/en/scan/select`}
+                      className="rounded-t cursor-pointer bg-transparent hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                      ><Image src={en_flag} priority quality="100" width={30} height={22} alt="flag"/></a>
+                  </li>
+                  <li className="">
+                    <a href={`/fr/scan/select`}
+                      className="bg-transparent cursor-pointer hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                      ><Image src={fr_flag} priority quality="100" width={30} height={22} alt="flag"/></a>
+                  </li>
+              </ul>
+          </div>
+      </nav>
+    )
+  }
 
   function generateMarker(Marker, Popup){
     var result = []
@@ -106,7 +149,11 @@ export default function SelectPage({ hostname }) {
   }
 
   return (
-    <main className="bg-primary text-white min-h-screen px-8 py-24">
+    <main className="bg-primary text-white min-h-screen px-8 py-12">
+        <div className='mb-12'>
+            {LanguageBox(locale, fr_flag, en_flag)}    
+        </div>
+        
         <div className="font-bold text-xl sm:text-2xl -mt-8">Point relais</div>
         <div>Indiquez votre code postal afin de selectionner l'endroit ou votre objet sera remis</div>
         <div className='mt-8'>
