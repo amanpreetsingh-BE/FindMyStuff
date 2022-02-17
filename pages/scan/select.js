@@ -20,13 +20,8 @@ import zipJSON from '@root/public/misc/zipcode-belgium.json'
 
 /* Handle language */
 export async function getServerSideProps({ req, params, locale }) {
-    const navLocale = (((req.headers["accept-language"].split(";"))[0]).split(","))[0]
     const hostname = process.env.HOSTNAME
 
-    if(navLocale != locale){
-        locale = navLocale
-    }
-    
     return {
         props: {
             ...(await serverSideTranslations(locale, ['scan'])),

@@ -25,17 +25,15 @@ import toast from 'react-hot-toast'
 /* Handle language */
 export async function getServerSideProps({ req, params, locale }) {
     const id = params.id
-    const navLocale = (((req.headers["accept-language"].split(";"))[0]).split(","))[0]
     const hostname = process.env.HOSTNAME
     const verify = await (fetch(`${hostname}/api/qr/${id}`))
     const verifyJSON = (await verify.json())
+    
+    console.log(locale)
 
     if(verifyJSON.verified){
         const activate = verifyJSON.activate
-        if(navLocale != locale){
-            locale = navLocale
-        }
-        console.log(locale)
+
         return {
             props: {
                 ...(await serverSideTranslations(locale, ['scan'])),
@@ -52,7 +50,7 @@ export async function getServerSideProps({ req, params, locale }) {
     }
 }
 
-export default function ScanPage({id, activate, hostname, locale}) {
+export default function ScanPage({id, activate, hostname}) {
   /* Handle language */
   const {t} = useTranslation();
   /* Import images */
