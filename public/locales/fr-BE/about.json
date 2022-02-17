@@ -1,0 +1,23 @@
+{   
+    "heading1": "Qui sommes-nous ?",
+    "whoarewe":"L’équipe de FindMyStuff est composé de jeunes entrepreneurs qui ont été réunis avec l’envie de lutter contre la perte des objets personnels. Le projet a commencé à se développer au début du mois de septembre 2019 et réunit trois ingénieurs avec des spécialisations différentes. Issus de l’UCLouvain, les trois entrepreneurs ont été accompagnés par l’Yncubator pour développer à bien la start-up.",
+    "heading2": "Notre mission",
+    "mission":"L’équipe de FindMyStuff est composé de jeunes entrepreneurs qui ont été réunis avec l’envie de lutter contre la perte des objets personnels. Le projet a commencé à se développer au début du mois de septembre 2019 et réunit trois ingénieurs avec des spécialisations différentes. Issus de l’UCLouvain, les trois entrepreneurs ont été accompagnés par l’Yncubator pour développer à bien la start-up.",
+    "heading3": "L’équipe FindMyStuff.",
+    "formation": "Formation",
+    "amanpreetsingh":{
+        "name": "Amanpreet Singh",
+        "school": "UCLouvain",
+        "study": "Ingénieur électronique"
+    },
+    "federicosonnino":{
+        "name": "Federico Sonnino",
+        "school": "UCLouvain",
+        "study": "Ingénieur chimie des matériaux"
+    },
+    "mohamedchaabani":{
+        "name": "Mohamed Chaabani",
+        "school": "UCLouvain",
+        "study": "Ingénieur civil en construction"
+    }
+}
