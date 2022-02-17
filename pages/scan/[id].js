@@ -35,7 +35,7 @@ export async function getServerSideProps({ req, params, locale }) {
         if(navLocale != locale){
             locale = navLocale
         }
-    
+        console.log(locale)
         return {
             props: {
                 ...(await serverSideTranslations(locale, ['scan'])),
@@ -52,8 +52,7 @@ export async function getServerSideProps({ req, params, locale }) {
     }
 }
 
-export default function ScanPage({id, activate, hostname}) {
-
+export default function ScanPage({id, activate, hostname, locale}) {
   /* Handle language */
   const {t} = useTranslation();
   /* Import images */
