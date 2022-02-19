@@ -7,16 +7,17 @@ const app = !admin.apps.length ? admin.initializeApp({
   
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        const id = req.body.id
-        const email = req.body.email
+        const uid = req.body.uid
+        const firstName = req.body.firstName
+        const lastName = req.body.lastName
         try {
-            const qrRef = app.firestore().collection("QR").doc(id)
+            const userRef = app.firestore().collection("users").doc(uid)
 
-            await qrRef.get().then((doc) => {
+            await userRef.get().then((doc) => {
                 if (doc.exists) {
-                    qrRef.update({
-                        activate: false,
-                        email: email,
+                    userRef.update({
+                        firstName: firstName,
+                        lastName: lastName,
                     })
                     res.status(200).json({success:true})
                 } else {

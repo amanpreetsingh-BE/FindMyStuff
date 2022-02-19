@@ -11,10 +11,14 @@ export default async function handler(req, res) {
         try {
             let verified = false
             let activate = false
+            let email = ''
+            let relais = null
             await app.firestore().collection("QR").doc(id).get().then((docSnapshot) => {
                 if(docSnapshot.exists){
                     verified = true
                     activate = docSnapshot.data().activate
+                    relais = docSnapshot.data().relais
+                    email = docSnapshot.data().email
                 } else {
                     verified = false
                 }
@@ -22,7 +26,9 @@ export default async function handler(req, res) {
             
             res.json({
                 verified : verified,
-                activate : activate
+                activate : activate,
+                relais: relais,
+                email: email
             })
         } catch (err) {
             console.log(err)

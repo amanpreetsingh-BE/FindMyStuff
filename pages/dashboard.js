@@ -58,13 +58,17 @@ export async function getServerSideProps({ req, locale, query }) {
     const messages = admin ? (await (fetch(`${process.env.HOSTNAME}/api/messages`))) : null
     const messagesJSON = admin ? (await messages.json()) : null
 
-    // Get messages
+    // Get stats
     const stats = admin ? (await (fetch(`${process.env.HOSTNAME}/api/statistics`))) : null
     const statsJSON = admin ? (await stats.json()) : null
 
     // Get coupons
     const coupons = admin ? (await (fetch(`${process.env.HOSTNAME}/api/promo`))) : null
     const couponsJSON = admin ? (await coupons.json()) : null
+
+    // Get user products
+    const userProducts = await (fetch(`${process.env.HOSTNAME}/api/user/products?user=${userEmail}`))
+    const userProductsJSON = await userProducts.json()
 
     const hostname = process.env.HOSTNAME
 
@@ -77,6 +81,7 @@ export async function getServerSideProps({ req, locale, query }) {
             messagesJSON,
             statsJSON,
             couponsJSON,
+            userProductsJSON,
             admin,
             hostname
         }
@@ -84,13 +89,11 @@ export async function getServerSideProps({ req, locale, query }) {
 }
 
 export default function Dashboard(props) {
-
     /* Handle language */
     const {t} = useTranslation();
     /* Handle user info through hook */
     const { user, loading, firstName, lastName, address, email } = useContext(UserContext)
     const [loaded, setLoaded] = useState(false)
-
     /* Import image */
     const mailIllustration = require('@images/dashboard/mailConfirm.svg');
 
@@ -138,7 +141,7 @@ export default function Dashboard(props) {
     } else if (loaded && !props.admin){
         console.log("user logged in")
         return (
-            <UserLayout useState={useState} toast={toast} Link={Link} Image={Image} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} t={t} />
+            <UserLayout useState={useState} toast={toast} Link={Link} Image={Image} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} uid={user ? user.uid:null} user={user} hostname={props.hostname} t={t} userProductsJSON={props.userProductsJSON} />
         )
     } else if (loaded && props.admin){
         console.log("admin logged in")

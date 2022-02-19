@@ -18,7 +18,7 @@ function Nav(props) {
     const flag = (props.loc === "en" ? en_flag : props.loc === "fr" ? fr_flag : nl_flag)
 
     const { user, email } = useContext(UserContext)
-
+    
     function toggleHome() {
         scroll.scrollToTop();
     }
@@ -118,7 +118,7 @@ function Nav(props) {
                                 {t('home:nav:contact')}
                         </LinkS>
                     </li>
-
+                    {console.log(user)}
                     <li className="flex justify-center items-center h-full">
                         <Link passHref href={user ? `/dashboard/?user=${email}`:"/sign"}>
                             <div className= "group cursor-pointer mr-10 rounded-xl bg-secondary px-8 py-4 hover:bg-secondaryHover text-white font-extrabold transition ease-in-out duration-300">

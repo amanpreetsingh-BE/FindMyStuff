@@ -19,7 +19,7 @@ const variants = {
     closed: { opacity: 0, x: "-100%" },
 }
 
-function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, lastName, address, email, t }) {
+function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, lastName, email, uid, user, hostname, t, userProductsJSON }) {
 
     /* States for managing open and close of menu */
     const [isMenu, setIsMenu] = useState(true)
@@ -77,9 +77,9 @@ function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, las
             <section className={classMainSection}>
                 {triggerComponent ? 
                     <div> 
-                        {renderOption == "prod" ? <Products useState={useState} useRef={useRef} Modal={Modal} t={t} toast={toast} /> : 
+                        {renderOption == "prod" ? <Products useState={useState} useRef={useRef} Modal={Modal} t={t} toast={toast} Image={Image} email={email} userProductsJSON={userProductsJSON} /> : 
                          renderOption == "notif" ? <Notifications useState={useState} useRef={useRef} Modal={Modal} t={t} toast={toast} /> : 
-                         renderOption == "param" ? <Parameters useState={useState} useRef={useRef} Modal={Modal} t={t} toast={toast} /> : 
+                         renderOption == "param" ? <Parameters useState={useState} email={email} firstName={firstName} lastName={lastName} uid={uid} user={user} hostname={hostname} useRef={useRef} Modal={Modal} t={t} toast={toast} /> : 
                          "oops .. Something went wrong"}
                     </div>
                     : ""

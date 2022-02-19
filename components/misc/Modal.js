@@ -45,7 +45,7 @@ function Modal({ showModal, setShowModal, children }) {
     return(
         <>
             {showModal ? (
-                <div className="w-full h-screen bg-[rgba(0,0,0,0.8)] fixed left-0 top-0 flex justify-center items-center z-50" onClick={closeModal} ref={modalRef}>
+                <div className="w-full h-full bg-[rgba(0,0,0,0.8)] fixed left-0 top-0 flex justify-center items-center z-50" onClick={closeModal} ref={modalRef}>
                     <animated.div style={animation}>
                         <div className="w-[340px] h-[400px] sm:w-[460px] sm:h-[400px] md:w-[588px] md:h-[400px] shadow-md bg-white text-primary grid z-50 rounded-xl relative">
                             {children}

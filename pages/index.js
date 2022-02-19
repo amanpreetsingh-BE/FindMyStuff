@@ -23,7 +23,6 @@ import {useTranslation} from 'next-i18next';
 
 
 export async function getServerSideProps({locale}) {
-
   // Get products (stocks, models, colors, etc.) ; If internal error -> null
   let productsJSON
 

@@ -31,13 +31,16 @@ export async function getServerSideProps({ req, params, locale }) {
 
     if(verifyJSON.verified){
         const activate = verifyJSON.activate
-
+        const email = verifyJSON.email
+        const relais = verifyJSON.relais
         return {
             props: {
                 ...(await serverSideTranslations(locale, ['scan'])),
                 locale,
                 id,
                 activate,
+                email,
+                relais,
                 hostname
             },
         }
@@ -48,7 +51,7 @@ export async function getServerSideProps({ req, params, locale }) {
     }
 }
 
-export default function ScanPage({id, activate, hostname, locale}) {
+export default function ScanPage({id, activate, email, relais, hostname, locale}) {
   /* Handle language */
   const {t} = useTranslation();
   
@@ -85,7 +88,6 @@ export default function ScanPage({id, activate, hostname, locale}) {
         id: id,
         email: email,
     }
-    console.log(data)
     
     const response = await (fetch(`${hostname}/api/qr/register`, {
         method: 'POST',
@@ -138,7 +140,7 @@ export default function ScanPage({id, activate, hostname, locale}) {
               sendEmailVerification(auth.currentUser)
               .then(() => {
                 handleRegister(id, auth.currentUser.email)
-                router.push('/scan/select/')
+                router.push(`/scan/select/?id=${id}&user=${auth.currentUser.email}`)
               });
             }).catch((error) => {
               console.error(error);
@@ -176,7 +178,7 @@ export default function ScanPage({id, activate, hostname, locale}) {
       signInWithEmailAndPassword(auth, formEmail.current.value, formPassword.current.value).then(
         (userCredential)=>{
             handleRegister(id, formEmail.current.value)
-            router.push('/scan/select/')
+            router.push(`/scan/select/?id=${id}&user=${formEmail.current.value}`)
         }
       ).catch(
         function(err){
@@ -259,6 +261,12 @@ export default function ScanPage({id, activate, hostname, locale}) {
             Activated
         </main>
       )
+  } else if (email && !activate) {
+    return(
+      <main>
+        Please select
+      </main>
+    )
   } else {
     return (
       <>
@@ -422,7 +430,7 @@ function SignInGoogleButton(id) {
         const userDoc = doc(firestore, "users", `${userCredential.user.uid}`);
         manageGoogleUserData(userDoc, userCredential)
         handleRegister(id, userCredential.user.email)
-        router.push('/scan/select/')
+        router.push(`/scan/select/?id=${id}&user=${userCredential.user.email}`)
         //router.push(`/dashboard/?user=${userCredential.user.email}`)
       }).catch((error) => {
         const errorMessage = error.message;
@@ -474,7 +482,7 @@ function SignInGoogleButton(id) {
         const userDoc = doc(firestore, "users", `${userCredential.user.uid}`);
         manageFacebookUserData(userDoc, userCredential)
         handleRegister(id, userCredential.user.email)
-        router.push('/scan/select/')
+        router.push(`/scan/select/?id=${id}&user=${userCredential.user.email}`)
       }).catch((error) => {
         const errorMessage = error.message;
         console.log(errorMessage)

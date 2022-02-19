@@ -11,7 +11,7 @@ export default async function handler(req, res) {
         const allQR = []
         const newQR = []
         try {
-            const qrCollection = await (await app.firestore().collection("QR").listDocuments()).forEach(doc => {
+            /*const qrCollection = await (await app.firestore().collection("QR").listDocuments()).forEach(doc => {
                 allQR.push(doc.id)
             })
             
@@ -24,7 +24,8 @@ export default async function handler(req, res) {
                     }
                 }
             }
-            addQRtoDB(newQR)
+            addQRtoDB(newQR)*/
+            generateNemesis()
             res.status(200).json({success:true, newQR: newQR})
         } catch (err) {
             console.log(err)
@@ -54,7 +55,9 @@ function addQRtoDB(arr) {
     arr.forEach(element => {
             app.firestore().collection("QR").doc(element).set({
                 email: "",
-                activate: false
+                activate: false,
+                relais: null,
+                jetons: 1,
             })
     });
 }
@@ -65,7 +68,9 @@ function generateNemesis() {
     N.forEach(element => {
             app.firestore().collection("QR").doc(element).set({
                 email: "",
-                activate: false
+                activate: false,
+                relais: null,
+                jetons: 1,
             })
     });
 }

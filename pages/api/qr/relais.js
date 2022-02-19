@@ -8,15 +8,15 @@ const app = !admin.apps.length ? admin.initializeApp({
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         const id = req.body.id
-        const email = req.body.email
+        const selection = req.body.selection
         try {
             const qrRef = app.firestore().collection("QR").doc(id)
 
             await qrRef.get().then((doc) => {
                 if (doc.exists) {
                     qrRef.update({
-                        activate: false,
-                        email: email,
+                        relais: selection,
+                        activate: true
                     })
                     res.status(200).json({success:true})
                 } else {

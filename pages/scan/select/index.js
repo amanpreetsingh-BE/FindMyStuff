@@ -1,10 +1,10 @@
 /* React imports */
-import {useState, useRef} from 'react'
+import {useState, useContext, useRef} from 'react'
 import axios from "axios"
-
+import { UserContext } from '@lib/context'
 /* Built-in Next.js imports */
 import Image from 'next/image'
-
+import {useRouter} from 'next/router'
 /* Hero icons */
 import {LocationMarkerIcon} from '@heroicons/react/outline'
 
@@ -19,22 +19,71 @@ import zipJSON from '@root/public/misc/zipcode-belgium.json'
 
 
 /* Handle language */
-export async function getServerSideProps({ req, params, locale }) {
+export async function getServerSideProps({ query, req, res, locale }) {
     const hostname = process.env.HOSTNAME
+    const id = query.id
+    const email = query.user
+    const firebaseToken = req.cookies.firebaseToken
 
-    return {
-        props: {
-            ...(await serverSideTranslations(locale, ['scan'])),
-            locale,
-            hostname
-        },
+    // is connected and email in query
+    if(firebaseToken && email){
+        const credential = await (fetch(`${hostname}/api/credential/?userEmail=${email}&token=${firebaseToken}`))
+        const credentialJSON = (await credential.json())
+        const invalid = credentialJSON.type == "invalid" ? true : false
+        // is connected and email and query by the good user
+        if(invalid){
+            return {
+                notFound: true
+            }
+        } else{
+            const verify = await (fetch(`${hostname}/api/qr/${id}`))
+            const verifyJSON = (await verify.json())
+            const activate = verifyJSON.activate
+            const emailQR = verifyJSON.email
+
+            // the id of qr is valid
+            if(verifyJSON.verified){
+                // pas encore select mais register ou select et register
+                if((!activate && emailQR==email) || (activate && emailQR==email)){
+                    return {
+                        props: {
+                            ...(await serverSideTranslations(locale, ['scan'])),
+                            locale,
+                            id,
+                            activate,
+                            hostname
+                        },
+                    }
+                } else if(!activate && emailQR==""){
+                        res.setHeader("Location", `${hostname}/${locale}/scan/${id}`);
+                        res.statusCode = 302;
+                        res.end();
+                        return {props: {}}
+                } else {
+                    return {
+                        notFound: true
+                    }
+                }
+            } else {
+                return {
+                    notFound: true
+                }
+            }
+        }
+    } else {
+        return {
+            notFound: true
+        }
     }
 }
 
-export default function SelectPage({ hostname, locale }) {
+export default function SelectPage({ id, hostname, locale }) {
 
   const en_flag = require('@images/icons/gb.svg')
   const fr_flag = require('@images/icons/fr.svg')
+  /* Used to push to dashboard */
+  const router = useRouter()
+  const { user, email } = useContext(UserContext)
 
   const cp = useRef()
   const [center, setCenter] = useState([50.850340, 4.351710])
@@ -146,6 +195,33 @@ export default function SelectPage({ hostname, locale }) {
   const handleRegister = async (e) => {
       e.preventDefault()
 
+      if(selection == ""){
+        return toast.error("Merci de selectionner un point relais !")
+      } else {
+            try{
+                const data = {
+                    id: id,
+                    selection: selection
+                }
+                const response = await (fetch(`${hostname}/api/qr/relais/`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }));
+                const responseJSON = await (response.json())
+                if(responseJSON.success){
+                    toast.success("Enregistrement fini !")
+                    router.push(`/dashboard/?user=${email}`)
+                } else{
+                    toast.success("Erreur lors de l'enregistrement !")
+                }
+            } catch(err){
+                return toast.error(err.message)
+            }
+      }
   }
 
   return (
@@ -175,7 +251,7 @@ export default function SelectPage({ hostname, locale }) {
                         </>
                     )}
                 </Map> : ''}
-                {selection ? 
+                {selected ? 
                     <div className='flex justify-center items-center'>
                         <button className='max-w-xl py-4 mt-12 px-4 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg' onClick={handleRegister}>Enregister</button>
                     </div>
