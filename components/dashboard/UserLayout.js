@@ -19,7 +19,7 @@ const variants = {
     closed: { opacity: 0, x: "-100%" },
 }
 
-function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, lastName, email, uid, user, hostname, t, userProductsJSON }) {
+function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, lastName, email, uid, user, hostname, t, userProductsJSON, userNotificationsJSON }) {
 
     /* States for managing open and close of menu */
     const [isMenu, setIsMenu] = useState(true)
@@ -78,7 +78,7 @@ function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, las
                 {triggerComponent ? 
                     <div> 
                         {renderOption == "prod" ? <Products useState={useState} useRef={useRef} Modal={Modal} t={t} toast={toast} Image={Image} email={email} userProductsJSON={userProductsJSON} /> : 
-                         renderOption == "notif" ? <Notifications useState={useState} useRef={useRef} Modal={Modal} t={t} toast={toast} /> : 
+                         renderOption == "notif" ? <Notifications useState={useState} useRef={useRef} Modal={Modal} t={t} toast={toast} userNotificationsJSON={userNotificationsJSON} hostname={hostname} motion={motion} email={email} /> : 
                          renderOption == "param" ? <Parameters useState={useState} email={email} firstName={firstName} lastName={lastName} uid={uid} user={user} hostname={hostname} useRef={useRef} Modal={Modal} t={t} toast={toast} /> : 
                          "oops .. Something went wrong"}
                     </div>

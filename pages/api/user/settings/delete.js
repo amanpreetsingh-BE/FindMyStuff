@@ -27,11 +27,15 @@ export default async function handler(req, res) {
                                 jetons: 1
                             })
                         })
+                        app.firestore().collection('notifications').where('email', '==', email).get().then((querySnapshot)=>{
+                            querySnapshot.forEach((doc) => {
+                                doc.ref.delete()
+                            })
+                            res.status(200).json({success:true})
+                        })
                     })
-                    res.status(200).json({success:true})
                 })
             })
-            
         } catch(err){
             res.status(err.statusCode || 500).json(err.message);
         }

@@ -18,6 +18,8 @@ import FooterSection from '@components/index/FooterSection'
 import toast from 'react-hot-toast'
 import {motion} from 'framer-motion';
 
+//import { auth } from '@lib/firebase'
+
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 import {useTranslation} from 'next-i18next';
 
@@ -45,7 +47,7 @@ export async function getServerSideProps({locale}) {
 }
 
 export default function Home({locale, productsJSON, hostname}) {
-
+  //auth.signOut()
   /* Handle language */
   const {t} = useTranslation()
 

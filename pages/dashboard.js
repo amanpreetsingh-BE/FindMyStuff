@@ -70,6 +70,10 @@ export async function getServerSideProps({ req, locale, query }) {
     const userProducts = await (fetch(`${process.env.HOSTNAME}/api/user/products?user=${userEmail}`))
     const userProductsJSON = await userProducts.json()
 
+    // Get user notifications
+    const userNotifications = await (fetch(`${process.env.HOSTNAME}/api/user/notifications?user=${userEmail}`))
+    const userNotificationsJSON = await userNotifications.json()
+
     const hostname = process.env.HOSTNAME
 
     return {
@@ -82,6 +86,7 @@ export async function getServerSideProps({ req, locale, query }) {
             statsJSON,
             couponsJSON,
             userProductsJSON,
+            userNotificationsJSON,
             admin,
             hostname
         }
@@ -141,7 +146,7 @@ export default function Dashboard(props) {
     } else if (loaded && !props.admin){
         console.log("user logged in")
         return (
-            <UserLayout useState={useState} toast={toast} Link={Link} Image={Image} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} uid={user ? user.uid:null} user={user} hostname={props.hostname} t={t} userProductsJSON={props.userProductsJSON} />
+            <UserLayout useState={useState} toast={toast} Link={Link} Image={Image} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} uid={user ? user.uid:null} user={user} hostname={props.hostname} t={t} userProductsJSON={props.userProductsJSON} userNotificationsJSON={props.userNotificationsJSON} />
         )
     } else if (loaded && props.admin){
         console.log("admin logged in")

@@ -43,7 +43,7 @@ export default function Parameters({ useState, useRef, Modal, t, hostname, toast
         uid: uid,
         email: email
       }
-      const response = await (fetch(`${hostname}/api/user/delete`, {
+      const response = await (fetch(`${hostname}/api/user/settings/delete`, {
           method: 'POST',
           headers: {
               'Accept': 'application/json',
@@ -82,7 +82,7 @@ export default function Parameters({ useState, useRef, Modal, t, hostname, toast
           firstName: formFirstname.current.value == "" ? firstName : formFirstname.current.value,
           lastName: formLastname.current.value == "" ? lastName : formLastname.current.value,
         }
-        const response = await (fetch(`${hostname}/api/user/updateInfo`, {
+        const response = await (fetch(`${hostname}/api/user/settings/updateInfo`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
