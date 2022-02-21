@@ -13,6 +13,14 @@ import {ArrowCircleLeftIcon} from '@heroicons/react/outline'
 /* Import motion for animation */
 import {motion} from 'framer-motion'
 
+/* Swiper imports */
+import {Swiper, SwiperSlide} from 'swiper/react';
+import SwiperCore , {Pagination} from 'swiper/core';
+import 'swiper/swiper.min.css';
+import 'swiper/components/pagination/pagination.min.css';
+import 'swiper/components/navigation/navigation.min.css';
+SwiperCore.use([Pagination]);
+
 /* variants states for animation menu open or closed, make it as global */
 const variants = {
     open: { opacity: 1, x: 0 },
@@ -20,6 +28,12 @@ const variants = {
 }
 
 function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, lastName, email, uid, user, hostname, t, userProductsJSON, userNotificationsJSON }) {
+
+
+    const [showModal, setShowModal] = useState(true)
+    function openModal(){
+        setShowModal(prev => !prev);
+    }
 
     /* States for managing open and close of menu */
     const [isMenu, setIsMenu] = useState(true)
@@ -102,6 +116,63 @@ function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, las
                     </motion.div>
 
                 </motion.div>
+
+                {user ? (user.metadata.createdAt != user.metadata.lastLoginAt) ? 
+                <div className='absolute'>
+                    <Modal showModal={showModal} setShowModal={setShowModal}>
+                        <Swiper slidesPerView={1} pagination={{bulletClass: 'swiper-pagination-bullet', clickable: 'true'}} className='h-full w-full font-nxt '>
+                            <SwiperSlide>
+                                <div className='flex h-full justify-center items-center flex-col'>
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>Bienvenue sur le dashboard</h1>
+                                    <div className="mx-12 text-center">
+                                        <p className='mb-2 mt-1 text-gray-800'>Le dashboard permet de gérer ton compte</p>
+                                        <ul className='list-disc border-2 rounded-lg px-8 py-2 text-left text-gray-800'>
+                                            <li>Modifier l'addresse de livraison ou recharger tes produits</li>
+                                            <li>Voir les notifications</li>
+                                            <li>Changer ton mot de passe ou même supprimer ton compte</li>
+                                        </ul>     
+                                    </div>
+                                </div>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <div className='flex h-full justify-center items-center flex-col'>
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>Comment cela fonctionne ?</h1>
+                                    <div className="mx-12 text-center">
+                                        <p className='mb-2 mt-1 text-gray-800'>Etape 1</p>
+                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>J'achète un porte-clef ou sticker sur le site auquel je le rattache à un objet que je souhaite ne pas perdre. Il faut ensuite enregistrer le produit en le scannant avec un smartphone.</p>
+                                    </div>
+                                </div>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <div className='flex h-full justify-center items-center flex-col'>
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>Comment cela fonctionne ?</h1>
+                                    <div className="mx-12 text-center">
+                                        <p className='mb-2 mt-1 text-gray-800'>Etape 2</p>
+                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>Si je perds mon objet et qu'une personne scan le code QR auquel est rattaché mon object perdu, il sera renvoyé vers le site.</p>
+                                    </div>
+                                </div>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <div className='flex h-full justify-center items-center flex-col'>
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>Comment cela fonctionne ?</h1>
+                                    <div className="mx-12 text-center">
+                                        <p className='mb-2 mt-1 text-gray-800'>Etape 3</p>
+                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>Une liste de points relais sont indiqués à la personne souhaitant le remettre. Cette objet sera ensuite envoyé directement dans votre point relais défini lors de l'enregistrement. La première livraison est offerte.</p>
+                                    </div>
+                                </div>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <div className='flex h-full justify-center items-center flex-col'>
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>Bienvenue Stuffer !</h1>
+                                    <div className="mx-12 text-center">
+                                        <p className='mb-2 mt-1 text-gray-800'>Le concept est génial, non ?</p>
+                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>Si toi aussi tu trouves ca cool, n'hésite pas à acheter ou enregistrer ton premier stuff !</p>
+                                    </div>
+                                </div>
+                            </SwiperSlide>
+                        </Swiper>
+                    </Modal>
+                </div> : "" : ""}
             </section>
 
             {!triggerComponent ? "":<div onClick={()=>openMenu()} className='absolute cursor-pointer top-0 right-12 mt-28 flex justify-center items-center'>

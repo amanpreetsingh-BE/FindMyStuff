@@ -128,7 +128,6 @@ export default function Dashboard(props) {
     }, [loading])
 
     if(loaded && !emailVerified) {
-        console.log("VERIFY")
         return (
             <main>
                 <NavReduced darkLogo={true} />
@@ -144,17 +143,14 @@ export default function Dashboard(props) {
             </main>
         )
     } else if (loaded && !props.admin){
-        console.log("user logged in")
         return (
             <UserLayout useState={useState} toast={toast} Link={Link} Image={Image} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} uid={user ? user.uid:null} user={user} hostname={props.hostname} t={t} userProductsJSON={props.userProductsJSON} userNotificationsJSON={props.userNotificationsJSON} />
         )
     } else if (loaded && props.admin){
-        console.log("admin logged in")
         return (
             <AdminLayout useState={useState} Image={Image} Link={Link} toast={toast} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} t={t} hostname={props.hostname} productsJSON={props.productsJSON} ordersJSON={props.ordersJSON} messagesJSON={props.messagesJSON} statsJSON={props.statsJSON} couponsJSON={props.couponsJSON}/>
         )
     } else {
-        console.log("loading")
         return ''
     }
 }

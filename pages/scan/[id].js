@@ -32,36 +32,32 @@ export async function getServerSideProps({ req, params, locale }) {
     if(verifyJSON.verified){
         const activate = verifyJSON.activate
         const email = verifyJSON.email
+        const jetons = verifyJSON.jetons
         const data = {
           id: id,
           email: email
-      }
-      if(activate){
-        const response = await (fetch(`${hostname}/api/qr/notifications/notify`, {
-          method: 'POST',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data) 
-        }));
-        const responseJSON = await (response.json())
-        if(responseJSON.success){
-          console.log("true")
-        } else {
-          console.log("false")
         }
-      }
-      return {
-          props: {
-              ...(await serverSideTranslations(locale, ['scan'])),
-              locale,
-              id,
-              activate,
-              email,
-              hostname
-          },
-      }
+        if(activate){
+          await (fetch(`${hostname}/api/qr/notifications/notify`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data) 
+          }));
+        }
+        return {
+            props: {
+                ...(await serverSideTranslations(locale, ['scan'])),
+                locale,
+                id,
+                activate,
+                email,
+                jetons,
+                hostname
+            },
+        }
     } else {
         return {
             notFound: true
@@ -69,10 +65,9 @@ export async function getServerSideProps({ req, params, locale }) {
     }
 }
 
-export default function ScanPage({id, activate, email, hostname, locale}) {
+export default function ScanPage({id, activate, email, hostname, locale, jetons}) {
   /* Handle language */
   const {t} = useTranslation();
-  
   /* Import images */
   const icon = require('@images/icons/icon_white.svg');
   const en_flag = require('@images/icons/gb.svg')
@@ -273,7 +268,19 @@ export default function ScanPage({id, activate, email, hostname, locale}) {
     )
   }
 
-  if(activate){
+  if (jetons < 1) {
+    return(
+      <main className="w-full py-12 flex flex-col  justify-start items-center text-white bg-primary min-h-screen">
+        {LanguageBox(id, locale, fr_flag, en_flag)}
+        <div className='absolute flex items-center top-0 h-screen'>
+          <div className='border-gray-500 border-2 py-12 px-12 text-xl max-w-sm text-center rounded-lg'>
+            Si vous êtes le propriétaire de ce QR, merci de bien vouloir recharger votre jeton afin qu'on puisse le remettre dans votre point relais de votre choix.
+          </div>
+        </div>
+
+      </main>
+    )
+  } else if(activate){
     return(
       <main className="w-full py-12 flex flex-col  justify-start items-center text-white bg-primary min-h-screen">
         {LanguageBox(id, locale, fr_flag, en_flag)}
