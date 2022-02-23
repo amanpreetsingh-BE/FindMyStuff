@@ -51,7 +51,7 @@ export default async function handler(req, res) {
             await notifRef.get().then(async (doc) => {
                 if (doc.exists) {
                     var s = doc.data().scan
-                    s.push({timestamp:admin.firestore.Timestamp.now().seconds, visible: true})
+                    s.push({timestamp:admin.firestore.Timestamp.now().seconds})
                     notifRef.update({
                         scan: s
                     })
@@ -67,7 +67,8 @@ export default async function handler(req, res) {
                         id: id,
                         email: email,
                         scan: s,
-                        delivery: []
+                        delivery: [],
+                        needToGenerate: false,
                     })
                     await transporter.sendMail(mail)
                     res.status(200).json({success:false})

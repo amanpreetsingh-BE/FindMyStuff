@@ -27,7 +27,7 @@ const variants = {
     closed: { opacity: 0, x: "-100%" },
 }
 
-function AdminLayout({useState, Link, Image, toast, SignOutButton, firstName, lastName, address, email, t, hostname, productsJSON, ordersJSON, messagesJSON, statsJSON, couponsJSON }) {
+function AdminLayout({useState, Link, Image, toast, SignOutButton, firstName, lastName, address, email, t, hostname, productsJSON, ordersJSON, messagesJSON, statsJSON, couponsJSON, qrToGenerateJSON, findersJSON }) {
     /* States for managing open and close of menu */
     const [isMenu, setIsMenu] = useState(true)
     const [triggerComponent, setTriggerComponent] = useState(false)
@@ -133,7 +133,7 @@ function AdminLayout({useState, Link, Image, toast, SignOutButton, firstName, la
                          renderOption == "promo" ? <Promo useState={useState} useRef={useRef} Modal={Modal} hostname={hostname} toast={toast} couponsJSON={couponsJSON} /> : 
                          renderOption == "newsletter" ? <Newsletter useState={useState} useRef={useRef} hostname={hostname} toast={toast} /> : 
                          renderOption == "newAdmin" ? <NewAdmin useRef={useRef} hostname={hostname} toast={toast}  /> : 
-                         renderOption == "manageQR" ? <ManageQR useState={useState} useRef={useRef} hostname={hostname} toast={toast}  /> : 
+                         renderOption == "manageQR" ? <ManageQR useState={useState} useRef={useRef} hostname={hostname} toast={toast} Modal={Modal} qrToGenerateJSON={qrToGenerateJSON} findersJSON={findersJSON} /> : 
                          renderOption == "statsUsers" ? <StatsUsers /> : 
                          renderOption == "statsOrders" ? <StatsOrders /> : 
                          "oops .. Something went wrong"}

@@ -66,6 +66,14 @@ export async function getServerSideProps({ req, locale, query }) {
     const coupons = admin ? (await (fetch(`${process.env.HOSTNAME}/api/promo`))) : null
     const couponsJSON = admin ? (await coupons.json()) : null
 
+    // Get QR to generate
+    const qrToGenerate = admin ? (await (fetch(`${process.env.HOSTNAME}/api/qr/qrToGenerate`))) : null
+    const qrToGenerateJSON = admin ? (await qrToGenerate.json()) : null
+
+    // Get potential finders to reward
+    const finders = admin ? (await (fetch(`${process.env.HOSTNAME}/api/qr/getFinders`))) : null
+    const findersJSON = admin ? (await finders.json()) : null
+
     // Get user products
     const userProducts = await (fetch(`${process.env.HOSTNAME}/api/user/products?user=${userEmail}`))
     const userProductsJSON = await userProducts.json()
@@ -87,6 +95,8 @@ export async function getServerSideProps({ req, locale, query }) {
             couponsJSON,
             userProductsJSON,
             userNotificationsJSON,
+            qrToGenerateJSON,
+            findersJSON,
             admin,
             hostname
         }
@@ -148,7 +158,7 @@ export default function Dashboard(props) {
         )
     } else if (loaded && props.admin){
         return (
-            <AdminLayout useState={useState} Image={Image} Link={Link} toast={toast} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} t={t} hostname={props.hostname} productsJSON={props.productsJSON} ordersJSON={props.ordersJSON} messagesJSON={props.messagesJSON} statsJSON={props.statsJSON} couponsJSON={props.couponsJSON}/>
+            <AdminLayout useState={useState} Image={Image} Link={Link} toast={toast} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} t={t} hostname={props.hostname} productsJSON={props.productsJSON} ordersJSON={props.ordersJSON} messagesJSON={props.messagesJSON} statsJSON={props.statsJSON} couponsJSON={props.couponsJSON} qrToGenerateJSON={props.qrToGenerateJSON} findersJSON={props.findersJSON}/>
         )
     } else {
         return ''

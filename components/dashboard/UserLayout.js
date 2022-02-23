@@ -117,7 +117,7 @@ function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, las
 
                 </motion.div>
 
-                {user ? (user.metadata.createdAt != user.metadata.lastLoginAt) ? 
+                {user ? (user.metadata.createdAt == user.metadata.lastLoginAt) ? 
                 <div className='absolute'>
                     <Modal showModal={showModal} setShowModal={setShowModal}>
                         <Swiper slidesPerView={1} pagination={{bulletClass: 'swiper-pagination-bullet', clickable: 'true'}} className='h-full w-full font-nxt '>

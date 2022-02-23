@@ -58,6 +58,8 @@ function addQRtoDB(arr) {
                 activate: false,
                 relais: null,
                 jetons: 1,
+                timestamp: null,
+                pdf: null,
             })
     });
 }
@@ -71,6 +73,8 @@ function generateNemesis() {
                 activate: false,
                 relais: null,
                 jetons: 1,
+                timestamp: null,
+                pdf: null,
             })
     });
 }

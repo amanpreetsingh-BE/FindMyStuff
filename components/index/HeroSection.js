@@ -2,7 +2,6 @@
 import {ChevronDownIcon} from '@heroicons/react/outline'
 
 function HeroSection({ useState, useEffect, Image, motion, t }) {
-
       /* Handle Animation Opacity */
     const [showArrowDown, setShowArrowDown] = useState(true)
     const opacity = showArrowDown ? " opacity-100 " : " opacity-0 "

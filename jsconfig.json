@@ -6,6 +6,7 @@
         "@styles/*": ["styles/*"],
         "@lib/*": ["lib/*"],
         "@images/*": ["public/images/*"],
+        "@videos/*": ["public/videos/*"],
         "@root/*": ["./*"],
       }
     }

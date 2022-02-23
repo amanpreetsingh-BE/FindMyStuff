@@ -47,7 +47,6 @@ export async function getServerSideProps({locale}) {
 }
 
 export default function Home({locale, productsJSON, hostname}) {
-  //auth.signOut()
   /* Handle language */
   const {t} = useTranslation()
 
