@@ -5,121 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
-
-    <style>
-        h3 { 
-            color: #20b075;
-            font-weight: 700;
-        }
-        .conf{
-            height: 50px;
-            width: 100%;
-            margin: auto;
-            font-weight: 700;
-            text-align: center;
-        }
-        .top{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color:#333;
-            font-weight: bold;
-            height:1000px;
-            width: 100%;
-        }
-        .logo{
-            text-align: center;
-
-        }
-        .bottom{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color:#333;
-            font-weight: bold;
-        }
-        .hr{
-            color:black;
-            width: 80%;
-        }
-        .shipping{
-            background-color: #f4f4f4;
-            height: 280px;
-            width: 20%;
-            margin: auto;
-            min-width: 300px;
-            max-width: 600px;
-            color: white;
-            border-radius: 10px;
-            color:#151515;
-        }
-        .order{
-            background-color: #f4f4f4;
-            margin: auto;
-            height: 200px;
-            width: 20%;
-            min-width: 300px;
-            max-width: 600px;
-            color: white;
-            border-radius: 10px;
-            color:#151515;
-        }
-        .ship1{
-            display: flex;
-            flex-direction: rows;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 10px;
-        }
-        .bottomText{
-            text-align: center;
-            font-weight: bold;
-            margin-top: 40px;
-        }
-        .topText{
-            font-size: 1rem;
-            max-width: 600px;
-        }
-
-    </style>
 </head>
 <body>
-
-        <h2>Hi, {{firstname}}</h2>
-        <div class="conf"><h3>✔ Your order {{orderNumber}} is confirmed !</h3></div>
-        <p class="topText"> Thanks for ordering with us, we will notify you by email when it will be shipped. 
-                You can find below the summary of your order and a receipt in attachments of this email
+    <div style="background-color: #171C26; color: #fff; padding: 12px 32px;">
+        <h3 style="color:white;">Hi, {{firstname}}</h3>
+        <div style="height: 50px; width: 100%; margin: auto; font-weight: 700; text-align: center;">
+            <h3 style="color:#20C17F; padding-top: 30px">✔ Your order {{orderNumber}} is confirmed !</h3>
+        </div>
+        <p style="color:white; margin: 20px 0px;"> 
+            Thanks for ordering with us, we will notify you by email when it will be shipped. 
+            You can find below the summary of your order and a receipt in attachments of this email
         </p>
-        
-
-        <div class="shipping">
-            <div class="ship1">
-                <img style="padding: 10px" src="./order.png" width = "28px" height="28px" alt="ship_logo" /> <h4>Shipping information</h4>
+        <div style="background-color: #1B212E; margin: 10px auto; padding: 10px 20px; border-radius: 10px; color: #fff;">
+            <div style="display: flex; flex-direction: rows; justify-content: flex-start; align-items: center; padding: 10px;">
+                <img src="https://firebasestorage.googleapis.com/v0/b/findmystuff-35626.appspot.com/o/mailer%2Fassets%2Ftruck.svg?alt=media&token=1545f173-2882-48ec-9353-e32ba316b29b" width="32px" height="32px" alt="order_logo">
+                <h4 style="color: white; padding-left:10px;">Shipping informations</h4>
             </div>
-            <div class="ship2">
-                <h5 style="padding-left: 20px">Recipient: {{firstname}} {{lastname}} </h5>
-                <h5 style="padding-left: 20px">Street: {{street}} </h5>
-                <h5 style="padding-left: 20px">Zip: {{zip}}</h5>
-                <h5 style="padding-left: 20px">Country: {{country}}</h5>
-            </div>
-        </div>
-
-        <br/>
-
-        <div class="order">
-            <div class="ship1">
-                <img style="padding: 10px" src="./truck.png" width = "28px" height="28px" alt="ship_logo" /> <h4>Order information</h4>
-            </div>
-            <div class="ship2">
-                <h5 style="padding-left: 20px">Model ordered: {{model}}</h5>
-                <h5 style="padding-left: 20px">Color: {{model_description}} </h5>
+            <div style="padding: 10px;">
+                <div style="color: white;">Recipient: {{firstname}} {{lastname}} </div>
+                <div style="color: white;">Street: {{street}} </div>
+                <div style="color: white;">Zip: {{zip}}</div>
+                <div style="color: white;">Country: {{country}}</div>
             </div>
         </div>
 
-        <p class="bottomText"> If you have any questions, please contact our support at team@findmystuff.io </p>
-        <hr class="hr"/>
-        <p style="text-align:center;"><img class="logo" src="./logo_white.svg" width="250px" alt="logo"/></p>
+        <div style="background-color: #1B212E; margin: 10px auto; padding: 10px 20px; border-radius: 10px; color: #fff;">
+            <div style="display: flex; flex-direction: rows; justify-content: flex-start; align-items: center; padding: 10px;">
+                <img src="https://firebasestorage.googleapis.com/v0/b/findmystuff-35626.appspot.com/o/mailer%2Fassets%2Forder.svg?alt=media&token=aae2b672-6f9f-4ce3-b868-899a60147983" width="32px" height="32px" alt="ship_logo">
+                <h4 style="color: white; padding-left:10px;">Order informations</h4>
+            </div>
+            <div style="padding: 10px;">
+                <div style="color: white;">Model ordered: {{model}}</div>
+                <div style="color: white;">Color: {{model_description}} </div>
+            </div>
+        </div>
+
+        <p style="color:white; margin: 20px 0px;">
+            If you have any questions, please contact our support at team@findmystuff.io 
+        </p>
+        <div style="display: flex; width: 100%; justify-content: center; align-items: center; text-align: center;">
+            <a href="https://www.findmystuff.io/" target="_BLANK"><img src="https://firebasestorage.googleapis.com/v0/b/findmystuff-35626.appspot.com/o/logo%2Flogo_white.svg?alt=media&token=738068e0-e37d-44d7-885b-8b2c1f14a560"  width="200px" height="100px" alt="logo"></a>
+        </div>
+            
+    </div>
 </body>
 </html>

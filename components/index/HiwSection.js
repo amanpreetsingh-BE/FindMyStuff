@@ -1,14 +1,9 @@
-/* Built-in Next.js imports */
-import Script from 'next/script'
-
-/* Various animations FRAMER-MOTION and animateScroll and AOS */
+/* Animations */
 import {animateScroll as scroll} from 'react-scroll'
 import {useViewportScroll, useTransform, useSpring} from 'framer-motion';
 import {useInView} from 'react-intersection-observer';
-import Aos from 'aos'
-import 'aos/dist/aos.css'
 
-function HiwSection({ Image, useState, useEffect, motion, t }) {
+function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
 
     /* Handle framer animations */
     const {scrollY} = useViewportScroll();
@@ -71,16 +66,11 @@ function HiwSection({ Image, useState, useEffect, motion, t }) {
         }
     }, [])
 
-    /* Handle Animate On Scroll AOS duration init */
-    useEffect(() =>{
-        Aos.init({duration: 1000});
-    }, []);
-
     return(
-        <section id="howitworks" className="relative bg-primary w-full h-[1800px] ">
+        <section id="howitworks" className="relative bg-primary  w-full h-[1800px] ">
             <motion.div style={{ y: dY }} transition={{ ease: 'easeIn' }} className="flex flex-col items-center justify-start sticky top-36 sm:top-44 w-full h-[520px] min-h-[520px] mb-64">
-                <div data-aos="fade-up" className="mt-10 text-white mb-16 font-bold text-2xl sm:text-3xl md:text-4xl">{t('home:hiw:title')}</div>
-                <div className="flex flex-row items-center justify-center w-full h-2/3 sm:h-full ">
+                <div className="mt-10 text-gray-300 mb-16 font-bold text-2xl sm:text-3xl md:text-4xl">{t('home:hiw:title')}</div>
+                <div className="flex flex-row  items-center justify-center w-full h-2/3 sm:h-full ">
 
                 <div className="text-white hidden sm:relative sm:flex sm:items-center sm:justify-center h-full w-2/5 sm:w-2/6 sm:max-w-sm mt-5">
                     <div className="relative flex flex-col justify-center items-center h-full w-full">
@@ -109,7 +99,7 @@ function HiwSection({ Image, useState, useEffect, motion, t }) {
                     ref={ref}
                     >
                         <div className="relative w-40 h-40 min-h-[10rem] sm:w-48 sm:h-48 sm:min-h-[12rem] md:w-60 md:h-60 md:min-h-[15rem] lg:w-80 lg:h-80 lg:min-h-[20rem] ">
-                            <Image src={illustration} loading='eager' layout="fill" alt="illustration"/>
+                            <Image src={illustration} priority={true} layout="fill" alt="illustration"/>
                         </div>
                     </motion.div>
                 </div>

@@ -1,4 +1,9 @@
 {
+    "seo": {
+        "title": "FindMyStuff | Bringing back lost objects",
+        "description": "Plateforme permettant de retrouver les objets perdus à l'aide de QR codes",
+        "keywords": "perdu, objet, téléphone, smartphone, gsm, track, trouver, qr, code, chercher, mon, truc, oublié, clefs, portefeuille, sac, trouvé"
+    },
     "heading": "Bringing back lost objects.",
     "description": "Un code QR est connecté à votre compte. Avez-vous perdu votre objet ? Une liste de points relais sera montré à celui qui retrouve l'objet en scannant le code QR. L'objet est ensuite envoyé à votre adresse.",
     "nav": {
@@ -32,6 +37,15 @@
             "checkout": "Acheter",
             "stock": "En stock",
             "outStock": "Hors stock"
+        },
+        "stickersCat":{
+            "h1": "Stickers"
+        },
+        "trackerCat":{
+            "h1": "Stickers"
+        },
+        "otherCat":{
+            "h1": "Stickers"
         }
     },
     "contact":{

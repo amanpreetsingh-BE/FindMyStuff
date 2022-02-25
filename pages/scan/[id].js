@@ -266,7 +266,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
   }
 
   const handleGenerateQR = async (e) => {
-    alert("click")
+    e.preventDefault()
     if(!checked && (fullName.current.value == "" || iban.current.value == "")){
       return toast.error("Merci de rentrer votre IBAN et votre nom complet")
     } else {
@@ -484,7 +484,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
                     </div>
                   }
               </div>
-              <button onClick={()=>handleGenerateQR()} className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-emerald-500 hover:border-emerald-600 rounded-lg cursor-pointer">GENERER</button>
+              <button onClick={handleGenerateQR} className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-emerald-500 hover:border-emerald-600 rounded-lg cursor-pointer">GENERER</button>
               <div className='flex justify-end'><ArrowCircleLeftIcon onClick={()=>setStep(0)} className='text-white cursor-pointer w-6 h-6'/></div>
 
           </div> : step == 2 ? 

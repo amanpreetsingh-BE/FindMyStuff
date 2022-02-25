@@ -1,5 +1,8 @@
 export default async function handler(req, res) {
     if (req.method === 'POST') {
+      if(req.body.authorization != process.env.NEXT_PUBLIC_API_KEY){
+        return res.status(404).json({success : false, authorized: false})
+      }
       try {
         var hbs = require('nodemailer-express-handlebars');
         var nodemailer = require('nodemailer')
@@ -38,9 +41,9 @@ export default async function handler(req, res) {
          }
 
         await transporter.sendMail(mail)
-        res.json({ received: true });
+        res.status(200).json({success: true, authorized: true})
       } catch (err) {
-        res.status(err.statusCode || 500).json({error:err.message});
+        res.status(err.statusCode || 500).json({error:err.message})
       }
     } else {
       res.setHeader('Allow', 'POST');

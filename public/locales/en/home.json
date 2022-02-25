@@ -1,4 +1,9 @@
-{
+{   
+    "seo": {
+        "title": "FindMyStuff | Bringing back lost objects",
+        "description": "Find lost object through innovative use of QR code",
+        "keywords": "lost, object, phone, smartphone, gsm, track, find, qr, code, find, my, stuff, forget, keys, wallet, bag, found"
+    },
     "heading": "Bringing back lost objects.",
     "description": "A unique QR code is linked to your account informations. Did you lose your object ? A list of checkpoints will be displayed to the finder willing to bring the object, by scanning the QR. The object is then shipped to your address. You can decide to reward the finder.",
     "nav": {
@@ -32,6 +37,15 @@
             "checkout": "Checkout",
             "stock": "In Stock",
             "outStock": "Out Of Stock"
+        },
+        "stickersCat":{
+            "h1": "Stickers"
+        },
+        "trackerCat":{
+            "h1": "Stickers"
+        },
+        "otherCat":{
+            "h1": "Stickers"
         }
     },
     "contact":{

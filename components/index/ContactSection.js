@@ -12,10 +12,12 @@ function ContactSection({t, hostname, useState, toast}) {
     const postMessage = async (e) => {
         e.preventDefault()
         setContacted(true)
+
         const data = {
             email: formEmail.current.value,
             fullname: formFullName.current.value,
             message: formMessage.current.value,
+            authorization: process.env.NEXT_PUBLIC_API_KEY
         }
         try {
         const response = await (fetch(`${hostname}/api/messages/post-message`, {
@@ -42,8 +44,7 @@ function ContactSection({t, hostname, useState, toast}) {
         formFullName.current.value = ""
         formMessage.current.value = ""
         
-    
-        if(responseJSON.received){
+        if(responseJSON.success && notifyJSON.success){
             return toast.success(t('home:contact:success'))
         } else {
             return toast.error(t('home:contact:error'))

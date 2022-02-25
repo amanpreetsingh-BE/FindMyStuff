@@ -1,16 +1,12 @@
-import React, { useContext } from 'react'
-import { UserContext } from '@lib/context'
+/* Icons */
 import {XIcon} from '@heroicons/react/outline'
+/* Smooth scroll */
 import {Link as LinkS} from 'react-scroll'
-import Link from 'next/link'
-import Image from 'next/image'
-import { useTranslation } from 'next-i18next'
 
-function MobileNav({ toggle,  isOpen }) {
+function MobileNav({useContext, UserContext, Image, Link, toggle, t, isOpen }) {
+
     const opacity = isOpen ? " opacity-0 " : " opacity-100 "
     const top = isOpen ? " top-full" : " -top-0 "
-
-    const { t } = useTranslation();
 
     const { user, email} = useContext(UserContext)
     const logo = require('@images/icons/logo_white.svg');
@@ -22,9 +18,9 @@ function MobileNav({ toggle,  isOpen }) {
             </div>
             <div className="flex flex-col space-y-36">
                 <Link passHref href="/" >
-                        <div onClick={toggle} className="flex h-full justify-center items-center">
-                            <Image className={"cursor-pointer"} src={logo} width={'300'} height={'55'} alt={'logo'}/>
-                        </div>
+                    <div onClick={toggle} className="flex h-full justify-center items-center">
+                        <Image className={"cursor-pointer"} src={logo} width={'200'} height={'40'} alt={'logo'}/>
+                    </div>
                 </Link>
 
                 <ul className="grid text-center grid-cols-1 grid-rows-3 gap-4">
@@ -34,8 +30,8 @@ function MobileNav({ toggle,  isOpen }) {
                             duration={500}
                             spy={true}
                             exact="true"
-                            offset={-80}
-                            className="flex items-center justify-center text-xl font-semibold cursor-pointer hover:text-secondary transition ease-in-out duration-300">
+                            offset={-96}
+                            className="flex items-center justify-center text-lg font-medium cursor-pointer transition ease-in-out duration-300">
                             {t('home:nav:how')}
                     </LinkS>
                     <LinkS  to='products'
@@ -44,8 +40,8 @@ function MobileNav({ toggle,  isOpen }) {
                             duration={500}
                             spy={true}
                             exact="true"
-                            offset={-80}
-                            className="flex items-center justify-center text-xl font-semibold cursor-pointer hover:text-secondary transition ease-in-out duration-300">
+                            offset={-96}
+                            className="flex items-center justify-center text-lg font-medium cursor-pointer transition ease-in-out duration-300">
                             {t('home:nav:prod')}
                     </LinkS>
                     <LinkS  to='contact'
@@ -54,8 +50,8 @@ function MobileNav({ toggle,  isOpen }) {
                             duration={500}
                             spy={true}
                             exact="true"
-                            offset={-80}
-                            className="flex items-center justify-center text-xl font-semibold cursor-pointer hover:text-secondary transition ease-in-out duration-300">
+                            offset={-96}
+                            className="flex items-center justify-center text-lg font-medium cursor-pointer transition ease-in-out duration-300">
                             {t('home:nav:contact')}
                     </LinkS>
                 </ul>

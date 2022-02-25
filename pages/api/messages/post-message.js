@@ -8,6 +8,9 @@ const app = !admin.apps.length ? admin.initializeApp({
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
+        if(req.body.authorization != process.env.NEXT_PUBLIC_API_KEY){
+            return res.status(404).json({success : false, authorized: false})
+        }
         try {
             var docRef = app.firestore().collection("messages").doc()
             docRef.set({
@@ -19,9 +22,9 @@ export default async function handler(req, res) {
                 id : docRef.id
             })
         } catch (err) {
-            res.status(400).json({ received: false });
+            res.status(err.statusCode || 500).json({error:err.message});
         }
-        res.json({ received: true });
+        res.status(200).json({ success: true, authorized: true });
     } else {
         res.setHeader('Allow', 'POST');
         res.status(405).end('Method Not Allowed');

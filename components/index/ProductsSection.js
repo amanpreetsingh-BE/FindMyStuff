@@ -1,8 +1,8 @@
-/* Icons imports */
+/* Icons */
 import {ArrowCircleLeftIcon} from '@heroicons/react/outline'
 import {CheckCircleIcon, TruckIcon} from '@heroicons/react/solid'
 
-/* Fetching imports and Stripe lib*/
+/* fetch and paymentflow */
 import axios from 'axios'
 import getStripe from '@lib/stripe'
 
@@ -47,7 +47,7 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
             <div key={keychain.priceID} className='h-full flex items-center justify-center w-full'>
               <motion.div whileHover={{ scale: 1.1 }}  whileTap={{ scale: 0.9 }}>
                 <div onClick={()=>next(keychain, keychain)} className="cursor-pointer bg-[#1B212E] relative px-12 py-12 mt-12 rounded-lg ">
-                    <Image src={keychain.imageURL} width={240} height={240} alt=""/>
+                    <Image priority={true} src={keychain.imageURL} width={240} height={240} alt=""/>
                 </div> 
               </motion.div>
             </div>
@@ -60,28 +60,27 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
       if(configurationStep==1){
         return (
           <section id="products" className='bg-[#171C26]'>
-            <div className='pt-10 text-gray-300 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>{t('home:prod:configurator:h1')}</div>
-              <div className='w-full mt-32 pb-52'>
+            <div className='text-gray-300 text-center pt-8 mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>{t('home:prod:configurator:h1')}</div>
+              <div className='w-full sm:pt-20 pb-60'>
                 {productsJSON ? <div className='grid place-items-center grid-cols-1 lg:grid-cols-2'>
                   {renderKeychains()} 
                 </div>:<div className='text-center text-sm'>Oops something is wrong .. Please try again by refreshing !</div>}
-             </div> 
+              </div> 
           </section>
         )
       } else {
         return (
           <section id="products" className='bg-[#171C26]' >
-            <div className='pt-10 text-gray-300 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>
+            <div className='text-gray-300 text-center pt-8 mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>
               <span>{t('home:prod:configurator:h3')}</span>
               <ArrowCircleLeftIcon onClick={()=>setConfigurationStep(configurationStep-1)} className="text-gray-300 cursor-pointer inline-block absolute right-12 w-8 h-8 sm:w-9 sm:h-9"/>
             </div>
-            
-  
-              <div className='w-full mt-32 pb-52'>
+        
+              <div className='w-full sm:pt-20 pb-60'>
                 <div className='h-full flex flex-col sm:flex-row items-center justify-center'>
                   
                   <div className="cursor-pointer relative w-52 h-52 sm:w-60 sm:h-60 md:w-72 md:h-72 mt-14 mb-12">
-                      <Image src={selectedModel[1].imageURL} layout="fill" alt="modelIllustration3"/>
+                      <Image priority={true} src={selectedModel[1].imageURL} layout="fill" alt="modelIllustration3"/>
                   </div>
   
                   <div>
@@ -130,30 +129,34 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
               const colors = product.colors
               colors.forEach(color => {
                   cards.push(
-                      <div key={color.priceID} className="flex flex-col text-primary justify-center items-center w-[350px] h-[350px] px-4 py-4 rounded-lg shadow-lg hover:shadow-xl ">
-                          <div className="text-lg font-bold ">{name} { } {color.color}</div>
-                          <div className="text-sm font-bold mb-8">{color.price}</div>
-                          <Image src={color.imageURL} width={144} height={144} alt=""/>
-                          <button onClick={(e)=>redirectToCheckout(e, "Sticker", product)} disabled = {color.quantity > 0 ? false:true} className='bg-secondary text-sm mt-4 hover:bg-secondaryHover text-white font-bold rounded-lg px-8 py-4'>{t('home:prod:configurator:checkout')}</button>
-                          {color.quantity > 0 ? 
-                            <div className="text-sm text-emerald-500 mt-1 font-bold">{color.status}</div> :
-                            <div className="text-sm text-red-500 mt-1 font-bold">{color.status}</div>
-                          }
+                    <motion.div key={color.priceID} whileHover={{ scale: 1.1 }}  whileTap={{ scale: 0.9 }}>
+                      <div className="flex flex-col text-white cursor-pointer bg-[#1B212E] justify-center items-center w-[350px] h-[350px] px-4 py-4 mt-12  rounded-lg shadow-lg hover:shadow-xl ">
+                            <div className="text-lg font-bold ">{name} { } {color.color}</div>
+                            <div className="text-sm font-bold mb-8">{color.price}</div>
+                            <Image priority={true} src={color.imageURL} width={144} height={144} alt=""/>
+                            <button onClick={(e)=>redirectToCheckout(e, "Sticker", product)} disabled = {color.quantity > 0 ? false:true} className='bg-secondary text-sm mt-4 hover:bg-secondaryHover text-white font-bold rounded-lg px-8 py-4'>{t('home:prod:configurator:checkout')}</button>
+                            {color.quantity > 0 ? 
+                              <div className="text-sm text-emerald-500 mt-1 font-bold">{color.status}</div> :
+                              <div className="text-sm text-red-500 mt-1 font-bold">{color.status}</div>
+                            }
                       </div>
+                    </motion.div>
                   )
               })
           } else {
               cards.push(
-                  <div key={product.data.priceID} className="flex flex-col text-primary justify-center items-center w-[350px] h-[350px] px-4 py-4 rounded-lg shadow-lg hover:shadow-xl ">
-                      <div className="text-lg  font-bold  ">{name}</div>
-                      <div className="text-sm  font-bold mb-8">{product.data.price} €</div>
-                      <Image src={product.data.imageURL} width={144} height={144}  alt=""/>
-                      <button onClick={(e)=>redirectToCheckout(e, "Sticker", product)} disabled = {product.data.quantity > 0 ? false:true} className='bg-secondary text-sm mt-4 hover:bg-secondaryHover text-white font-bold rounded-lg px-8 py-4'>{t('home:prod:configurator:checkout')}</button>
-                      {product.data.quantity > 0 ? 
-                        <div className="text-sm text-emerald-500 mt-1 font-bold">{product.data.status}</div> :
-                        <div className="text-sm text-red-500 mt-1 font-bold">{product.data.status}</div>
-                      }
-                  </div>
+                  <motion.div key={product.data.priceID} whileHover={{ scale: 1.1 }}  whileTap={{ scale: 0.9 }}>
+                    <div className="flex flex-col text-white cursor-pointer bg-[#1B212E] justify-center items-center w-[350px] h-[350px] px-4 py-4 mt-12 rounded-lg shadow-lg hover:shadow-xl ">
+                          <div className="text-lg font-bold  ">{name}</div>
+                          <div className="text-sm font-bold mb-8">{product.data.price} €</div>
+                          <Image priority={true} src={product.data.imageURL} width={144} height={144}  alt=""/>
+                          <button onClick={(e)=>redirectToCheckout(e, "Sticker", product)} disabled = {product.data.quantity > 0 ? false:true} className='bg-secondary text-sm mt-4 hover:bg-secondaryHover text-white font-bold rounded-lg px-8 py-4'>{t('home:prod:configurator:checkout')}</button>
+                          {product.data.quantity > 0 ? 
+                            <div className="text-sm text-emerald-500 mt-1 font-bold">{product.data.status}</div> :
+                            <div className="text-sm text-red-500 mt-1 font-bold">{product.data.status}</div>
+                          }
+                    </div>
+                  </motion.div>
               )
           }
 
@@ -164,14 +167,12 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
   function renderStickerCat(){
     if(productsJSON[1].length>0){
       return (
-        <section id="">
-          <div className='mt-20 text-gray-800 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>
-            <span>Nos différents stickers</span>
-          </div>
-          <div className='w-full'>
-            <div className={'grid gap-4 place-items-center grid-cols-1 '+(productsJSON[1].length > 1 ? "sm:grid-cols-2": "")}>
+        <section id="" className='bg-[#171C26]'>
+          <div className='text-gray-300 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'> {t('home:prod:stickersCat:h1')}</div>
+          <div className='w-full sm:pt-20 pb-60'>
+            {productsJSON[1] ? <div className='grid place-items-center grid-cols-1 lg:grid-cols-2'>
               {renderProducts(productsJSON[1])} 
-            </div>
+            </div>:<div className='text-center text-sm'>Oops something is wrong .. Please try again by refreshing !</div>}
           </div>
         </section>
       )
@@ -179,18 +180,16 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
       return ''
     }
   }
-
+  
   function renderTrackerCat(){
     if(productsJSON[2].length>0){
       return (
-        <section id="">
-          <div className='mt-20 text-gray-800 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>
-            <span>Nos différents trackers</span>
-          </div>
-          <div className='w-full'>
-            <div className={'grid gap-4 place-items-center grid-cols-1 '+(productsJSON[2].length > 1 ? "sm:grid-cols-2": "")}>
+        <section id="" className='bg-[#171C26]'>
+          <div className='text-gray-300 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'> {t('home:prod:trackerCat:h1')}</div>
+          <div className='w-full sm:pt-20 pb-60'>
+            {productsJSON[2] ? <div className='grid place-items-center grid-cols-1 lg:grid-cols-2'>
               {renderProducts(productsJSON[2])} 
-            </div>
+            </div>:<div className='text-center text-sm'>Oops something is wrong .. Please try again by refreshing !</div>}
           </div>
         </section>
       )
@@ -202,14 +201,12 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
   function renderOtherCat(){
     if(productsJSON[3].length>0){
       return (
-        <section id="">
-          <div className='mt-20 text-gray-800 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>
-            <span>Nos autres produits</span>
-          </div>
-          <div className='w-full'>
-            <div className={'grid place-items-center grid-cols-1 '+(productsJSON[3].length > 1 ? "sm:grid-cols-2": "")}>
+        <section id="" className='bg-[#171C26]'>
+          <div className='text-gray-300 text-center mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'> {t('home:prod:otherCat:h1')}</div>
+          <div className='w-full sm:pt-20 pb-60'>
+            {productsJSON[3] ? <div className='grid place-items-center grid-cols-1 lg:grid-cols-2'>
               {renderProducts(productsJSON[3])} 
-            </div>
+            </div>:<div className='text-center text-sm'>Oops something is wrong .. Please try again by refreshing !</div>}
           </div>
         </section>
       )
@@ -221,9 +218,9 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
     return (
       <div>
         {renderKeychainCat()}
-        {renderStickerCat()}
-        {renderTrackerCat()}
-        {renderOtherCat()}
+        {configurationStep == 1 ? renderStickerCat() : ""}
+        {configurationStep == 1 ? renderTrackerCat() : ""}
+        {configurationStep == 1 ? renderOtherCat() : ""}
       </div>
 
     )

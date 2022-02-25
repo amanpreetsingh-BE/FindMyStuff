@@ -1,9 +1,7 @@
 /* Next imports */
 import Image from 'next/image'
-
 /* Custom components imports */
 import NavReduced from '@components/navbar/NavReduced'
-
 /* Translate imports */
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
@@ -28,10 +26,8 @@ export default function About({ }) {
 
         <NavReduced darkLogo={false} />
 
-        <div className="mx-auto relative w-full h-[400px]">
-            <div className="flex">
-                <Image priority loading='eager' src={'/images/about/wesley-armstrong-awltiXiUjbk-unsplash.jpg'} objectFit="cover" layout='fill' alt={'logo'}/>
-            </div>
+        <div className="mx-auto relative w-full h-[200px] sm:h-[350px]">
+            <Image priority={true} src={'/images/about/wesley-armstrong-awltiXiUjbk-unsplash.jpg'} objectFit="cover" layout='fill' alt={'logo'}/>
         </div>
 
         <h1 className="text-white text-xl md:text-2xl font-bold w-1/2 min-w-[300px] max-w-[640px] border-b-4 border-secondary flex items-end justify-end my-16">{t('about:heading1')}</h1>
@@ -78,7 +74,7 @@ export default function About({ }) {
                 <div className="font-medium text-white text-base ">{t('about:federicosonnino:study')}</div>
 
             </div>
-            <div className="w-full md:w-1/3 flex flex-col justify-center items-center space-y-4 mb-24">
+            <div className="w-full md:w-1/3 flex flex-col justify-center items-center space-y-4 mb-10">
                 <div className="font-bold text-xl">{t('about:mohamedchaabani:name')}</div>
                 <div className="w-1/2 h-full flex justify-center items-center">
                     <Image src={'/images/about/chab.png'} width={180} height={180} alt={'mohamed'}/>
@@ -88,7 +84,7 @@ export default function About({ }) {
                 <div className="font-medium text-white text-base ">{t('about:mohamedchaabani:study')}</div>
             </div>
         </div>
-
     </main>
+
   )
 }
