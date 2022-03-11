@@ -491,7 +491,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
           <div className='flex -mt-24 items-center justify-start flex-col'>
                   <div className='w-[98%]'>
             
-                    <label htmlFor="cp" className="block-inline text-sm font-medium text-gray-200">Code postal</label>
+                    <label htmlFor="cp" className="block-inline text-sm font-medium text-gray-200">ZIP code</label>
                     <form className="mt-1 flex justify-start" onSubmit={handleLoc}>
                         <input className='w-32' id="cp" name="cp" type="number" ref={cp} required/>
                         <button className="max-w-xl ml-2 py-2 px-4 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg"><LocationMarkerIcon className='w-6 h-6 text-white inline' /></button>
@@ -513,7 +513,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
                 </div>
                 {pdf ?
                   <>
-                    <div className='text-center max-w-xs px-4 my-4'>Merci de présenter ce code QR au point relais</div>
+                    <div className='text-center max-w-xs px-4 my-4'>Please present this QR code to the nearest pickup point !</div>
                     <div style={{ position:"absolute", top:selected ? "70%":"60%", clip: "rect(25px,130px,147px,9px)"}}>
                         <Document className={""} file={`${pdf}`}>
                             <Page height={200} wrap={false} pageNumber={1}/>

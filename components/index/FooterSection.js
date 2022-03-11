@@ -4,7 +4,7 @@ import Link from 'next/link'
 /* Import REACT-SCROLL*/
 import {Link as LinkS} from 'react-scroll'
 
-function FooterSection({ t, Image }) {
+function FooterSection({ t, Image, hostname }) {
     /* Import images */
     const footerLogo = require('@images/icons/icon_white.svg');
     const linkLogo = require('@images/icons/link.png');
@@ -14,7 +14,9 @@ function FooterSection({ t, Image }) {
     return(
         <footer id="footer" className="flex relative flex-row items-center justify-evenly bg-primary w-full h-72">
           <div className="hidden md:flex md:justify-center md:items-center w-32 mb-6">
-            <div className="relative w-20 h-20"><Image src={footerLogo} loading='eager' layout="fill" alt="home" /></div>
+            <div className="relative w-20 h-20">
+              <a href={hostname}><Image src={footerLogo} loading='eager' layout="fill" alt="home" /></a>
+            </div>
           </div>
 
           <div className="pt-8 ml-6 md:ml-0 relative w-48 h-full">

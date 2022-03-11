@@ -1,8 +1,11 @@
-/* React imports */
-import React from 'react'
+/* React.js */
+import {useState} from 'react'
+/* Next imports */
+import Image from 'next/image'
 
 /* Custom components imports */
 import NavReduced from '@components/navbar/NavReduced'
+import FooterSection from '@components/index/FooterSection'
 
 /* Translate imports */
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -10,10 +13,12 @@ import { useTranslation } from 'next-i18next'
 
 /* Handle language */
 export async function getStaticProps({ locale }){
+  const hostname = process.env.HOSTNAME
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['privacy'])),
-      locale
+      ...(await serverSideTranslations(locale, ['privacy','home'])),
+      locale,
+      hostname
     }
   }
 }
@@ -157,6 +162,9 @@ export default function Privacy(props) {
         <h2 className="text-white bg-indigo-400 rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">{t('privacy:h11')}</h2>
         <p className="text-white text-base font-md mb-5 py-3 px-3">{t('privacy:p43')}<br/> <br/> {t('privacy:p44')}<br/>{t('privacy:p45')}<br/> {t('privacy:p46')}<br/> {t('privacy:p47')}<br/> <br/> {t('privacy:p48')}<br/> <br/> {t('privacy:p49')} </p>
       </div>
+
+      {/* Footer */}
+      <FooterSection useState={useState} t={t} Image={Image} hostname={props.hostname}/>
 
     </main>
   )

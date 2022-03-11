@@ -1,8 +1,11 @@
-/* React imports */
-import React from 'react'
+/* React.js */
+import {useState} from 'react'
+/* Next imports */
+import Image from 'next/image'
 
 /* Custom components imports */
 import NavReduced from '@components/navbar/NavReduced'
+import FooterSection from '@components/index/FooterSection'
 
 /* Translate imports */
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -10,10 +13,12 @@ import { useTranslation } from 'next-i18next'
 
 /* Handle language */
 export async function getStaticProps({ locale }){
+  const hostname = process.env.HOSTNAME
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['terms'])),
-      locale
+      ...(await serverSideTranslations(locale, ['terms', 'home'])),
+      locale,
+      hostname
     }
   }
 }
@@ -178,6 +183,8 @@ export default function Terms(props) {
           {t('terms:cguP37')} <br/> <br/> {t('terms:cguP38')}
         </p>
       </div>
+      {/* Footer */}
+      <FooterSection useState={useState} t={t} Image={Image} hostname={props.hostname}/>
     </main>
   )
 }

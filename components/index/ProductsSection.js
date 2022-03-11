@@ -7,118 +7,135 @@ import axios from 'axios'
 import getStripe from '@lib/stripe'
 
 function ProductsSection({ motion, hostname, toast, Image, useState, t, productsJSON, locale }) {
-    /* Handle products */
-    const [selectedModel, setSelectedModel] = useState([null, null])
-    const [configurationStep, setConfigurationStep] = useState(1)
 
-    const next = (keychain, color) => {
-      setSelectedModel([keychain, color])
-      setConfigurationStep(2)
-    }
-
-    const redirectToCheckout = async (e,cat, product) => {
-      e.preventDefault()
-      try{
-        const {
-          data: {id}
-        } = await axios.post(`${hostname}/api/checkout`, {
-          cat: cat,
-          priceID: cat== "Keychain" ? selectedModel[1].priceID : product.data.priceID,
-          model: cat== "Keychain" ? "Square keychain" : product.id, // to be changed in V2 to selectedModel[0].model
-          color: cat== "Keychain" ? selectedModel[1].color : product.data.color,
-          locale: locale
-        })
-        const stripe = await getStripe()
-        const res = await stripe.redirectToCheckout({sessionId: id})
-        
-        if(res.error){
-          toast.error(t('home:stripe:error')) 
-        } 
-      } catch(err){
-          toast.error(t('home:stripe:error')) 
-      }
-
-    }
-    const renderKeychains = () => {
-      let sw = []
-      const keychains = ((productsJSON[0])[0]).colors // if multiple keychains -> productsJSON[0]
-      keychains.forEach((keychain) => {
-        sw.push(
-            <div key={keychain.priceID} className='h-full flex items-center justify-center w-full'>
-              <motion.div whileHover={{ scale: 1.1 }}  whileTap={{ scale: 0.9 }}>
-                <div onClick={()=>next(keychain, keychain)} className="cursor-pointer bg-[#1B212E] relative px-12 py-12 mt-12 rounded-lg ">
-                    <Image priority={true} src={keychain.imageURL} width={240} height={240} alt=""/>
-                </div> 
-              </motion.div>
-            </div>
-        )
+  /* Handle products */
+  const redirectToCheckout = async (e,cat, product) => {
+    e.preventDefault()
+    try{
+      const {
+        data: {id}
+      } = await axios.post(`${hostname}/api/checkout`, {
+        cat: cat,
+        priceID: cat== "Keychain" ? product.priceID : product.data.priceID,
+        model: cat== "Keychain" ? "Square keychain" : product.id, // to be changed in V2 to selectedModel[0].model
+        color: cat== "Keychain" ? product.color : product.data.color,
+        locale: locale
       })
-      return sw
+      const stripe = await getStripe()
+      const res = await stripe.redirectToCheckout({sessionId: id})
+      
+      if(res.error){
+        toast.error(t('home:stripe:error')) 
+      } 
+    } catch(err){
+        toast.error(t('home:stripe:error')) 
     }
+  }
 
-    function renderKeychainCat(){
-      if(configurationStep==1){
-        return (
-          <section id="products" className='bg-[#171C26]'>
-            <div className='text-gray-300 text-center pt-8 mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>{t('home:prod:configurator:h1')}</div>
-              <div className='w-full sm:pt-20 pb-60'>
-                {productsJSON ? <div className='grid place-items-center grid-cols-1 lg:grid-cols-2'>
-                  {renderKeychains()} 
-                </div>:<div className='text-center text-sm'>Oops something is wrong .. Please try again by refreshing !</div>}
-              </div> 
-          </section>
-        )
-      } else {
-        return (
-          <section id="products" className='bg-[#171C26]' >
-            <div className='text-gray-300 text-center pt-8 mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>
-              <span>{t('home:prod:configurator:h3')}</span>
-              <ArrowCircleLeftIcon onClick={()=>setConfigurationStep(configurationStep-1)} className="text-gray-300 cursor-pointer inline-block absolute right-12 w-8 h-8 sm:w-9 sm:h-9"/>
-            </div>
-        
-              <div className='w-full sm:pt-20 pb-60'>
-                <div className='h-full flex flex-col sm:flex-row items-center justify-center'>
-                  
-                  <div className="cursor-pointer relative w-52 h-52 sm:w-60 sm:h-60 md:w-72 md:h-72 mt-14 mb-12">
-                      <Image priority={true} src={selectedModel[1].imageURL} layout="fill" alt="modelIllustration3"/>
+  const renderKeychains = () => {
+    let sw = []
+    const keychains = ((productsJSON[0])[0]).colors // if multiple keychains -> productsJSON[0]
+    keychains.forEach((keychain) => {
+      sw.push(
+          <div key={keychain.priceID} className='flex items-center justify-center w-96 '>
+            <motion.div whileHover={{ scale: 1.1 }}>
+              <div className="bg-[#1B212E] relative px-6 py-8 rounded-lg flex flex-col ">
+                <div className='flex flex-col justify-center items-center w-full pb-12'>
+                  <div className='text-xl text-gray-300 font-semibold '>
+                    {t('home:prod:configurator:price')} {keychain.price}
                   </div>
-  
-                  <div>
-                    <div className='text-xl text-gray-300 w-full font-semibold px-12'>
-                      {selectedModel[1].price}
-                    </div>
-  
-                    <div className='text-xs text-gray-300 w-full flex items-center justify-start font-semibold px-12'>
-                      <TruckIcon className='w-4 h-4 mr-1'/> {t('home:prod:configurator:shipping')}
-                    </div>
-  
-                    <div className='my-4 text-gray-300 space-y-1'>
-                      <div className='text-xs  w-full flex items-center justify-start font-semibold px-12'>
-                        <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:packaging')}
-                      </div>
-                      <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
-                        <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:material')}
-                      </div>
-                      <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
-                        <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:holder')}
-                      </div>
-                      <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
-                        <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:activate')}
-                      </div>
-                    </div>
-  
-                    <div className='my-3 w-full flex flex-col justify-center items-center'>
-                      <button onClick={(e)=>redirectToCheckout(e, "Keychain", null)} disabled={selectedModel[1].quantity > 0 ? false : true} className='bg-secondary cursor-pointer hover:bg-secondaryHover text-white font-bold rounded-lg px-12 py-4'>{t('home:prod:configurator:checkout')}</button>
-                      {selectedModel[1].quantity > 0  ? <div className='text-green-500 text-xs italic mt-1'>{t('home:prod:configurator:stock')}</div> : <div className='text-red-500 text-xs italic mt-1'>{t('home:prod:configurator:outStock')}</div>}
-                    </div>
+                  <div className='text-xs text-gray-300 flex items-center justify-start font-semibold'>
+                    <TruckIcon className='w-4 h-4 mr-1'/> {t('home:prod:configurator:shipping')}
                   </div>
-  
+
                 </div>
-             </div>
-          </section>
-        )
-      }
-    }
+                <div className='flex flex-col items-center'>
+                  
+                  <Image priority={true} src={keychain.imageURL} width={200} height={200} alt=""/>
+                  <div className='my-4 text-gray-300 space-y-1'>
+                    <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
+                      <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:packaging')}
+                    </div>
+                    <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
+                      <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:material')}
+                    </div>
+                    <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
+                      <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:holder')}
+                    </div>
+                    <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
+                      <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:activate')}
+                    </div>
+                  </div>
+                </div>
+
+                <div className='pt-2 w-full flex flex-col justify-center items-center'>
+                  <button onClick={(e)=>redirectToCheckout(e, "Keychain", keychain)} disabled={keychain.quantity > 0 ? false : true} className='bg-secondary cursor-pointer hover:bg-secondaryHover text-white font-bold rounded-lg px-12 py-4'>{t('home:prod:configurator:checkout')}</button>
+                  {keychain.quantity > 0  ? <div className='text-green-500 text-xs italic mt-1'>{t('home:prod:configurator:stock')}</div> : <div className='text-red-500 text-xs italic mt-1'>{t('home:prod:configurator:outStock')}</div>}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+      )
+    })
+    return sw
+  }
+
+  function renderKeychainCat() {
+    return (
+      <section id="products" className='bg-[#171C26]'>
+        <div className='text-gray-300 text-center pt-8 mb-16 font-bold text-2xl sm:text-3xl md:text-4xl'>{t('home:prod:configurator:h1')}</div>
+          <div className='w-full sm:pt-20 pb-60'>
+            {productsJSON ? <div className='grid gap-8 place-items-center grid-cols-1 lg:grid-cols-2'>
+              {renderKeychains()} 
+            </div>:<div className='text-center text-sm'>Oops something is wrong .. Please try again by refreshing !</div>}
+          </div> 
+      </section>
+    )
+  }
+
+  /*else {
+    return (
+      <section id="products" className='bg-[#171C26]' >
+    
+          <div className='w-full sm:pt-20 pb-60'>
+            <div className='h-full flex flex-col sm:flex-row items-center justify-center'>
+            
+
+              <div>
+                <div className='text-xl text-gray-300 w-full font-semibold px-12'>
+                  {selectedModel[1].price}
+                </div>
+
+                <div className='text-xs text-gray-300 w-full flex items-center justify-start font-semibold px-12'>
+                  <TruckIcon className='w-4 h-4 mr-1'/> {t('home:prod:configurator:shipping')}
+                </div>
+
+                <div className='my-4 text-gray-300 space-y-1'>
+                  <div className='text-xs  w-full flex items-center justify-start font-semibold px-12'>
+                    <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:packaging')}
+                  </div>
+                  <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
+                    <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:material')}
+                  </div>
+                  <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
+                    <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:holder')}
+                  </div>
+                  <div className='text-xs w-full flex items-center justify-start font-semibold px-12'>
+                    <CheckCircleIcon className='w-4 h-4 mr-1 text-secondaryHover'/> {t('home:prod:configurator:activate')}
+                  </div>
+                </div>
+
+                <div className='my-3 w-full flex flex-col justify-center items-center'>
+                  <button onClick={(e)=>redirectToCheckout(e, "Keychain", null)} disabled={selectedModel[1].quantity > 0 ? false : true} className='bg-secondary cursor-pointer hover:bg-secondaryHover text-white font-bold rounded-lg px-12 py-4'>{t('home:prod:configurator:checkout')}</button>
+                  {selectedModel[1].quantity > 0  ? <div className='text-green-500 text-xs italic mt-1'>{t('home:prod:configurator:stock')}</div> : <div className='text-red-500 text-xs italic mt-1'>{t('home:prod:configurator:outStock')}</div>}
+                </div>
+              </div>
+
+            </div>
+          </div>
+      </section>
+    )
+  }*/
 
     const renderProducts = (products) => {
       const cards = []
@@ -218,9 +235,9 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
     return (
       <div>
         {renderKeychainCat()}
-        {configurationStep == 1 ? renderStickerCat() : ""}
-        {configurationStep == 1 ? renderTrackerCat() : ""}
-        {configurationStep == 1 ? renderOtherCat() : ""}
+        {renderStickerCat()}
+        {renderTrackerCat()}
+        {renderOtherCat()}
       </div>
 
     )

@@ -1,14 +1,14 @@
 let progressBar = document.querySelector('#progress-bar');
 let progressBar2 = document.querySelector('#progress-bar2');
 
-let progressBar3 = document.querySelector('#progress-bar3');
-let progressBar4 = document.querySelector('#progress-bar4');
+// let progressBar3 = document.querySelector('#progress-bar3');
+//let progressBar4 = document.querySelector('#progress-bar4');
 
 function updateProgressBar(){
     progressBar.style.height= `${getScrollPercentage()}%`
     progressBar2.style.height= `${getScrollPercentage2()}%`
-    progressBar3.style.width= `${getScrollPercentage()}%`
-    progressBar4.style.width= `${getScrollPercentage2()}%`
+    //progressBar3.style.width= `${getScrollPercentage()}%`
+    //progressBar4.style.width= `${getScrollPercentage2()}%`
     requestAnimationFrame(updateProgressBar)
 }
 

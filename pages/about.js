@@ -1,22 +1,27 @@
+/* React.js */
+import {useState} from 'react'
 /* Next imports */
 import Image from 'next/image'
 /* Custom components imports */
 import NavReduced from '@components/navbar/NavReduced'
+import FooterSection from '@components/index/FooterSection'
 /* Translate imports */
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 
 /* Handle language */
 export async function getStaticProps({ locale }){
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['about'])),
-      locale
+    const hostname = process.env.HOSTNAME
+    return {
+        props: {
+        ...(await serverSideTranslations(locale, ['about', "home"])),
+        locale,
+        hostname
+        }
     }
-  }
 }
 
-export default function About({ }) {
+export default function About({ hostname }) {
 
   /* Handle language */
   const {t} = useTranslation();
@@ -53,8 +58,8 @@ export default function About({ }) {
         </div>
 
         <h1 className="text-white text-xl md:text-2xl font-bold w-1/2 min-w-[300px] max-w-[640px] border-b-4 border-secondary flex items-end justify-end my-16">{t('about:heading3')}</h1>
-        <div className="flex flex-col justify-center items-center md:flex-row mx-10 text-white pb-32">
-            <div className="w-full md:w-1/3 flex flex-col justify-center items-center space-y-4 mb-24">
+        <div className="flex flex-col justify-center items-center lg:flex-row mx-10 text-white pb-32">
+            <div className="w-full lg:w-1/3 flex flex-col justify-center items-center space-y-4 ">
                 <div className="font-bold text-xl">{t('about:amanpreetsingh:name')}</div>
                 <div className="w-1/2 h-full flex justify-center items-center ">
                     <Image src={'/images/about/aman.png'} width={180} height={180} alt={'aman'}/>
@@ -64,7 +69,7 @@ export default function About({ }) {
                 <div className="font-medium text-white text-base ">{t('about:amanpreetsingh:study')}</div>
 
             </div>
-            <div className="w-full md:w-1/3  flex flex-col justify-center items-center space-y-4 mb-24">
+            <div className="w-full lg:w-1/3  flex flex-col justify-center items-center space-y-4 ">
                 <div className="font-bold text-xl">{t('about:federicosonnino:name')}</div>
                 <div className="w-1/2 h-full flex justify-center items-center">
                     <Image src={'/images/about/fede.png'} width={180} height={180} alt={'fede'}/>
@@ -74,7 +79,7 @@ export default function About({ }) {
                 <div className="font-medium text-white text-base ">{t('about:federicosonnino:study')}</div>
 
             </div>
-            <div className="w-full md:w-1/3 flex flex-col justify-center items-center space-y-4 mb-10">
+            <div className="w-full lg:w-1/3 flex flex-col justify-center items-center space-y-4 ">
                 <div className="font-bold text-xl">{t('about:mohamedchaabani:name')}</div>
                 <div className="w-1/2 h-full flex justify-center items-center">
                     <Image src={'/images/about/chab.png'} width={180} height={180} alt={'mohamed'}/>
@@ -84,6 +89,9 @@ export default function About({ }) {
                 <div className="font-medium text-white text-base ">{t('about:mohamedchaabani:study')}</div>
             </div>
         </div>
+
+        {/* Footer */}
+        <FooterSection useState={useState} t={t} Image={Image} hostname={hostname}/>
     </main>
 
   )

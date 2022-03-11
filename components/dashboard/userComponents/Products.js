@@ -85,20 +85,20 @@ export default function Products({ useState, useRef, Modal, t, toast, Image, ema
 
   function renderJetons () {
     return(
-        <>
-          <div className='w-3/4 mt-1 text-xs text-center'>
+        <div className='px-12 mt-8'>
+          <div className={modalJetons >=1 ? 'mt-4 text-sm text-center ':' text-xs text-center ' }>
             Le nombre de jetons est le nombre de livraisons, si il n'y a plus de jetons, il faut recharger 3.5e pour que la livraison puisse se faire en cas d'objet retrouvé.
           </div>
-          <div className='mt-4 border-2 rounded-lg px-4 mx-4'>
-                <div className='flex justify-center items-center space-x-12'>
-                    <h1 className='text-md py-4 text-center font-mono'>Nombre de jetons actuel : {modalJetons} </h1>
+          <div className='mt-4 border-2 rounded-lg px-2 mx-4'>
+                <div className='flex justify-center items-center space-x-8'>
+                    <h1 className='text-md py-2 text-center font-mono'>Nombre de jetons actuel : {modalJetons} </h1>
                 </div>
-                {modalJetons >= 1 ? "":<button onClick={handleReload} className="max-w-xl py-4 px-8 mx-auto my-4 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg flex"><CashIcon className='w-6 h-6 text-white' /> <span className='text-white ml-2'>Recharger</span></button>}
+                {modalJetons >= 1 ? "":<button onClick={handleReload} className="max-w-xl py-4 px-4 mx-auto my-4 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg flex"><CashIcon className='w-6 h-6 text-white' /> <span className='text-white ml-2'>Recharger</span></button>}
           </div>
           <div className='flex justify-center mt-4 items-center cursor-pointer' onClick={()=>setRj(false)} >
                 <ArrowCircleLeftIcon className='text-gray-800 w-6 h-6'/> <span>Go back</span> 
           </div>
-        </>
+        </div>
     )
   }
 
@@ -107,7 +107,26 @@ export default function Products({ useState, useRef, Modal, t, toast, Image, ema
   }
 
   const handleReload = async (e) => {
-    console.log('reload')
+      e.preventDefault()
+      try{
+        const {
+          data: {id}
+        } = await axios.post(`${hostname}/api/checkout`, {
+          cat: cat,
+          priceID: cat== "Keychain" ? selectedModel[1].priceID : product.data.priceID,
+          model: cat== "Keychain" ? "Square keychain" : product.id, // to be changed in V2 to selectedModel[0].model
+          color: cat== "Keychain" ? selectedModel[1].color : product.data.color,
+          locale: locale
+        })
+        const stripe = await getStripe()
+        const res = await stripe.redirectToCheckout({sessionId: id})
+        
+        if(res.error){
+          toast.error(t('home:stripe:error')) 
+        } 
+      } catch(err){
+          toast.error(t('home:stripe:error')) 
+      }
   }
 
   return (

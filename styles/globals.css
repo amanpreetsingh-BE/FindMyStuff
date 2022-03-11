@@ -31,3 +31,10 @@
         @apply rounded border-gray-300 text-indigo-600 focus:ring-indigo-500;
     }
 }
+
+
+@layer utilities {
+    .swiper-pagination-bullet{
+        background-color: #20b075 !important;
+    }
+}
