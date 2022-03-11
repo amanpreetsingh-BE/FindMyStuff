@@ -176,5 +176,5 @@ function SignOutButton(){
         auth.signOut()
         router.push('/')
     }
-    return <button className="text-sm flex flex-row mt-2 items-center justify-center rounded-lg font-medium hover:text-gray-50 text-white" onClick={signOutAndRedirect}> <LogoutIcon className="w-6 h-6 mr-1"/> {t('dashboard:verified:signout')}</button>
+    return <button className="text-sm w-full h-full flex flex-row mt-2 items-center justify-center rounded-lg font-medium hover:text-gray-50 text-white" onClick={signOutAndRedirect}> <LogoutIcon className="w-6 h-6 mr-1"/> {t('dashboard:verified:signout')}</button>
 }

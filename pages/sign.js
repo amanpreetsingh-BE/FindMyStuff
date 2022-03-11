@@ -188,16 +188,15 @@ export default function Sign() {
     if(loaded){
       return (
         <main className="w-full flex flex-col justify-start items-center">
-            <div className="mb-6 mt-12 md:mt-20">
+            <div className="mt-8 mb-4">
               <Link passHref href="/">
                 <div className="flex justify-center">
-                  <div className="cursor-pointer relative w-[64px] h-[64px] sm:w-[90px] sm:h-[90px]">
+                  <div className="cursor-pointer relative w-[58px] h-[58px] sm:w-[80px] sm:h-[80px]">
                     <Image src={icon_blk} priority layout="fill" alt="logoReduceds" />
                   </div>
                 </div>
               </Link>
-              
-              <div className="space-y-4 mt-4">
+              <div className="space-y-2 pt-4">
                 <div className="text-gray-800 text-center font-extrabold text-3xl sm:text-4xl">
                   {signupState ?  t('sign:signup'):t('sign:signin')}
                 </div>

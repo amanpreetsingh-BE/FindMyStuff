@@ -29,7 +29,6 @@ const variants = {
 
 function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, lastName, email, uid, user, hostname, t, userProductsJSON, userNotificationsJSON }) {
 
-
     const [showModal, setShowModal] = useState(true)
     function openModal(){
         setShowModal(prev => !prev);
@@ -123,50 +122,50 @@ function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, las
                         <Swiper slidesPerView={1} pagination={{bulletClass: 'swiper-pagination-bullet', clickable: 'true'}} className='h-full w-full font-nxt '>
                             <SwiperSlide>
                                 <div className='flex h-full justify-center items-center flex-col'>
-                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>Bienvenue sur le dashboard</h1>
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>{t('dashboard:welcomeModal:h1')}</h1>
                                     <div className="mx-12 text-center">
-                                        <p className='mb-2 mt-1 text-gray-800'>Le dashboard permet de gérer ton compte</p>
+                                        <p className='mb-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:s1')}</p>
                                         <ul className='list-disc border-2 rounded-lg px-8 py-2 text-left text-gray-800'>
-                                            <li>Modifier l'addresse de livraison ou recharger tes produits</li>
-                                            <li>Voir les notifications</li>
-                                            <li>Changer ton mot de passe ou même supprimer ton compte</li>
-                                        </ul>     
+                                            <li>{t('dashboard:welcomeModal:l1')}</li>
+                                            <li>{t('dashboard:welcomeModal:l2')}</li>
+                                            <li>{t('dashboard:welcomeModal:l3')}</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </SwiperSlide>
                             <SwiperSlide>
                                 <div className='flex h-full justify-center items-center flex-col'>
-                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>Comment cela fonctionne ?</h1>
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>{t('dashboard:welcomeModal:h2')}</h1>
                                     <div className="mx-12 text-center">
-                                        <p className='mb-2 mt-1 text-gray-800'>Etape 1</p>
-                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>J'achète un porte-clef ou sticker sur le site auquel je le rattache à un objet que je souhaite ne pas perdre. Il faut ensuite enregistrer le produit en le scannant avec un smartphone.</p>
+                                        <p className='mb-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:s2')}</p>
+                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:d2')}</p>
                                     </div>
                                 </div>
                             </SwiperSlide>
                             <SwiperSlide>
                                 <div className='flex h-full justify-center items-center flex-col'>
-                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>Comment cela fonctionne ?</h1>
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>{t('dashboard:welcomeModal:h2')}</h1>
                                     <div className="mx-12 text-center">
-                                        <p className='mb-2 mt-1 text-gray-800'>Etape 2</p>
-                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>Si je perds mon objet et qu'une personne scan le code QR auquel est rattaché mon object perdu, il sera renvoyé vers le site.</p>
+                                        <p className='mb-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:s3')}</p>
+                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:d3')}</p>
                                     </div>
                                 </div>
                             </SwiperSlide>
                             <SwiperSlide>
                                 <div className='flex h-full justify-center items-center flex-col'>
-                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>Comment cela fonctionne ?</h1>
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>{t('dashboard:welcomeModal:h2')}</h1>
                                     <div className="mx-12 text-center">
-                                        <p className='mb-2 mt-1 text-gray-800'>Etape 3</p>
-                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>Une liste de points relais sont indiqués à la personne souhaitant le remettre. Cette objet sera ensuite envoyé directement dans votre point relais défini lors de l'enregistrement. La première livraison est offerte.</p>
+                                        <p className='mb-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:s4')}</p>
+                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:d4')}</p>
                                     </div>
                                 </div>
                             </SwiperSlide>
                             <SwiperSlide>
                                 <div className='flex h-full justify-center items-center flex-col'>
-                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>Bienvenue Stuffer !</h1>
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>{t('dashboard:welcomeModal:h3')}</h1>
                                     <div className="mx-12 text-center">
-                                        <p className='mb-2 mt-1 text-gray-800'>Le concept est génial, non ?</p>
-                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>Si toi aussi tu trouves ca cool, n'hésite pas à acheter ou enregistrer ton premier stuff !</p>
+                                        <p className='mb-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:s5')}</p>
+                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:d5')}</p>
                                     </div>
                                 </div>
                             </SwiperSlide>
