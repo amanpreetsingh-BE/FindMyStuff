@@ -11,7 +11,7 @@ import 'swiper/components/pagination/pagination.min.css';
 import 'swiper/components/navigation/navigation.min.css';
 SwiperCore.use([Pagination]);
 
-function HiwSectionMob({ Image, useState, useEffect, motion, t, Script }) {
+function HiwSectionMob({ Image, motion, t }) {
 
     /* Handle framer animations */
     const {scrollY} = useViewportScroll();

@@ -33,25 +33,62 @@
         "manage": "Manage",
         "prod": "My products",
         "notif": "My notifications",
-        "param": "My parameters"
+        "param": "My parameters",
+        "paramPage":{
+            "heading": "My parameters",
+            "h1": "Personal informations",
+            "email": "Email",
+            "firstname": "Firstname",
+            "lastname": "Lastname",
+            "update": "Update",
+            "h2": "Danger zone",
+            "reset": "Reset password by email",
+            "delete": "Delete my account",
+            "delConfirm": "Are you sure to delete ?",
+            "del1": "Your personal informations will be deleted from our servers (firstname, lastname and email)",
+            "del2": "Your QRs will be deactivated",
+            "del3": "By clicking on delete button, you acknowledge the previous declarations",
+            "delBtn": "DELETE"
+        },
+        "prodPage":{
+            "heading": "My products",
+            "empty": "You have currently no products registered.",
+            "delivery": "Remaining delivery : ",
+            "h1": "Manage my QR",
+            "l1": "Place of delivery",
+            "l2": "Tokens",
+            "changeDelivery": "Modify",
+            "back": "Go back",
+            "tokenDesc": "The number of tokens is the nimber of delivery remaining, if there is no token available, you need to reload the QR.",
+            "tokenState": "Number of remaining tokens : ",
+            "reloadBtn": "Reload"
+        },
+        
+        "notifPage":{
+            "heading": "My notifications",
+            "h1": "Scan notifications",
+            "empty1": "You don't have any lost object belonging to you scanned, yet.",
+            "h2": "Delivery notifications",
+            "empty2": "You don't have any lost object belonging to you in shipping to your choosen pick up point, yet."
+        }
     }
     ,
     "welcomeModal":{
         "h1": "Bienvenue sur le dashboard",
         "s1": "Le dashboard permet de gérer ton compte",
-        "l1": "Modifier l'addresse de livraison ou recharger tes produits",
+        "l1": "Modifier tes informations (mot de passe, adresse de livraison, etc.)",
         "l2": "Voir les notifications",
-        "l3": "Changer ton mot de passe ou même supprimer ton compte",
-        "h2": "Comment cela fonctionne ?",
+        "l3": "Recharger tes produits",
+        "h2": "Comment ça fonctionne ?",
         "s2": "Etape 1",
-        "d2": "J'achète un porte-clef ou sticker sur le site auquel je le rattache à un objet que je souhaite ne pas perdre. Il faut ensuite enregistrer le produit en le scannant avec un smartphone.",
+        "d2": "Attache le produit FindMyStuff à ton trousseau de clefs, sac à dos, ... et scan ensuite le QR code à l'aide de ton smartphon pour lancer l'activation.",
         "s3": "Etape 2",
-        "d3": "Si je perds mon objet et qu'une personne scan le code QR auquel est rattaché mon object perdu, il sera renvoyé vers le site.",
+        "d3": "Une fois ton compte activé, quiconque retrouve ton objet pourra scanner le code QR et ainsi signaler la retrouvaille. Nous lui indiquerons 1400 points relay en Belgique dans lesquels il déposera l'objet en échange d'une rénumération (ou d'un don à une ABSL) ",
         "s4": "Etape 3",
-        "d4": "Une liste de points relais sont indiqués à la personne souhaitant le remettre. Cette objet sera ensuite envoyé directement dans votre point relais défini lors de l'enregistrement. La première livraison est offerte.",
-        "h3": "Bienvenue Stuffer !",
+        "d4": "Tu n'as plus qu'à attendre le retour de ton objet. Tu seras notifié lorsque ton objet aura été livré à ton point relai favori, encoder lors de l'activation du produit. Nous offrons la première livraison.",
+        "h3": "Bienvenue dans notre comunauté !",
         "s5": "Le concept est génial, non ?",
-        "d5": "Si toi aussi tu trouves ca cool, n'hésite pas à acheter ou enregistrer ton premier stuff !"
+        "d5": "N'hésite pas à nous rejoindre sur nos réseaux sociaux !"
     }
 
 }

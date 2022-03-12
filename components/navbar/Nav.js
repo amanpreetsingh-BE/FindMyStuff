@@ -26,7 +26,7 @@ function Nav({useContext, UserContext, Image, Link, locale, toggle, t}) {
                     <MenuAlt3Icon className="text-white cursor-pointer h-8 "/>
                 </div>
 
-                <div className="z-index-20 flex  items-center justify-center h-full lg:hidden">
+                <div className="z-index-20 flex items-center justify-center h-full lg:hidden">
                     <LanguageBox locale={locale} Image={Image} />
                 </div>
                 

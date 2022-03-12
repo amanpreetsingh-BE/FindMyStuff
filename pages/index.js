@@ -91,7 +91,7 @@ export default function Home({locale, productsJSON, hostname}) {
 
         {/* How It Works Section  */}
         { windowW <= 640 ?  
-          <HiwSectionMob motion={motion} useState={useState} useEffect={useEffect} t={t} Image={Image} Script={Script} />
+          <HiwSectionMob motion={motion} t={t} Image={Image} />
             : 
           <HiwSectionDesk motion={motion} useState={useState} useEffect={useEffect} t={t} Image={Image} Script={Script} />
         }
@@ -104,7 +104,7 @@ export default function Home({locale, productsJSON, hostname}) {
             <path d="M0 136L129 133L257 195L386 125L514 178L643 184L771 160L900 141L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z" fill="#161b21"></path>
             <path d="M0 157L129 123L257 103L386 90L514 123L643 139L771 127L900 128L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z" fill="#16191d"></path>
             <path d="M0 104L129 87L257 102L386 60L514 81L643 60L771 86L900 71L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z" fill="#161719"></path>
-            <path d="M0 57L129 46L257 42L386 25L514 35L643 60L771 54L900 55L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z" fill="#151515"></path>
+            <path d="M0 57L129 46L257 42L386 25L514 35L643 60L771 54L900 55L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z" fill="#171717"></path>
           </svg>
         </div>
 

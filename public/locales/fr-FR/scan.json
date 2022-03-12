@@ -47,5 +47,15 @@
         "emailSendEmpty": "Merci de rentrer une adresse mail",
         "errorEmailSend": "Erreur lors de la réinitialisation",
         "emailSendInvalid": "Merci de rentrer une adresse mail valide"
+    },
+    "noJetons": "Si vous êtes le propriétaire de ce QR, merci de bien vouloir recharger votre jeton afin qu'on puisse le remettre dans votre point relais de votre choix.",
+    "chooseRelais": "Si vous êtes le propriétaire de ce QR, merci de bien vouloir finir l'enregistrement en choisissant le point relais sur le dashboard.",
+    "select": {
+        "heading": "Point relais",
+        "desc": "Indiquez votre code postal afin de selectionner l'endroit ou votre objet sera remis",
+        "code": "Code postal",
+        "popupStreet": "Addresse : ",
+        "popupCode": "Code postal : ",
+        "saveBtn": "Enregistrer"
     }
 }

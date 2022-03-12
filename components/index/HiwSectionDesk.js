@@ -60,11 +60,43 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
     }
     
     useEffect(() => {
+        doScrollAnimation()
         window.addEventListener('scroll', controlScrollHIW)
         return () => {
             window.removeEventListener('scroll', controlScrollHIW)
         }
     }, [])
+
+    const doScrollAnimation = () => {
+        let progressBar = document.querySelector('#progress-bar');
+        let progressBar2 = document.querySelector('#progress-bar2');
+        
+        function updateProgressBar(){
+            progressBar.style.height= `${getScrollPercentage()}%`
+            progressBar2.style.height= `${getScrollPercentage2()}%`
+            requestAnimationFrame(updateProgressBar)
+        }
+        
+        function getScrollPercentage(){
+           if(window.scrollY > window.innerHeight-96){
+                return Math.min(( (((window.scrollY)-(window.innerHeight-96))/400) *100),100)
+            }
+            else{
+                return 0;
+            }
+        }
+        
+        function getScrollPercentage2(){
+            if(window.scrollY > (window.innerHeight+305)){
+                return Math.min(( (((window.scrollY-404)-(window.innerHeight-96))/404) *100),100)
+            }
+            else{
+                return 0;
+            }
+        }
+        
+        updateProgressBar()
+    }
 
     return(
         <section id="howitworks" className="relative bg-primary w-full h-[1800px]">
@@ -75,9 +107,7 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
 
                     <div className="text-white ml-8 lg:mx-12 relative flex items-center justify-center h-full w-1/4 max-w-xs">
                         <div className="relative flex flex-col justify-center items-center h-full w-full">
-                            <Script
-                                src="./scripts/progressbar.js"
-                            />
+
                             <div onClick={()=>scroll.scrollTo(window.innerHeight-96)} className={"cursor-pointer w-8 h-8 md:w-10 md:h-10 border-4 border-secondary rounded-full ml-20 mb-4"+ stepBgOpacity[0] + stepBorderOpacity[0]}><div className={"absolute flex items-center justify-center w-32 -ml-32 text-secondary font-bold text-base md:text-xl "+stepColor[0]}>{t('home:hiw:activate')}</div></div>
                             
                             <div className="relative w-2 rounded-3xl bg-gray-700 h-1/5 ml-20 mb-4">

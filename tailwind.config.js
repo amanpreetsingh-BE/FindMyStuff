@@ -48,7 +48,7 @@ module.exports = {
         }
       },
       colors:{
-        primary: '#151515',
+        primary: '#171717',
         secondary: '#20C17F',
         secondaryHover: '#20b075',
         menuBg: '#0d0d0d',

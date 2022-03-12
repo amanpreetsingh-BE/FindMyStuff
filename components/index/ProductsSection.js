@@ -69,7 +69,7 @@ function ProductsSection({ motion, hostname, toast, Image, useState, t, products
                 </div>
 
                 <div className='pt-2 w-full flex flex-col justify-center items-center'>
-                  <button onClick={(e)=>redirectToCheckout(e, "Keychain", keychain)} disabled={keychain.quantity > 0 ? false : true} className='bg-secondary cursor-pointer hover:bg-secondaryHover text-white font-bold rounded-lg px-12 py-4'>{t('home:prod:configurator:checkout')}</button>
+                  <button onClick={(e)=>redirectToCheckout(e, "Keychain", keychain)} disabled={keychain.quantity < 0 ? false : true} className='bg-secondary cursor-pointer hover:bg-secondaryHover text-white font-bold rounded-lg px-12 py-4'>{t('home:prod:configurator:checkout')}</button>
                   {keychain.quantity > 0  ? <div className='text-green-500 text-xs italic mt-1'>{t('home:prod:configurator:stock')}</div> : <div className='text-red-500 text-xs italic mt-1'>{t('home:prod:configurator:outStock')}</div>}
                 </div>
               </div>

@@ -77,6 +77,7 @@ export async function getServerSideProps({ req, params, locale }) {
 }
 
 export default function ScanPage({id, activate, email, timestamp, pdf, hostname, locale, jetons}) {
+  
   /* Handle language */
   const {t} = useTranslation();
 
@@ -421,22 +422,21 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
   }
 
   if (jetons < 1) {
-    return(
+    return (
       <main className="w-full flex flex-col justify-center items-center text-white bg-primary h-screen">
         <div className='absolute top-16 right-4'>{LanguageBox(id, locale, fr_flag, en_flag)}</div>
         <div className='flex items-center justify-center flex-col'>
-          <div className='border-gray-500 border-2 py-12 px-8 text-lg max-w-sm text-center rounded-lg'>
-            Si vous êtes le propriétaire de ce QR, merci de bien vouloir recharger votre jeton afin qu'on puisse le remettre dans votre point relais de votre choix.
+          <div className='border-secondary mx-8 border-2 py-12 px-8 text-lg max-w-sm text-center rounded-lg'>
+            {t('scan:noJetons')}
           </div>
         </div>
-
       </main>
     )
-  } else if(activate){
+  } else if(activate) {
     return(
       <main className="w-full flex flex-col justify-center items-center text-white bg-primary h-screen">
         <div className='absolute top-16 right-4'>{LanguageBox(id, locale, fr_flag, en_flag)}</div>
-        {step == 0 ? 
+        {step == 0 ?
           <div className='flex items-center justify-center flex-col'>
             {show ? <Image src={animatedFound} width={300} height={300} /> : 
             <>
@@ -538,8 +538,8 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
       <main className="w-full flex flex-col justify-center items-center text-white bg-primary h-screen">
         <div className='absolute top-16 right-4'>{LanguageBox(id, locale, fr_flag, en_flag)}</div>
         <div className='flex items-center justify-center flex-col'>
-          <div className='border-gray-500 border-2 py-12 px-8 text-lg max-w-sm text-center rounded-lg'>
-            Si vous êtes le propriétaire de ce QR, merci de bien vouloir choisir le point relais en vous connectant sur le dashboard
+          <div className='border-secondary border-2 mx-8 py-12 px-8 text-lg max-w-sm text-center rounded-lg'>
+            {t('scan:chooseRelais')}
           </div>
         </div>
       </main>
@@ -547,121 +547,122 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
   } else {
     return (
       <>
-        <main className="w-full py-12 flex flex-col space-y-8 justify-center items-center bg-primary min-h-screen">
+        <main className="w-full pt-12 flex flex-col justify-center items-center bg-primary min-h-screen">
               {LanguageBox(id, locale, fr_flag, en_flag)}
+              <div className="space-y-8 pb-8">
+                <Link passHref href="/">
+                  <div className="flex justify-center">
+                      <div className="cursor-pointer relative w-[58px] h-[58px] sm:w-[80px] sm:h-[80px]">
+                          <Image src={icon} priority layout="fill" alt="logoReduceds" />
+                      </div>
+                  </div>
+                </Link>
 
-              <Link passHref href="/">
-                <div className="flex justify-center">
-                    <div className="cursor-pointer relative w-[64px] h-[64px] sm:w-[90px] sm:h-[90px]">
-                        <Image src={icon} priority layout="fill" alt="logoReduceds" />
-                    </div>
-                </div>
-              </Link>
-
-              <div className="">
-                <div className="text-gray-300 text-center font-extrabold text-xl sm:text-2xl max-w-sm">
-                    {t('scan:welcome')}
-                </div>
-                <div className="text-gray-200 text-center text-xs sm:text-base flex justify-center items-center w-full mt-1">
-                  {signupState ? t('scan:account'):t('scan:noAccount') } <span className="cursor-pointer ml-1 text-gray-200 hover:text-white font-bold" onClick={()=>setSignupState(!signupState)}>{signupState ? t('scan:signinBtn') : t('scan:signupBtn')}</span>
+                <div className="">
+                  <div className="text-gray-300 text-center font-extrabold text-xl sm:text-2xl max-w-xs">
+                      {t('scan:welcome')}
+                  </div>
+                  <div className="text-gray-200 text-center text-xs sm:text-base flex justify-center items-center w-full mt-1">
+                    {signupState ? t('scan:account'):t('scan:noAccount') } <span className="cursor-pointer ml-1 text-gray-200 hover:text-white font-bold" onClick={()=>setSignupState(!signupState)}>{signupState ? t('scan:signinBtn') : t('scan:signupBtn')}</span>
+                  </div>
                 </div>
               </div>
 
 
-            <div className="mx-auto w-full max-w-xs sm:max-w-lg">
-              <div className="bg-white py-8 px-8 mb-8 shadow rounded-xl sm:px-10 text-gray-800">
-                <form className="mb-0 space-y-4" onSubmit={onSubmit}>
-                  {signupState ? 
-                    <>
-                    <div>
-                      <label htmlFor="textFirstname" className="block text-sm font-medium text-gray-700">{t('scan:field:firstname')}</label>
-                      <div className="mt-1 ">
-                        <input id="textFirstname" name="textFirstname" type="text" ref={formFirstname} required/>
-                      </div>
-                    </div>
-                    <div>
-                      <label htmlFor="textLastname" className="block text-sm font-medium text-gray-700">{t('scan:field:lastname')}</label>
-                      <div className="mt-1 ">
-                        <input id="textLastname" name="textLastname" type="text" ref={formLastname} required/>
-                      </div>
-                    </div>
-                    </> : ''
-                  }
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">{t('scan:field:email')}</label>
-                    <div className="mt-1">
-                      <input id="email" name="email" type="email" autoComplete="email" ref={formEmail} required/>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">{t('scan:field:password')}</label>
-                    <div className="relative mt-1">
-                      {isPwdVisible ? <EyeIcon onClick={()=>setIsPwdVisible(false)} className='absolute cursor-pointer text-gray-600 top-3 right-3 w-5 h-5'/> 
-                      : <EyeOffIcon onClick={()=>setIsPwdVisible(true)} className='absolute cursor-pointer text-gray-600 top-3 right-3 w-5 h-5'/>}
-                      <input id="password" name="password" type={isPwdVisible ? "text":"password"} autoComplete="password" ref={formPassword} required/>
-                    </div>
-                  </div>
-
-                  
-                  {signupState ? 
-                  <>
-                  <div>
-                    <label htmlFor="repeatPassword" className="block text-sm font-medium text-gray-700">{t('scan:field:repeatPassword')}</label>
-                    <div className="mt-1">
-                      <input id="repeatPassword" name="repeatPassword" type="password" ref={formRepeatPassword} required/>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center">
-                    <input id="terms-and-privacy" name="terms-and-privacy" required type="checkbox" />
-                    <label htmlFor="terms-and-privacy" className="ml-2 block text-sm text-gray-900">
-                      <span> {t('scan:agree')} </span>
-                      <a href="terms" target="_blank" rel="noreferrer" className="text-indigo-600 hover:text-indigo-500">{t('scan:terms')}</a>
-                      <span> {t('scan:and')} </span> 
-                      <a href="privacy" target="_blank" rel="noreferrer" className="text-indigo-600 hover:text-indigo-500">{t('scan:privacy')}</a>
-                    </label>
-                  </div>
-
-                  <div className="flex justify-center w-full">
-                      <button disabled={formLoading} className="w-full py-4 font-md text-white text-md bg-gray-700 hover:bg-gray-800 rounded-lg">{t('scan:signupButtonTxt')}</button>
-                  </div>
-                  </>
-                  : 
-                  <>
-                    <div className="flex justify-end text-sm font-bold">
-                      <div onClick={openModal} className="cursor-pointer text-gray-500 hover:text-primary">
-                        {t('scan:forgotPassword')}
-                      </div>
-                      <Modal showModal={showModal} setShowModal={setShowModal}>
-                        <div className="flex justify-start px-10 py-24 items-center leading-3 flex-col text-primary">
-                          <div className="flex flex-col items-center justify-center space-y-4">
-                            <div className="text-lg sm:text-lg md:text-xl font-extrabold text-gray-800 text-center">{t('scan:forgot:heading')}</div>
-                            <div className="text-xs sm:text-md text-gray-700 max-w-sm text-center leading-4">{t('scan:forgot:desc')}</div>
-                            <input id="emailForgot" name="emailForgot" type="email" ref={formForgot}/>
-                            <button onClick={resetPassword} className="w-full py-4 font-md text-white text-md bg-gray-700 hover:bg-gray-800 rounded-lg">{t('scan:forgot:rstButtonText')}</button>
+                <div className="mx-auto w-full max-w-xs sm:max-w-lg">
+                  <div className="bg-white py-8 px-8 mb-8 shadow rounded-xl sm:px-10 text-gray-800">
+                    <form className="mb-0 space-y-4" onSubmit={onSubmit}>
+                      {signupState ? 
+                        <>
+                        <div>
+                          <label htmlFor="textFirstname" className="block text-sm font-medium text-gray-700">{t('scan:field:firstname')}</label>
+                          <div className="mt-1 ">
+                            <input id="textFirstname" name="textFirstname" type="text" ref={formFirstname} required/>
                           </div>
-
                         </div>
-                      </Modal> 
-                    </div>
+                        <div>
+                          <label htmlFor="textLastname" className="block text-sm font-medium text-gray-700">{t('scan:field:lastname')}</label>
+                          <div className="mt-1 ">
+                            <input id="textLastname" name="textLastname" type="text" ref={formLastname} required/>
+                          </div>
+                        </div>
+                        </> : ''
+                      }
+                      <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">{t('scan:field:email')}</label>
+                        <div className="mt-1">
+                          <input id="email" name="email" type="email" autoComplete="email" ref={formEmail} required/>
+                        </div>
+                      </div>
 
-                    <div className="flex justify-center">
-                      <button disabled={formLoading} className="w-full py-4 font-md text-white text-md bg-gray-700 hover:bg-gray-800 rounded-lg">{t('scan:signinButtonTxt')}</button>
-                    </div>
+                      <div>
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">{t('scan:field:password')}</label>
+                        <div className="relative mt-1">
+                          {isPwdVisible ? <EyeIcon onClick={()=>setIsPwdVisible(false)} className='absolute cursor-pointer text-gray-600 top-3 right-3 w-5 h-5'/> 
+                          : <EyeOffIcon onClick={()=>setIsPwdVisible(true)} className='absolute cursor-pointer text-gray-600 top-3 right-3 w-5 h-5'/>}
+                          <input id="password" name="password" type={isPwdVisible ? "text":"password"} autoComplete="password" ref={formPassword} required/>
+                        </div>
+                      </div>
 
-                    <div className="w-full text-center border-b-[1px] border-gray-400 leading-[5px]"><span className="bg-white py-2 px-2">{t('scan:or')}</span></div>    
-                    
-                    <div className="flex flex-col">
-                      <SignInGoogleButton id={id} />
+                      
+                      {signupState ? 
+                      <>
+                      <div>
+                        <label htmlFor="repeatPassword" className="block text-sm font-medium text-gray-700">{t('scan:field:repeatPassword')}</label>
+                        <div className="mt-1">
+                          <input id="repeatPassword" name="repeatPassword" type="password" ref={formRepeatPassword} required/>
+                        </div>
+                      </div>
 
-                      <SignInFacebookButton id={id} />
-                    </div>
-                  </>}
+                      <div className="flex items-center">
+                        <input id="terms-and-privacy" name="terms-and-privacy" required type="checkbox" />
+                        <label htmlFor="terms-and-privacy" className="ml-2 block text-sm text-gray-900">
+                          <span> {t('scan:agree')} </span>
+                          <a href="terms" target="_blank" rel="noreferrer" className="text-indigo-600 hover:text-indigo-500">{t('scan:terms')}</a>
+                          <span> {t('scan:and')} </span> 
+                          <a href="privacy" target="_blank" rel="noreferrer" className="text-indigo-600 hover:text-indigo-500">{t('scan:privacy')}</a>
+                        </label>
+                      </div>
 
-                </form>
-              </div>
-            </div>
+                      <div className="flex justify-center w-full">
+                          <button disabled={formLoading} className="w-full py-4 font-md text-white text-md bg-gray-700 hover:bg-gray-800 rounded-lg">{t('scan:signupButtonTxt')}</button>
+                      </div>
+                      </>
+                      : 
+                      <>
+                        <div className="flex justify-end text-sm font-bold">
+                          <div onClick={openModal} className="cursor-pointer text-gray-500 hover:text-primary">
+                            {t('scan:forgotPassword')}
+                          </div>
+                          <Modal showModal={showModal} setShowModal={setShowModal}>
+                            <div className="flex justify-start px-10 py-24 items-center leading-3 flex-col text-primary">
+                              <div className="flex flex-col items-center justify-center space-y-4">
+                                <div className="text-lg sm:text-lg md:text-xl font-extrabold text-gray-800 text-center">{t('scan:forgot:heading')}</div>
+                                <div className="text-xs sm:text-md text-gray-700 max-w-sm text-center leading-4">{t('scan:forgot:desc')}</div>
+                                <input id="emailForgot" name="emailForgot" type="email" ref={formForgot}/>
+                                <button onClick={resetPassword} className="w-full py-4 font-md text-white text-md bg-gray-700 hover:bg-gray-800 rounded-lg">{t('scan:forgot:rstButtonText')}</button>
+                              </div>
+
+                            </div>
+                          </Modal> 
+                        </div>
+
+                        <div className="flex justify-center">
+                          <button disabled={formLoading} className="w-full py-4 font-md text-white text-md bg-gray-700 hover:bg-gray-800 rounded-lg">{t('scan:signinButtonTxt')}</button>
+                        </div>
+
+                        <div className="w-full text-center border-b-[1px] border-gray-400 leading-[5px]"><span className="bg-white py-2 px-2">{t('scan:or')}</span></div>    
+                        
+                        <div className="flex flex-col">
+                          <SignInGoogleButton id={id} />
+
+                          <SignInFacebookButton id={id} />
+                        </div>
+                      </>}
+
+                    </form>
+                  </div>
+                </div>
         </main>
 
         </>

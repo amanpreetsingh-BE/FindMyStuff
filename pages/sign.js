@@ -27,6 +27,9 @@ import toast from 'react-hot-toast'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 
+/* Cookie handler */
+import cookie from 'js-cookie'
+
 /* Handle language */
 export async function getStaticProps({ locale }){
     return {
@@ -56,8 +59,13 @@ export default function Sign() {
       }
       if (!user && !loading) {
         setLoaded(true)
-      } 
+      }
     }, [loading])
+
+    useEffect(() => {
+      cookie.remove('showDashFMS')
+    })
+    
 
     /* Handle Modal for forgot pwd */
     const [showModal, setShowModal] = useState(false)

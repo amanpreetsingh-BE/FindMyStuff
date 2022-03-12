@@ -26,16 +26,22 @@ import toast from 'react-hot-toast'
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations'
 import {useTranslation} from 'next-i18next'
 
+/* Cookie handler */
+import cookie from 'js-cookie'
+
 /* Handle language */
 export async function getServerSideProps({ req, locale, query }) {
     // verify the state of the user if USER or ADMIN or INVALID
     
     const userEmail = query.user
-    const firebaseToken = req.cookies.firebaseToken
+    const firebaseToken = await req.cookies.firebaseToken
     const credential = await (fetch(`${process.env.HOSTNAME}/api/credential/?userEmail=${userEmail}&token=${firebaseToken}`))
     const credentialJSON = (await credential.json())
     const invalid = credentialJSON.type == "invalid" ? true : false
     const admin = credentialJSON.type == "admin" ? true : false
+    const createdAt = credentialJSON.createdAt
+    const lastLoginAt =  credentialJSON.lastLoginAt
+
     /* If query id not valid -> return not found */
     
     if(invalid || !firebaseToken) {
@@ -43,7 +49,7 @@ export async function getServerSideProps({ req, locale, query }) {
             notFound: true,
         }
     }
-
+    
     /* FETCH sensitive data only if ADMIN user */
 
     // Get products
@@ -98,12 +104,15 @@ export async function getServerSideProps({ req, locale, query }) {
             qrToGenerateJSON,
             findersJSON,
             admin,
-            hostname
+            hostname,
+            createdAt,
+            lastLoginAt
         }
     }
 }
 
 export default function Dashboard(props) {
+
     /* Handle language */
     const {t} = useTranslation();
     /* Handle user info through hook */
@@ -137,6 +146,17 @@ export default function Dashboard(props) {
         }
     }, [loading])
 
+    const [showDash, setShowDash] = useState(false)
+    useEffect(() => {
+        /* Handle popup hello */
+        if(!cookie.get('showDashFMS') && props.createdAt === props.lastLoginAt && emailVerified){
+            console.log(emailVerified)
+            var in45Minutes = 1/32;
+            cookie.set('showDashFMS', "Cookie allowing to show or not welcome message", {expires : in45Minutes})
+            setShowDash(true)
+        }
+    })
+    
     if(loaded && !emailVerified) {
         return (
             <main>
@@ -154,7 +174,7 @@ export default function Dashboard(props) {
         )
     } else if (loaded && !props.admin){
         return (
-            <UserLayout useState={useState} toast={toast} Link={Link} Image={Image} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} uid={user ? user.uid:null} user={user} hostname={props.hostname} t={t} userProductsJSON={props.userProductsJSON} userNotificationsJSON={props.userNotificationsJSON} />
+            <UserLayout useState={useState} toast={toast} Link={Link} Image={Image} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} uid={user ? user.uid:null} user={user} hostname={props.hostname} showDash={showDash} t={t} userProductsJSON={props.userProductsJSON} userNotificationsJSON={props.userNotificationsJSON} />
         )
     } else if (loaded && props.admin){
         return (

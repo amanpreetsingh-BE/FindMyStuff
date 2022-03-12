@@ -1,6 +1,11 @@
 {
+    "seo": {
+        "title": "FindMyStuff | Bringing back lost objects",
+        "description": "Plateforme permettant de retrouver les objets perdus à l'aide de QR codes",
+        "keywords": "perdu, objet, téléphone, smartphone, gsm, track, trouver, qr, code, chercher, mon, truc, oublié, clefs, portefeuille, sac, trouvé"
+    },
     "heading": "Bringing back lost objects.",
-    "description": "Un code QR est connecté à votre compte. Avez-vous perdu votre objet ? Une liste de points relais sera montré à celui qui retrouve l'objet en scannant le code QR. L'objet est ensuite envoyé à votre adresse.",
+    "description": "Prends soin de tes affaires ! Ne perds plus tes objets grâce au système que nous avons mis en place. Nous rémunérons la personne qui retrouvera ton objet perdu.",
     "nav": {
         "how": "Comment ça fonctionne",
         "prod": "Produits",
@@ -10,12 +15,12 @@
     },
     "hiw": {
         "title": "Comment ça fonctionne ?",
-        "step1": "Once you received your product at home, scan the QR code with your phone. Open the website and follow the instructions.",
-        "step2": "Did you lose your object ? If someone scan the QR and is willing to bring it to the nearest partner drop off point, it will be shipped to your address.",
-        "step3": "Retrieve your object at home and decide to wether reward or not the founder of your precious object.",
+        "step1": "Pour t'enregistrer, scanne le QR code au dos de ton nouveau produit.",
+        "step2": "Une fois ton compte activé et si ton objet est perdu, quiconque retrouvera ton objet pourra scanner à son tour le QR code. Nous lui indiquerons un point relais parmis les 1 400 disponibles en Belgique, dans lequel il pourra déposer ton objet en échange d'une rémunération ou d'un don à une ASBL. ",
+        "step3": "Tu n'as plus qu'à attendre le retour de ton objet ! Tu seras notifié lorsque ton objet aura été livré à ton point relais séléctionné lors de ton activation. Le premier retour est gratuit !",
         "activate": "Activation",
-        "lost": "Perte",
-        "found": "Retrouve"
+        "lost": "Perdu",
+        "found": "Retrouvé"
     },
     "prod": {
         "title":"Configurateur de modèle",
@@ -23,7 +28,7 @@
             "h1" : "Produits",
             "h2": "Choisissez votre couleur",
             "h3" : "Votre selection",
-            "price": "Prix : € 24.99",
+            "price": "Prix : € ",
             "shipping": "Livraison gratuite",
             "packaging": "Packaging premium",
             "material": "Aluminium anodisé",
@@ -32,6 +37,15 @@
             "checkout": "Acheter",
             "stock": "En stock",
             "outStock": "Hors stock"
+        },
+        "stickersCat":{
+            "h1": "Stickers"
+        },
+        "trackerCat":{
+            "h1": "Stickers"
+        },
+        "otherCat":{
+            "h1": "Stickers"
         }
     },
     "contact":{

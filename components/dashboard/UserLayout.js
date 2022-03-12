@@ -27,12 +27,15 @@ const variants = {
     closed: { opacity: 0, x: "-100%" },
 }
 
-function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, lastName, email, uid, user, hostname, t, userProductsJSON, userNotificationsJSON }) {
-
+function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, lastName, email, uid, user, hostname, showDash, t, userProductsJSON, userNotificationsJSON }) {
     const [showModal, setShowModal] = useState(true)
     function openModal(){
         setShowModal(prev => !prev);
     }
+
+    const linkLogo = require('@images/icons/linkedin.png');
+    const fbLogo = require('@images/icons/facebook.png');
+    const instaLogo = require('@images/icons/instagram.png');
 
     /* States for managing open and close of menu */
     const [isMenu, setIsMenu] = useState(true)
@@ -116,16 +119,16 @@ function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, las
 
                 </motion.div>
 
-                {user ? (user.metadata.createdAt == user.metadata.lastLoginAt) ? 
+                {user ? (showDash) ? 
                 <div className='absolute'>
                     <Modal showModal={showModal} setShowModal={setShowModal}>
                         <Swiper slidesPerView={1} pagination={{bulletClass: 'swiper-pagination-bullet', clickable: 'true'}} className='h-full w-full font-nxt '>
                             <SwiperSlide>
                                 <div className='flex h-full justify-center items-center flex-col'>
-                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>{t('dashboard:welcomeModal:h1')}</h1>
-                                    <div className="mx-12 text-center">
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-primary'>{t('dashboard:welcomeModal:h1')}</h1>
+                                    <div className="mx-8 text-center">
                                         <p className='mb-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:s1')}</p>
-                                        <ul className='list-disc border-2 rounded-lg px-8 py-2 text-left text-gray-800'>
+                                        <ul className='list-disc border-2 border-emerald-600 rounded-lg px-8 py-2 text-left text-gray-800'>
                                             <li>{t('dashboard:welcomeModal:l1')}</li>
                                             <li>{t('dashboard:welcomeModal:l2')}</li>
                                             <li>{t('dashboard:welcomeModal:l3')}</li>
@@ -135,37 +138,54 @@ function UserLayout({useState, toast, Link, Image, SignOutButton, firstName, las
                             </SwiperSlide>
                             <SwiperSlide>
                                 <div className='flex h-full justify-center items-center flex-col'>
-                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>{t('dashboard:welcomeModal:h2')}</h1>
-                                    <div className="mx-12 text-center">
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-primary'>{t('dashboard:welcomeModal:h2')}</h1>
+                                    <div className="mx-8 text-center">
                                         <p className='mb-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:s2')}</p>
-                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:d2')}</p>
+                                        <p className='mb-2 border-2 border-emerald-600 rounded-lg px-4 py-4 mt-1 text-gray-800'>{t('dashboard:welcomeModal:d2')}</p>
                                     </div>
                                 </div>
                             </SwiperSlide>
                             <SwiperSlide>
                                 <div className='flex h-full justify-center items-center flex-col'>
-                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>{t('dashboard:welcomeModal:h2')}</h1>
-                                    <div className="mx-12 text-center">
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-primary'>{t('dashboard:welcomeModal:h2')}</h1>
+                                    <div className="mx-8 text-center">
                                         <p className='mb-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:s3')}</p>
-                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:d3')}</p>
+                                        <p className='mb-2 border-2 rounded-lg border-emerald-600 px-4 py-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:d3')}</p>
                                     </div>
                                 </div>
                             </SwiperSlide>
                             <SwiperSlide>
                                 <div className='flex h-full justify-center items-center flex-col'>
-                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>{t('dashboard:welcomeModal:h2')}</h1>
-                                    <div className="mx-12 text-center">
+                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-primary'>{t('dashboard:welcomeModal:h2')}</h1>
+                                    <div className="mx-8 text-center">
                                         <p className='mb-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:s4')}</p>
-                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:d4')}</p>
+                                        <p className='mb-2 border-2 rounded-lg border-emerald-600 px-4 py-4 mt-1 text-gray-800'>{t('dashboard:welcomeModal:d4')}</p>
                                     </div>
                                 </div>
                             </SwiperSlide>
                             <SwiperSlide>
                                 <div className='flex h-full justify-center items-center flex-col'>
-                                    <h1 className='text-lg sm:text-xl font-mono font-bold text-emerald-600'>{t('dashboard:welcomeModal:h3')}</h1>
-                                    <div className="mx-12 text-center">
+                                    <h1 className='text-lg sm:text-xl font-mono mx-8 text-center font-bold text-primary'>{t('dashboard:welcomeModal:h3')}</h1>
+                                    <div className="mx-8 text-center">
                                         <p className='mb-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:s5')}</p>
-                                        <p className='mb-2 border-2 rounded-lg px-2 py-2 mt-1 text-gray-800'>{t('dashboard:welcomeModal:d5')}</p>
+                                        <p className='mb-2 border-2 border-emerald-600 rounded-lg px-4 py-4 mt-1 text-gray-800'>{t('dashboard:welcomeModal:d5')}</p>
+                                    </div>
+                                    <div className="pt-8 space-x-8 md:space-x-12">
+                                        <a href="https://www.facebook.com/findmystuff.be/" target="_blank" rel="noreferrer">
+                                        <div className="cursor-pointer inline-block relative w-[40px] h-[40px] md:w-[60px] md:h-[60px]">
+                                            <Image src={fbLogo} loading='eager' layout="fill" alt="facebook" />
+                                        </div>
+                                        </a>
+                                        <a href="https://www.instagram.com/findmystuff_be/" target="_blank" rel="noreferrer">
+                                        <div className="cursor-pointer inline-block relative w-[40px] h-[40px] md:w-[60px] md:h-[60px]">
+                                            <Image src={instaLogo} loading='eager' layout="fill" alt="insta" />
+                                        </div>
+                                        </a>
+                                        <a href="https://www.linkedin.com/findmystuff.be/" target="_blank" rel="noreferrer">
+                                        <div className="cursor-pointer inline-block relative w-[40px] h-[40px] md:w-[60px] md:h-[60px]">
+                                            <Image src={linkLogo} loading='eager' layout="fill" alt="linkedin" />
+                                        </div>
+                                        </a>
                                     </div>
                                 </div>
                             </SwiperSlide>

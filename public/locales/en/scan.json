@@ -49,5 +49,15 @@
         "emailSendEmpty": "Please enter an email",
         "errorEmailSend": "Error while resetting password",
         "emailSendInvalid": "Please enter valid email"
+    },
+    "noJetons": "If you are the owner of this QR, please recharge your QR via the dashboard.",
+    "chooseRelais": "If you are the owner of this QR, please finish the registration and choose the pickup parcelshop via the dashboard.",
+    "select": {
+        "heading": "Pickup parcelshop",
+        "desc": "Please enter the zip code in order to select the parcelshop in which your lost item will be delivered.",
+        "code": "ZIP code",
+        "popupStreet": "Address : ",
+        "popupCode": "ZIP code : ",
+        "saveBtn": "Confirm"
     }
 }

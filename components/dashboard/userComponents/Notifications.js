@@ -122,23 +122,23 @@ export default function Notifications({ useState, useRef, Modal, t, hostname, to
   }
 
   return (
-    <div className="mt-20 mx-12 lg:mx-auto px-12 py-12 max-w-4xl ">
-        <div className="flex font-mono justify-center items-center font-bold text-2xl lg:text-3xl mb-8">
-          My notifications
+    <div className="mt-20 mx-12 lg:mx-auto px-12 py-12 bg-[#1B212E] max-w-4xl ">
+        <div className="flex text-center font-mono justify-center items-center font-bold text-2xl lg:text-3xl mb-8">
+          {t('dashboard:user:notifPage:heading')}
         </div>
 
 
-        <div className="flex mb-8 border-2 border-blue-600 rounded-lg px-8 py-4 justify-center max-w-7xl xl:mx-auto items-center font-bold text-md shadow-lg">
-          Scan notifications
+        <div className="flex text-center mb-8 border-2 border-blue-600 rounded-lg px-8 py-4 justify-center max-w-7xl xl:mx-auto items-center font-bold text-md shadow-lg">
+        {t('dashboard:user:notifPage:h1')}
         </div>
         <div className={userNotificationsJSON.length > 0 ? notifClass : emptyNotifsClass}>
-          {(userNotificationsJSON.length > 0 && scanNotifs) ? renderScan(userNotificationsJSON) : <div>There is still no scan notifications</div>}
+          {(userNotificationsJSON.length > 0 && scanNotifs) ? renderScan(userNotificationsJSON) : <div className="text-center max-w-sm">{t('dashboard:user:notifPage:empty1')}</div>}
         </div>
-        <div className="flex my-8 border-2 border-blue-600 rounded-lg px-8 py-4 justify-center max-w-7xl xl:mx-auto items-center font-bold text-md shadow-lg">
-          Delivery notifications 
+        <div className="flex text-center my-8 border-2 border-blue-600 rounded-lg px-8 py-4 justify-center max-w-7xl xl:mx-auto items-center font-bold text-md shadow-lg">
+        {t('dashboard:user:notifPage:h2')}
         </div>
         <div className={userNotificationsJSON.length > 0 ? notifClass : emptyNotifsClass}>
-          {(userNotificationsJSON.length > 0 && deliveryNotifs) ? renderDelivery(userNotificationsJSON) : <div>There is still no delivery notifications</div>}
+          {(userNotificationsJSON.length > 0 && deliveryNotifs) ? renderDelivery(userNotificationsJSON) : <div className="text-center max-w-sm">{t('dashboard:user:notifPage:empty2')}</div>}
         </div>
         
     </div>

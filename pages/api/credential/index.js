@@ -11,6 +11,8 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       try {
         var type = ""
+        var createdAt = ""
+        var lastLoginAt = ""
         const userEmail = req.query.userEmail
         const token = req.query.token
         const decodedToken = await app.auth().verifyIdToken(token, true)
@@ -26,8 +28,10 @@ export default async function handler(req, res) {
                       if(doc.data().admin){
                         type = "admin"
                       }
-                      else{
+                      else {
                         type = "user"
+                        createdAt = user.metadata.creationTime
+                        lastLoginAt = user.metadata.lastSignInTime
                       }
                   })
               }
@@ -35,7 +39,7 @@ export default async function handler(req, res) {
         } else {
           type = "invalid"
         }
-        res.json({type});
+        res.json({type, createdAt, lastLoginAt});
       } catch (err) {
         res.status(err.statusCode || 500).json({error:err.message});
       }

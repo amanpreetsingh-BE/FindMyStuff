@@ -50,6 +50,7 @@ export async function getServerSideProps({ query, req, res, locale }) {
                             ...(await serverSideTranslations(locale, ['scan'])),
                             locale,
                             id,
+                            emailQR,
                             activate,
                             hostname
                         },
@@ -77,7 +78,10 @@ export async function getServerSideProps({ query, req, res, locale }) {
     }
 }
 
-export default function SelectPage({ id, hostname, locale }) {
+export default function SelectPage({ id, emailQR, hostname, locale }) {
+  
+    /* Handle language */
+  const {t} = useTranslation();
 
   const en_flag = require('@images/icons/gb.svg')
   const fr_flag = require('@images/icons/fr.svg')
@@ -116,12 +120,12 @@ export default function SelectPage({ id, hostname, locale }) {
               </button>
               <ul className="absolute hidden text-gray-700 pt-1 group-hover:block">
                   <li className="">
-                      <a href={`/en/scan/select`}
+                    <a href={`/en/scan/select?id=${id}&user=${emailQR}`}
                       className="rounded-t cursor-pointer bg-transparent hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
                       ><Image src={en_flag} priority quality="100" width={30} height={22} alt="flag"/></a>
                   </li>
                   <li className="">
-                    <a href={`/fr/scan/select`}
+                    <a href={`/fr/scan/select?id=${id}&user=${emailQR}`}
                       className="bg-transparent cursor-pointer hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
                       ><Image src={fr_flag} priority quality="100" width={30} height={22} alt="flag"/></a>
                   </li>
@@ -158,8 +162,8 @@ export default function SelectPage({ id, hostname, locale }) {
                 }}>
                 <Popup>
                     <div className='text-lg font-bold'>{heading}</div>
-                    <div className='text-sm font-md'>Address : {street}</div>
-                    <div className='text-sm font-md mb-6'>Code postal : {code}</div>
+                    <div className='text-sm font-md'>{t('scan:select:popupStreet')} {street}</div>
+                    <div className='text-sm font-md mb-6'>{t('scan:select:popupCode')} {code}</div>
                     <div className='flex justify-center items-center'><Image src={urlPhoto} width={200} height={200} /></div>
                 </Popup>
             </Marker>
@@ -230,11 +234,11 @@ export default function SelectPage({ id, hostname, locale }) {
             {LanguageBox(locale, fr_flag, en_flag)}    
         </div>
         
-        <div className="font-bold text-xl sm:text-2xl -mt-8">Point relais</div>
-        <div>Indiquez votre code postal afin de selectionner l'endroit ou votre objet sera remis</div>
+        <div className="font-bold text-xl sm:text-2xl -mt-8">{t('scan:select:heading')}</div>
+        <div>{t('scan:select:desc')}</div>
         <div className='mt-8'>
             
-            <label htmlFor="cp" className="block-inline text-sm font-medium text-gray-200">Code postal</label>
+            <label htmlFor="cp" className="block-inline text-sm font-medium text-gray-200">{t('scan:select:code')}</label>
             <form className="mt-1 flex justify-start" onSubmit={handleLoc}>
                 <input className='w-32' id="cp" name="cp" type="number" ref={cp} required/>
                 <button className="max-w-xl ml-2 py-2 px-4 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg"><LocationMarkerIcon className='w-6 h-6 text-white' /></button>
@@ -251,13 +255,13 @@ export default function SelectPage({ id, hostname, locale }) {
                         </>
                     )}
                 </Map> : ''}
-                {selected ? 
+            </div>
+            {selected ? 
                     <div className='flex justify-center items-center'>
-                        <button className='max-w-xl py-4 mt-12 px-4 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg' onClick={handleRegister}>Enregister</button>
+                        <button className='max-w-xl py-4 mt-12 px-4 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg' onClick={handleRegister}>{t('scan:select:saveBtn')}</button>
                     </div>
                     : ''
-                }
-            </div>
+            }
 
         </div>
 
