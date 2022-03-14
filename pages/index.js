@@ -109,8 +109,6 @@ export default function Home({locale, productsJSON, hostname}) {
         </div>
 
         
-
-        
         {/* Products */}
         <ProductsSection hostname={hostname} motion={motion} toast={toast} useState={useState} t={t} Image={Image} productsJSON={productsJSON} locale={locale} />
         

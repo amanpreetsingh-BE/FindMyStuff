@@ -197,7 +197,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
               sendEmailVerification(auth.currentUser)
               .then(() => {
                 handleRegister(id, auth.currentUser.email)
-                router.push(`/scan/select/?id=${id}&user=${auth.currentUser.email}`)
+                router.push(`${hostname}/scan/select/?id=${id}&user=${auth.currentUser.email}`)
               });
             }).catch((error) => {
               console.error(error);
@@ -235,7 +235,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
       signInWithEmailAndPassword(auth, formEmail.current.value, formPassword.current.value).then(
         (userCredential)=>{
             handleRegister(id, formEmail.current.value)
-            router.push(`/scan/select/?id=${id}&user=${formEmail.current.value}`)
+            router.push(`${hostname}/scan/select/?id=${id}&user=${formEmail.current.value}`)
         }
       ).catch(
         function(err){
@@ -628,9 +628,9 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
                         <input id="terms-and-privacy" name="terms-and-privacy" required type="checkbox" />
                         <label htmlFor="terms-and-privacy" className="ml-2 block text-sm text-gray-900">
                           <span> {t('scan:agree')} </span>
-                          <a href="terms" target="_blank" rel="noreferrer" className="text-indigo-600 hover:text-indigo-500">{t('scan:terms')}</a>
+                          <a href={`${hostname}/terms`} target="_blank" rel="noreferrer" className="text-indigo-600 hover:text-indigo-500">{t('scan:terms')}</a>
                           <span> {t('scan:and')} </span> 
-                          <a href="privacy" target="_blank" rel="noreferrer" className="text-indigo-600 hover:text-indigo-500">{t('scan:privacy')}</a>
+                          <a href={`${hostname}/privacy`} target="_blank" rel="noreferrer" className="text-indigo-600 hover:text-indigo-500">{t('scan:privacy')}</a>
                         </label>
                       </div>
 
@@ -718,7 +718,7 @@ function SignInGoogleButton(id) {
         const userDoc = doc(firestore, "users", `${userCredential.user.uid}`);
         manageGoogleUserData(userDoc, userCredential)
         handleRegister(id, userCredential.user.email)
-        router.push(`/scan/select/?id=${id}&user=${userCredential.user.email}`)
+        router.push(`${hostname}/scan/select/?id=${id}&user=${userCredential.user.email}`)
         //router.push(`/dashboard/?user=${userCredential.user.email}`)
       }).catch((error) => {
         const errorMessage = error.message;
@@ -770,7 +770,7 @@ function SignInGoogleButton(id) {
         const userDoc = doc(firestore, "users", `${userCredential.user.uid}`);
         manageFacebookUserData(userDoc, userCredential)
         handleRegister(id, userCredential.user.email)
-        router.push(`/scan/select/?id=${id}&user=${userCredential.user.email}`)
+        router.push(`${hostname}/scan/select/?id=${id}&user=${userCredential.user.email}`)
       }).catch((error) => {
         const errorMessage = error.message;
         console.log(errorMessage)
