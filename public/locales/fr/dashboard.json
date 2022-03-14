@@ -75,7 +75,7 @@
             "l2": "Jetons",
             "changeDelivery": "Modify",
             "back": "Précédent",
-            "tokenDesc": "Le nombre de jetons est le nombre de livraisons, si il n'y a plus de jetons, il faut recharger 3.5e pour que la livraison puisse se faire en cas d'objet retrouvé.",
+            "tokenDesc": "Le nombre de jetons est le nombre de livraisons, si il n'y a plus de jetons, il faut recharger 7.5e pour que la livraison puisse se faire en cas d'objet retrouvé.",
             "tokenState": "Nombre de jetons actuel : ",
             "reloadBtn": "Recharger"
         },

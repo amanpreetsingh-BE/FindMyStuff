@@ -110,7 +110,8 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
   const [checked, setChecked] = useState(true);
   const fullName = useRef()
   const iban = useRef()
-  const delay = 2;
+
+  const delay = 3;
   useEffect(
     () => {
       let timer1 = setTimeout(() => setShow(false), delay * 1000);
@@ -241,6 +242,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
       setFormLoading(false)
     }
   }
+  
   const resetPassword = async (e) => {
     e.preventDefault()
     sendPasswordResetEmail(auth, formForgot.current.value)
@@ -269,13 +271,13 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
   const handleGenerateQR = async (e) => {
     e.preventDefault()
     if(!checked && (fullName.current.value == "" || iban.current.value == "")){
-      return toast.error("Merci de rentrer votre IBAN et votre nom complet")
+      return toast.error(t('scan:found:errorRew'))
     } else {
       const exp = 2505600
       let data = null
 
       if(timestamp && Timestamp.now().seconds < timestamp+exp){
-        /* CASE 1 : Already generated before, and not expired */
+
         data = {
           fullName: checked ? "":fullName.current.value ,
           iban: checked ? "":iban.current.value,
@@ -286,10 +288,9 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
         }
 
       } else if (timestamp && Timestamp.now().seconds >= timestamp+exp){
-        /* CASE 2 : Already generated before, and expired */
         data = {
-          fullName: checked ? "":fullName.current.value,
-          iban: checked ? "":iban.current.value ,
+          fullName: checked ? "" : fullName.current.value,
+          iban: checked ? "" : iban.current.value ,
           id: id,
           expire: true,
           timestamp: timestamp,
@@ -297,10 +298,9 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
         }
 
       } else {
-        /* CASE 3 : never generated before */
         data = {
-          fullName: checked ? "":fullName.current.value,
-          iban: checked ? "":iban.current.value,
+          fullName: checked ? "" : fullName.current.value,
+          iban: checked ? "" : iban.current.value,
           id: id,
           expire: null,
           timestamp: timestamp,
@@ -347,9 +347,9 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
                 }}>
                 <Popup>
                     <div className='text-lg font-bold'>{heading}</div>
-                    <div className='text-sm font-md'>Address : {street}</div>
-                    <div className='text-sm font-md mb-6'>Code postal : {code}</div>
-                    <div className='flex justify-center items-center'><Image src={urlPhoto} width={200} height={200} /></div>
+                    <div className='text-sm font-md'>{t('scan:select:popupStreet')} {street}</div>
+                    <div className='text-sm font-md mb-6'>{t('scan:select:popupCode')} {code}</div>
+                    <div className='flex justify-center items-center'><Image src={urlPhoto} width={150} height={150} /></div>
                 </Popup>
             </Marker>
         )
@@ -377,7 +377,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
         setCenter([zipJSON.filter(({zip}) => zip === cp.current.value)[0].lat,zipJSON.filter(({zip}) => zip === cp.current.value)[0].lng])
         setSelected(true)
     } catch(err){
-        return toast.error(err.message)
+      return toast.error(t('scan:select:errLoc'))
     }
   }
 
@@ -434,47 +434,53 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
     )
   } else if(activate) {
     return(
-      <main className="w-full flex flex-col justify-center items-center text-white bg-primary h-screen">
+      <main className="w-full flex flex-col justify-center items-center text-white bg-primary min-h-screen">
         <div className='absolute top-16 right-4'>{LanguageBox(id, locale, fr_flag, en_flag)}</div>
         {step == 0 ?
           <div className='flex items-center justify-center flex-col'>
             {show ? <Image src={animatedFound} width={300} height={300} /> : 
             <>
               <div className='border-gray-500 border-2 space-y-4 py-12 px-4 max-w-sm mx-12 text-center rounded-lg'>
-                <p>L'objet attaché au code QR que vous avez scannez est perdu.</p>
-                <p className='text-sm font-extrabold'>Et vous venez juste de le retrouver</p> 
+                <p>{t('scan:found:H1')}</p>
+                <p className='text-sm font-extrabold'>{t('scan:found:h1')}</p> 
               </div>
               <div className='text-center mx-12 mt-4 text-gray-300'>
-                En plus d'accomplir une <b>bonne action</b>, vous êtes <b>recompenser</b> pour la faire, souhaitez-vous en apprendre plus ?
+              {t('scan:found:desc1')}
               </div>
-              <button onClick={()=>setStep(1)} className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-emerald-500 hover:border-emerald-600 rounded-lg">YES</button>
+              <button onClick={()=>setStep(1)} className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-emerald-500 hover:border-emerald-600 rounded-lg">{t('scan:found:btn1')}</button>
             </>}
           </div> : step == 1 ? 
-            <div className='flex items-center justify-center flex-col'>
+            <div className='flex items-center justify-center flex-col my-12'>
               <div className='border-gray-500 border-2 space-y-4 py-1 px-8 max-w-sm mx-4 mt-12 text-center rounded-lg'>
                 <ul className='list-disc text-left space-y-2'>
-                  <li>En cliquant sur le bouton "GENERER", un code QR sera crée dans un délai d'au maximum 15 minutes</li>
-                  <li>Il suffit ensuite de présenter ce code QR au gérant du point relais avec l'objet perdu et celui-ci se charge du reste. Pensez à emballer l'objet perdu</li>
-                  <li>Sur la page suivant, une liste de points relais se situant aux alentours de votre localisation (code postal) est affiché</li>
+                  <li>{t('scan:found:li1')}</li>
+                  <li>{t('scan:found:li2')}</li>
+                  <li>{t('scan:found:li3')}</li>
                 </ul>
               </div>
               <div className='text-center mx-12 mt-4 text-gray-300'>
-                  <div className="flex items-center text-left">
-                      <input id="how" name="how" type="checkbox" checked={checked} onChange={()=>setChecked(!checked)} />
-                      <label htmlFor="how" className="ml-4 block text-sm max-w-xs text-white-300">
-                        En réalisant ces étapes, vous serez récompensez d'un montant de 3e.
-                        Je souhaite que ce montant soit versé à l'association des petits riens
-                      </label>
+                  <div className="form-check flex mt-2 justify-center items-center">
+                    <input className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked={checked} onChange={()=>setChecked(!checked)}/>
+                    <label className="form-check-label text-left max-w-sm inline-block text-gray-200" htmlFor="flexRadioDefault1">
+                      {t('scan:found:optA')}
+                    </label>
                   </div>
+                  <div className="form-check flex mt-2 justify-center items-center">
+                    <input className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked={!checked} onChange={()=>setChecked(!checked)} />
+                    <label className="form-check-label text-left max-w-sm inline-block text-gray-200" htmlFor="flexRadioDefault2">
+                      {t('scan:found:optA')}
+                    </label>
+                  </div>
+            
                   {checked ? "" : 
                     <div>
-                      <div className='mt-1'>
+                      <div className='mt-4 max-w-xs mx-auto'>
                         <label htmlFor="textFullname" className="block text-sm font-medium text-left text-gray-300">Fullname</label>
                         <div className="mt-1 ">
                           <input id="textFullname" name="textFullname" type="text" ref={fullName} required/>
                         </div>
                       </div>
-                      <div className='mt-1'>
+                      <div className='mt-1 max-w-xs mx-auto'>
                         <label htmlFor="iban" className="block text-sm font-medium text-left text-gray-300">IBAN</label>
                         <div className="mt-1 ">
                           <input id="iban" name="iban" type="text" ref={iban} required/>
@@ -484,14 +490,14 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
                     </div>
                   }
               </div>
-              <button onClick={handleGenerateQR} className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-emerald-500 hover:border-emerald-600 rounded-lg cursor-pointer">GENERER</button>
+              <button onClick={handleGenerateQR} className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-emerald-500 hover:border-emerald-600 rounded-lg cursor-pointer">{t('scan:found:btn2')}</button>
               <div className='flex justify-end'><ArrowCircleLeftIcon onClick={()=>setStep(0)} className='text-white cursor-pointer w-6 h-6'/></div>
 
           </div> : step == 2 ? 
           <div className='flex -mt-24 items-center justify-start flex-col'>
                   <div className='w-[98%]'>
             
-                    <label htmlFor="cp" className="block-inline text-sm font-medium text-gray-200">ZIP code</label>
+                    <label htmlFor="cp" className="block-inline text-sm font-medium text-gray-200">{t('scan:found:qrZIP')}</label>
                     <form className="mt-1 flex justify-start" onSubmit={handleLoc}>
                         <input className='w-32' id="cp" name="cp" type="number" ref={cp} required/>
                         <button className="max-w-xl ml-2 py-2 px-4 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg"><LocationMarkerIcon className='w-6 h-6 text-white inline' /></button>
@@ -513,7 +519,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
                 </div>
                 {pdf ?
                   <>
-                    <div className='text-center max-w-xs px-4 my-4'>Please present this QR code to the nearest pickup point !</div>
+                    <div className='text-center max-w-xs px-4 my-4'>{t('scan:found:qrGenerated')}</div>
                     <div style={{ position:"absolute", top:selected ? "70%":"60%", clip: "rect(25px,130px,147px,9px)"}}>
                         <Document className={""} file={`${pdf}`}>
                             <Page height={200} wrap={false} pageNumber={1}/>
@@ -522,7 +528,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
                   </>
                  : 
                  <>
-                  <div className='text-center max-w-xs my-4'> Le code QR apparaîtra au maximum dans 15 minutes</div>
+                  <div className='text-center max-w-xs my-4'>{t('scan:found:qrGeneration')}</div>
                   <svg role="status" className="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-300 fill-emerald-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                       <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>

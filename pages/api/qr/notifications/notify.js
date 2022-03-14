@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         const id = req.body.id
         const email = req.body.email
 
-        var hbs = require('nodemailer-express-handlebars');
+        /*var hbs = require('nodemailer-express-handlebars');
         var nodemailer = require('nodemailer')
         const path = require("path")
 
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
             context: {
                 id: id,
             },
-        }
+        }*/
 
         try {
             const notifRef = app.firestore().collection("notifications").doc(id)
@@ -55,7 +55,7 @@ export default async function handler(req, res) {
                     notifRef.update({
                         scan: s
                     })
-                    await transporter.sendMail(mail)
+                    // await transporter.sendMail(mail)
                     res.status(200).json({success:true})
                 } else {
                     var s = []
@@ -70,7 +70,7 @@ export default async function handler(req, res) {
                         delivery: [],
                         needToGenerate: false,
                     })
-                    await transporter.sendMail(mail)
+                    // await transporter.sendMail(mail)
                     res.status(200).json({success:false})
                 }
             })

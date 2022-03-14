@@ -76,7 +76,7 @@
             "l2": "Tokens",
             "changeDelivery": "Modify",
             "back": "Go back",
-            "tokenDesc": "The number of tokens is the nimber of delivery remaining, if there is no token available, you need to reload the QR.",
+            "tokenDesc": "The number of tokens is the nimber of delivery remaining, if there is no token available, you need to reload the QR (7.5e) to make the delivery possible.",
             "tokenState": "Number of remaining tokens : ",
             "reloadBtn": "Reload"
         },

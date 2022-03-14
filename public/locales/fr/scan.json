@@ -61,5 +61,21 @@
         "success" : "Le point relais a été choisi !",
         "err": "Error",
         "errLoc": "Code postal erroné"
+    },
+    "found":{
+        "H1": "L'objet attaché au code QR que vous avez scannez est perdu.",
+        "h1": "Et vous venez juste de le retrouver",
+        "desc1": "En plus d'accomplir une bonne action, vous êtes recompenser pour la faire, souhaitez-vous en apprendre plus ?",
+        "btn1": "OUI",
+        "li1" : "En cliquant sur le bouton 'GENERER', un code QR sera crée dans un délai d'au maximum 15 minutes",
+        "li2" : "Il suffit ensuite de présenter ce code QR au gérant du point relais avec l'objet perdu et celui-ci se charge du reste. Pensez à emballer l'objet perdu",
+        "li3" : "Sur la page suivant, une liste de points relais se situant aux alentours de votre localisation (code postal) est affiché",
+        "btn2": "GENERER",
+        "optB": "En réalisant ces étapes, vous serez récompensez d'un montant de 3e. Je souhaite que ce montant soit versé sur mon compte en banque",
+        "optA": "En réalisant ces étapes, vous serez récompensez d'un montant de 3e. Je souhaite que ce montant soit versé à l'association des petits riens",
+        "errorRew": "Merci de rentrer votre IBAN et votre nom complet",
+        "qrZIP": "Code postal",
+        "qrGeneration": "Le code QR apparaîtra au maximum dans 15 minutes",
+        "qrGenerated": "Merci de présenter le packet au point relais le plus proche avec ce code QR !"
     }
 }

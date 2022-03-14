@@ -48,7 +48,23 @@
             "del1": "Vos informations personnelles seront supprimées de nos serveurs (nom, prénom et email)",
             "del2": "Vos QRs seront désactivés",
             "del3": "En appuyant sur 'supprimer', vos acceptez les points précédants",
-            "delBtn": "SUPPRIMER"
+            "delBtn": "SUPPRIMER",
+            "delSuccess": "Votre compte et informations personnelles ont été supprimés !",
+            "updateFL": "Merci de mettre à jour votre nom et/ou prénom !",
+            "updateSpecialC": "Les caractères spéciaux ne sont pas autorisés !",
+            "tooMuch": "Trop de caractères pour votre nom/prénom !",
+            "tooSmall": "Votre nom/prénom doit faire au moins 3 caractères !",
+            "pupdate": "Vos informations personnelles ont été mis à jour !",
+            "forgot":{
+                "heading":"Mot de passe oublié ?",
+                "desc" : "Merci de rentrer votre adresse mail pour réinitialiser votre mot de passe. Vous allez recevoir un email avec un lien de réinitialisation.",
+                "rstButtonText":"Réinitialiser",
+                "emailSendSuccess": "Email de réinitialisation envoyé",
+                "emailSendUser": "Utilisateur non existant",
+                "emailSendEmpty": "Merci de rentrer une adresse mail",
+                "errorEmailSend": "Erreur lors de la réinitialisation",
+                "emailSendInvalid": "Merci de rentrer une adresse mail valide"
+            }
         },
         "prodPage":{
             "heading": "Mes produits",
@@ -59,7 +75,7 @@
             "l2": "Jetons",
             "changeDelivery": "Modify",
             "back": "Précédent",
-            "tokenDesc": "Le nombre de jetons est le nombre de livraisons, si il n'y a plus de jetons, il faut recharger 3.5e pour que la livraison puisse se faire en cas d'objet retrouvé.",
+            "tokenDesc": "Le nombre de jetons est le nombre de livraisons, si il n'y a plus de jetons, il faut recharger 7.5e pour que la livraison puisse se faire en cas d'objet retrouvé.",
             "tokenState": "Nombre de jetons actuel : ",
             "reloadBtn": "Recharger"
         },
@@ -68,7 +84,10 @@
             "h1": "Notifications de scans",
             "empty1": "Pour l'instant, il n'y a toujours pas d'objets vous appartenant ayant été scanné.",
             "h2": "Notifications de livraisons",
-            "empty2": "Pour l'instant, il n'y a toujours pas d'objets perdus en cours de livraisons à votre point relais."
+            "empty2": "Pour l'instant, il n'y a toujours pas d'objets perdus en cours de livraisons à votre point relais.",
+            "scanned": "Scanné le : ",
+            "sent": "Envoyé le : ",
+            "clear": "supprimer notifications"
         }
     },
     "welcomeModal":{
