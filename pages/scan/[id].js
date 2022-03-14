@@ -79,7 +79,8 @@ export async function getServerSideProps({ req, params, locale }) {
 }
 
 export default function ScanPage({id, activate, email, timestamp, pdf, hostname, locale, jetons}) {
-  
+  console.log(email)
+  console.log(id)
   /* Handle language */
   const {t} = useTranslation();
 
@@ -145,9 +146,10 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
         id: id,
         email: email,
     }
+    console.log(data)
     
     try{
-      const response = await (fetch(`${hostname}/api/qr/register`, {
+      const response = await (fetch(`${hostname}/api/qr/register/`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -158,11 +160,9 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
       const responseJSON = await (response.json())
       if(responseJSON.success){
           return toast.success(t('scan:successQRregister'))
-      } else {
-          return toast.success(responseJSON.err)
       }
     } catch(err){
-      return toast.success(err.message)
+      return toast.error(err.message)
     }
   }
 
