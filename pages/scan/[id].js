@@ -113,11 +113,6 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
   const fullName = useRef()
   const iban = useRef()
 
-  const { user } = useContext(UserContext)
-  if(user){
-    auth.signOut()
-  }
-
   const delay = 3;
   useEffect(
     () => {
