@@ -27,7 +27,7 @@ export async function getServerSideProps({ query, req, res, locale }) {
 
     // is connected and email in query
     if(firebaseToken && email){
-        const credential = await (fetch(`${hostname}/api/credential/?userEmail=${email}&token=${firebaseToken}`))
+        const credential = await (fetch(`${hostname}/api/credential?userEmail=${email}&token=${firebaseToken}`))
         const credentialJSON = (await credential.json())
         const invalid = credentialJSON.type == "invalid" ? true : false
         // is connected and email and query by the good user
@@ -56,10 +56,13 @@ export async function getServerSideProps({ query, req, res, locale }) {
                         },
                     }
                 } else if(!activate && emailQR==""){
-                        res.setHeader("Location", `${hostname}/${locale}/scan/${id}`);
+                        /*res.setHeader("Location", `${hostname}/${locale}/scan/${id}`);
                         res.statusCode = 302;
                         res.end();
-                        return {props: {}}
+                        return {props: {}}*/
+                        return {
+                            notFound: true
+                        }
                 } else {
                     return {
                         notFound: true
@@ -79,7 +82,8 @@ export async function getServerSideProps({ query, req, res, locale }) {
 }
 
 export default function SelectPage({ id, emailQR, hostname, locale }) {
-  
+  console.log(emailQR)
+  console.log(id)
     /* Handle language */
   const {t} = useTranslation();
 

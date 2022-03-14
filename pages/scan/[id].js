@@ -140,25 +140,29 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
   }
 
   const handleRegister = async (id, email) => {
-    
+
     const data = {
         id: id,
         email: email,
     }
     
-    const response = await (fetch(`${hostname}/api/qr/register`, {
+    try{
+      const response = await (fetch(`${hostname}/api/qr/register`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data) 
-    }));
-    const responseJSON = await (response.json())
-    if(responseJSON.success){
-        return toast.success(t('scan:successQRregister'))
-    } else {
-        return toast.success(responseJSON.err)
+      }));
+      const responseJSON = await (response.json())
+      if(responseJSON.success){
+          return toast.success(t('scan:successQRregister'))
+      } else {
+          return toast.success(responseJSON.err)
+      }
+    } catch(err){
+      return toast.success(err.message)
     }
   }
 
@@ -195,9 +199,9 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
 
             batch.commit().then(() => {
               sendEmailVerification(auth.currentUser)
-              .then(() => {
-                handleRegister(id, auth.currentUser.email)
-                router.push(`${hostname}/scan/select/?id=${id}&user=${auth.currentUser.email}`)
+              .then(async () => {
+                await handleRegister(id, auth.currentUser.email)
+                router.push(`${hostname}/scan/select?id=${id}&user=${auth.currentUser.email}`)
               });
             }).catch((error) => {
               console.error(error);
@@ -233,9 +237,9 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
       setFormLoading(true)
 
       signInWithEmailAndPassword(auth, formEmail.current.value, formPassword.current.value).then(
-        (userCredential)=>{
-            handleRegister(id, formEmail.current.value)
-            router.push(`${hostname}/scan/select/?id=${id}&user=${formEmail.current.value}`)
+        async (userCredential)=>{
+            await handleRegister(id, formEmail.current.value)
+            router.push(`${hostname}/scan/select?id=${id}&user=${formEmail.current.value}`)
         }
       ).catch(
         function(err){
@@ -714,11 +718,11 @@ function SignInGoogleButton(id) {
         prompt: "select_account"
       });
       await signInWithPopup(auth, googleProvider)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const userDoc = doc(firestore, "users", `${userCredential.user.uid}`);
         manageGoogleUserData(userDoc, userCredential)
-        handleRegister(id, userCredential.user.email)
-        router.push(`${hostname}/scan/select/?id=${id}&user=${userCredential.user.email}`)
+        await handleRegister(id, userCredential.user.email)
+        router.push(`${hostname}/scan/select?id=${id}&user=${userCredential.user.email}`)
         //router.push(`/dashboard/?user=${userCredential.user.email}`)
       }).catch((error) => {
         const errorMessage = error.message;
@@ -766,11 +770,11 @@ function SignInGoogleButton(id) {
         prompt: "select_account"
       });
       await signInWithPopup(auth, facebookProvider)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const userDoc = doc(firestore, "users", `${userCredential.user.uid}`);
         manageFacebookUserData(userDoc, userCredential)
-        handleRegister(id, userCredential.user.email)
-        router.push(`${hostname}/scan/select/?id=${id}&user=${userCredential.user.email}`)
+        await handleRegister(id, userCredential.user.email)
+        router.push(`${hostname}/scan/select?id=${id}&user=${userCredential.user.email}`)
       }).catch((error) => {
         const errorMessage = error.message;
         console.log(errorMessage)

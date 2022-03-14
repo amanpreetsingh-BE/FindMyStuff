@@ -35,7 +35,7 @@ export async function getServerSideProps({ req, locale, query }) {
     
     const userEmail = query.user
     const firebaseToken = await req.cookies.firebaseToken
-    const credential = await (fetch(`${process.env.HOSTNAME}/api/credential/?userEmail=${userEmail}&token=${firebaseToken}`))
+    const credential = await (fetch(`${process.env.HOSTNAME}/api/credential?userEmail=${userEmail}&token=${firebaseToken}`))
     const credentialJSON = (await credential.json())
     const invalid = credentialJSON.type == "invalid" ? true : false
     const admin = credentialJSON.type == "admin" ? true : false
