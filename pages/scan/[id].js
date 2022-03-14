@@ -87,7 +87,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
   const icon = require('@images/icons/icon_white.svg');
   const en_flag = require('@images/icons/gb.svg')
   const fr_flag = require('@images/icons/fr.svg')
-  const animatedFound = require('@images/scan/animatedFoundNoLoop.gif')
+  const animatedFound = require('@images/scan/animatedFounNoLoopBlue.gif')
   const [step, setStep] = useState(0)
 
   /* handle signup or sigin state and loaded user */
@@ -151,7 +151,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
     }));
     const responseJSON = await (response.json())
     if(responseJSON.success){
-        return toast.success("Success")
+        return toast.success(t('scan:successQRregister'))
     } else {
         return toast.success(responseJSON.err)
     }

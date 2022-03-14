@@ -50,6 +50,7 @@
         "errorEmailSend": "Error while resetting password",
         "emailSendInvalid": "Please enter valid email"
     },
+    "successQRregister" : "Successful registration !", 
     "noJetons": "If you are the owner of this QR, please recharge your QR via the dashboard.",
     "chooseRelais": "If you are the owner of this QR, please finish the registration and choose the pickup parcelshop via the dashboard.",
     "select": {
@@ -58,6 +59,9 @@
         "code": "ZIP code",
         "popupStreet": "Address : ",
         "popupCode": "ZIP code : ",
-        "saveBtn": "Confirm"
+        "saveBtn": "Confirm",
+        "success" : "The pickup point has been chosen !",
+        "err": "Error",
+        "errLoc": "Please enter a valid ZIP code"
     }
 }

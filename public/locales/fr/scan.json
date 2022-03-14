@@ -48,6 +48,7 @@
         "errorEmailSend": "Erreur lors de la réinitialisation",
         "emailSendInvalid": "Merci de rentrer une adresse mail valide"
     },
+    "successQRregister" : "Enregistrement réussi !", 
     "noJetons": "Si vous êtes le propriétaire de ce QR, merci de bien vouloir recharger votre jeton afin qu'on puisse le remettre dans votre point relais de votre choix.",
     "chooseRelais": "Si vous êtes le propriétaire de ce QR, merci de bien vouloir finir l'enregistrement en choisissant le point relais sur le dashboard.",
     "select": {
@@ -56,6 +57,9 @@
         "code": "Code postal",
         "popupStreet": "Addresse : ",
         "popupCode": "Code postal : ",
-        "saveBtn": "Enregistrer"
+        "saveBtn": "Enregistrer",
+        "success" : "Le point relais a été choisi !",
+        "err": "Error",
+        "errLoc": "Code postal erroné"
     }
 }

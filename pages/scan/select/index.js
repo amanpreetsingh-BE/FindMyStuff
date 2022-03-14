@@ -192,7 +192,7 @@ export default function SelectPage({ id, emailQR, hostname, locale }) {
         setCenter([zipJSON.filter(({zip}) => zip === cp.current.value)[0].lat,zipJSON.filter(({zip}) => zip === cp.current.value)[0].lng])
         setSelected(true)
     } catch(err){
-        return toast.error(err.message)
+        return toast.error(t('scan:select:errLoc'))
     }
   }
 
@@ -217,13 +217,13 @@ export default function SelectPage({ id, emailQR, hostname, locale }) {
                 }));
                 const responseJSON = await (response.json())
                 if(responseJSON.success){
-                    toast.success("Enregistrement fini !")
+                    toast.success(t('scan:select:success'))
                     router.push(`/dashboard/?user=${email}`)
                 } else{
-                    toast.success("Erreur lors de l'enregistrement !")
+                    toast.error(t('scan:select:err'))
                 }
             } catch(err){
-                return toast.error(err.message)
+                return toast.error(t('scan:select:err'))
             }
       }
   }

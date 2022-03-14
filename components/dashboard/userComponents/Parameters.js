@@ -19,18 +19,18 @@ export default function Parameters({ useState, useRef, Modal, t, hostname, toast
     e.preventDefault()
     sendPasswordResetEmail(auth, email)
     .then(() => {
-      toast.success(t('sign:forgot:emailSendSuccess')) 
+      toast.success(t('dashboard:user:paramPage:forgot:emailSendSuccess')) 
     })
     .catch((error) => {
       const errorMessage = error.code;
       if(errorMessage=="auth/user-not-found"){
-        return toast.error(t('sign:forgot:emailSendUser'))
+        return toast.error(t('dashboard:user:paramPage:forgot:emailSendUser'))
       } else if(errorMessage=="auth/missing-email"){
-        return toast.error(t('sign:forgot:emailSendEmpty'))
+        return toast.error(t('dashboard:user:paramPage:forgot:forgot:emailSendEmpty'))
       } else if(errorMessage=="auth/invalid-email"){
-        return toast.error(t('sign:forgot:emailSendInvalid'))
+        return toast.error(t('dashboard:user:paramPage:forgot:forgot:emailSendInvalid'))
       } else{
-        return toast.error(t('sign:forgot:errorEmailSend'))
+        return toast.error(t('dashboard:user:paramPage:forgot:forgot:errorEmailSend'))
       }
     });
   }
@@ -52,7 +52,7 @@ export default function Parameters({ useState, useRef, Modal, t, hostname, toast
       }));
       const responseJSON = await (response.json())
       if(responseJSON.success){
-        toast.success("Your account and personal informations have been deleted !")
+        toast.success(t('dashboard:user:paramPage:delSuccess'))
         auth.updateCurrentUser(null).then(()=>{
           router.push('/')
         })
@@ -67,13 +67,13 @@ export default function Parameters({ useState, useRef, Modal, t, hostname, toast
     const re = /^[a-zA-Z]*$/
     console.log()
     if(formFirstname.current.value == "" && formLastname.current.value == ""){
-      return toast.error("Please change at least your firstname or lastname")
+      return toast.error(t('dashboard:user:paramPage:updateFL'))
     } else if((!re.test(formFirstname.current.value)) || (!re.test(formLastname.current.value))){ // number and special characters test
-      return toast.error("No special charact")
+      return toast.error(t('dashboard:user:paramPage:updateSpecialC'))
     } else if ( ((formFirstname.current.value).length > 26) || ((formLastname.current.value).length > 26)){
-      return toast.error("too much charact")
+      return toast.error(t('dashboard:user:paramPage:tooMuch'))
     } else if ( (!(formFirstname.current.value == "") && ((formFirstname.current.value).length < 3)) || ((!(formLastname.current.value == "") && ((formLastname.current.value).length < 3) ))){
-      return toast.error("not enough charact")
+      return toast.error(t('dashboard:user:paramPage:tooSmall'))
     } else {
       try{
         const data = {
@@ -91,7 +91,7 @@ export default function Parameters({ useState, useRef, Modal, t, hostname, toast
         }));
         const responseJSON = await (response.json())
         if(responseJSON.success){
-          toast.success("Your personal informations have been updated !")
+          toast.success(t('dashboard:user:paramPage:pupdate'))
         }
       } catch(err){
         return toast.error(err.message)

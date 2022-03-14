@@ -1,6 +1,6 @@
 import { XIcon } from "@heroicons/react/outline";
 
-export default function Notifications({ useState, useRef, Modal, t, hostname, toast, email, userNotificationsJSON}) {
+export default function Notifications({ useState, t, hostname, toast, email, userNotificationsJSON}) {
 
   const notifClass = "grid place-items-center gap-8 grid-cols-1 mx-auto "
   const emptyNotifsClass = "flex justify-center items-center max-w-7xl mx-auto px-8 py-16"
@@ -64,25 +64,23 @@ export default function Notifications({ useState, useRef, Modal, t, hostname, to
       if(qr.scan.length > 0){
         var id = qr.id
         qr.scan.forEach((ns) => {
-          if(ns.visible){
-            cards.push(
-              <div key={ns.timestamp} className={"flex flex-col justify-center cursor-pointer px-8 py-12 items-center w-full h-12 rounded-lg bg-[#1B212E] shadow-lg hover:shadow-lg"}>
-                  <div className="text-lg font-bold ">{id}</div>
-                  <div className='text-emerald-500 font-bold text-sm'>Scanned at : {new Date(ns.timestamp* 1000).toLocaleString()}</div> 
-              </div>
-            )
-          }
+          cards.push(
+            <div key={ns.timestamp} className={"flex flex-col justify-center cursor-pointer px-8 py-12 items-center w-full h-12 rounded-lg bg-[#1c222e] shadow-lg hover:shadow-lg"}>
+                <div className="text-lg font-bold ">{id}</div>
+                <div className='text-emerald-500 font-bold text-sm'>{t('dashboard:user:notifPage:scanned')}  {new Date(ns.timestamp* 1000).toLocaleString()}</div> 
+            </div>
+          )
         })
       }
     });
 
     if(cards.length == 0){
-      return <div>There are no scan notifications</div>
+      return <div className="text-center max-w-xs">{t('dashboard:user:notifPage:empty1')}</div>
     } else {
         return (
           <>
             <div className="flex w-full justify-end items-center "> 
-              <button disabled={clearing} onClick={clearScanNotifs} className="flex border-2 px-2 py-2 rounded-lg cursor-pointer"><XIcon className="text-red-400 w-6 h-6"/>clear notifications</button>
+              <button disabled={clearing} onClick={clearScanNotifs} className="flex border-2 px-2 py-2 rounded-lg cursor-pointer"><XIcon className="text-red-400 w-6 h-6"/>{t('dashboard:user:notifPage:clear')}</button>
             </div>
             {cards}
         </>)
@@ -99,7 +97,7 @@ export default function Notifications({ useState, useRef, Modal, t, hostname, to
             cards.push(
               <div key={nd.timestamp} className="flex flex-col justify-center px-8 py-12 items-center w-full h-12 rounded-lg bg-[#1B212E] shadow-lg hover:shadow-lg">
                   <div className="text-lg font-bold ">{id}</div>
-                  <div className='text-emerald-500 font-bold text-sm'>Scanned at : {new Date(nd.timestamp* 1000).toLocaleString()}</div>
+                  <div className='text-emerald-500 font-bold text-sm'>{t('dashboard:user:notifPage:sent')} {new Date(nd.timestamp* 1000).toLocaleString()}</div>
               </div>
             )
           }
@@ -108,12 +106,12 @@ export default function Notifications({ useState, useRef, Modal, t, hostname, to
     });
     
     if(cards.length == 0){
-      return <div>There are no delivery notifications</div>
+      return <div className="text-center max-w-sm">{t('dashboard:user:notifPage:empty2')}</div>
     } else {
       return (
         <>
           <div className="flex w-full justify-end items-center "> 
-            <button disabled={clearing} onClick={clearDeliveryNotifs} className="flex border-2 px-2 py-2 rounded-lg cursor-pointer"><XIcon className="text-red-400 w-6 h-6"/>clear notifications</button>
+            <button disabled={clearing} onClick={clearDeliveryNotifs} className="flex border-2 px-2 py-2 rounded-lg cursor-pointer"><XIcon className="text-red-400 w-6 h-6"/>{t('dashboard:user:notifPage:clear')}</button>
           </div>
           {cards}
       </>)

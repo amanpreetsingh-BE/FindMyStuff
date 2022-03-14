@@ -48,7 +48,24 @@
             "del1": "Your personal informations will be deleted from our servers (firstname, lastname and email)",
             "del2": "Your QRs will be deactivated",
             "del3": "By clicking on delete button, you acknowledge the previous declarations",
-            "delBtn": "DELETE"
+            "delBtn": "DELETE",
+            "delSuccess": "Your account and personal informations have been deleted !",
+            "updateFL": "Please change at least your firstname or lastname !",
+            "updateSpecialC": "Special characters are not allowed !",
+            "tooMuch": "There are too many characters !",
+            "tooSmall": "At least 3 characters are needed !",
+            "pupdate": "Your personal informations have been updated !",
+            "forgot":{
+                "heading":"Did you forgot your password ?",
+                "desc" : "Please enter your email adress to reset your password. You will receive an email with a reset link.",
+                "rstButtonText":"Reset",
+                "emailSendSuccess": "Reset email sent",
+                "emailSendUser": "User does not exist",
+                "emailSendEmpty": "Please enter an email",
+                "errorEmailSend": "Error while resetting password",
+                "emailSendInvalid": "Please enter valid email"
+            }
+
         },
         "prodPage":{
             "heading": "My products",
@@ -69,7 +86,10 @@
             "h1": "Scan notifications",
             "empty1": "You don't have any lost object belonging to you scanned, yet.",
             "h2": "Delivery notifications",
-            "empty2": "You don't have any lost object belonging to you in shipping to your choosen pick up point, yet."
+            "empty2": "You don't have any lost object belonging to you in shipping to your choosen pick up point, yet.",
+            "scanned": "Scanned at : ",
+            "sent": "Sent at : ",
+            "clear": "supprimer notifications"
         }
     }
     ,

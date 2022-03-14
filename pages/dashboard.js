@@ -112,7 +112,6 @@ export async function getServerSideProps({ req, locale, query }) {
 }
 
 export default function Dashboard(props) {
-
     /* Handle language */
     const {t} = useTranslation();
     /* Handle user info through hook */
