@@ -3,7 +3,8 @@
         "verifyEmail": "Un email avec un lien d'activation à été envoyé sur votre boîte de reception, merci d'activer votre compte en cliquant sur le lien. Merci de bien vouloir vérifier vos spams si le mail ne se trouve pas dans votre boîte mail.",
         "resendMsgBtn" : "Renvoyer le lien d'activation",
         "successResend": "Email envoyé",
-        "errorResend": "Erreur lors de l'envoie de l'email"
+        "errorResend": "Erreur lors de l'envoie de l'email",
+        "or": "ou"
     },
     "verified": {
         "welcome": "Bonjour, ",

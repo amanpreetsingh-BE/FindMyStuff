@@ -161,7 +161,7 @@ export default function Sign() {
         ).catch(
           function(err){
             setFormLoading(false)
-            return toast.error(err.message)
+            return toast.error(t('sign:errorMakingAccount'))
           }
         )
         setFormLoading(false)

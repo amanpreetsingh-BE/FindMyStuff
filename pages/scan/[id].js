@@ -140,7 +140,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
   }
 
   const handleRegister = async (id, email) => {
-
+    
     const data = {
         id: id,
         email: email,

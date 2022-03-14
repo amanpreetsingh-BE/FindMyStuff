@@ -160,6 +160,7 @@ export default function Dashboard(props) {
         return (
             <main>
                 <NavReduced darkLogo={true} />
+
                 <div className="flex justify-center flex-col items-center w-full h-screen -mt-20">
                     <Image src={mailIllustration} priority alt="mailConfirm" width={264} height={264}/>
                     <div className="max-w-sm sm:max-w-lg text-center text-primary px-12">
@@ -167,6 +168,10 @@ export default function Dashboard(props) {
                     </div>
                     <div className="text-center text-primary px-12">
                         <button disabled={disabledResend} onClick={resendEmailActivation} className="w-full px-4 py-4 mt-4 font-md text-white text-md bg-indigo-600 hover:bg-indigo-500 rounded-lg">{t('dashboard:notVerified:resendMsgBtn')}</button>
+                    </div>
+                    <div className='my-2'>{t('dashboard:notVerified:or')}</div>
+                    <div className='hover:bg-red-600 bg-red-500 mt-2 text-center font-bold cursor-pointer flex justify-center items-center rounded-lg px-4 py-4 '>
+                        <SignOutButton />
                     </div>
                 </div>
             </main>
@@ -195,5 +200,5 @@ function SignOutButton(){
         auth.signOut()
         router.push('/')
     }
-    return <button className="text-sm w-full h-full flex flex-row mt-2 items-center justify-center rounded-lg font-medium hover:text-gray-50 text-white" onClick={signOutAndRedirect}> <LogoutIcon className="w-6 h-6 mr-1"/> {t('dashboard:verified:signout')}</button>
+    return <button className="text-sm w-full h-full flex flex-row items-center justify-center rounded-lg font-medium hover:text-gray-50 text-white" onClick={signOutAndRedirect}> <LogoutIcon className="w-6 h-6 mr-1"/> {t('dashboard:verified:signout')}</button>
 }
