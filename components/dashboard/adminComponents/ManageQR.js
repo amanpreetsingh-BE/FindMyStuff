@@ -150,6 +150,8 @@ function ManageQR({ useRef, useState, toast, hostname, Modal, qrToGenerateJSON, 
         }
     }
     const handleRewardSubmit = async (e) => {
+
+        
         
     }
     return (

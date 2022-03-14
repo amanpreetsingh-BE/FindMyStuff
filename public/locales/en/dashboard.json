@@ -1,6 +1,6 @@
 {
     "notVerified":{
-        "verifyEmail": "An email with an activation link has been sent to your inbox, please click on the link to activate your account",
+        "verifyEmail": "An email with an activation link has been sent to your inbox, please click on the link to activate your account. If it's not in your inbox, please check in the spam inbox.",
         "resendMsgBtn" : "Resend activation link",
         "successResend": "Email sent",
         "errorResend": "Error while sending email"

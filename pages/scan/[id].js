@@ -1,5 +1,5 @@
 /* React imports */
-import {useState, useEffect, useRef} from 'react'
+import {useState, useContext, useEffect, useRef} from 'react'
 /* Translate imports */
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations'
 import {useTranslation} from 'next-i18next'
@@ -15,6 +15,8 @@ import { Document, Page, pdfjs } from 'react-pdf';
 
 import zipJSON from '@root/public/misc/zipcode-belgium.json'
 import {LocationMarkerIcon} from '@heroicons/react/outline'
+
+import {UserContext} from '@lib/context'
 
 /* Firebase components imports */
 import {auth, firestore} from '@lib/firebase'
@@ -111,6 +113,11 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
   const fullName = useRef()
   const iban = useRef()
 
+  const { user } = useContext(UserContext)
+  if(user){
+    auth.signOut()
+  }
+
   const delay = 3;
   useEffect(
     () => {
@@ -121,6 +128,8 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
     },
     []
   );
+
+
 
   const cp = useRef()
   const [center, setCenter] = useState([50.850340, 4.351710])
