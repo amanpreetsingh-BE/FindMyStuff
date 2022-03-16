@@ -1,5 +1,5 @@
 /* React imports */
-import {useState, useContext, useEffect, useRef} from 'react'
+import {useState, useEffect, useRef} from 'react'
 /* Translate imports */
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations'
 import {useTranslation} from 'next-i18next'
@@ -15,8 +15,6 @@ import { Document, Page, pdfjs } from 'react-pdf';
 
 import zipJSON from '@root/public/misc/zipcode-belgium.json'
 import {LocationMarkerIcon} from '@heroicons/react/outline'
-
-import {UserContext} from '@lib/context'
 
 /* Firebase components imports */
 import {auth, firestore} from '@lib/firebase'
@@ -34,7 +32,18 @@ import { ArrowCircleLeftIcon } from '@heroicons/react/outline'
 export async function getServerSideProps({ req, params, locale }) {
     const id = params.id
     const hostname = process.env.HOSTNAME
-    const verify = await (fetch(`${hostname}/api/qr/${id}`))
+    const data = {
+      id: id,
+      authorization: process.env.NEXT_PUBLIC_API_KEY
+    }
+    const verify = await (fetch(`${hostname}/api/qr/verify`, {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data) 
+    }));
     const verifyJSON = (await verify.json())
 
     if(verifyJSON.verified){
@@ -46,7 +55,8 @@ export async function getServerSideProps({ req, params, locale }) {
 
         const data = {
           id: id,
-          email: email
+          email: email,
+          authorization: process.env.NEXT_PUBLIC_API_KEY
         }
         if(activate){
           await (fetch(`${hostname}/api/qr/notifications/notify`, {
@@ -79,8 +89,7 @@ export async function getServerSideProps({ req, params, locale }) {
 }
 
 export default function ScanPage({id, activate, email, timestamp, pdf, hostname, locale, jetons}) {
-  console.log(email)
-  console.log(id)
+
   /* Handle language */
   const {t} = useTranslation();
 
@@ -145,11 +154,11 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
     const data = {
         id: id,
         email: email,
+        authorization: process.env.NEXT_PUBLIC_API_KEY
     }
-    console.log(data)
     
     try{
-      const response = await (fetch(`${hostname}/api/qr/register/`, {
+      const response = await (fetch(`${hostname}/api/qr/register`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -280,6 +289,8 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
     e.preventDefault()
     if(!checked && (fullName.current.value == "" || iban.current.value == "")){
       return toast.error(t('scan:found:errorRew'))
+    } else if(!checked && (iban.current.value.substr(0,2) != "BE" || iban.current.value.substr(0,2) != "be" || iban.current.value.length != 16) ){
+      return toast.error(t('scan:found:errorIBAN'))
     } else {
       const exp = 2505600
       let data = null
@@ -292,7 +303,8 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
           id: id,
           expire: false,
           timestamp: timestamp,
-          donation: checked
+          donation: checked,
+          authorization: process.env.NEXT_PUBLIC_API_KEY,
         }
 
       } else if (timestamp && Timestamp.now().seconds >= timestamp+exp){
@@ -302,7 +314,8 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
           id: id,
           expire: true,
           timestamp: timestamp,
-          donation: checked
+          donation: checked,
+          authorization: process.env.NEXT_PUBLIC_API_KEY,
         }
 
       } else {
@@ -312,7 +325,8 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
           id: id,
           expire: null,
           timestamp: timestamp,
-          donation: checked
+          donation: checked,
+          authorization: process.env.NEXT_PUBLIC_API_KEY
         }
       }
       await (fetch(`${hostname}/api/qr/notifications/notifyGenerate`, {
@@ -370,7 +384,8 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
     e.preventDefault()
     try{
         const data = {
-            cp: cp.current.value
+            cp: cp.current.value,
+            authorization: process.env.NEXT_PUBLIC_API_KEY
         }
         const response = await (fetch(`${hostname}/api/qr/findPointByCP/`, {
             method: 'POST',

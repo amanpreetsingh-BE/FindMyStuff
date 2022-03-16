@@ -27,7 +27,7 @@ export async function getServerSideProps({ query, req, res, locale }) {
 
     // is connected and email in query
     if(firebaseToken && email){
-        const credential = await (fetch(`${hostname}/api/credential?userEmail=${email}&token=${firebaseToken}`))
+        const credential = await (fetch(`${hostname}/api/credential?userEmail=${email}&token=${firebaseToken}&authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
         const credentialJSON = (await credential.json())
         const invalid = credentialJSON.type == "invalid" ? true : false
         // is connected and email and query by the good user
@@ -36,8 +36,20 @@ export async function getServerSideProps({ query, req, res, locale }) {
                 notFound: true
             }
         } else{
-            const verify = await (fetch(`${hostname}/api/qr/${id}`))
+            const data = {
+                id: id,
+                authorization: process.env.NEXT_PUBLIC_API_KEY
+            }
+            const verify = await (fetch(`${hostname}/api/qr/verify`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data) 
+            }));
             const verifyJSON = (await verify.json())
+
             const activate = verifyJSON.activate
             const emailQR = verifyJSON.email
 
@@ -56,10 +68,6 @@ export async function getServerSideProps({ query, req, res, locale }) {
                         },
                     }
                 } else if(!activate && emailQR==""){
-                        /*res.setHeader("Location", `${hostname}/${locale}/scan/${id}`);
-                        res.statusCode = 302;
-                        res.end();
-                        return {props: {}}*/
                         return {
                             notFound: true
                         }
@@ -79,11 +87,10 @@ export async function getServerSideProps({ query, req, res, locale }) {
             notFound: true
         }
     }
+    /* NOT CLEAN AT ALL but to be updated in V2 */
 }
 
 export default function SelectPage({ id, emailQR, hostname, locale }) {
-  console.log(emailQR)
-  console.log(id)
     /* Handle language */
   const {t} = useTranslation();
 
@@ -91,7 +98,7 @@ export default function SelectPage({ id, emailQR, hostname, locale }) {
   const fr_flag = require('@images/icons/fr.svg')
   /* Used to push to dashboard */
   const router = useRouter()
-  const { user, email } = useContext(UserContext)
+  const { email } = useContext(UserContext)
 
   const cp = useRef()
   const [center, setCenter] = useState([50.850340, 4.351710])
@@ -181,7 +188,8 @@ export default function SelectPage({ id, emailQR, hostname, locale }) {
     e.preventDefault()
     try{
         const data = {
-            cp: cp.current.value
+            cp: cp.current.value,
+            authorization: process.env.NEXT_PUBLIC_API_KEY
         }
         const response = await (fetch(`${hostname}/api/qr/findPointByCP/`, {
             method: 'POST',
@@ -209,9 +217,10 @@ export default function SelectPage({ id, emailQR, hostname, locale }) {
             try{
                 const data = {
                     id: id,
-                    selection: selection
+                    selection: selection,
+                    authorization: process.env.NEXT_PUBLIC_API_KEY
                 }
-                const response = await (fetch(`${hostname}/api/qr/relais/`, {
+                const response = await (fetch(`${hostname}/api/qr/relais`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -222,7 +231,7 @@ export default function SelectPage({ id, emailQR, hostname, locale }) {
                 const responseJSON = await (response.json())
                 if(responseJSON.success){
                     toast.success(t('scan:select:success'))
-                    router.push(`/dashboard/?user=${email}`)
+                    router.push(`${hostname}/dashboard/?user=${email}`)
                 } else{
                     toast.error(t('scan:select:err'))
                 }

@@ -196,7 +196,7 @@ export default function Sign() {
     if(loaded){
       return (
         <main className="w-full flex flex-col justify-start items-center">
-            <div className="mt-8 mb-4">
+            <div className={`${signupState ? 'pt-8':'pt-24'} mb-4`}>
               <Link passHref href="/">
                 <div className="flex justify-center">
                   <div className="cursor-pointer relative w-[58px] h-[58px] sm:w-[80px] sm:h-[80px]">

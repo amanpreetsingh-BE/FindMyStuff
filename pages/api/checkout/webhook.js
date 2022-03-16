@@ -19,6 +19,45 @@ export const config = {
   },
 };
 
+var global_COUPON = null
+
+const increaseCouponUsage = async () => {
+  console.log(global_COUPON)
+  let docRef = app
+  .firestore()
+  .collection("coupons")
+  .doc(`${global_COUPON}`)
+  
+  return docRef.get().then((doc) => {
+    if (doc.exists) {
+      docRef.update({
+        usage: doc.data().usage+1
+      })
+    } else {
+      console.log("No such document!");
+    }
+  })
+}
+
+const incrementToken = async (qrID) => {
+  let docRef = app
+  .firestore()
+  .collection("QR")
+  .doc(`${qrID}`)
+  
+  return docRef.get().then((doc) => {
+    if (doc.exists) {
+      docRef.update({
+        jetons: doc.data().jetons+1
+      })
+    } else {
+      console.log("No such document!");
+    }
+  })
+}
+
+
+
 const decrementStock = async (session) => {
   let docRef 
   if(session.metadata.color) {
@@ -56,9 +95,41 @@ const decrementStock = async (session) => {
 
 const fulfillOrder = async (session, charge, paymentType, amount) => {
 
-  decrementStock(session)
   const order_id = orderid.generate()
-  return app
+
+  if(session.metadata.model == "reload" && session.metadata.cat == "reload" && session.metadata.color == "reload" && session.metadata.priceID == "price_1KZcrlK5KPA8d9OvKtznbNWq"){
+    incrementToken(session.metadata.qrID)
+    return app
+    .firestore()
+    .collection("reloads")
+    .doc(session.id)
+    .set({
+      stripe_priceID: session.metadata.priceID,
+      stripe_checkoutID: session.id,
+      stripe_customerID: session.customer,
+      stripe_paymentIntentID: session.payment_intent,
+      order_id: order_id,
+      qrID: session.metadata.qrID,
+      paymentType: paymentType,
+      amount: amount,
+      model: `${session.metadata.model}`,
+      color: `${session.metadata.color ? session.metadata.color:"none"}`,
+      customer_email: session.customer_details.email,
+      charge: charge,
+      emailSent: false,
+      emailID: '',
+      timestamp: admin.firestore.FieldValue.serverTimestamp(),
+    })
+    .catch((err) =>{
+      console.log(err.message)
+    })
+  } else {
+    if(global_COUPON){
+      console.log("coupon activated")
+      increaseCouponUsage()
+    } 
+    decrementStock(session)
+    return app
     .firestore()
     .collection("orders")
     .doc(session.id)
@@ -79,11 +150,16 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
       emailSent: false,
       emailID: '',
       timestamp: admin.firestore.FieldValue.serverTimestamp(),
-      shipped: false
+      shipped: false,
+      total_details: session.total_details,
+      allow_promotion_codes: session.allow_promotion_codes,
+      promotion_code: global_COUPON
     })
     .catch((err) =>{
       console.log(err.message)
     })
+  }
+
 }
 
 export default async function handler(req, res) {
@@ -108,6 +184,10 @@ export default async function handler(req, res) {
     
     // Successfully constructed event
     console.log('✅ Success:', event.id);
+
+    if(event.type === 'customer.discount.created'){
+      global_COUPON = event.data.object.promotion_code
+    }
 
     // 2. Handle event type (add business logic here)
     if (event.type === 'checkout.session.completed') {

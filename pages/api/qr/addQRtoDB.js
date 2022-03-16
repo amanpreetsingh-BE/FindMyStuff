@@ -7,7 +7,7 @@ const app = !admin.apps.length ? admin.initializeApp({
   
 
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === 'POST' && req.body.authorization == process.env.NEXT_PUBLIC_API_KEY) {
       try {
         const email = req.body.email
         const id = req.body.id

@@ -1,15 +1,12 @@
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
-      if(req.body.authorization != process.env.NEXT_PUBLIC_API_KEY){
-        return res.status(404).json({success : false, authorized: false})
-      }
+    if (req.method === 'POST' && req.body.authorization == process.env.NEXT_PUBLIC_API_KEY) {
       try {
         var hbs = require('nodemailer-express-handlebars');
         var nodemailer = require('nodemailer')
         const path = require("path")
 
         const transporter = nodemailer.createTransport({
-            host: "mail.privateemail.com",
+            host: process.env.HOSTMAIL,
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {

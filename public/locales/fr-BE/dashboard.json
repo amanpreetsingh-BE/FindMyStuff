@@ -1,9 +1,12 @@
 {   
     "notVerified":{
-        "verifyEmail": "Un email avec un lien d'activation à été envoyé sur votre boîte de reception, merci d'activer votre compte en cliquant sur le lien",
+        "verifyEmail": "Un email avec un lien d'activation à été envoyé dans votre boîte de reception, merci d'activer votre compte en cliquant sur le lienenvoyé. Il se peut que le mail se soit glissé dans vos spams.",
         "resendMsgBtn" : "Renvoyer le lien d'activation",
         "successResend": "Email envoyé",
-        "errorResend": "Erreur lors de l'envoie de l'email"
+        "errorResend": "Erreur lors de l'envoie de l'email",
+        "or": "ou",
+        "validateText": "Une fois que le compte est vérifié, veuillez rafraîchir la page ou cliquez sur le bouton suivant : ",
+        "refresh": "Rafraîchir"
     },
     "verified": {
         "welcome": "Bonjour, ",
@@ -73,11 +76,12 @@
             "h1": "Gérer mon QR",
             "l1": "Lieu de livraison",
             "l2": "Jetons",
-            "changeDelivery": "Modify",
+            "changeDelivery": "Modifier",
             "back": "Précédent",
-            "tokenDesc": "Le nombre de jetons est le nombre de livraisons, si il n'y a plus de jetons, il faut recharger 7.5e pour que la livraison puisse se faire en cas d'objet retrouvé.",
-            "tokenState": "Nombre de jetons actuel : ",
-            "reloadBtn": "Recharger"
+            "tokenDesc": "Le nombre de jetons correspond au nombre de fois que tu peux perdre ton objet. Si il n’y a plus de jetons, ton porte clé est désactivé. Il faut alors recharger des jetons via le bouton ci-dessous pour que ton objet puisse t’être livré en cas de perte.",
+            "tokenState": "Nombre de jetons actuels : ",
+            "reloadBtn": "Recharger",
+            "stripeError": "Erreur, veuillez réessayer plus tard"
         },
         "notifPage":{
             "heading": "Mes notifications",
@@ -98,12 +102,12 @@
         "l3": "Recharger tes produits",
         "h2": "Comment ça fonctionne ?",
         "s2": "Etape 1",
-        "d2": "Attache le produit FindMyStuff à ton trousseau de clefs, sac à dos, ... et scan ensuite le QR code à l'aide de ton smartphon pour lancer l'activation.",
+        "d2": "Attache le produit FindMyStuff à ton trousseau de clefs, sac à dos, ... et scan ensuite le QR code à l'aide de ton smartphon pour t'enregistrer.",
         "s3": "Etape 2",
-        "d3": "Une fois ton compte activé, quiconque retrouve ton objet pourra scanner le code QR et ainsi signaler la retrouvaille. Nous lui indiquerons 1400 points relay en Belgique dans lesquels il déposera l'objet en échange d'une rénumération (ou d'un don à une ABSL) ",
+        "d3": "Quiconque retrouve ton objet pourra scanner le code QR et aura accès à 1400 points relais en Belgique où il pourra déposer ton objet en échange d’une rémunération (ou d’un don à une ASBL) ",
         "s4": "Etape 3",
-        "d4": "Tu n'as plus qu'à attendre le retour de ton objet. Tu seras notifié lorsque ton objet aura été livré à ton point relai favori, encoder lors de l'activation du produit. Nous offrons la première livraison.",
-        "h3": "Bienvenue dans notre comunauté !",
+        "d4": "Tu n'as plus qu'à attendre le retour de ton objet. Tu seras notifié lorsque ton objet aura été livré à ton point relais favori, choisi lors de l'activation du produit. La première livraison est gratuite !",
+        "h3": "Bienvenue dans notre communauté !",
         "s5": "Le concept est génial, non ?",
         "d5": "N'hésite pas à nous rejoindre sur nos réseaux sociaux !"
     }

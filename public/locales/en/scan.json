@@ -65,19 +65,19 @@
         "errLoc": "Please enter a valid ZIP code"
     },
     "found":{
-        "H1": "The object attached to this QR code that you have found is lost.",
-        "h1": "And you just found it",
-        "desc1": "In addition to making a good action, you are rewarded to do it, do you want to know more ?",
-        "btn1": "YES",
-        "li1" : "By clicking on 'GENERATE' button, a QR code will be made at most in 15 minutes",
-        "li2" : "Then, you can present this QR code to the manager of a pickup parcelshop with the lost object. Don't forget to pack the object.",
-        "li3": "On the next page, a list of pickup parcelshop around your ZIP code will be shown, you can select any of them.",
+        "H1": "You found a lost item!",
+        "h1": "Help us get it back to its owner and get a reward from us!",
+        "desc1": "",
+        "btn1": "Let's do it!",
+        "li1" : "Just deposit the lost item to the nearest pickup parcelshop point.",
+        "li2" : "By clicking on 'GENERATE', a QR code will be made. This can take up to 15 minutes",
+        "li3": "Show the generated QR code to the pickup parcelshop that you will choose in the next page. Don't forget to pack the object. The list of pickup parcelshop around your ZIP code will be shown, you can deposit the item to any of them.",
         "btn2": "GENERATE",
-        "optB": "By doing those steps, you will be rewarded by the amount of 3e. I want this amount to be transfered in my bank account.",
-        "optA": "By doing those steps, you will be rewarded by the amount of 3e. I want this amount to be transfered in the association 'les petits riens'.",
+        "optB": "I want an amount of 3 euros to be transfered to a NGO.",
+        "optA": "I want to get rewarded by an amount of 3 euros.",
         "errorRew": "Please enter your fullname and your IBAN",
         "qrZIP": "ZIP code",
         "qrGeneration": "The QR code will appear in max 15 minutes",
-        "qrGenerated": "Please present the parcel with this QR code to the nearest pickup point !"
+        "qrGenerated": "Please deposit the packed item with this QR code to the nearest pickup point !"
     }
 }

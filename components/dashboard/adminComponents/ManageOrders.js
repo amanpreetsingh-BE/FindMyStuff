@@ -62,6 +62,7 @@ function ManageOrders({ useState, hostname, Modal, ordersJSON, toast, t  }) {
 
         const data = {
             id: modalOrderCS,
+            authorization: process.env.NEXT_PUBLIC_API_KEY
         }
         try{
             const response = await (fetch(`${hostname}/api/mailer/send-shipping-confirmation`, {

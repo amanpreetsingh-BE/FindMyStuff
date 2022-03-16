@@ -6,45 +6,9 @@ const app = !admin.apps.length ? admin.initializeApp({
   }) : admin.app()
   
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === 'POST' && req.body.authorization == process.env.NEXT_PUBLIC_API_KEY) {
         const id = req.body.id
         const email = req.body.email
-
-        /*var hbs = require('nodemailer-express-handlebars');
-        var nodemailer = require('nodemailer')
-        const path = require("path")
-
-        const transporter = nodemailer.createTransport({
-            host: "mail.privateemail.com",
-            port: 465,
-            secure: true, // true for 465, false for other ports
-            auth: {
-                user: process.env.MAIL,
-                pass: process.env.SECRET_MAIL,
-            },
-        });
-
-        const options = {
-            viewEngine: {
-                extName: ".html",
-                partialsDir: path.resolve('./pages/api/mailer/views'),
-                defaultLayout: false, 
-            },
-            viewPath: path.resolve('./pages/api/mailer/views'),
-            extName: ".handlebars"
-        }
-
-        transporter.use('compile', hbs(options));
-
-        const mail = {
-            from: process.env.MAIL,
-            to: email,
-            subject: `Someone has scanned your QR : ${id} !`,
-            template: 'notifyFound',
-            context: {
-                id: id,
-            },
-        }*/
 
         try {
             const notifRef = app.firestore().collection("notifications").doc(id)

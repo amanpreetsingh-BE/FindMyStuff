@@ -8,7 +8,7 @@ const app = !admin.apps.length ? admin.initializeApp({
 
 /* return a JSON of products */
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === 'POST' && req.body.authorization == process.env.NEXT_PUBLIC_API_KEY) {
         const email = req.body.email
         const type = req.body.type
         try{

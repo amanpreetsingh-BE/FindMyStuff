@@ -51,7 +51,8 @@ function AddProducts({ useRef, useState, hostname, Image, toast }) {
                         description: description.current.value,
                         quantity: quantity.current.value,
                         price: price.current.value,
-                        imageURL: url
+                        imageURL: url,
+                        authorization: process.env.NEXT_PUBLIC_API_KEY,
                     }
                     const response = await (fetch(`${hostname}/api/products/add`, {
                         method: 'POST',

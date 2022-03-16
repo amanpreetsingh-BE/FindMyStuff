@@ -10,7 +10,7 @@ const app = !admin.apps.length ? admin.initializeApp({
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === 'POST' && req.body.authorization == process.env.NEXT_PUBLIC_API_KEY) {
 
         const code = req.body.code
         const percent = req.body.percent
@@ -27,7 +27,10 @@ export default async function handler(req, res) {
                 code: code
             })
             
-            app.firestore().collection('coupons').doc().set(promotionCode)
+            app.firestore().collection('coupons').doc(promotionCode.id).set({
+                promotionCode: promotionCode,
+                usage : 0
+            })
 
         } catch (err) {
             console.log(err)

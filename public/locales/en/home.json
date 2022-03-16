@@ -5,7 +5,7 @@
         "keywords": "lost, object, phone, smartphone, gsm, track, find, qr, code, find, my, stuff, forget, keys, wallet, bag, found"
     },
     "heading": "Bringing back lost objects.",
-    "description": "Take care of your stuff ! Never lose your items again thanks to the system we have implemented. We will remunerate the one who will find and give your lost item back to you !",
+    "description": "Take care of your stuff ! Never lose your items again thanks to the system we have implemented. We will reward the one who will find and give your lost item back to you !",
     "nav": {
         "how": "How It Works",
         "prod": "Products",
@@ -16,8 +16,8 @@
     "hiw": {
         "title": "How It Works",
         "step1": "To register, scan the QR code on the back of your new product.",
-        "step2": "Now that your account is activated, anyone who finds your lost item can scan the QR code and report the finding. We will indicate to him the 1 400 associated pickup parcel points in Belgium where he will be able to deposit your item for a monetary reward or a donation offered to a non-profit association.",
-        "step3": "You just have to wait for your item to get back ! You will be notified when it has been delivered into your favorite pickup parcelpoint that you have chosen during the activation. The first back shipping is free !",
+        "step2": "Anyone who finds your lost item can now scan the QR code and report the finding. We will indicate to him the 1 400 associated pickup parcelpoints in Belgium where he will be able to deposit your item for a monetary reward or a donation offered to a NGO.",
+        "step3": "You just have to wait for your item to get back ! You will be notified when it will be delivered into your favorite pickup parcelpoint that you have chosen during the activation. The first back shipping is free !",
         "activate": "Activate",
         "lost": "Lost",
         "found": "Found"
@@ -30,9 +30,9 @@
             "h3" : "Your selection",
             "price": "Price : € ",
             "shipping": "Free shipping",
-            "packaging": "Premium packaging",
-            "material": "Anodized aluminium",
-            "holder": "Keychain holder provided",
+            "packaging": "Delivery in 3 days",
+            "material": "No tracking",
+            "holder": "Anodized aluminium",
             "activate": "Need to activate when received",
             "checkout": "Checkout",
             "stock": "In Stock",

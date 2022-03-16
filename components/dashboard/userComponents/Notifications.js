@@ -14,7 +14,8 @@ export default function Notifications({ useState, t, hostname, toast, email, use
     try {
       const data = {
         email: email,
-        type: "scan"
+        type: "scan",
+        authorization: process.env.NEXT_PUBLIC_API_KEY
       }
   
       await (fetch(`${hostname}/api/qr/notifications/clear`, {
@@ -39,7 +40,8 @@ export default function Notifications({ useState, t, hostname, toast, email, use
     try {
       const data = {
         email: email,
-        type: "delivery"
+        type: "delivery",
+        authorization: process.env.NEXT_PUBLIC_API_KEY
       }
   
       await (fetch(`${hostname}/api/qr/notifications/clear`, {

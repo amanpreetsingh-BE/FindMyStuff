@@ -17,39 +17,38 @@ function ContactSection({t, hostname, useState, toast}) {
             email: formEmail.current.value,
             fullname: formFullName.current.value,
             message: formMessage.current.value,
-            authorization: process.env.NEXT_PUBLIC_API_KEY
+            authorization: process.env.NEXT_PUBLIC_API_KEY,
         }
         try {
-        const response = await (fetch(`${hostname}/api/messages/post-message`, {
-            method: 'POST',
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }));
-        const responseJSON = await (response.json())
+            const response = await (fetch(`${hostname}/api/messages/post-message`, {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }));
+            const responseJSON = await (response.json())
 
-        const notify = await (fetch(`${hostname}/api/mailer/notify-message`, {
-            method: 'POST',
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }));
-        const notifyJSON = await (notify.json())
+            const notify = await (fetch(`${hostname}/api/mailer/notify-message`, {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }));
+            const notifyJSON = await (notify.json())
 
-        formEmail.current.value = ""
-        formFullName.current.value = ""
-        formMessage.current.value = ""
-        
-        if(responseJSON.success && notifyJSON.success){
-            return toast.success(t('home:contact:success'))
-        } else {
-            return toast.error(t('home:contact:error'))
-        }
-
+            formEmail.current.value = ""
+            formFullName.current.value = ""
+            formMessage.current.value = ""
+            
+            if(responseJSON.success && notifyJSON.success){
+                return toast.success(t('home:contact:success'))
+            } else {
+                return toast.error(t('home:contact:error'))
+            }
         } catch(err){
             return toast.error(t('home:contact:error'))
         }

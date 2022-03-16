@@ -55,7 +55,8 @@ function ManageMessages({ useState, hostname, useRef, Modal, messagesJSON, t, to
                             formTitle: formTitle.current.value,
                             formMessage: formMessage.current.value,
                             fileURL: url,
-                            fileName : file.name
+                            fileName : file.name,
+                            authorization: process.env.NEXT_PUBLIC_API_KEY
                         }
                         const response = await (fetch(`${hostname}/api/mailer/send-message`, {
                             method: 'POST',
@@ -82,7 +83,8 @@ function ManageMessages({ useState, hostname, useRef, Modal, messagesJSON, t, to
                     formTitle: formTitle.current.value,
                     formMessage: formMessage.current.value,
                     fileURL : null,
-                    fileName : null
+                    fileName : null,
+                    authorization: process.env.NEXT_PUBLIC_API_KEY
                 }
                 const response = await (fetch(`${hostname}/api/mailer/send-message`, {
                     method: 'POST',

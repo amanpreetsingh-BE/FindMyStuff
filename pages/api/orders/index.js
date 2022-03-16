@@ -7,7 +7,7 @@ const app = !admin.apps.length ? admin.initializeApp({
   }) : admin.app()
 
 export default async function handler(req, res) {
-    if (req.method === 'GET') {
+    if (req.method === 'GET' && req.query.authorization == process.env.NEXT_PUBLIC_API_KEY) {
       try {
         const orders = [];
         const query = app.firestore().collection("orders").orderBy("timestamp", "desc");

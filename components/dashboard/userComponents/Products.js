@@ -3,7 +3,12 @@ import {useRouter} from 'next/router'
 import {LocationMarkerIcon} from '@heroicons/react/outline'
 import {ArrowCircleLeftIcon} from '@heroicons/react/outline'
 import {CashIcon} from '@heroicons/react/outline'
-export default function Products({ useState, useRef, Modal, t, toast, Image, email, userProductsJSON }) {
+
+/* fetch and paymentflow */
+import axios from 'axios'
+import getStripe from '@lib/stripe'
+
+export default function Products({ useState, locale, Modal, t, hostname, toast, Image, email, userProductsJSON }) {
   /* Used to push to dashboard */
   const router = useRouter()
 
@@ -35,7 +40,7 @@ export default function Products({ useState, useRef, Modal, t, toast, Image, ema
         setModalRelaisPhoto(relaisPhoto) 
         setModalJetons(jetons) 
         if(!relaisHeading && !relaisCP && !relaisStreet && !relaisPhoto){
-            router.push(`/scan/select?id=${id}&user=${email}`)
+            router.push(`${hostname}/scan/select?id=${id}&user=${email}`)
         } else {
             openModal()
         }
@@ -85,7 +90,7 @@ export default function Products({ useState, useRef, Modal, t, toast, Image, ema
 
   function renderJetons () {
     return(
-        <div className='px-12 mt-8'>
+        <div className='px-12'>
           <div className={modalJetons >=1 ? 'mt-4 text-sm text-center ':' text-xs text-center ' }>
             {t('dashboard:user:prodPage:tokenDesc')}
           </div>
@@ -93,7 +98,7 @@ export default function Products({ useState, useRef, Modal, t, toast, Image, ema
                 <div className='flex justify-center items-center space-x-8'>
                     <h1 className='text-md py-2 text-center font-mono'>{t('dashboard:user:prodPage:tokenState')} {modalJetons} </h1>
                 </div>
-                {modalJetons >= 1 ? "":<button onClick={handleReload} className="max-w-xl py-4 px-4 mx-auto my-4 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg flex"><CashIcon className='w-6 h-6 text-white' /> <span className='text-white ml-2'>{t('dashboard:user:prodPage:reloadBtn')}</span></button>}
+                <button onClick={handleReload} className="max-w-xl py-3 px-2 mx-auto my-2 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg flex"><CashIcon className='w-6 h-6 text-white' /> <span className='text-white ml-2'>{t('dashboard:user:prodPage:reloadBtn')}</span></button>
           </div>
           <div className='flex justify-center mt-4 items-center cursor-pointer' onClick={()=>setRj(false)} >
                 <ArrowCircleLeftIcon className='text-gray-800 w-6 h-6'/> <span>{t('dashboard:user:prodPage:back')}</span> 
@@ -112,20 +117,22 @@ export default function Products({ useState, useRef, Modal, t, toast, Image, ema
         const {
           data: {id}
         } = await axios.post(`${hostname}/api/checkout`, {
-          cat: cat,
-          priceID: cat== "Keychain" ? selectedModel[1].priceID : product.data.priceID,
-          model: cat== "Keychain" ? "Square keychain" : product.id, // to be changed in V2 to selectedModel[0].model
-          color: cat== "Keychain" ? selectedModel[1].color : product.data.color,
-          locale: locale
+          cat: "reload",
+          priceID: "price_1KZcrlK5KPA8d9OvKtznbNWq",
+          model: "reload", // to be changed in V2 to selectedModel[0].model
+          color: "reload",
+          qrID: modalID,
+          locale: locale,
+          authorization: process.env.NEXT_PUBLIC_API_KEY
         })
         const stripe = await getStripe()
         const res = await stripe.redirectToCheckout({sessionId: id})
         
         if(res.error){
-          toast.error(t('home:stripe:error')) 
+          toast.error(t('dashboard:user:prodPage:stripeError')) 
         } 
       } catch(err){
-          toast.error(t('home:stripe:error')) 
+          toast.error(err.message) 
       }
   }
 

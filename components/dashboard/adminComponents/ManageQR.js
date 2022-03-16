@@ -102,7 +102,8 @@ function ManageQR({ useRef, useState, toast, hostname, Modal, qrToGenerateJSON, 
 
         try{
             const data = {
-                formNumberQR: formNumberQR.current.value
+                formNumberQR: formNumberQR.current.value,
+                authorization: process.env.NEXT_PUBLIC_API_KEY
             }
             const response = await (fetch(`${hostname}/api/qr/add/`, {
                 method: 'POST',
@@ -133,7 +134,8 @@ function ManageQR({ useRef, useState, toast, hostname, Modal, qrToGenerateJSON, 
                 const dat = {
                     pdf: data,
                     email: modalQREmail,
-                    id: modalQRID
+                    id: modalQRID,
+                    authorization: process.env.NEXT_PUBLIC_API_KEY
                 }
                 await (fetch(`${hostname}/api/qr/addQRtoDB`, {
                     method: 'POST',

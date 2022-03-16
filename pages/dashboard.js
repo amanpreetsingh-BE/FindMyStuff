@@ -6,6 +6,7 @@ import router from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
 
+
 /* Firebase components imports */
 import {UserContext} from '@lib/context'
 import {auth} from '@lib/firebase'
@@ -17,7 +18,7 @@ import AdminLayout from '@components/dashboard/AdminLayout'
 import UserLayout from '@components/dashboard/UserLayout'
 
 /* Icons imports */
-import {LogoutIcon} from '@heroicons/react/outline'
+import {LogoutIcon, RefreshIcon} from '@heroicons/react/outline'
 
 /* Various animations imports */
 import toast from 'react-hot-toast'
@@ -35,7 +36,7 @@ export async function getServerSideProps({ req, locale, query }) {
     
     const userEmail = query.user
     const firebaseToken = await req.cookies.firebaseToken
-    const credential = await (fetch(`${process.env.HOSTNAME}/api/credential?userEmail=${userEmail}&token=${firebaseToken}`))
+    const credential = await (fetch(`${process.env.HOSTNAME}/api/credential?userEmail=${userEmail}&token=${firebaseToken}&authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
     const credentialJSON = (await credential.json())
     const invalid = credentialJSON.type == "invalid" ? true : false
     const admin = credentialJSON.type == "admin" ? true : false
@@ -53,39 +54,39 @@ export async function getServerSideProps({ req, locale, query }) {
     /* FETCH sensitive data only if ADMIN user */
 
     // Get products
-    const products = admin ? (await (fetch(`${process.env.HOSTNAME}/api/products`))) : null
+    const products = admin ? (await (fetch(`${process.env.HOSTNAME}/api/products?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const productsJSON = admin ? (await products.json()) : null
 
     // Get orders
-    const orders = admin ? (await (fetch(`${process.env.HOSTNAME}/api/orders`))) : null
+    const orders = admin ? (await (fetch(`${process.env.HOSTNAME}/api/orders?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const ordersJSON = admin ? (await orders.json()) : null
 
     // Get messages
-    const messages = admin ? (await (fetch(`${process.env.HOSTNAME}/api/messages`))) : null
+    const messages = admin ? (await (fetch(`${process.env.HOSTNAME}/api/messages?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const messagesJSON = admin ? (await messages.json()) : null
 
     // Get stats
-    const stats = admin ? (await (fetch(`${process.env.HOSTNAME}/api/statistics`))) : null
+    const stats = admin ? (await (fetch(`${process.env.HOSTNAME}/api/statistics?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const statsJSON = admin ? (await stats.json()) : null
 
     // Get coupons
-    const coupons = admin ? (await (fetch(`${process.env.HOSTNAME}/api/promo`))) : null
+    const coupons = admin ? (await (fetch(`${process.env.HOSTNAME}/api/promo?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const couponsJSON = admin ? (await coupons.json()) : null
 
     // Get QR to generate
-    const qrToGenerate = admin ? (await (fetch(`${process.env.HOSTNAME}/api/qr/qrToGenerate`))) : null
+    const qrToGenerate = admin ? (await (fetch(`${process.env.HOSTNAME}/api/qr/qrToGenerate?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const qrToGenerateJSON = admin ? (await qrToGenerate.json()) : null
 
     // Get potential finders to reward
-    const finders = admin ? (await (fetch(`${process.env.HOSTNAME}/api/qr/getFinders`))) : null
+    const finders = admin ? (await (fetch(`${process.env.HOSTNAME}/api/qr/getFinders?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const findersJSON = admin ? (await finders.json()) : null
 
     // Get user products
-    const userProducts = await (fetch(`${process.env.HOSTNAME}/api/user/products?user=${userEmail}`))
+    const userProducts = await (fetch(`${process.env.HOSTNAME}/api/user/products?user=${userEmail}&authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
     const userProductsJSON = await userProducts.json()
 
     // Get user notifications
-    const userNotifications = await (fetch(`${process.env.HOSTNAME}/api/user/notifications?user=${userEmail}`))
+    const userNotifications = await (fetch(`${process.env.HOSTNAME}/api/user/notifications?user=${userEmail}&authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
     const userNotificationsJSON = await userNotifications.json()
 
     const hostname = process.env.HOSTNAME
@@ -149,7 +150,6 @@ export default function Dashboard(props) {
     useEffect(() => {
         /* Handle popup hello */
         if(!cookie.get('showDashFMS') && props.createdAt === props.lastLoginAt && emailVerified){
-            console.log(emailVerified)
             var in45Minutes = 1/32;
             cookie.set('showDashFMS', "Cookie allowing to show or not welcome message", {expires : in45Minutes})
             setShowDash(true)
@@ -161,7 +161,7 @@ export default function Dashboard(props) {
             <main>
                 <NavReduced darkLogo={true} />
 
-                <div className="flex justify-center flex-col items-center w-full h-screen -mt-20">
+                <div className="flex justify-center flex-col items-center w-full ">
                     <Image src={mailIllustration} priority alt="mailConfirm" width={264} height={264}/>
                     <div className="max-w-sm sm:max-w-lg text-center text-primary px-12">
                         {t('dashboard:notVerified:verifyEmail')}
@@ -169,16 +169,19 @@ export default function Dashboard(props) {
                     <div className="text-center text-primary px-12">
                         <button disabled={disabledResend} onClick={resendEmailActivation} className="w-full px-4 py-4 mt-4 font-md text-white text-md bg-indigo-600 hover:bg-indigo-500 rounded-lg">{t('dashboard:notVerified:resendMsgBtn')}</button>
                     </div>
-                    <div className='my-2'>{t('dashboard:notVerified:or')}</div>
-                    <div className='hover:bg-red-600 bg-red-500 mt-2 text-center font-bold cursor-pointer flex justify-center items-center rounded-lg px-4 py-4 '>
-                        <SignOutButton />
+
+                    <div className="max-w-sm sm:max-w-lg text-center text-primary pt-4 px-12">
+                        {t('dashboard:notVerified:validateText')}
+                    </div>
+                    <div className="text-center text-primary px-12">
+                        <button onClick={()=>router.reload()} className="w-full px-4 py-4 mt-4 font-md text-white text-md bg-emerald-600 hover:bg-emerald-500 rounded-lg"><RefreshIcon className='w-4 h-4'/></button>
                     </div>
                 </div>
             </main>
         )
     } else if (loaded && !props.admin){
         return (
-            <UserLayout useState={useState} toast={toast} Link={Link} Image={Image} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} uid={user ? user.uid:null} user={user} hostname={props.hostname} showDash={showDash} t={t} userProductsJSON={props.userProductsJSON} userNotificationsJSON={props.userNotificationsJSON} />
+            <UserLayout locale={props.locale} useState={useState} toast={toast} Link={Link} Image={Image} SignOutButton={SignOutButton} firstName={firstName} lastName={lastName} address={address} email={email} uid={user ? user.uid:null} user={user} hostname={props.hostname} showDash={showDash} t={t} userProductsJSON={props.userProductsJSON} userNotificationsJSON={props.userNotificationsJSON} />
         )
     } else if (loaded && props.admin){
         return (

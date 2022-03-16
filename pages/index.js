@@ -22,12 +22,13 @@ import {motion} from 'framer-motion';
 /* Translation */
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 import {useTranslation} from 'next-i18next';
+import { auth } from '@lib/firebase'
 
 export async function getServerSideProps({locale}) {
   let productsJSON
 
   try {
-    let products = await (fetch(`${process.env.HOSTNAME}/api/products`))
+    let products = await (fetch(`${process.env.HOSTNAME}/api/products?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
     productsJSON = (await products.json())
   } catch(err){
     productsJSON = null
@@ -47,7 +48,6 @@ export async function getServerSideProps({locale}) {
 export default function Home({locale, productsJSON, hostname}) {
 
   const {t} = useTranslation()
-
   /* navbar */
   const [isOpen, setIsOpen] = useState(true)
   const toggle = () => {

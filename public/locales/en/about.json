@@ -1,23 +1,23 @@
 {   
-    "heading1": "Qui sommes-nous ?",
-    "whoarewe":"The team is made up of three young entrepreneurs united together with the ambition of caring about the loss of personal items. The development of the project began back in September 2020 and merges different profiles with various qualifications. This allows to cover all the quests and challenges that a company as to face in the current market world. ",
-    "heading2": "Notre mission",
-    "mission":"Our main goal is the care of the lost personnal items in order to extend their lifespan and thus fight against overconsumption. We aspire to gather a close-knit community for this purpose, fundamental for a solid and united society. The constant research for innovation is at the bottom of our initiatives. As a perpetual improvement of our products in order to offer our customers an optimal service. The full anonymity of our customers is obviously essential in order to ensure their security nd protect their personal data.",
-    "heading3": "L’équipe FindMyStuff.",
-    "formation": "Formation",
+    "heading1": "About us",
+    "whoarewe":"The team is made up of three young entrepreneurs united together with the ambition of caring about the loss of personal items. The development of the project began back in September 2020 and merges different profiles with various qualifications. This allows to cover all the quests and challenges that a company has to face in the current market world. ",
+    "heading2": "Our mission",
+    "mission":"Our main goal is the care of the lost personnal items in order to extend their lifespan and thus fight against overconsumption. We aspire to gather a close-knit community for this purpose, fundamental for a solid and united society. The constant research for innovation is at the bottom of our initiatives, as the perpetual improvement of our products, in order to offer our customers an optimal service. The full anonymity of our customers is obviously essential in order to ensure their security and protect their personal data.",
+    "heading3": "The team FindMyStuff.",
+    "formation": "Education",
     "amanpreetsingh":{
         "name": "Amanpreet Singh",
         "school": "UCLouvain",
-        "study": "Ingénieur électronique"
+        "study": "Electronic enginner"
     },
     "federicosonnino":{
         "name": "Federico Sonnino",
-        "school": "UCLouvain",
-        "study": "Ingénieur chimie des matériaux"
+        "school": "HULT San Francisco, CA",
+        "study": "Business innovation and entrepreneurship"
     },
     "mohamedchaabani":{
         "name": "Mohamed Chaabani",
         "school": "UCLouvain",
-        "study": "Ingénieur civil en construction"
+        "study": "Civil engineer in construction"
     }
 }

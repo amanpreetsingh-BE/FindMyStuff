@@ -1,5 +1,6 @@
 {
     "heading": "MERCI POUR VOTRE COMMANDE",
     "desc": "Votre numéro de commande est le : ",
-    "sub_desc": "Vous allez recevoir un mail de confirmation avec les détails sur : "
+    "sub_desc": "Vous allez recevoir un mail de confirmation avec les détails sur : ",
+    "goHome": "Retour sur la page d'acceuil"
 }

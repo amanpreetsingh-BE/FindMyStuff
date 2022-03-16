@@ -7,7 +7,7 @@ const app = !admin.apps.length ? admin.initializeApp({
   }) : admin.app()
 
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === 'POST' && req.body.authorization == process.env.NEXT_PUBLIC_API_KEY) {
         const category = req.body.category
         const id = req.body.id
         const color = req.body.color

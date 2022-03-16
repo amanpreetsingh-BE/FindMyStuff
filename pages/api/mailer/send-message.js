@@ -7,7 +7,7 @@ const app = !admin.apps.length ? admin.initializeApp({
   }) : admin.app()
   
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === 'POST' && req.body.authorization == process.env.NEXT_PUBLIC_API_KEY) {
       try {
         var hbs = require('nodemailer-express-handlebars');
         var nodemailer = require('nodemailer')
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         const id = req.body.id
 
         const transporter = nodemailer.createTransport({
-            host: "mail.privateemail.com",
+            host: process.env.HOSTMAIL,
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {

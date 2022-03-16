@@ -24,7 +24,8 @@ function Newsletter({ useState, useRef, toast, hostname }) {
                         title: title.current.value,
                         message: message.current.value,
                         fileURL: url,
-                        fileName : file.name
+                        fileName : file.name,
+                        authorization: process.env.NEXT_PUBLIC_API_KEY
                     }
                     const response = await (fetch(`${hostname}/api/mailer/send-newsletter`, {
                         method: 'POST',
@@ -47,7 +48,8 @@ function Newsletter({ useState, useRef, toast, hostname }) {
                 title: title.current.value,
                 message: message.current.value,
                 fileURL : null,
-                fileName : null
+                fileName : null,
+                authorization: process.env.NEXT_PUBLIC_API_KEY
             }
             const response = await (fetch(`${hostname}/api/mailer/send-newsletter`, {
                 method: 'POST',

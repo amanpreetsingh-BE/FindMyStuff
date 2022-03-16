@@ -4,7 +4,9 @@
         "resendMsgBtn" : "Resend activation link",
         "successResend": "Email sent",
         "errorResend": "Error while sending email",
-        "or": "or"
+        "or": "or",
+        "validateText": "Once you account activated, please refresh your page or click on the following button : ",
+        "refresh": "Refresh"
     },
     "verified": {
         "welcome": "Welcome again, ",
@@ -58,7 +60,7 @@
             "pupdate": "Your personal informations have been updated !",
             "forgot":{
                 "heading":"Did you forgot your password ?",
-                "desc" : "Please enter your email adress to reset your password. You will receive an email with a reset link.",
+                "desc" : "Please enter your email address to reset your password. You will receive an email with a reset link.",
                 "rstButtonText":"Reset",
                 "emailSendSuccess": "Reset email sent",
                 "emailSendUser": "User does not exist",
@@ -70,46 +72,47 @@
         },
         "prodPage":{
             "heading": "My products",
-            "empty": "You have currently no products registered.",
+            "empty": "You have currently no product registered.",
             "delivery": "Remaining delivery : ",
             "h1": "Manage my QR",
             "l1": "Place of delivery",
             "l2": "Tokens",
             "changeDelivery": "Modify",
             "back": "Go back",
-            "tokenDesc": "The number of tokens is the nimber of delivery remaining, if there is no token available, you need to reload the QR (7.5e) to make the delivery possible.",
+            "tokenDesc": "The number of tokens is the number of delivery remaining, if there is no token available, you need to reload the QR (7.5e) to make the delivery possible.",
             "tokenState": "Number of remaining tokens : ",
-            "reloadBtn": "Reload"
+            "reloadBtn": "Reload",
+            "stripeError": "Error, please try again"
         },
         
         "notifPage":{
             "heading": "My notifications",
             "h1": "Scan notifications",
-            "empty1": "You don't have any lost object belonging to you scanned, yet.",
+            "empty1": "You don't have any lost item belonging to you scanned, yet.",
             "h2": "Delivery notifications",
-            "empty2": "You don't have any lost object belonging to you in shipping to your choosen pick up point, yet.",
+            "empty2": "You don't have any lost item belonging to you in shipping to your choosen pick up point, yet.",
             "scanned": "Scanned at : ",
             "sent": "Sent at : ",
-            "clear": "supprimer notifications"
+            "clear": "Delete notifications"
         }
     }
     ,
     "welcomeModal":{
-        "h1": "Bienvenue sur le dashboard",
-        "s1": "Le dashboard permet de gérer ton compte",
-        "l1": "Modifier tes informations (mot de passe, adresse de livraison, etc.)",
-        "l2": "Voir les notifications",
-        "l3": "Recharger tes produits",
-        "h2": "Comment ça fonctionne ?",
-        "s2": "Etape 1",
-        "d2": "Attache le produit FindMyStuff à ton trousseau de clefs, sac à dos, ... et scan ensuite le QR code à l'aide de ton smartphon pour lancer l'activation.",
-        "s3": "Etape 2",
-        "d3": "Une fois ton compte activé, quiconque retrouve ton objet pourra scanner le code QR et ainsi signaler la retrouvaille. Nous lui indiquerons 1400 points relay en Belgique dans lesquels il déposera l'objet en échange d'une rénumération (ou d'un don à une ABSL) ",
-        "s4": "Etape 3",
-        "d4": "Tu n'as plus qu'à attendre le retour de ton objet. Tu seras notifié lorsque ton objet aura été livré à ton point relai favori, encoder lors de l'activation du produit. Nous offrons la première livraison.",
-        "h3": "Bienvenue dans notre comunauté !",
-        "s5": "Le concept est génial, non ?",
-        "d5": "N'hésite pas à nous rejoindre sur nos réseaux sociaux !"
+        "h1": "Welcome to the dashboard",
+        "s1": "The dashboard allows you to manage your account",
+        "l1": "Update your informations (password, delivery address, etc.)",
+        "l2": "Look at the notifications",
+        "l3": "Recharge your products",
+        "h2": "How it works ?",
+        "s2": "Step 1",
+        "d2": "Attach your FindMyStuff product to your keys, backpack, ... and then scan the QR code using your smartphone to start the activation.",
+        "s3": "Step 2",
+        "d3": "Anyone who finds your lost item can now scan the QR code and report the finding. We will show him the 1 400 associated pickup parcelpoints in Belgium where he will be able to deposit your item for a monetary reward or a donation offered to a NGO. ",
+        "s4": "Step 3",
+        "d4": "You just have to wait for your item to get back ! You will be notified when it will be delivered into your favorite pickup parcelpoint that you have chosen during the activation. The first back shipping is free !",
+        "h3": "Welcome to our community !",
+        "s5": "The concept is sick, right?",
+        "d5": "Let's catch up on our social networks !"
     }
 
 }

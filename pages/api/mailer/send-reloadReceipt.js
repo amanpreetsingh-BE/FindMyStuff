@@ -15,22 +15,16 @@ export default async function handler(req, res) {
         const hb = require('handlebars')
         const nodemailer = require('nodemailer')
         const puppeteer = require("puppeteer");
-        const name = (req.body.orderJSON.shipping_name).split(' ')
         const context = {
-            firstname: name[0],
-            lastname: name[1],
-            email: req.body.orderJSON.customer_email,
-            model: req.body.orderJSON.model,
-            model_description: req.body.orderJSON.color,
-            paymentMethod: req.body.orderJSON.paymentType,
-            street: req.body.orderJSON.shipping_address.line1,
-            zip: req.body.orderJSON.shipping_address.postal_code,
-            country: req.body.orderJSON.shipping_address.country,
-            orderNumber: req.body.orderJSON.order_id,
-            date: new Date(req.body.orderJSON.timestamp._seconds * 1000).toDateString(),
-            totalAmount: (req.body.orderJSON.amount/100).toFixed(2),
-            htvaAmont: ((req.body.orderJSON.amount/100)*0.79).toFixed(2),
-            tva: ((req.body.orderJSON.amount/100)*0.21).toFixed(2),
+            email: req.body.reloadJSON.customer_email,
+            model: req.body.reloadJSON.model,
+            model_description: req.body.reloadJSON.color,
+            paymentMethod: req.body.reloadJSON.paymentType,
+            orderNumber: req.body.reloadJSON.order_id,
+            date: new Date(req.body.reloadJSON.timestamp._seconds * 1000).toDateString(),
+            totalAmount: (req.body.reloadJSON.amount/100).toFixed(2),
+            htvaAmont: ((req.body.reloadJSON.amount/100)*0.79).toFixed(2),
+            tva: ((req.body.reloadJSON.amount/100)*0.21).toFixed(2),
         };
 
         const invoicePath = path.resolve("./pages/api/mailer/views/invoice.html");
@@ -68,9 +62,9 @@ export default async function handler(req, res) {
 
         const mail = {
             from: process.env.MAIL,
-            to: req.body.orderJSON.customer_email,
+            to: req.body.reloadJSON.customer_email,
             subject: "Order confirmation ✔",
-            template: 'sendReceipt',
+            template: 'sendReloadReceipt',
             context: context,
             attachments: {
                 filename: "receipt.pdf",
@@ -80,7 +74,7 @@ export default async function handler(req, res) {
 
         await transporter.sendMail(mail).then(async (info) => {
             try {
-                var docRef = await app.firestore().collection("orders").doc(`${req.body.orderJSON.stripe_checkoutID}`)
+                var docRef = await app.firestore().collection("reloads").doc(`${req.body.reloadJSON.stripe_checkoutID}`)
     
                 await docRef.get().then((doc) => {
                     if (doc.exists) {

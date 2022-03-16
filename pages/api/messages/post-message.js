@@ -7,10 +7,7 @@ const app = !admin.apps.length ? admin.initializeApp({
   }) : admin.app()
 
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
-        if(req.body.authorization != process.env.NEXT_PUBLIC_API_KEY){
-            return res.status(404).json({success : false, authorized: false})
-        }
+    if (req.method === 'POST' && req.body.authorization == process.env.NEXT_PUBLIC_API_KEY) {
         try {
             var docRef = app.firestore().collection("messages").doc()
             docRef.set({

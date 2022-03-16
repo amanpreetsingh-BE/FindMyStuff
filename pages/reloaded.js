@@ -15,36 +15,26 @@ export async function getServerSideProps({ query, locale }){
     const checkout = await (fetch(`${process.env.HOSTNAME}/api/checkout/${URL_session_id}`))
     const checkoutJSON = await checkout.json()
     if(checkoutJSON.id && (checkoutJSON.payment_status=="paid")){
-        const order = await (fetch(`${process.env.HOSTNAME}/api/orders/${URL_session_id}`))
-        const orderJSON = await order.json()
+        const reload = await (fetch(`${process.env.HOSTNAME}/api/reloads/${URL_session_id}`))
+        const reloadJSON = await reload.json()
         const authorization = process.env.NEXT_PUBLIC_API_KEY
 
-        if(!orderJSON.emailSent) {
-            /* Send notification to ADMIN */
-            await (fetch(`${process.env.HOSTNAME}/api/mailer/notify-order`, {
-                method: 'POST',
-                headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({orderJSON: orderJSON, authorization: authorization})
-            }));
-
+        if(!reloadJSON.emailSent) {
             /* Send confirmation to the client */
-            await (fetch(`${process.env.HOSTNAME}/api/mailer/send-receipt`, {
+            await (fetch(`${process.env.HOSTNAME}/api/mailer/send-reloadReceipt`, {
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({orderJSON: orderJSON, authorization: authorization})
+                body: JSON.stringify({reloadJSON: reloadJSON, authorization: authorization})
             }));
         }
 
         return {
             props: {
-                order_id: JSON.stringify(orderJSON.order_id),
-                order_email: JSON.stringify(orderJSON.customer_email),
+                order_id: JSON.stringify(reloadJSON.order_id),
+                order_email: JSON.stringify(reloadJSON.customer_email),
                 ...(await serverSideTranslations(locale, ['payment'])),
                 locale
             }
@@ -56,7 +46,7 @@ export async function getServerSideProps({ query, locale }){
     }
 }
 
-export default function Success(props) {
+export default function Reloaded(props) {
     /* Handle language */
     const {t} = useTranslation();
     /* Used to push to dashboard */

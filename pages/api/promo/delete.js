@@ -10,7 +10,7 @@ const app = !admin.apps.length ? admin.initializeApp({
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === 'POST' && req.body.authorization == process.env.NEXT_PUBLIC_API_KEY) {
 
         const promoID = req.body.promoID
         const couponID = req.body.couponID
@@ -20,12 +20,7 @@ export default async function handler(req, res) {
                 couponID
             );
 
-            var query = app.firestore().collection('coupons').where('id','==', promoID);
-            query.get().then(function(querySnapshot) {
-                querySnapshot.forEach(function(doc) {
-                    doc.ref.delete();
-                });
-            });
+            var docRef = app.firestore().collection('coupons').doc(promoID).delete();
             
         } catch (err) {
             console.log(err)

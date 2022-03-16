@@ -7,7 +7,7 @@ const app = !admin.apps.length ? admin.initializeApp({
   }) : admin.app()
 
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === 'POST' && req.body.authorization == process.env.NEXT_PUBLIC_API_KEY) {
         const id = req.body.id
         try {
             var docRef = app.firestore().collection(`orders`).doc(`${id}`)
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
                     const path = require("path")
 
                     const transporter = nodemailer.createTransport({
-                        host: "mail.privateemail.com",
+                        host: process.env.HOSTMAIL,
                         port: 465,
                         secure: true, // true for 465, false for other ports
                         auth: {
@@ -57,10 +57,11 @@ export default async function handler(req, res) {
                      }
 
                      await transporter.sendMail(mail).then(()=>{
-                        res.json({ received: true });
+                        res.status(200).json({ received: true });
                      })
                      
                 } else {
+                    res.status(400).json({ received: false });
                     console.log("No such document!");
                 }
             });

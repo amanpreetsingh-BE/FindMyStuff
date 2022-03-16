@@ -8,7 +8,7 @@ const app = !admin.apps.length ? admin.initializeApp({
   
 /* return a JSON of products */
 export default async function handler(req, res) {
-    if (req.method === 'GET') {
+    if (req.method === 'GET' && req.query.authorization == process.env.NEXT_PUBLIC_API_KEY) {
       var statsJSON = []
 
       try {

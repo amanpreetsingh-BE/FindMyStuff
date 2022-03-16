@@ -8,13 +8,24 @@
 </head>
 <body>
     <div style="background-color: #171C26; color: #fff; padding: 12px 32px;">
-        <h3 style="color:white;">Hi, {{fullname}}</h3>
+        <h3 style="color:white;">Hello</h3>
         <div style="height: 50px; width: 100%; margin: auto; font-weight: 700; text-align: center;">
-            <h2 style="color:#20C17F; font-size: 1rem; padding-top: 30px">✔ Order {{orderID}} shipped !</h2>
+            <h2 style="color:#20C17F; font-size: 1rem; padding-top: 30px">✔ Order {{orderNumber}} confirmed !</h2>
         </div>
         <p style="color:white; margin: 20px 0px;"> 
-            You will receive your keychain by post in 2-3 business day
+            You can find below the summary of your reload order and a receipt in attachments of this email
         </p>
+
+        <div style="background-color: #1B212E; margin: 10px auto; padding: 10px 20px; border-radius: 10px; color: #fff;">
+            <div style="display: flex; flex-direction: rows; justify-content: flex-start; align-items: center; padding: 10px;">
+                <img src="https://firebasestorage.googleapis.com/v0/b/findmystuff-35626.appspot.com/o/mailer%2Fassets%2Forder.svg?alt=media&token=aae2b672-6f9f-4ce3-b868-899a60147983" width="32px" height="32px" alt="ship_logo">
+                <h4 style="color: white; padding-left:10px;">Order informations</h4>
+            </div>
+            <div style="padding: 10px;">
+                <div style="color: white;">Model ordered: reload</div>
+                <div style="color: white;">Color: none </div>
+            </div>
+        </div>
 
         <p style="color:white; margin: 20px 0px;">
             If you have any questions, please contact our support at team@findmystuff.io 

@@ -80,6 +80,7 @@ export default function Parameters({ useState, useRef, Modal, t, hostname, toast
           uid: uid,
           firstName: formFirstname.current.value == "" ? firstName : formFirstname.current.value,
           lastName: formLastname.current.value == "" ? lastName : formLastname.current.value,
+          authorization: process.env.NEXT_PUBLIC_API_KEY
         }
         const response = await (fetch(`${hostname}/api/user/settings/updateInfo`, {
             method: 'POST',

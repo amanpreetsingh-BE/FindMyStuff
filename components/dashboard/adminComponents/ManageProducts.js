@@ -104,7 +104,8 @@ function ManageProducts({ useState, useRef, Image, motion, Modal, toast, product
                 category: modalCategory,
                 id: modalProductModel,
                 color: modalProductColor,
-                increment: formProductStockIncrement.current.value
+                increment: formProductStockIncrement.current.value,
+                authorization: process.env.NEXT_PUBLIC_API_KEY
             }
             const response = await (fetch("/api/products/stock", {
                 method: 'POST',
@@ -128,7 +129,8 @@ function ManageProducts({ useState, useRef, Image, motion, Modal, toast, product
             category: modalCategory,
             id: modalProductModel,
             color: modalProductColor,
-            priceID: modalProductKey
+            priceID: modalProductKey,
+            authorization: process.env.NEXT_PUBLIC_API_KEY
         }
         const response = await (fetch("/api/products/delete", {
             method: 'POST',

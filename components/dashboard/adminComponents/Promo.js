@@ -10,6 +10,7 @@ export default function Promo({ useState, useRef, toast, hostname, Modal, coupon
     const [modalCouponID, setModalCouponID] = useState('')
     const [modalCodeName, setModalCodeName] = useState('')
     const [modalOFF, setModalOFF] = useState('')
+    const [modalUsage, setModalUsage] = useState('')
 
     function openModal(){
         setShowModal(prev => !prev);
@@ -29,6 +30,7 @@ export default function Promo({ useState, useRef, toast, hostname, Modal, coupon
             const data = {
                 code: formCoupon.current.value,
                 percent: formPercentage.current.value, 
+                authorization: process.env.NEXT_PUBLIC_API_KEY
             }
             const response = await (fetch(`${hostname}/api/promo/add`, {
                 method: 'POST',
@@ -52,7 +54,8 @@ export default function Promo({ useState, useRef, toast, hostname, Modal, coupon
         e.preventDefault()
         const data = {
             promoID: modalPromoID,
-            couponID: modalCouponID
+            couponID: modalCouponID,
+            authorization: process.env.NEXT_PUBLIC_API_KEY
         }
         const response = await (fetch(`${hostname}/api/promo/delete`, {
             method: 'POST',
@@ -73,21 +76,23 @@ export default function Promo({ useState, useRef, toast, hostname, Modal, coupon
     const renderProducts = (coupons) => {
         const cards = []
 
-        function openStockModal(promoID, couponID, codeName, off){
+        function openStockModal(promoID, couponID, codeName, off, usage){
             setModalPromoID(promoID) 
             setModalCouponID(couponID) 
             setModalCodeName(codeName)
             setModalOFF(off)
+            setModalUsage(usage)
             openModal()
         }
 
         coupons.forEach(coupon => {
-            const promoID = coupon.id
-            const couponID = coupon.coupon.id
-            const codeName = coupon.code
-            const off = coupon.coupon.percent_off
+            const promoID = coupon.promotionCode.id
+            const couponID = coupon.promotionCode.coupon.id
+            const codeName = coupon.promotionCode.code
+            const off = coupon.promotionCode.coupon.percent_off
+            const usage = coupon.usage
             cards.push(
-                <div key={promoID} onClick={()=>openStockModal(promoID, couponID, codeName, off)} className="flex flex-col justify-center items-center w-80 h-80 rounded-lg bg-[#1B212E] shadow-lg hover:shadow-lg hover:bg-[#171C26] cursor-pointer">
+                <div key={promoID} onClick={()=>openStockModal(promoID, couponID, codeName, off, usage)} className="flex flex-col justify-center items-center w-80 h-80 rounded-lg bg-[#1B212E] shadow-lg hover:shadow-lg hover:bg-[#171C26] cursor-pointer">
                     <div className="text-lg font-bold mb-8 ">{codeName}</div>
                 </div>
             )
@@ -124,6 +129,9 @@ export default function Promo({ useState, useRef, toast, hostname, Modal, coupon
                                 </li>      
                                 <li>
                                     Percentage off : {modalOFF+ "%"}
+                                </li>
+                                <li>
+                                    Used : {modalUsage}
                                 </li>
                               
                             </ul>

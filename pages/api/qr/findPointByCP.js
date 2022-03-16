@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === 'POST' && req.body.authorization == process.env.NEXT_PUBLIC_API_KEY) {
         const axios = require("axios")
         const md5 = require("md5")
         var parseString = require('xml2js').parseString

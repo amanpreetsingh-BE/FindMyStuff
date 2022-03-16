@@ -5,7 +5,8 @@ function NewAdmin({ useRef, toast, hostname }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const data = {
-            email: formEmail.current.value
+            email: formEmail.current.value,
+            authorization: process.env.NEXT_PUBLIC_API_KEY
         }
         const response = await (fetch(`${hostname}/api/admin/`, {
             method: 'POST',
