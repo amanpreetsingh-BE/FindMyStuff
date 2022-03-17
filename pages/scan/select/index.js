@@ -1,6 +1,5 @@
 /* React imports */
 import {useState, useContext, useRef} from 'react'
-import axios from "axios"
 import { UserContext } from '@lib/context'
 /* Built-in Next.js imports */
 import Image from 'next/image'
@@ -27,7 +26,7 @@ export async function getServerSideProps({ query, req, res, locale }) {
 
     // is connected and email in query
     if(firebaseToken && email){
-        const credential = await (fetch(`${hostname}/api/credential?userEmail=${email}&token=${firebaseToken}&authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
+        const credential = await (fetch(`/api/credential?userEmail=${email}&token=${firebaseToken}&authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
         const credentialJSON = (await credential.json())
         const invalid = credentialJSON.type == "invalid" ? true : false
         // is connected and email and query by the good user
@@ -40,7 +39,7 @@ export async function getServerSideProps({ query, req, res, locale }) {
                 id: id,
                 authorization: process.env.NEXT_PUBLIC_API_KEY
             }
-            const verify = await (fetch(`${hostname}/api/qr/verify`, {
+            const verify = await (fetch(`/api/qr/verify`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -191,7 +190,7 @@ export default function SelectPage({ id, emailQR, hostname, locale }) {
             cp: cp.current.value,
             authorization: process.env.NEXT_PUBLIC_API_KEY
         }
-        const response = await (fetch(`${hostname}/api/qr/findPointByCP/`, {
+        const response = await (fetch(`/api/qr/findPointByCP/`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -220,7 +219,7 @@ export default function SelectPage({ id, emailQR, hostname, locale }) {
                     selection: selection,
                     authorization: process.env.NEXT_PUBLIC_API_KEY
                 }
-                const response = await (fetch(`${hostname}/api/qr/relais`, {
+                const response = await (fetch(`/api/qr/relais`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

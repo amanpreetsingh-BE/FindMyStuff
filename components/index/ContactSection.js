@@ -20,7 +20,7 @@ function ContactSection({t, hostname, useState, toast}) {
             authorization: process.env.NEXT_PUBLIC_API_KEY,
         }
         try {
-            const response = await (fetch(`${hostname}/api/messages/post-message`, {
+            const response = await (fetch(`/api/messages/post-message`, {
                 method: 'POST',
                 headers: {
                 'Accept': 'application/json',
@@ -30,7 +30,7 @@ function ContactSection({t, hostname, useState, toast}) {
             }));
             const responseJSON = await (response.json())
 
-            const notify = await (fetch(`${hostname}/api/mailer/notify-message`, {
+            const notify = await (fetch(`/api/mailer/notify-message`, {
                 method: 'POST',
                 headers: {
                 'Accept': 'application/json',
