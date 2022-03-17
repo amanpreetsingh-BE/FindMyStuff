@@ -12,16 +12,16 @@ import {useTranslation} from 'next-i18next'
 export async function getServerSideProps({ query, locale }){
 
     const URL_session_id = query.session_id
-    const checkout = await (fetch(`/api/checkout/${URL_session_id}`))
+    const checkout = await (fetch(`${process.env.HOSTNAME}/api/checkout/${URL_session_id}`))
     const checkoutJSON = await checkout.json()
     if(checkoutJSON.id && (checkoutJSON.payment_status=="paid")){
-        const reload = await (fetch(`/api/reloads/${URL_session_id}`))
+        const reload = await (fetch(`${process.env.HOSTNAME}/api/reloads/${URL_session_id}`))
         const reloadJSON = await reload.json()
         const authorization = process.env.NEXT_PUBLIC_API_KEY
 
         if(!reloadJSON.emailSent) {
             /* Send confirmation to the client */
-            await (fetch(`/api/mailer/send-reloadReceipt`, {
+            await (fetch(`${process.env.HOSTNAME}/api/mailer/send-reloadReceipt`, {
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',

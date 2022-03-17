@@ -36,7 +36,7 @@ export async function getServerSideProps({ req, locale, query }) {
     
     const userEmail = query.user
     const firebaseToken = await req.cookies.firebaseToken
-    const credential = await (fetch(`/api/credential?userEmail=${userEmail}&token=${firebaseToken}&authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
+    const credential = await (fetch(`${process.env.HOSTNAME}/api/credential?userEmail=${userEmail}&token=${firebaseToken}&authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
     const credentialJSON = (await credential.json())
     const invalid = credentialJSON.type == "invalid" ? true : false
     const admin = credentialJSON.type == "admin" ? true : false
@@ -54,39 +54,39 @@ export async function getServerSideProps({ req, locale, query }) {
     /* FETCH sensitive data only if ADMIN user */
 
     // Get products
-    const products = admin ? (await (fetch(`/api/products?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
+    const products = admin ? (await (fetch(`${process.env.HOSTNAME}/api/products?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const productsJSON = admin ? (await products.json()) : null
 
     // Get orders
-    const orders = admin ? (await (fetch(`/api/orders?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
+    const orders = admin ? (await (fetch(`${process.env.HOSTNAME}/api/orders?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const ordersJSON = admin ? (await orders.json()) : null
 
     // Get messages
-    const messages = admin ? (await (fetch(`/api/messages?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
+    const messages = admin ? (await (fetch(`${process.env.HOSTNAME}/api/messages?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const messagesJSON = admin ? (await messages.json()) : null
 
     // Get stats
-    const stats = admin ? (await (fetch(`/api/statistics?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
+    const stats = admin ? (await (fetch(`${process.env.HOSTNAME}/api/statistics?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const statsJSON = admin ? (await stats.json()) : null
 
     // Get coupons
-    const coupons = admin ? (await (fetch(`/api/promo?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
+    const coupons = admin ? (await (fetch(`${process.env.HOSTNAME}/api/promo?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const couponsJSON = admin ? (await coupons.json()) : null
 
     // Get QR to generate
-    const qrToGenerate = admin ? (await (fetch(`/api/qr/qrToGenerate?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
+    const qrToGenerate = admin ? (await (fetch(`${process.env.HOSTNAME}/api/qr/qrToGenerate?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const qrToGenerateJSON = admin ? (await qrToGenerate.json()) : null
 
     // Get potential finders to reward
-    const finders = admin ? (await (fetch(`/api/qr/getFinders?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
+    const finders = admin ? (await (fetch(`${process.env.HOSTNAME}/api/qr/getFinders?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))) : null
     const findersJSON = admin ? (await finders.json()) : null
 
     // Get user products
-    const userProducts = await (fetch(`/api/user/products?user=${userEmail}&authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
+    const userProducts = await (fetch(`${process.env.HOSTNAME}/api/user/products?user=${userEmail}&authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
     const userProductsJSON = await userProducts.json()
 
     // Get user notifications
-    const userNotifications = await (fetch(`/api/user/notifications?user=${userEmail}&authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
+    const userNotifications = await (fetch(`${process.env.HOSTNAME}/api/user/notifications?user=${userEmail}&authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
     const userNotificationsJSON = await userNotifications.json()
 
     const hostname = process.env.HOSTNAME

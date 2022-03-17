@@ -36,7 +36,7 @@ export async function getServerSideProps({ req, params, locale }) {
       id: id,
       authorization: process.env.NEXT_PUBLIC_API_KEY
     }
-    const verify = await (fetch(`/api/qr/verify`, {
+    const verify = await (fetch(`${hostname}/api/qr/verify`, {
       method: 'POST',
       headers: {
           'Accept': 'application/json',
@@ -59,7 +59,7 @@ export async function getServerSideProps({ req, params, locale }) {
           authorization: process.env.NEXT_PUBLIC_API_KEY
         }
         if(activate){
-          await (fetch(`/api/qr/notifications/notify`, {
+          await (fetch(`${hostname}/api/qr/notifications/notify`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -158,7 +158,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
     }
     
     try{
-      const response = await (fetch(`/api/qr/register`, {
+      const response = await (fetch(`${hostname}/api/qr/register`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -329,7 +329,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
           authorization: process.env.NEXT_PUBLIC_API_KEY
         }
       }
-      await (fetch(`/api/qr/notifications/notifyGenerate`, {
+      await (fetch(`${hostname}/api/qr/notifications/notifyGenerate`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -387,7 +387,7 @@ export default function ScanPage({id, activate, email, timestamp, pdf, hostname,
             cp: cp.current.value,
             authorization: process.env.NEXT_PUBLIC_API_KEY
         }
-        const response = await (fetch(`/api/qr/findPointByCP/`, {
+        const response = await (fetch(`${hostname}/api/qr/findPointByCP/`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
