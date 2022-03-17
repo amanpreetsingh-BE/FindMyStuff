@@ -13,7 +13,7 @@ function ProductsSection({ motion, hostname, toast, Image, t, productsJSON, loca
     try{
       const {
         data: {id}
-      } = await axios.post(`${hostname}/api/checkout`, {
+      } = await axios.post(`${hostname}/api/checkout/`, {
         cat: cat,
         priceID: cat== "Keychain" ? product.priceID : product.data.priceID,
         model: cat== "Keychain" ? "Square keychain" : product.id, // to be changed in V2 to selectedModel[0].model
