@@ -8,7 +8,7 @@ import getStripe from '@lib/stripe'
 function ProductsSection({ motion, hostname, toast, Image, t, productsJSON, locale }) {
 
   /* Handle products */
-  const redirectToCheckout = async (e,cat, product) => {
+  const redirectToCheckout = async (e, cat, product) => {
     e.preventDefault()
     try{
       const {
@@ -19,16 +19,14 @@ function ProductsSection({ motion, hostname, toast, Image, t, productsJSON, loca
         model: cat== "Keychain" ? "Square keychain" : product.id, // to be changed in V2 to selectedModel[0].model
         color: cat== "Keychain" ? product.color : product.data.color,
         locale: locale,
-        authorization: process.env.NEXT_PUBLIC_API_KEY,
+        authorization: process.env.NEXT_PUBLIC_API_KEY
       })
       const stripe = await getStripe()
       const res = await stripe.redirectToCheckout({sessionId: id})
-      
-      if(res.error){
-        toast.error(t('home:stripe:error')) 
-      } 
+    
     } catch(err){
-        toast.error(t('home:stripe:error')) 
+        //toast.error(t('home:stripe:error')) 
+        toast.error(err.message) 
     }
   }
 
