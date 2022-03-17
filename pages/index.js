@@ -28,7 +28,7 @@ export async function getServerSideProps({locale}) {
   let productsJSON
 
   try {
-    let products = await (fetch(`/api/products?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
+    let products = await (fetch(`${process.env.HOSTNAME}/api/products?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
     productsJSON = (await products.json())
   } catch(err){
     productsJSON = null
