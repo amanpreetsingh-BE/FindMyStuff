@@ -1,175 +1,185 @@
-import Stripe from 'stripe'
-import { buffer } from 'micro'
-import * as admin from 'firebase-admin'
+import Stripe from "stripe";
+import { buffer } from "micro";
+import * as admin from "firebase-admin";
 
-const orderid = require('order-id')('key');
+/* Import base64 encoded private key from firebase and initialize firebase */
+const serviceAccount = JSON.parse(
+  Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
+);
 
-const serviceAccount = JSON.parse(Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, 'base64'))
+const app = !admin.apps.length
+  ? admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    })
+  : admin.app();
 
-const app = !admin.apps.length ? admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-}) : admin.app()
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // import stripe secret key
+const orderid = require("order-id")("key"); // generator of order-id based on timestamp
 
 export const config = {
   api: {
     bodyParser: false,
-    externalResolver: true
+    externalResolver: true,
   },
 };
 
-var global_COUPON = null
+var global_COUPON = null;
 
+/* Function allowing to increment the usage of a specific coupon if checkout success */
 const increaseCouponUsage = async () => {
-  console.log(global_COUPON)
-  let docRef = app
-  .firestore()
-  .collection("coupons")
-  .doc(`${global_COUPON}`)
-  
-  return docRef.get().then((doc) => {
-    if (doc.exists) {
-      docRef.update({
-        usage: doc.data().usage+1
-      })
-    } else {
-      console.log("No such document!");
-    }
-  })
-}
-
-const incrementToken = async (qrID) => {
-  let docRef = app
-  .firestore()
-  .collection("QR")
-  .doc(`${qrID}`)
-  
-  return docRef.get().then((doc) => {
-    if (doc.exists) {
-      docRef.update({
-        jetons: doc.data().jetons+1
-      })
-    } else {
-      console.log("No such document!");
-    }
-  })
-}
-
-
-
-const decrementStock = async (session) => {
-  let docRef 
-  if(session.metadata.color) {
-    docRef = app
-    .firestore()
-    .collection("products")
-    .doc(`${session.metadata.cat}`)
-    .collection('id')
-    .doc(`${session.metadata.model}`)
-    .collection('colors')
-    .doc(`${session.metadata.color}`)
-  } else {
-    docRef = app
-    .firestore()
-    .collection("products")
-    .doc(`${session.metadata.cat}`)
-    .collection('id')
-    .doc(`${session.metadata.model}`)
-  }
+  let docRef = app.firestore().collection("coupons").doc(`${global_COUPON}`);
 
   return docRef.get().then((doc) => {
     if (doc.exists) {
       docRef.update({
-        quantity: doc.data().quantity-1,
-        status: (doc.data().quantity-1 > 0) ? "In stock" : "Out of stock"
-      })
+        usage: doc.data().usage + 1,
+      });
     } else {
       console.log("No such document!");
     }
-  }).catch((error) => {
-      console.log("Error getting document:", error);
   });
-}
+};
 
+/* Function allowing to increment the number of delivery of a specific QR */
+const incrementToken = async (qrID) => {
+  let docRef = app.firestore().collection("QR").doc(`${qrID}`);
 
-const fulfillOrder = async (session, charge, paymentType, amount) => {
+  return docRef.get().then((doc) => {
+    if (doc.exists) {
+      docRef.update({
+        jetons: doc.data().jetons + 1,
+      });
+    } else {
+      console.log("No such document!");
+    }
+  });
+};
 
-  const order_id = orderid.generate()
-
-  if(session.metadata.model == "reload" && session.metadata.cat == "reload" && session.metadata.color == "reload" && session.metadata.priceID == "price_1KZcrlK5KPA8d9OvKtznbNWq"){
-    incrementToken(session.metadata.qrID)
-    return app
-    .firestore()
-    .collection("reloads")
-    .doc(session.id)
-    .set({
-      stripe_priceID: session.metadata.priceID,
-      stripe_checkoutID: session.id,
-      stripe_customerID: session.customer,
-      stripe_paymentIntentID: session.payment_intent,
-      order_id: order_id,
-      qrID: session.metadata.qrID,
-      paymentType: paymentType,
-      amount: amount,
-      model: `${session.metadata.model}`,
-      color: `${session.metadata.color ? session.metadata.color:"none"}`,
-      customer_email: session.customer_details.email,
-      charge: charge,
-      emailSent: false,
-      emailID: '',
-      timestamp: admin.firestore.FieldValue.serverTimestamp(),
-    })
-    .catch((err) =>{
-      console.log(err.message)
-    })
+/* Function allowing to decrement the stock of the checkout product */
+const decrementStock = async (session) => {
+  let docRef;
+  if (session.metadata.color) {
+    // if color attribute of the product
+    docRef = app
+      .firestore()
+      .collection("products")
+      .doc(`${session.metadata.cat}`)
+      .collection("id")
+      .doc(`${session.metadata.model}`)
+      .collection("colors")
+      .doc(`${session.metadata.color}`);
   } else {
-    if(global_COUPON){
-      console.log("coupon activated")
-      increaseCouponUsage()
-    } 
-    decrementStock(session)
-    return app
-    .firestore()
-    .collection("orders")
-    .doc(session.id)
-    .set({
-      stripe_priceID: session.metadata.priceID,
-      stripe_checkoutID: session.id,
-      stripe_customerID: session.customer,
-      stripe_paymentIntentID: session.payment_intent,
-      order_id: order_id,
-      paymentType: paymentType,
-      amount: amount,
-      model: `${session.metadata.model}`,
-      color: `${session.metadata.color ? session.metadata.color:"none"}`,
-      customer_email: session.customer_details.email,
-      shipping_name: session.shipping.name,
-      shipping_address: session.shipping.address,
-      charge: charge,
-      emailSent: false,
-      emailID: '',
-      timestamp: admin.firestore.FieldValue.serverTimestamp(),
-      shipped: false,
-      total_details: session.total_details,
-      allow_promotion_codes: session.allow_promotion_codes,
-      promotion_code: global_COUPON
-    })
-    .catch((err) =>{
-      console.log(err.message)
-    })
+    docRef = app
+      .firestore()
+      .collection("products")
+      .doc(`${session.metadata.cat}`)
+      .collection("id")
+      .doc(`${session.metadata.model}`);
   }
 
-}
+  return docRef
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        docRef.update({
+          quantity: doc.data().quantity - 1,
+          status: doc.data().quantity - 1 > 0 ? "In stock" : "Out of stock",
+        });
+      } else {
+        console.log("No such document!");
+      }
+    })
+    .catch((error) => {
+      console.log("Error getting document:", error);
+    });
+};
 
+/* Add ORDER to the DB */
+const fulfillOrder = async (session, charge, paymentType, amount) => {
+  const order_id = orderid.generate();
+  // Reload QR type of checkout
+  if (
+    session.metadata.model == "reload" &&
+    session.metadata.cat == "reload" &&
+    session.metadata.color == "reload" &&
+    session.metadata.priceID == "price_1KZcrlK5KPA8d9OvKtznbNWq"
+  ) {
+    incrementToken(session.metadata.qrID);
+    return app
+      .firestore()
+      .collection("reloads")
+      .doc(session.id)
+      .set({
+        stripe_priceID: session.metadata.priceID,
+        stripe_checkoutID: session.id,
+        stripe_customerID: session.customer,
+        stripe_paymentIntentID: session.payment_intent,
+        order_id: order_id,
+        qrID: session.metadata.qrID,
+        paymentType: paymentType,
+        amount: amount,
+        model: `${session.metadata.model}`,
+        color: `${session.metadata.color ? session.metadata.color : "none"}`,
+        customer_email: session.customer_details.email,
+        charge: charge,
+        emailSent: false,
+        emailID: "",
+        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      })
+      .catch((err) => {
+        console.log(err.message); // to debug
+      });
+  } else {
+    // Product type of checkout
+    if (global_COUPON) {
+      increaseCouponUsage();
+    }
+    decrementStock(session);
+    return app
+      .firestore()
+      .collection("orders")
+      .doc(session.id)
+      .set({
+        stripe_priceID: session.metadata.priceID,
+        stripe_checkoutID: session.id,
+        stripe_customerID: session.customer,
+        stripe_paymentIntentID: session.payment_intent,
+        order_id: order_id,
+        paymentType: paymentType,
+        amount: amount,
+        model: `${session.metadata.model}`,
+        color: `${session.metadata.color ? session.metadata.color : "none"}`,
+        customer_email: session.customer_details.email,
+        shipping_name: session.shipping.name,
+        shipping_address: session.shipping.address,
+        charge: charge,
+        emailSent: false,
+        emailID: "",
+        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+        shipped: false,
+        total_details: session.total_details,
+        allow_promotion_codes: session.allow_promotion_codes,
+        promotion_code: global_COUPON,
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+};
+
+/*
+ * Description : Webhook listening to events for the checkout session
+ * Level of credential : Private
+ * Method : POST
+ */
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     let event;
 
+    // 1. Retrieve the event by verifying the signature using the raw body and secret
     try {
-      // 1. Retrieve the event by verifying the signature using the raw body and secret
       const rawBody = await buffer(req);
-      const signature = req.headers['stripe-signature'];
+      const signature = req.headers["stripe-signature"];
 
       event = stripe.webhooks.constructEvent(
         rawBody.toString(),
@@ -177,37 +187,42 @@ export default async function handler(req, res) {
         process.env.STRIPE_WEBHOOK_SECRET
       );
     } catch (err) {
-      console.log(`❌ Error message: ${err.message}`);
       res.status(400).send(`Webhook Error: ${err.message}`);
       return;
     }
-    
-    // Successfully constructed event
-    console.log('✅ Success:', event.id);
 
-    if(event.type === 'customer.discount.created'){
-      global_COUPON = event.data.object.promotion_code
-    }
-
-    // 2. Handle event type (add business logic here)
-    if (event.type === 'checkout.session.completed') {
-      console.log(`💰  Payment received!`);
-      const session = event.data.object
-      const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent)
-      const paymentMethod = await stripe.paymentMethods.retrieve(paymentIntent.payment_method);
-      return fulfillOrder(session, paymentIntent.charges.data[0], paymentMethod.type, paymentIntent.amount)
+    // 2. Set logic in function of event type
+    if (event.type === "customer.discount.created") {
+      global_COUPON = event.data.object.promotion_code; // set promo code if applied at checkout
+    } else if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+      const paymentIntent = await stripe.paymentIntents.retrieve(
+        session.payment_intent
+      );
+      const paymentMethod = await stripe.paymentMethods.retrieve(
+        paymentIntent.payment_method
+      );
+      return fulfillOrder(
+        session,
+        paymentIntent.charges.data[0],
+        paymentMethod.type,
+        paymentIntent.amount
+      )
         .then(() => res.status(200))
-        .catch((err) => res.status(400).send(`Webhook Error: ${err.message}`))
-    } else if(event.type === 'payment_intent.payment_failed' || event.type === 'charge.failed'){
-      console.log(`💰  Payment failed !`);
+        .catch((err) => res.status(400).send(`Webhook Error: ${err.message}`));
+    } else if (
+      event.type === "payment_intent.payment_failed" ||
+      event.type === "charge.failed"
+    ) {
+      console.log(`Payment failed !`); // to debug
     } else {
-      console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`);
+      console.log(`Unhandled event : ${event.type}`); // to debug
     }
 
     // 3. Return a response to acknowledge receipt of the event.
     res.json({ received: true });
   } else {
-    res.setHeader('Allow', 'POST');
-    res.status(405).end('Method Not Allowed');
+    res.setHeader("Allow", "POST");
+    res.status(405).end("Method Not Allowed");
   }
 }

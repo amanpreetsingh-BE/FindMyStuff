@@ -1,129 +1,246 @@
 /* React.js */
-import {useState, useEffect, useContext} from 'react'
+import { useState, useEffect, useContext } from "react";
 /* Next.js */
-import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
-import Script from 'next/script'
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import Script from "next/script";
 /* Lib */
-import { UserContext } from '@lib/context'
+import { UserContext } from "@lib/context";
 /* Components */
-import MobileNav from '@components/navbar/MobileNav'
-import Nav from '@components/navbar/Nav'
-import HeroSection from '@components/index/HeroSection'
-import HiwSectionDesk from '@components/index/HiwSectionDesk'
-import HiwSectionMob from '@components/index/HiwSectionMob'
-import ProductsSection from '@components/index/ProductsSection'
-import ContactSection from '@components/index/ContactSection'
-import FooterSection from '@components/index/FooterSection'
+import MobileNav from "@components/navbar/MobileNav";
+import Nav from "@components/navbar/Nav";
+import HeroSection from "@components/index/HeroSection";
+import HiwSectionDesk from "@components/index/HiwSectionDesk";
+import HiwSectionMob from "@components/index/HiwSectionMob";
+import ProductsSection from "@components/index/ProductsSection";
+import ContactSection from "@components/index/ContactSection";
+import FooterSection from "@components/index/FooterSection";
 /* Animations */
-import toast from 'react-hot-toast'
-import {motion} from 'framer-motion';
+import toast from "react-hot-toast";
+import { motion } from "framer-motion";
 /* Translation */
-import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
-import {useTranslation} from 'next-i18next';
-import { auth } from '@lib/firebase'
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
-export async function getServerSideProps({locale}) {
-  let productsJSON
+import { writeBatch, doc, getDoc } from "firebase/firestore";
+import { firestore } from "@lib/firebase";
+
+export async function getServerSideProps({ req, locale }) {
+  let productsJSON;
+  let firebaseToken;
+  const hostname = process.env.HOSTNAME;
+  if (req.cookies.firebaseToken) {
+    firebaseToken = req.cookies.firebaseToken;
+  } else {
+    firebaseToken = null;
+  }
 
   try {
-    let products = await (fetch(`${process.env.HOSTNAME}/api/products?authorization=${process.env.NEXT_PUBLIC_API_KEY}`))
-    productsJSON = (await products.json())
-  } catch(err){
-    productsJSON = null
+    let products = await fetch(`${process.env.HOSTNAME}/api/products`);
+    productsJSON = await products.json();
+  } catch (err) {
+    productsJSON = null;
   }
 
-  const hostname = process.env.HOSTNAME
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['home'])),
+      ...(await serverSideTranslations(locale, ["home"])),
       locale,
       productsJSON,
-      hostname
+      hostname,
+      firebaseToken,
     },
-  }
+  };
 }
 
-export default function Home({locale, productsJSON, hostname}) {
-
-  const {t} = useTranslation()
+export default function Home({
+  locale,
+  productsJSON,
+  hostname,
+  firebaseToken,
+}) {
+  const { t } = useTranslation();
   /* navbar */
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(true);
   const toggle = () => {
-      setIsOpen(!isOpen)
+    setIsOpen(!isOpen);
   };
   /* images */
-  const separator = require('@images/home/separator.svg');
+  const separator = require("@images/home/separator.svg");
   /* control window width  */
-  const [windowW, setWindowW] = useState('')
+  const [windowW, setWindowW] = useState("");
   const controlWindow = () => {
-    setWindowW(window.innerWidth)
-  }
+    setWindowW(window.innerWidth);
+  };
   useEffect(() => {
-      setWindowW(window.innerWidth)
-      window.addEventListener('resize', controlWindow)
-      return () => {
-          window.removeEventListener('resize', controlWindow)
-      }
-  }, [])
+    setWindowW(window.innerWidth);
+    window.addEventListener("resize", controlWindow);
+    return () => {
+      window.removeEventListener("resize", controlWindow);
+    };
+  }, []);
 
+  /*const tester = async () => {
+    const batch = writeBatch(firestore);
+    const pdoc = doc(
+      firestore,
+      "products",
+      "Keychain",
+      "id",
+      "Square keychain",
+      "colors",
+      "Dark gray"
+    );
+    const docSnap = await getDoc(pdoc);
+    if (docSnap.exists()) {
+      console.log("UPDATE");
+      batch.update(pdoc, {
+        quantity: -1,
+        status: "fekk",
+      });
+    } else {
+      console.log("Error no exist");
+    }
+    batch
+      .commit()
+      .then(() => {
+        console.log("Batch operation successful");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  tester();*/
   return (
     <div>
       {/* Head SEO */}
       <Head>
-        <title>{t('home:seo:title')}</title>
-        <meta name="description" content={t('home:seo:description')}/>
-        <meta name="keywords" content={t('home:seo:description')} />
+        <title>{t("home:seo:title")}</title>
+        <meta name="description" content={t("home:seo:description")} />
+        <meta name="keywords" content={t("home:seo:description")} />
         <link rel="apple-touch-icon" href="/logo192.png" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       {/* Nav */}
-      <Nav useContext={useContext} UserContext={UserContext} Image={Image} Link={Link} toggle={toggle} locale={locale} t={t} />
-      <MobileNav useContext={useContext} UserContext={UserContext} Image={Image} Link={Link} toggle={toggle} isOpen={isOpen} t={t} />
+      <Nav
+        useContext={useContext}
+        UserContext={UserContext}
+        Image={Image}
+        Link={Link}
+        toggle={toggle}
+        locale={locale}
+        firebaseToken={firebaseToken}
+        t={t}
+      />
+      <MobileNav
+        useContext={useContext}
+        UserContext={UserContext}
+        Image={Image}
+        Link={Link}
+        toggle={toggle}
+        isOpen={isOpen}
+        firebaseToken={firebaseToken}
+        t={t}
+      />
 
       {/* Main part including sections of landing page */}
-      <main className='font-nxt'>
+      <main className="font-nxt">
         {/* Hero Section  */}
-        <HeroSection motion={motion} useState={useState} useEffect={useEffect} t={t} Image={Image} />
+        <HeroSection
+          motion={motion}
+          useState={useState}
+          useEffect={useEffect}
+          t={t}
+          Image={Image}
+        />
 
         {/* How It Works Section  */}
-        { windowW <= 640 ?  
+        {windowW <= 640 ? (
           <HiwSectionMob motion={motion} t={t} Image={Image} />
-            : 
-          <HiwSectionDesk motion={motion} useState={useState} useEffect={useEffect} t={t} Image={Image} Script={Script} />
-        }
-        
-        { /*Separator */ }
-        <div className='w-full'>
-          <svg className='flex-no-shrink fill-current' id="visual" viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg">
+        ) : (
+          <HiwSectionDesk
+            motion={motion}
+            useState={useState}
+            useEffect={useEffect}
+            t={t}
+            Image={Image}
+            Script={Script}
+          />
+        )}
+
+        {/*Separator */}
+        <div className="w-full">
+          <svg
+            className="flex-no-shrink fill-current"
+            id="visual"
+            viewBox="0 0 900 200"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <rect x="0" y="0" width="900" height="600" fill="#171C26"></rect>
-            <path d="M0 153L129 207L257 160L386 185L514 149L643 180L771 236L900 187L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z" fill="#171c26"></path>
-            <path d="M0 136L129 133L257 195L386 125L514 178L643 184L771 160L900 141L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z" fill="#161b21"></path>
-            <path d="M0 157L129 123L257 103L386 90L514 123L643 139L771 127L900 128L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z" fill="#16191d"></path>
-            <path d="M0 104L129 87L257 102L386 60L514 81L643 60L771 86L900 71L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z" fill="#161719"></path>
-            <path d="M0 57L129 46L257 42L386 25L514 35L643 60L771 54L900 55L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z" fill="#171717"></path>
+            <path
+              d="M0 153L129 207L257 160L386 185L514 149L643 180L771 236L900 187L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z"
+              fill="#171c26"
+            ></path>
+            <path
+              d="M0 136L129 133L257 195L386 125L514 178L643 184L771 160L900 141L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z"
+              fill="#161b21"
+            ></path>
+            <path
+              d="M0 157L129 123L257 103L386 90L514 123L643 139L771 127L900 128L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z"
+              fill="#16191d"
+            ></path>
+            <path
+              d="M0 104L129 87L257 102L386 60L514 81L643 60L771 86L900 71L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z"
+              fill="#161719"
+            ></path>
+            <path
+              d="M0 57L129 46L257 42L386 25L514 35L643 60L771 54L900 55L900 0L771 0L643 0L514 0L386 0L257 0L129 0L0 0Z"
+              fill="#171717"
+            ></path>
           </svg>
         </div>
 
-        
         {/* Products */}
-        <ProductsSection hostname={hostname} motion={motion} toast={toast} useState={useState} t={t} Image={Image} productsJSON={productsJSON} locale={locale} />
-        
+        <ProductsSection
+          hostname={hostname}
+          motion={motion}
+          toast={toast}
+          t={t}
+          Image={Image}
+          productsJSON={productsJSON}
+          locale={locale}
+        />
+
         {/* Contact */}
-        <ContactSection useState={useState} hostname={hostname} t={t} toast={toast} />
-       
+        <ContactSection
+          useState={useState}
+          hostname={hostname}
+          t={t}
+          toast={toast}
+        />
+
         {/* Separator */}
         <div className="relative w-full h-[529px] min-h-[529px] bg-primary">
-          <Image objectFit="cover" loading='eager' layout="fill" src={separator} alt="separator"/>
+          <Image
+            objectFit="cover"
+            loading="eager"
+            layout="fill"
+            src={separator}
+            alt="separator"
+          />
         </div>
 
         {/* Footer */}
-        <FooterSection useState={useState} hostname={hostname} t={t} Image={Image} />
+        <FooterSection
+          useState={useState}
+          hostname={hostname}
+          t={t}
+          Image={Image}
+        />
       </main>
-
     </div>
-  )
+  );
 }
