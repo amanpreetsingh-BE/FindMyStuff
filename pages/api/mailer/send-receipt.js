@@ -63,6 +63,19 @@ export default async function handler(req, res) {
         },
       });
 
+      await new Promise((resolve, reject) => {
+        // verify connection configuration
+        transporter.verify(function (error, success) {
+          if (error) {
+            console.log(error);
+            reject(error);
+          } else {
+            console.log("Server is ready to take our messages");
+            resolve(success);
+          }
+        });
+      });
+
       const options = {
         viewEngine: {
           extName: ".html",
@@ -87,33 +100,42 @@ export default async function handler(req, res) {
         },
       };
 
-      await transporter.sendMail(mail).then(async (info) => {
-        try {
-          var docRef = await app
-            .firestore()
-            .collection("orders")
-            .doc(`${req.body.orderJSON.stripe_checkoutID}`);
+      await new Promise((resolve, reject) => {
+        // send mail
+        transporter.sendMail(mail, async (err, info) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            try {
+              var docRef = await app
+                .firestore()
+                .collection("orders")
+                .doc(`${req.body.orderJSON.stripe_checkoutID}`);
 
-          await docRef
-            .get()
-            .then((doc) => {
-              if (doc.exists) {
-                docRef.update({
-                  emailSent: true,
-                  emailID: info.messageId,
-                  receipt: base64Invoice,
+              await docRef
+                .get()
+                .then((doc) => {
+                  if (doc.exists) {
+                    docRef.update({
+                      emailSent: true,
+                      emailID: info.messageId,
+                      receipt: base64Invoice,
+                    });
+                  } else {
+                    console.log("No such document!");
+                  }
+                })
+                .catch((error) => {
+                  console.log("Error getting document:", error);
                 });
-              } else {
-                console.log("No such document!");
-              }
-            })
-            .catch((error) => {
-              console.log("Error getting document:", error);
-            });
-          res.status(200).json({ msgId: info.messageId });
-        } catch (err) {
-          res.status(400).json({ received: false });
-        }
+              res.status(200).json({ msgId: info.messageId });
+            } catch (err) {
+              res.status(400).json({ received: false });
+            }
+            resolve(info);
+          }
+        });
       });
     } catch (err) {
       res.status(err.statusCode || 500).json({ error: err.message });
