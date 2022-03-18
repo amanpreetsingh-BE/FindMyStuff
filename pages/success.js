@@ -52,10 +52,8 @@ export async function getServerSideProps({ query, locale }) {
 
     return {
       props: {
-        order_id: order_id ? JSON.stringify(orderJSON.order_id) : null,
-        order_email: order_email
-          ? JSON.stringify(orderJSON.customer_email)
-          : null,
+        order_id: JSON.stringify(orderJSON.order_id),
+        order_email: JSON.stringify(orderJSON.customer_email),
         ...(await serverSideTranslations(locale, ["payment"])),
         locale,
       },
