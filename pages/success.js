@@ -11,22 +11,20 @@ import { useTranslation } from "next-i18next";
 
 export async function getServerSideProps({ query, locale }) {
   const URL_session_id = query.session_id;
+
   const checkout = await fetch(
     `${process.env.HOSTNAME}/api/checkout/${URL_session_id}`
   );
-  console.log("fetched checkout");
   const checkoutJSON = await checkout.json();
-  console.log(checkoutJSON);
+
   if (checkoutJSON.id && checkoutJSON.payment_status == "paid") {
     const order = await fetch(
       `${process.env.HOSTNAME}/api/orders/${URL_session_id}`
     );
     const orderJSON = await order.json();
-    console.log("fetched order");
-    console.log(orderJSON);
 
     if (!orderJSON.emailSent) {
-      /* Send notification to ADMIN
+      /* Send notification to ADMIN, only called from server via key SS_API_KEY*/
       await fetch(`${process.env.HOSTNAME}/api/mailer/notify-order`, {
         method: "POST",
         headers: {
@@ -35,10 +33,10 @@ export async function getServerSideProps({ query, locale }) {
         },
         body: JSON.stringify({
           orderJSON: orderJSON,
-          authorization: authorization,
+          authorization: process.env.SS_API_KEY,
         }),
       });
-
+      /* Send notification to CLIENT, only called from server via key SS_API_KEY */
       await fetch(`${process.env.HOSTNAME}/api/mailer/send-receipt`, {
         method: "POST",
         headers: {
@@ -47,15 +45,17 @@ export async function getServerSideProps({ query, locale }) {
         },
         body: JSON.stringify({
           orderJSON: orderJSON,
-          authorization: authorization,
+          authorization: process.env.SS_API_KEY,
         }),
-      }); */
+      });
     }
 
     return {
       props: {
-        order_id: JSON.stringify(orderJSON.order_id),
-        order_email: JSON.stringify(orderJSON.customer_email),
+        order_id: order_id ? JSON.stringify(orderJSON.order_id) : null,
+        order_email: order_email
+          ? JSON.stringify(orderJSON.customer_email)
+          : null,
         ...(await serverSideTranslations(locale, ["payment"])),
         locale,
       },
