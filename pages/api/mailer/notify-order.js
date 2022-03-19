@@ -4,21 +4,22 @@ export default async function handler(req, res) {
     req.body.authorization == process.env.SS_API_KEY
   ) {
     try {
+      console.log(process.env.SS_API_KEY);
       var hbs = require("nodemailer-express-handlebars");
       var nodemailer = require("nodemailer");
       const path = require("path");
 
       const transporter = nodemailer.createTransport({
         host: process.env.HOSTMAIL,
-        port: 587,
-        secure: false, // true for 465, false for other ports
+        port: 465,
+        secure: true, // true for 465, false for other ports
         auth: {
           user: process.env.MAIL,
           pass: process.env.SECRET_MAIL,
         },
       });
 
-      const options = {
+      /*const options = {
         viewEngine: {
           extName: ".html",
           partialsDir: path.resolve("./pages/api/mailer/views"),
@@ -28,13 +29,14 @@ export default async function handler(req, res) {
         extName: ".handlebars",
       };
 
-      transporter.use("compile", hbs(options));
+      transporter.use("compile", hbs(options));*/
 
       const mail = {
         from: process.env.MAIL,
         to: process.env.MAIL,
         subject: "Nouvelle commande ! ",
-        template: "notifyOrder",
+        text: "I hope this message gets delivered!",
+        // template: "notifyOrder",
       };
 
       await transporter.sendMail(mail);

@@ -55,15 +55,15 @@ export default async function handler(req, res) {
 
       const transporter = nodemailer.createTransport({
         host: process.env.HOSTMAIL,
-        port: 587,
-        secure: false, // true for 465, false for other ports
+        port: 465,
+        secure: true, // true for 465, false for other ports
         auth: {
           user: process.env.MAIL,
           pass: process.env.SECRET_MAIL,
         },
       });
 
-      const options = {
+      /*const options = {
         viewEngine: {
           extName: ".html",
           partialsDir: path.resolve("./pages/api/mailer/views"),
@@ -73,14 +73,15 @@ export default async function handler(req, res) {
         extName: ".handlebars",
       };
 
-      transporter.use("compile", hbs(options));
+      transporter.use("compile", hbs(options));*/
 
       const mail = {
         from: process.env.MAIL,
         to: req.body.orderJSON.customer_email,
         subject: "Order confirmation ✔",
-        template: "sendReceipt",
-        context: context,
+        text: "I hope this message gets delivered!",
+        //template: "sendReceipt",
+        //context: context,
         attachments: {
           filename: "receipt.pdf",
           path: `data:application/pdf;base64,${base64Invoice}`,
