@@ -63,7 +63,7 @@ export default async function handler(req, res) {
         },
       });
 
-      /*const options = {
+      const options = {
         viewEngine: {
           extName: ".html",
           partialsDir: path.resolve("./pages/api/mailer/views"),
@@ -73,15 +73,14 @@ export default async function handler(req, res) {
         extName: ".handlebars",
       };
 
-      transporter.use("compile", hbs(options));*/
+      transporter.use("compile", hbs(options));
 
       const mail = {
         from: process.env.MAIL,
         to: req.body.orderJSON.customer_email,
         subject: "Order confirmation ✔",
-        text: "I hope this message gets delivered!",
-        //template: "sendReceipt",
-        //context: context,
+        template: "sendReceipt",
+        context: context,
         attachments: {
           filename: "receipt.pdf",
           path: `data:application/pdf;base64,${base64Invoice}`,
