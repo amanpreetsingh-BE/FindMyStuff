@@ -187,6 +187,7 @@ export default async function handler(req, res) {
         process.env.STRIPE_WEBHOOK_SECRET
       );
     } catch (err) {
+      console.log(err.message);
       res.status(400).send(`Webhook Error: ${err.message}`);
       return;
     }
@@ -195,7 +196,8 @@ export default async function handler(req, res) {
     if (event.type === "customer.discount.created") {
       global_COUPON = event.data.object.promotion_code; // set promo code if applied at checkout
     } else if (event.type === "checkout.session.completed") {
-      const session = event.data.object;
+      console.log(`Payment completed !`);
+      /*const session = event.data.object;
       const paymentIntent = await stripe.paymentIntents.retrieve(
         session.payment_intent
       );
@@ -209,7 +211,7 @@ export default async function handler(req, res) {
         paymentIntent.amount
       )
         .then(() => res.status(200))
-        .catch((err) => res.status(400).send(`Webhook Error: ${err.message}`));
+        .catch((err) => res.status(400).send(`Webhook Error: ${err.message}`));*/
     } else if (
       event.type === "payment_intent.payment_failed" ||
       event.type === "charge.failed"
@@ -220,7 +222,7 @@ export default async function handler(req, res) {
     }
 
     // 3. Return a response to acknowledge receipt of the event.
-    res.json({ received: true });
+    res.status(200).json({ received: true });
   } else {
     res.setHeader("Allow", "POST");
     res.status(405).end("Method Not Allowed");

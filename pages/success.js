@@ -18,14 +18,15 @@ export async function getServerSideProps({ query, locale }) {
   const checkoutJSON = await checkout.json();
 
   if (checkoutJSON.id && checkoutJSON.payment_status == "paid") {
-    const order = await fetch(
+    console.log(checkoutJSON.id);
+    /*const order = await fetch(
       `${process.env.HOSTNAME}/api/orders/${URL_session_id}`
     );
-    const orderJSON = await order.json();
+    const orderJSON = await order.json();*/
 
-    if (!orderJSON.emailSent) {
-      /* Send notification to ADMIN, only called from server via key SS_API_KEY*/
-      await fetch(`${process.env.HOSTNAME}/api/mailer/notify-order`, {
+    //if (!orderJSON.emailSent) {
+    /* Send notification to ADMIN, only called from server via key SS_API_KEY*/
+    /*await fetch(`${process.env.HOSTNAME}/api/mailer/notify-order`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -36,8 +37,8 @@ export async function getServerSideProps({ query, locale }) {
           authorization: process.env.SS_API_KEY,
         }),
       });
-      /* Send notification to CLIENT, only called from server via key SS_API_KEY */
-      /*await fetch(`${process.env.HOSTNAME}/api/mailer/send-receipt`, {
+       Send notification to CLIENT, only called from server via key SS_API_KEY */
+    /*await fetch(`${process.env.HOSTNAME}/api/mailer/send-receipt`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -47,13 +48,13 @@ export async function getServerSideProps({ query, locale }) {
           orderJSON: orderJSON,
           authorization: process.env.SS_API_KEY,
         }),
-      });*/
-    }
+      });
+    }*/
 
     return {
       props: {
-        order_id: JSON.stringify(orderJSON.order_id),
-        order_email: JSON.stringify(orderJSON.customer_email),
+        //order_id: JSON.stringify(orderJSON.order_id),
+        //order_email: JSON.stringify(orderJSON.customer_email),
         ...(await serverSideTranslations(locale, ["payment"])),
         locale,
       },
@@ -70,8 +71,10 @@ export default function Success(props) {
   const { t } = useTranslation();
   /* Used to push to dashboard */
   const router = useRouter();
-  const order_id = JSON.parse(props.order_id);
-  const customer_email = JSON.parse(props.order_email);
+  const order_id = "NNN";
+  const customer_email = "nfekzfjnzjfez";
+  //const order_id = JSON.parse(props.order_id);
+  //const customer_email = JSON.parse(props.order_email);
   return (
     <main>
       <NavReduced darkLogo={true} />
