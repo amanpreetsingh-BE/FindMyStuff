@@ -24,6 +24,7 @@ export const config = {
 };
 
 var global_COUPON = null;
+var failed = false;
 
 /* Function allowing to increment the usage of a specific coupon if checkout success */
 const increaseCouponUsage = async () => {
@@ -191,6 +192,8 @@ export default async function handler(req, res) {
           paymentMethod.type,
           paymentIntent.amount
         );
+      } else if (event.type === "payment_intent.payment_failed") {
+        console.log("failed"); // to add notif system in V2
       } else {
         console.log(`Unhandled event : ${event.type}`); // to debug
       }
@@ -198,8 +201,6 @@ export default async function handler(req, res) {
       console.log(err.message);
       res.status(400).send(`Webhook Error: ${err.message}`);
     }
-
-    // 3. Return a response to acknowledge receipt of the event.
     res.status(200).json({ received: true });
   } else {
     res.setHeader("Allow", "POST");

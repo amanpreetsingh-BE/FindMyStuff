@@ -37,17 +37,12 @@ export default async function handler(req, res) {
         template: "notifyOrder",
       };
 
-      transporter.sendMail(mail, function (err, info) {
-        if (err) {
-          console.log(err);
-          throw new Error(err.message);
-        } else {
-          res.status(200).json({ received: true });
-        }
-      });
+      const msg = await transporter.sendMail(mail);
+      console.log(msg);
     } catch (err) {
       res.status(err.statusCode || 500).json({ error: err.message });
     }
+    res.status(200).json({ received: true });
   } else {
     res.setHeader("Allow", "POST");
     res.status(405).end("Method Not Allowed");

@@ -23,9 +23,9 @@ export async function getServerSideProps({ query, locale }) {
     );
     const orderJSON = await order.json();
     console.log(orderJSON);
-    //if (!orderJSON.emailSent) {
-    /* Send notification to ADMIN, only called from server via key SS_API_KEY*/
-    /*await fetch(`${process.env.HOSTNAME}/api/mailer/notify-order`, {
+    if (!orderJSON.emailSent) {
+      /* Send notification to ADMIN, only called from server via key SS_API_KEY*/
+      await fetch(`${process.env.HOSTNAME}/api/mailer/notify-order`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -36,8 +36,9 @@ export async function getServerSideProps({ query, locale }) {
           authorization: process.env.SS_API_KEY,
         }),
       });
-       Send notification to CLIENT, only called from server via key SS_API_KEY */
-    /*await fetch(`${process.env.HOSTNAME}/api/mailer/send-receipt`, {
+    }
+    /* Send notification to CLIENT, only called from server via key SS_API_KEY 
+    await fetch(`${process.env.HOSTNAME}/api/mailer/send-receipt`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -47,8 +48,7 @@ export async function getServerSideProps({ query, locale }) {
           orderJSON: orderJSON,
           authorization: process.env.SS_API_KEY,
         }),
-      });
-    }*/
+      });*/
 
     return {
       props: {
