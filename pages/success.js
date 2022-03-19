@@ -37,7 +37,7 @@ export async function getServerSideProps({ query, locale }) {
         }),
       });
       /* Send notification to CLIENT, only called from server via key SS_API_KEY */
-      await fetch(`${process.env.HOSTNAME}/api/mailer/send-receipt`, {
+      /*await fetch(`${process.env.HOSTNAME}/api/mailer/send-receipt`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -47,7 +47,7 @@ export async function getServerSideProps({ query, locale }) {
           orderJSON: orderJSON,
           authorization: process.env.SS_API_KEY,
         }),
-      });
+      });*/
     }
 
     return {
