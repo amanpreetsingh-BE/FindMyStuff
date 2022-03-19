@@ -29,7 +29,7 @@ var global_COUPON = null;
 const increaseCouponUsage = async () => {
   let docRef = app.firestore().collection("coupons").doc(`${global_COUPON}`);
 
-  return docRef.get().then((doc) => {
+  await docRef.get().then((doc) => {
     if (doc.exists) {
       docRef.update({
         usage: doc.data().usage + 1,
@@ -44,7 +44,7 @@ const increaseCouponUsage = async () => {
 const incrementToken = async (qrID) => {
   let docRef = app.firestore().collection("QR").doc(`${qrID}`);
 
-  return docRef.get().then((doc) => {
+  await docRef.get().then((doc) => {
     if (doc.exists) {
       docRef.update({
         jetons: doc.data().jetons + 1,
@@ -77,21 +77,16 @@ const decrementStock = async (session) => {
       .doc(`${session.metadata.model}`);
   }
 
-  return docRef
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        docRef.update({
-          quantity: doc.data().quantity - 1,
-          status: doc.data().quantity - 1 > 0 ? "In stock" : "Out of stock",
-        });
-      } else {
-        console.log("No such document!");
-      }
-    })
-    .catch((error) => {
-      console.log("Error getting document:", error);
-    });
+  await docRef.get().then((doc) => {
+    if (doc.exists) {
+      docRef.update({
+        quantity: doc.data().quantity == 0 ? 0 : doc.data().quantity - 1,
+        status: doc.data().quantity - 1 > 0 ? "In stock" : "Out of stock",
+      });
+    } else {
+      console.log("No such document!");
+    }
+  });
 };
 
 /* Add ORDER to the DB */
@@ -104,8 +99,8 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
     session.metadata.color == "reload" &&
     session.metadata.priceID == "price_1KZcrlK5KPA8d9OvKtznbNWq"
   ) {
-    incrementToken(session.metadata.qrID);
-    return app
+    await incrementToken(session.metadata.qrID);
+    await app
       .firestore()
       .collection("reloads")
       .doc(session.id)
@@ -125,17 +120,14 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
         emailSent: false,
         emailID: "",
         timestamp: admin.firestore.FieldValue.serverTimestamp(),
-      })
-      .catch((err) => {
-        console.log(err.message); // to debug
       });
   } else {
     // Product type of checkout
     if (global_COUPON) {
-      increaseCouponUsage();
+      await increaseCouponUsage();
     }
-    decrementStock(session);
-    return app
+    await decrementStock(session);
+    await app
       .firestore()
       .collection("orders")
       .doc(session.id)
@@ -160,9 +152,6 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
         total_details: session.total_details,
         allow_promotion_codes: session.allow_promotion_codes,
         promotion_code: global_COUPON,
-      })
-      .catch((err) => {
-        console.log(err.message);
       });
   }
 };
@@ -176,7 +165,6 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     let event;
 
-    // 1. Retrieve the event by verifying the signature using the raw body and secret
     try {
       const rawBody = await buffer(req);
       const signature = req.headers["stripe-signature"];
@@ -186,39 +174,29 @@ export default async function handler(req, res) {
         signature,
         process.env.STRIPE_WEBHOOK_SECRET
       );
+
+      if (event.type === "customer.discount.created") {
+        global_COUPON = event.data.object.promotion_code; // set promo code if applied at checkout
+      } else if (event.type === "checkout.session.completed") {
+        const session = event.data.object;
+        const paymentIntent = await stripe.paymentIntents.retrieve(
+          session.payment_intent
+        );
+        const paymentMethod = await stripe.paymentMethods.retrieve(
+          paymentIntent.payment_method
+        );
+        await fulfillOrder(
+          session,
+          paymentIntent.charges.data[0],
+          paymentMethod.type,
+          paymentIntent.amount
+        );
+      } else {
+        console.log(`Unhandled event : ${event.type}`); // to debug
+      }
     } catch (err) {
       console.log(err.message);
       res.status(400).send(`Webhook Error: ${err.message}`);
-      return;
-    }
-
-    // 2. Set logic in function of event type
-    if (event.type === "customer.discount.created") {
-      global_COUPON = event.data.object.promotion_code; // set promo code if applied at checkout
-    } else if (event.type === "checkout.session.completed") {
-      console.log(`Payment completed !`);
-      /*const session = event.data.object;
-      const paymentIntent = await stripe.paymentIntents.retrieve(
-        session.payment_intent
-      );
-      const paymentMethod = await stripe.paymentMethods.retrieve(
-        paymentIntent.payment_method
-      );
-      return fulfillOrder(
-        session,
-        paymentIntent.charges.data[0],
-        paymentMethod.type,
-        paymentIntent.amount
-      )
-        .then(() => res.status(200))
-        .catch((err) => res.status(400).send(`Webhook Error: ${err.message}`));*/
-    } else if (
-      event.type === "payment_intent.payment_failed" ||
-      event.type === "charge.failed"
-    ) {
-      console.log(`Payment failed !`); // to debug
-    } else {
-      console.log(`Unhandled event : ${event.type}`); // to debug
     }
 
     // 3. Return a response to acknowledge receipt of the event.
