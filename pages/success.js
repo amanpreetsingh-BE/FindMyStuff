@@ -22,7 +22,6 @@ export async function getServerSideProps({ query, locale }) {
       `${process.env.HOSTNAME}/api/orders/${URL_session_id}`
     );
     const orderJSON = await order.json();
-    console.log(orderJSON);
     if (!orderJSON.emailSent) {
       /* Send notification to ADMIN, only called from server via key SS_API_KEY*/
       await fetch(`${process.env.HOSTNAME}/api/mailer/notify-order`, {

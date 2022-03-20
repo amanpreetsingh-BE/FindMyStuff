@@ -24,7 +24,6 @@ export const config = {
 };
 
 var global_COUPON = null;
-var failed = false;
 
 /* Function allowing to increment the usage of a specific coupon if checkout success */
 const increaseCouponUsage = async () => {

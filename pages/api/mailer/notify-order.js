@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     req.method === "POST" &&
     req.body.authorization == process.env.SS_API_KEY
   ) {
-    console.log("RUN");
+    /*console.log("RUN");
     try {
       var hbs = require("nodemailer-express-handlebars");
       var nodemailer = require("nodemailer");
@@ -17,9 +17,10 @@ export default async function handler(req, res) {
           user: process.env.MAIL,
           pass: process.env.SECRET_MAIL,
         },
-        tls: {
-          rejectUnauthorized: false,
-          ciphers: "SSLv3",
+        dkim: {
+          domainName: "findmystuff.io",
+          keySelector: "default",
+          privateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBg...",
         },
       });
 
@@ -46,7 +47,24 @@ export default async function handler(req, res) {
       console.log(info);
     } catch (err) {
       res.status(err.statusCode || 500).json({ error: err.message });
-    }
+    }*/
+    const sgMail = require("@sendgrid/mail");
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: "amanpreet@outlook.be", // Change to your recipient
+      from: "team@findmystuff.io", // Change to your verified sender
+      subject: "Sending with SendGrid is Fun",
+      text: "and easy to do anywhere, even with Node.js",
+      html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+    };
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log("Email sent");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     res.status(200).json({ received: true });
   } else {
     res.setHeader("Allow", "POST");
