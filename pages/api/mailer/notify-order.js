@@ -3,6 +3,7 @@ export default async function handler(req, res) {
     req.method === "POST" &&
     req.body.authorization == process.env.SS_API_KEY
   ) {
+    console.log("RUN");
     try {
       var hbs = require("nodemailer-express-handlebars");
       var nodemailer = require("nodemailer");
@@ -11,19 +12,15 @@ export default async function handler(req, res) {
       const transporter = nodemailer.createTransport({
         host: process.env.HOSTMAIL,
         port: 465,
-        secure: true, // true for 465, false for other ports
+        secure: true, // Must be true, false will fail
         auth: {
           user: process.env.MAIL,
           pass: process.env.SECRET_MAIL,
         },
-      });
-
-      transporter.verify(function (error, success) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("Server is ready to take our messages");
-        }
+        tls: {
+          rejectUnauthorized: false,
+          ciphers: "SSLv3",
+        },
       });
 
       const options = {
