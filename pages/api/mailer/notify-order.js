@@ -57,15 +57,13 @@ export default async function handler(req, res) {
       text: "and easy to do anywhere, even with Node.js",
       html: "<strong>and easy to do anywhere, even with Node.js</strong>",
     };
-    sgMail
-      .send(msg)
-      .then(() => {
-        console.log("Email sent");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    res.status(200).json({ received: true });
+    try {
+      await sgMail.send(msg);
+      res.status(200).json({ received: true });
+    } catch (err) {
+      console.log(err.message);
+      res.status(err.statusCode || 500).json({ error: err.message });
+    }
   } else {
     res.setHeader("Allow", "POST");
     res.status(405).end("Method Not Allowed");
