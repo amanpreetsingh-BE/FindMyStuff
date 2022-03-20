@@ -58,8 +58,8 @@ export default async function handler(req, res) {
       html: "<strong>and easy to do anywhere, even with Node.js</strong>",
     };
     try {
-      await sgMail.send(msg);
-      res.status(200).json({ received: true });
+      let r = await sgMail.send(msg);
+      res.status(200).json({ received: true, r: r });
     } catch (err) {
       console.log(err.message);
       res.status(err.statusCode || 500).json({ error: err.message });

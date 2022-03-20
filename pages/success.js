@@ -25,17 +25,22 @@ export async function getServerSideProps({ query, locale }) {
     if (!orderJSON.emailSent) {
       /* Send notification to ADMIN, only called from server via key SS_API_KEY*/
       try {
-        await fetch(`${process.env.HOSTNAME}/api/mailer/notify-order`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            orderJSON: orderJSON,
-            authorization: process.env.SS_API_KEY,
-          }),
-        });
+        const e = await fetch(
+          `${process.env.HOSTNAME}/api/mailer/notify-order`,
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              orderJSON: orderJSON,
+              authorization: process.env.SS_API_KEY,
+            }),
+          }
+        );
+        const eJSON = await e.json();
+        console.log(eJSON.r);
         console.log("SUCCESS");
       } catch (err) {
         console.log(err.message);
