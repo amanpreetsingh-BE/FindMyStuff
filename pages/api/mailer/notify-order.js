@@ -10,8 +10,8 @@ export default async function handler(req, res) {
 
       const transporter = nodemailer.createTransport({
         host: process.env.HOSTMAIL,
-        port: 465,
-        secure: true, // true for 465, false for other ports
+        port: 25,
+        tls: { rejectUnauthorized: false },
         auth: {
           user: process.env.MAIL,
           pass: process.env.SECRET_MAIL,
