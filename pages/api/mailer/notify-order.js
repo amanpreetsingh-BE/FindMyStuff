@@ -37,8 +37,8 @@ export default async function handler(req, res) {
         template: "notifyOrder",
       };
 
-      const msg = await transporter.sendMail(mail);
-      console.log(msg);
+      let info = await transporter.sendMail(mail);
+      console.log(info);
     } catch (err) {
       res.status(err.statusCode || 500).json({ error: err.message });
     }
