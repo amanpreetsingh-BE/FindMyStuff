@@ -25,7 +25,7 @@ export async function getServerSideProps({ query, locale }) {
     if (!orderJSON.emailSent) {
       /* Send notification to ADMIN, only called from server via key SS_API_KEY*/
       try {
-        const e = await fetch(
+        /*const e = await fetch(
           `${process.env.HOSTNAME}/api/mailer/notify-order`,
           {
             method: "POST",
@@ -40,7 +40,18 @@ export async function getServerSideProps({ query, locale }) {
           }
         );
         const eJSON = await e.json();
-        console.log(eJSON.r);
+        console.log(eJSON.r);*/
+        const sgMail = require("@sendgrid/mail");
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        const msg = {
+          to: "amanpreet@outlook.be", // Change to your recipient
+          from: "team@findmystuff.io", // Change to your verified sender
+          subject: "Sending with SendGrid is Fun",
+          text: "and easy to do anywhere, even with Node.js",
+          html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+        };
+        let r = await sgMail.send(msg);
+        console.log(r);
         console.log("SUCCESS");
       } catch (err) {
         console.log(err.message);
