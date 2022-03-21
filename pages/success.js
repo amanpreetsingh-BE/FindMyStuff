@@ -49,13 +49,20 @@ export async function getServerSideProps({ query, locale }) {
         const path = require("path");
         const fs = require("fs");
         const hb = require("handlebars");
-        const puppeteer = require("puppeteer");
+        // const puppeteer = require("puppeteer"); locale dev
+        const puppeteer = require("puppeteer-core"); // in production only
+        const chromium = require("chrome-aws-lambda"); // in production only
         const invoicePath = path.resolve("templates/invoice.html");
         const invoiceFile = fs.readFileSync(invoicePath, "utf8");
-        console.log(invoiceFile);
         const T = hb.compile(invoiceFile);
         const htmlInvoice = T(context);
-        const browser = await puppeteer.launch();
+        // const browser = await puppeteer.launch(); locale dev
+        const browser = await puppeteer.launch({
+          executablePath: await chromium.executablePath,
+          args: chromium.args,
+          defaultViewport: chromium.defaultViewport,
+          headless: chromium.headless,
+        });
         const page = await browser.newPage();
         await page.setContent(htmlInvoice);
         const buffer = await page.pdf({ format: "A4" });
