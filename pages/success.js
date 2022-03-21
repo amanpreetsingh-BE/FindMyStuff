@@ -50,9 +50,7 @@ export async function getServerSideProps({ query, locale }) {
         const fs = require("fs");
         const hb = require("handlebars");
         const puppeteer = require("puppeteer");
-        const invoicePath = path.resolve(
-          "./pages/api/mailer/views/invoice.html"
-        );
+        const invoicePath = path.resolve("/views/invoice.html");
         const invoiceFile = fs.readFileSync(invoicePath, "utf8");
         const T = hb.compile(invoiceFile);
         const htmlInvoice = T(context);
