@@ -50,7 +50,7 @@ export async function getServerSideProps({ query, locale }) {
         const fs = require("fs");
         const hb = require("handlebars");
         const puppeteer = require("puppeteer");
-        const invoicePath = path.resolve("/views/invoice.html");
+        const invoicePath = path.resolve("./invoice.html");
         const invoiceFile = fs.readFileSync(invoicePath, "utf8");
         const T = hb.compile(invoiceFile);
         const htmlInvoice = T(context);
@@ -123,10 +123,10 @@ export async function getServerSideProps({ query, locale }) {
         const options = {
           viewEngine: {
             extName: ".html",
-            partialsDir: path.resolve("./pages/api/mailer/views"),
+            partialsDir: path.resolve("./"),
             defaultLayout: false,
           },
-          viewPath: path.resolve("./pages/api/mailer/views"),
+          viewPath: path.resolve("./"),
           extName: ".handlebars",
         };
 
