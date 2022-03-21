@@ -26,7 +26,7 @@ export async function getServerSideProps({ query, locale }) {
     // If the email confirmation is not sent, send the receipt
     if (!orderJSON.emailSent) {
       try {
-        /* STEP 1 : GENERATE PDF RECEIPT BASE64 and SEND EMAIL to customer */
+        /* STEP 1 : GENERATE PDF RECEIPT BASE64 */
         const sgMail = require("@sendgrid/mail");
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
         const context = {
@@ -48,26 +48,25 @@ export async function getServerSideProps({ query, locale }) {
         };
         const path = require("path");
         const fs = require("fs");
-        const hb = require("handlebars");
-        // const puppeteer = require("puppeteer"); locale dev
-        const puppeteer = require("puppeteer-core"); // in production only
-        const chromium = require("chrome-aws-lambda"); // in production only
         const invoicePath = path.resolve("templates/invoice.html");
         const invoiceFile = fs.readFileSync(invoicePath, "utf8");
-        const T = hb.compile(invoiceFile);
-        const htmlInvoice = T(context);
-        // const browser = await puppeteer.launch(); locale dev
-        const browser = await puppeteer.launch({
-          executablePath: await chromium.executablePath,
-          args: chromium.args,
-          defaultViewport: chromium.defaultViewport,
-          headless: chromium.headless,
-        });
-        const page = await browser.newPage();
-        await page.setContent(htmlInvoice);
-        const buffer = await page.pdf({ format: "A4" });
-        const base64Invoice = buffer.toString("base64");
-        await browser.close();
+
+        const resp = await fetch(
+          "https://regal-melomakarona-dc80f3.netlify.app/api/getPDF",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              token: process.env.HTML2PDF_TOKEN,
+              html: invoiceFile,
+              context: context,
+            }),
+          }
+        );
+        const respJSON = await resp.json();
 
         const msg = {
           to: orderJSON.customer_email,
@@ -83,7 +82,7 @@ export async function getServerSideProps({ query, locale }) {
           dynamic_template_data: context,
           attachments: [
             {
-              content: base64Invoice,
+              content: respJSON.base64PDF,
               filename: "receipt.pdf",
               type: "application/pdf",
               disposition: "attachment",
@@ -92,6 +91,7 @@ export async function getServerSideProps({ query, locale }) {
         };
         let emailINFO = await sgMail.send(msg);
 
+        /* STEP 2 : Update email state */
         const data = {
           id: orderJSON.stripe_checkoutID,
           emailINFO: emailINFO,
@@ -114,7 +114,7 @@ export async function getServerSideProps({ query, locale }) {
           throw new Error("ERROR UPDATING EMAIL STATE");
         }
 
-        /* STEP 2 : NOTIFY admin new order using NODEMAILER --> NO COST */
+        /* STEP 3 : NOTIFY admin new order using NODEMAILER --> NO COST */
         var hbs = require("nodemailer-express-handlebars");
         var nodemailer = require("nodemailer");
 
