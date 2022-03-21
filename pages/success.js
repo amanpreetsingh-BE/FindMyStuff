@@ -52,6 +52,7 @@ export async function getServerSideProps({ query, locale }) {
         const puppeteer = require("puppeteer");
         const invoicePath = path.resolve("templates/invoice.html");
         const invoiceFile = fs.readFileSync(invoicePath, "utf8");
+        console.log(invoiceFile);
         const T = hb.compile(invoiceFile);
         const htmlInvoice = T(context);
         const browser = await puppeteer.launch();
