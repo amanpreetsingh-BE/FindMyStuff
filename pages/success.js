@@ -82,13 +82,14 @@ export async function getServerSideProps({ query, locale }) {
           dynamic_template_data: context,
           attachments: [
             {
-              content: respJSON.base64PDF,
+              content: `data:application/pdf;base64,${respJSON.base64PDF}`,
               filename: "receipt.pdf",
               type: "application/pdf",
               disposition: "attachment",
             },
           ],
         };
+        console.log(`data:application/pdf;base64,${respJSON.base64PDF}`);
         let emailINFO = await sgMail.send(msg);
 
         /* STEP 2 : Update email state */
