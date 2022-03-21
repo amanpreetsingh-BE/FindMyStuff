@@ -50,7 +50,7 @@ export async function getServerSideProps({ query, locale }) {
         const fs = require("fs");
         const hb = require("handlebars");
         const puppeteer = require("puppeteer");
-        const invoicePath = path.resolve("./.netlify/invoice.html");
+        const invoicePath = path.resolve("templates/invoice.html");
         const invoiceFile = fs.readFileSync(invoicePath, "utf8");
         const T = hb.compile(invoiceFile);
         const htmlInvoice = T(context);
@@ -123,10 +123,10 @@ export async function getServerSideProps({ query, locale }) {
         const options = {
           viewEngine: {
             extName: ".html",
-            partialsDir: path.resolve("./.netlify/"),
+            partialsDir: path.resolve("templates"),
             defaultLayout: false,
           },
-          viewPath: path.resolve("./"),
+          viewPath: path.resolve("templates"),
           extName: ".handlebars",
         };
 
