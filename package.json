@@ -33,7 +33,6 @@
     "npm": "^8.5.5",
     "order-id": "^2.1.2",
     "postcss-100vh-fix": "^1.0.2",
-    "puppeteer": "^13.5.1",
     "puppeteer-core": "^13.5.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
