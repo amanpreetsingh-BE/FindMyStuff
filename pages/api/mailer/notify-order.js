@@ -52,7 +52,10 @@ export default async function handler(req, res) {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
       to: "amanpreet@outlook.be", // Change to your recipient
-      from: "team@findmystuff.io", // Change to your verified sender
+      from: {
+        email: process.env.MAIL,
+        name: "FindMyStuff",
+      },
       subject: "Sending with SendGrid is Fun",
       text: "and easy to do anywhere, even with Node.js",
       html: "<strong>and easy to do anywhere, even with Node.js</strong>",

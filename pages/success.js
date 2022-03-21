@@ -17,59 +17,135 @@ export async function getServerSideProps({ query, locale }) {
   );
   const checkoutJSON = await checkout.json();
 
+  // If the checkout session is valid and paid, fetch the data
   if (checkoutJSON.id && checkoutJSON.payment_status == "paid") {
     const order = await fetch(
       `${process.env.HOSTNAME}/api/orders/${URL_session_id}`
     );
     const orderJSON = await order.json();
+    // If the email confirmation is not sent, send the receipt
     if (!orderJSON.emailSent) {
-      /* Send notification to ADMIN, only called from server via key SS_API_KEY*/
       try {
-        /*const e = await fetch(
-          `${process.env.HOSTNAME}/api/mailer/notify-order`,
+        /* STEP 1 : GENERATE PDF RECEIPT BASE64 and SEND EMAIL to customer */
+        const sgMail = require("@sendgrid/mail");
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        const context = {
+          fullname: orderJSON.shipping_name,
+          firstname: orderJSON.shipping_name.split(" ")[0],
+          lastname: orderJSON.shipping_name.split(" ")[1],
+          email: orderJSON.customer_email,
+          model: orderJSON.model,
+          model_description: orderJSON.color,
+          paymentMethod: orderJSON.paymentType,
+          street: orderJSON.shipping_address.line1,
+          zip: orderJSON.shipping_address.postal_code,
+          country: orderJSON.shipping_address.country,
+          orderNumber: orderJSON.order_id,
+          date: new Date(orderJSON.timestamp._seconds * 1000).toDateString(),
+          totalAmount: (orderJSON.amount / 100).toFixed(2),
+          htvaAmont: ((orderJSON.amount / 100) * 0.79).toFixed(2),
+          tva: ((orderJSON.amount / 100) * 0.21).toFixed(2),
+        };
+        const path = require("path");
+        const fs = require("fs");
+        const hb = require("handlebars");
+        const puppeteer = require("puppeteer");
+        const invoicePath = path.resolve(
+          "./pages/api/mailer/views/invoice.html"
+        );
+        const invoiceFile = fs.readFileSync(invoicePath, "utf8");
+        const T = hb.compile(invoiceFile);
+        const htmlInvoice = T(context);
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setContent(htmlInvoice);
+        const buffer = await page.pdf({ format: "A4" });
+        const base64Invoice = buffer.toString("base64");
+        await browser.close();
+
+        const msg = {
+          to: orderJSON.customer_email,
+          from: {
+            email: process.env.MAIL,
+            name: "FindMyStuff",
+          },
+          templateId:
+            locale ===
+            ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
+              ? process.env.CHECKOUT_TEMPLATE_ID_FR
+              : process.env.CHECKOUT_TEMPLATE_ID_EN,
+          dynamic_template_data: context,
+          attachments: [
+            {
+              content: base64Invoice,
+              filename: "receipt.pdf",
+              type: "application/pdf",
+              disposition: "attachment",
+            },
+          ],
+        };
+        let emailINFO = await sgMail.send(msg);
+
+        const data = {
+          id: orderJSON.stripe_checkoutID,
+          emailINFO: emailINFO,
+          base64Invoice: base64Invoice,
+          authorization: process.env.NEXT_PUBLIC_API_KEY,
+        };
+        const response = await fetch(
+          `${process.env.HOSTNAME}/api/orders/updateEmailState`,
           {
             method: "POST",
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              orderJSON: orderJSON,
-              authorization: process.env.SS_API_KEY,
-            }),
+            body: JSON.stringify(data),
           }
         );
-        const eJSON = await e.json();
-        console.log(eJSON.r);*/
-        const sgMail = require("@sendgrid/mail");
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-        const msg = {
-          to: "amanpreet@outlook.be", // Change to your recipient
-          from: "team@findmystuff.io", // Change to your verified sender
-          subject: "Sending with SendGrid is Fun",
-          text: "and easy to do anywhere, even with Node.js",
-          html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+        const responseJSON = await response.json();
+        if (!responseJSON.success) {
+          throw new Error("ERROR UPDATING EMAIL STATE");
+        }
+
+        /* STEP 2 : NOTIFY admin new order using NODEMAILER --> NO COST */
+        var hbs = require("nodemailer-express-handlebars");
+        var nodemailer = require("nodemailer");
+
+        const transporter = nodemailer.createTransport({
+          host: process.env.HOSTMAIL,
+          port: 465,
+          secure: true, // Must be true, false will fail
+          auth: {
+            user: process.env.MAIL,
+            pass: process.env.SECRET_MAIL,
+          },
+        });
+
+        const options = {
+          viewEngine: {
+            extName: ".html",
+            partialsDir: path.resolve("./pages/api/mailer/views"),
+            defaultLayout: false,
+          },
+          viewPath: path.resolve("./pages/api/mailer/views"),
+          extName: ".handlebars",
         };
-        let r = await sgMail.send(msg);
-        console.log(r);
-        console.log("SUCCESS");
+
+        transporter.use("compile", hbs(options));
+
+        const mail = {
+          from: process.env.MAIL,
+          to: process.env.MAIL,
+          subject: "Nouvelle commande / New order ! ",
+          template: "notifyOrder",
+        };
+
+        await transporter.sendMail(mail);
       } catch (err) {
         console.log(err.message);
       }
     }
-    /* Send notification to CLIENT, only called from server via key SS_API_KEY 
-    await fetch(`${process.env.HOSTNAME}/api/mailer/send-receipt`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          orderJSON: orderJSON,
-          authorization: process.env.SS_API_KEY,
-        }),
-      });*/
-
     return {
       props: {
         order_id: JSON.stringify(orderJSON.order_id),
