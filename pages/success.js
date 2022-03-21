@@ -95,7 +95,7 @@ export async function getServerSideProps({ query, locale }) {
         const data = {
           id: orderJSON.stripe_checkoutID,
           emailINFO: emailINFO,
-          base64Invoice: base64Invoice,
+          base64Invoice: respJSON.base64PDF,
           authorization: process.env.NEXT_PUBLIC_API_KEY,
         };
         const response = await fetch(
