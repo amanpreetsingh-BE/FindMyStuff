@@ -126,7 +126,7 @@ export async function getServerSideProps({ query, locale }) {
         });
 
         /* STEP 3 : Notify admin to prepare the order */
-        var hbs = require("nodemailer-express-handlebars");
+        /*var hbs = require("nodemailer-express-handlebars");
         var nodemailer = require("nodemailer");
 
         const transporter = nodemailer.createTransport({
@@ -158,7 +158,7 @@ export async function getServerSideProps({ query, locale }) {
           template: "notifyOrder",
         };
 
-        await transporter.sendMail(mail);
+        await transporter.sendMail(mail);*/
       } catch (err) {
         console.log(err.message);
       }
