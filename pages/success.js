@@ -82,24 +82,18 @@ export async function getServerSideProps({ query, locale }) {
           dynamic_template_data: context,
           attachments: [
             {
-              content: `data:application/pdf;base64,${respJSON.base64PDF}`,
+              content: `data:application/pdf;base64, ${respJSON.base64PDF}`,
               filename: "receipt.pdf",
               type: "application/pdf",
               disposition: "attachment",
             },
           ],
         };
-        console.log(`data:application/pdf;base64,${respJSON.base64PDF}`);
         let emailINFO = await sgMail.send(msg);
-
+        console.log(emailINFO);
         /* STEP 2 : Update email state */
-        const data = {
-          id: orderJSON.stripe_checkoutID,
-          emailINFO: emailINFO,
-          base64Invoice: respJSON.base64PDF,
-          authorization: process.env.NEXT_PUBLIC_API_KEY,
-        };
-        const response = await fetch(
+
+        const update = await fetch(
           `${process.env.HOSTNAME}/api/orders/updateEmailState`,
           {
             method: "POST",
@@ -107,15 +101,19 @@ export async function getServerSideProps({ query, locale }) {
               Accept: "application/json",
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify({
+              id: orderJSON.stripe_checkoutID,
+              emailINFO: emailINFO,
+              base64Invoice: respJSON.base64PDF,
+              authorization: process.env.SS_API_KEY,
+            }),
           }
         );
-        const responseJSON = await response.json();
-        if (!responseJSON.success) {
+        const updateJSON = await update.json();
+        if (!updateJSON.success) {
           throw new Error("ERROR UPDATING EMAIL STATE");
         }
-
-        /* STEP 3 : NOTIFY admin new order using NODEMAILER --> NO COST */
+        /*
         var hbs = require("nodemailer-express-handlebars");
         var nodemailer = require("nodemailer");
 
@@ -148,7 +146,7 @@ export async function getServerSideProps({ query, locale }) {
           template: "notifyOrder",
         };
 
-        await transporter.sendMail(mail);
+        await transporter.sendMail(mail);*/
       } catch (err) {
         console.log(err.message);
       }

@@ -13,7 +13,7 @@ const app = !admin.apps.length
 export default async function handler(req, res) {
   if (
     req.method === "POST" &&
-    req.query.authorization == process.env.NEXT_PUBLIC_API_KEY
+    req.query.authorization == process.env.SS_API_KEY
   ) {
     try {
       var docRef = app.firestore().collection("orders").doc(`${req.body.id}`);
