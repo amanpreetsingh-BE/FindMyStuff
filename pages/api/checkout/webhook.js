@@ -118,7 +118,7 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
         customer_email: session.customer_details.email,
         charge: charge,
         emailSent: false,
-        emailINFO: "",
+        receipt: "",
         timestamp: admin.firestore.FieldValue.serverTimestamp(),
       });
   } else {
@@ -146,7 +146,7 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
         shipping_address: session.shipping.address,
         charge: charge,
         emailSent: false,
-        emailINFO: "",
+        receipt: "",
         timestamp: admin.firestore.FieldValue.serverTimestamp(),
         shipped: false,
         total_details: session.total_details,

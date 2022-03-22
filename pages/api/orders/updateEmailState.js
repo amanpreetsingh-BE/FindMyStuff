@@ -22,7 +22,6 @@ export default async function handler(req, res) {
         if (doc.exists) {
           docRef.update({
             emailSent: true,
-            emailINFO: req.body.emailINFO,
             receipt: req.body.base64Invoice,
           });
         } else {

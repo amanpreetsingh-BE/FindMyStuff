@@ -106,20 +106,20 @@ export async function getServerSideProps({ query, locale }) {
         });
 
         /* STEP 2 : Update email state */
+        const data = {
+          id: orderJSON.stripe_checkoutID,
+          base64Invoice: respJSON.base64PDF,
+          authorization: process.env.SS_API_KEY,
+        };
         const update = await fetch(
-          `${process.env.HOSTNAME}/api/orders/updateEmailState/`,
+          `${process.env.HOSTNAME}/api/orders/updateEmailState`,
           {
             method: "POST",
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              id: orderJSON.stripe_checkoutID,
-              emailINFO: "SUCCESS 200",
-              base64Invoice: respJSON.base64PDF,
-              authorization: process.env.SS_API_KEY,
-            }),
+            body: JSON.stringify(data),
           }
         );
         const updateJSON = await update.json();
