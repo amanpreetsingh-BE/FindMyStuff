@@ -77,8 +77,8 @@ export async function getServerSideProps({ query, locale }) {
           templateId:
             locale ===
             ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
-              ? process.env.CHECKOUT_TEMPLATE_ID_FR
-              : process.env.CHECKOUT_TEMPLATE_ID_EN,
+              ? "d-e9d5aad158834b0d86925e9140733ff8" // limited by AWS ... no more space to save in environment variable
+              : "d-2714a9e6d65d4e79ad2ba5159ba2f0fa",
           dynamic_template_data: context,
           attachments: [
             {
