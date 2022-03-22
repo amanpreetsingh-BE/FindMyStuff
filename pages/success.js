@@ -23,14 +23,12 @@ export async function getServerSideProps({ query, locale }) {
       `${process.env.HOSTNAME}/api/orders/${URL_session_id}`
     );
     const orderJSON = await order.json();
-    // If the email confirmation is not sent, send the receipt
+    // If the email confirmation is not sent, do logic else refresh only
     if (!orderJSON.emailSent) {
       try {
-        /* STEP 1 : GENERATE PDF RECEIPT BASE64 */
+        /* STEP 1 : Generate PDF base64 and send email to customer  */
         const context = {
           fullname: orderJSON.shipping_name,
-          firstname: orderJSON.shipping_name.split(" ")[0],
-          lastname: orderJSON.shipping_name.split(" ")[1],
           email: orderJSON.customer_email,
           model: orderJSON.model,
           model_description: orderJSON.color,
@@ -105,30 +103,29 @@ export async function getServerSideProps({ query, locale }) {
           data: msg,
         });
 
-        /* STEP 2 : Update email state */
-        const data = {
-          id: orderJSON.stripe_checkoutID,
-          base64Invoice: respJSON.base64PDF,
-          authorization: process.env.SS_API_KEY,
-        };
-        const update = await fetch(
-          `${process.env.HOSTNAME}/api/orders/updateEmailState`,
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              "User-Agent": "*",
-            },
-            body: JSON.stringify(data),
-          }
+        /* STEP 2 : Update email state with firebase admin sdk */
+        const admin = require("firebase-admin");
+        const serviceAccount = JSON.parse(
+          Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
         );
-        const updateJSON = await update.json();
-        console.log(updateJSON);
-        if (!updateJSON.success) {
-          throw new Error("ERROR UPDATING EMAIL STATE");
-        }
+        const app = !admin.apps.length
+          ? admin.initializeApp({
+              credential: admin.credential.cert(serviceAccount),
+            })
+          : admin.app();
+        var docRef = app
+          .firestore()
+          .collection("orders")
+          .doc(`${orderJSON.stripe_checkoutID}`);
 
+        await docRef.get().then((doc) => {
+          docRef.update({
+            emailSent: true,
+            receipt: respJSON.base64PDF,
+          });
+        });
+
+        /* STEP 3 : Notify admin to prepare the order */
         var hbs = require("nodemailer-express-handlebars");
         var nodemailer = require("nodemailer");
 
