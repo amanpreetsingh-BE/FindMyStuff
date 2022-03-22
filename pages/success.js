@@ -10,6 +10,10 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 
 export async function getServerSideProps({ query, locale }) {
+  const { JSDOM } = require("jsdom");
+
+  const { window } = new JSDOM();
+
   const URL_session_id = query.session_id;
 
   const checkout = await fetch(
@@ -46,7 +50,7 @@ export async function getServerSideProps({ query, locale }) {
         const fs = require("fs");
         const invoicePath = path.resolve("templates/invoice.html");
         const invoiceFile = fs.readFileSync(invoicePath, "utf8");
-
+        var start = window.performance.now();
         const resp = await fetch(
           "https://regal-melomakarona-dc80f3.netlify.app/api/getPDF",
           {
@@ -63,6 +67,12 @@ export async function getServerSideProps({ query, locale }) {
           }
         );
         const respJSON = await resp.json();
+
+        var stop = window.performance.now();
+        console.log(
+          `Time Taken to execute PDF fetch = ${(stop - start) / 1000} seconds`
+        );
+
         const template =
           "fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr"
             ? "d-e9d5aad158834b0d86925e9140733ff8"
@@ -94,6 +104,7 @@ export async function getServerSideProps({ query, locale }) {
           ],
         };
         const axios = require("axios");
+        start = window.performance.now();
         axios({
           method: "post",
           url: "https://api.sendgrid.com/v3/mail/send",
@@ -102,6 +113,10 @@ export async function getServerSideProps({ query, locale }) {
           },
           data: msg,
         });
+        var stop = window.performance.now();
+        console.log(
+          `Time Taken to execute send mail = ${(stop - start) / 1000} seconds`
+        );
 
         /* STEP 2 : Update email state with firebase admin sdk */
         const admin = require("firebase-admin");
