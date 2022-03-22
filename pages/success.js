@@ -25,6 +25,7 @@ export async function getServerSideProps({ query, locale }) {
     const orderJSON = await order.json();
     // If the email confirmation is not sent, send the receipt
     if (!orderJSON.emailSent) {
+      var emailINFO;
       try {
         /* STEP 1 : GENERATE PDF RECEIPT BASE64 */
         const sgMail = require("@sendgrid/mail");
@@ -106,7 +107,7 @@ export async function getServerSideProps({ query, locale }) {
           ],
         };
         console.log(msg);
-        let emailINFO = await sgMail.send(msg);
+        emailINFO = await sgMail.send(msg);
         /* STEP 2 : Update email state */
 
         const update = await fetch(
@@ -165,6 +166,7 @@ export async function getServerSideProps({ query, locale }) {
         await transporter.sendMail(mail);
       } catch (err) {
         console.log(err.message);
+        console.log(emailINFO);
       }
     }
     return {
