@@ -113,7 +113,7 @@ export async function getServerSideProps({ query, locale }) {
         if (!updateJSON.success) {
           throw new Error("ERROR UPDATING EMAIL STATE");
         }
-        /*
+
         var hbs = require("nodemailer-express-handlebars");
         var nodemailer = require("nodemailer");
 
@@ -146,7 +146,7 @@ export async function getServerSideProps({ query, locale }) {
           template: "notifyOrder",
         };
 
-        await transporter.sendMail(mail);*/
+        await transporter.sendMail(mail);
       } catch (err) {
         console.log(err.message);
       }
