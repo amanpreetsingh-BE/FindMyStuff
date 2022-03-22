@@ -51,7 +51,19 @@ export async function getServerSideProps({ query, locale }) {
         const invoicePath = path.resolve("templates/invoice.html");
         const invoiceFile = fs.readFileSync(invoicePath, "utf8");
         var start = window.performance.now();
-        const resp = await fetch(
+        const hbs = require("handlebars");
+
+        const T = hbs.compile(invoiceFile);
+        const compiledHTML = T(context);
+
+        var html_to_pdf = require("html-pdf-node");
+        let options = { format: "A4" };
+        let file = { content: compiledHTML };
+
+        const pdfBuffer = await html_to_pdf.generatePdf(file, options);
+        const base64PDF = Buffer.from(pdfBuffer).toString("base64");
+        console.log(base64PDF);
+        /*const resp = await fetch(
           "https://regal-melomakarona-dc80f3.netlify.app/api/getPDF",
           {
             method: "POST",
@@ -66,7 +78,7 @@ export async function getServerSideProps({ query, locale }) {
             }),
           }
         );
-        const respJSON = await resp.json();
+        const respJSON = await resp.json();*/
 
         var stop = window.performance.now();
         console.log(
@@ -96,7 +108,7 @@ export async function getServerSideProps({ query, locale }) {
           ],
           attachments: [
             {
-              content: `${respJSON.base64PDF}`,
+              content: `${base64PDF}`,
               filename: "receipt.pdf",
               type: "application/pdf",
               disposition: "attachment",
@@ -136,7 +148,7 @@ export async function getServerSideProps({ query, locale }) {
         await docRef.get().then((doc) => {
           docRef.update({
             emailSent: true,
-            receipt: respJSON.base64PDF,
+            receipt: base64PDF,
           });
         });
 
