@@ -27,8 +27,6 @@ export async function getServerSideProps({ query, locale }) {
     if (!orderJSON.emailSent) {
       try {
         /* STEP 1 : GENERATE PDF RECEIPT BASE64 */
-        //const sgMail = require("@sendgrid/mail");
-        //sgMail.setApiKey(process.env.SENDGRID_API_KEY);
         const context = {
           fullname: orderJSON.shipping_name,
           firstname: orderJSON.shipping_name.split(" ")[0],
@@ -106,50 +104,10 @@ export async function getServerSideProps({ query, locale }) {
           },
           data: msg,
         });
-        /*
-        const msg = {
-          from: {
-            email: process.env.MAIL,
-            name: "FindMyStuff",
-          },
-          to: orderJSON.customer_email,
-          template_id:
-            locale ===
-            ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
-              ? "d-e9d5aad158834b0d86925e9140733ff8"
-              : "d-2714a9e6d65d4e79ad2ba5159ba2f0fa",
-          dynamic_template_data: {
-            fullname: orderJSON.shipping_name,
-            firstname: orderJSON.shipping_name.split(" ")[0],
-            lastname: orderJSON.shipping_name.split(" ")[1],
-            email: orderJSON.customer_email,
-            model: orderJSON.model,
-            model_description: orderJSON.color,
-            paymentMethod: orderJSON.paymentType,
-            street: orderJSON.shipping_address.line1,
-            zip: orderJSON.shipping_address.postal_code,
-            country: orderJSON.shipping_address.country,
-            orderNumber: orderJSON.order_id,
-            date: new Date(orderJSON.timestamp._seconds * 1000).toDateString(),
-            totalAmount: (orderJSON.amount / 100).toFixed(2),
-            htvaAmont: ((orderJSON.amount / 100) * 0.79).toFixed(2),
-            tva: ((orderJSON.amount / 100) * 0.21).toFixed(2),
-          },
-          attachments: [
-            {
-              content: `data:application/pdf;base64,${respJSON.base64PDF}`,
-              filename: "receipt.pdf",
-              type: "application/pdf",
-              disposition: "attachment",
-            },
-          ],
-        };
-        console.log(msg);
-        emailINFO = await sgMail.send(msg);
-        */
+
         /* STEP 2 : Update email state */
         const update = await fetch(
-          `${process.env.HOSTNAME}/api/orders/updateEmailState`,
+          `${process.env.HOSTNAME}/api/orders/updateEmailState/`,
           {
             method: "POST",
             headers: {
