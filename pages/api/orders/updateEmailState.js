@@ -13,20 +13,17 @@ const app = !admin.apps.length
 export default async function handler(req, res) {
   if (
     req.method === "POST" &&
-    req.body.authorization == process.env.SS_API_KEY
+    req.body.authorization === process.env.SS_API_KEY
   ) {
     try {
+      const receipt = req.body.base64Invoice;
       var docRef = app.firestore().collection("orders").doc(`${req.body.id}`);
 
       await docRef.get().then((doc) => {
-        if (doc.exists) {
-          docRef.update({
-            emailSent: true,
-            receipt: req.body.base64Invoice,
-          });
-        } else {
-          throw new Error("No order found");
-        }
+        docRef.update({
+          emailSent: true,
+          receipt: receipt,
+        });
       });
 
       res.status(200).json({ success: true });

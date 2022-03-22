@@ -111,15 +111,19 @@ export async function getServerSideProps({ query, locale }) {
           base64Invoice: respJSON.base64PDF,
           authorization: process.env.SS_API_KEY,
         };
-        const update = await fetch("/api/orders/updateEmailState", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+        const update = await fetch(
+          `${process.env.HOSTNAME}/api/orders/updateEmailState/`,
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
         const updateJSON = await update.json();
+        console.log(updateJSON);
         if (!updateJSON.success) {
           throw new Error("ERROR UPDATING EMAIL STATE");
         }
