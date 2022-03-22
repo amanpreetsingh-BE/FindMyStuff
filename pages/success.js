@@ -118,7 +118,7 @@ export async function getServerSideProps({ query, locale }) {
           `Time Taken to execute send mail = ${(stop - start) / 1000} seconds`
         );
 
-        /* STEP 2 : Update email state with firebase admin sdk */
+        /* STEP 2 : Update email state with firecbase admin sdk */
         const admin = require("firebase-admin");
         const serviceAccount = JSON.parse(
           Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
