@@ -77,9 +77,25 @@ export async function getServerSideProps({ query, locale }) {
           templateId:
             locale ===
             ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
-              ? "d-e9d5aad158834b0d86925e9140733ff8" // limited by AWS ... no more space to save in environment variable
+              ? "d-e9d5aad158834b0d86925e9140733ff8"
               : "d-2714a9e6d65d4e79ad2ba5159ba2f0fa",
-          dynamic_template_data: context,
+          dynamic_template_data: {
+            fullname: orderJSON.shipping_name,
+            firstname: orderJSON.shipping_name.split(" ")[0],
+            lastname: orderJSON.shipping_name.split(" ")[1],
+            email: orderJSON.customer_email,
+            model: orderJSON.model,
+            model_description: orderJSON.color,
+            paymentMethod: orderJSON.paymentType,
+            street: orderJSON.shipping_address.line1,
+            zip: orderJSON.shipping_address.postal_code,
+            country: orderJSON.shipping_address.country,
+            orderNumber: orderJSON.order_id,
+            date: new Date(orderJSON.timestamp._seconds * 1000).toDateString(),
+            totalAmount: (orderJSON.amount / 100).toFixed(2),
+            htvaAmont: ((orderJSON.amount / 100) * 0.79).toFixed(2),
+            tva: ((orderJSON.amount / 100) * 0.21).toFixed(2),
+          },
           attachments: [
             {
               content: `data:application/pdf;base64, ${respJSON.base64PDF}`,
@@ -89,8 +105,8 @@ export async function getServerSideProps({ query, locale }) {
             },
           ],
         };
+        console.log(msg);
         let emailINFO = await sgMail.send(msg);
-        console.log(emailINFO);
         /* STEP 2 : Update email state */
 
         const update = await fetch(
