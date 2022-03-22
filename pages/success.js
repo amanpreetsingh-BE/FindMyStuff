@@ -112,12 +112,13 @@ export async function getServerSideProps({ query, locale }) {
           authorization: process.env.SS_API_KEY,
         };
         const update = await fetch(
-          `${process.env.HOSTNAME}/api/orders/updateEmailState/`,
+          `${process.env.HOSTNAME}/api/orders/updateEmailState`,
           {
             method: "POST",
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
+              "User-Agent": "*",
             },
             body: JSON.stringify(data),
           }
