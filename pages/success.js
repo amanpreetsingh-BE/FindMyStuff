@@ -25,11 +25,10 @@ export async function getServerSideProps({ query, locale }) {
     const orderJSON = await order.json();
     // If the email confirmation is not sent, send the receipt
     if (!orderJSON.emailSent) {
-      var emailINFO;
       try {
         /* STEP 1 : GENERATE PDF RECEIPT BASE64 */
-        const sgMail = require("@sendgrid/mail");
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        //const sgMail = require("@sendgrid/mail");
+        //sgMail.setApiKey(process.env.SENDGRID_API_KEY);
         const context = {
           fullname: orderJSON.shipping_name,
           firstname: orderJSON.shipping_name.split(" ")[0],
@@ -68,14 +67,53 @@ export async function getServerSideProps({ query, locale }) {
           }
         );
         const respJSON = await resp.json();
+        const template =
+          "fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr"
+            ? "d-e9d5aad158834b0d86925e9140733ff8"
+            : "d-2714a9e6d65d4e79ad2ba5159ba2f0fa";
 
         const msg = {
-          to: orderJSON.customer_email,
           from: {
             email: process.env.MAIL,
             name: "FindMyStuff",
           },
-          templateId:
+          template_id: template,
+          personalizations: [
+            {
+              to: [
+                {
+                  email: orderJSON.customer_email,
+                },
+              ],
+              dynamic_template_data: context,
+            },
+          ],
+          attachments: [
+            {
+              content: `${respJSON.base64PDF}`,
+              filename: "receipt.pdf",
+              type: "application/pdf",
+              disposition: "attachment",
+            },
+          ],
+        };
+        const axios = require("axios");
+        axios({
+          method: "post",
+          url: "https://api.sendgrid.com/v3/mail/send",
+          headers: {
+            Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+          },
+          data: msg,
+        });
+        /*
+        const msg = {
+          from: {
+            email: process.env.MAIL,
+            name: "FindMyStuff",
+          },
+          to: orderJSON.customer_email,
+          template_id:
             locale ===
             ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
               ? "d-e9d5aad158834b0d86925e9140733ff8"
@@ -99,7 +137,7 @@ export async function getServerSideProps({ query, locale }) {
           },
           attachments: [
             {
-              content: `data:application/pdf;base64, ${respJSON.base64PDF}`,
+              content: `data:application/pdf;base64,${respJSON.base64PDF}`,
               filename: "receipt.pdf",
               type: "application/pdf",
               disposition: "attachment",
@@ -108,8 +146,8 @@ export async function getServerSideProps({ query, locale }) {
         };
         console.log(msg);
         emailINFO = await sgMail.send(msg);
+        */
         /* STEP 2 : Update email state */
-
         const update = await fetch(
           `${process.env.HOSTNAME}/api/orders/updateEmailState`,
           {
@@ -120,7 +158,7 @@ export async function getServerSideProps({ query, locale }) {
             },
             body: JSON.stringify({
               id: orderJSON.stripe_checkoutID,
-              emailINFO: emailINFO,
+              emailINFO: "SUCCESS 200",
               base64Invoice: respJSON.base64PDF,
               authorization: process.env.SS_API_KEY,
             }),
@@ -166,7 +204,6 @@ export async function getServerSideProps({ query, locale }) {
         await transporter.sendMail(mail);
       } catch (err) {
         console.log(err.message);
-        console.log(emailINFO);
       }
     }
     return {
