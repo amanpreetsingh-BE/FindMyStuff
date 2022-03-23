@@ -51,9 +51,9 @@ export async function getServerSideProps({ query, locale }) {
         const invoicePath = path.resolve("templates/invoice.html");
         const invoiceFile = fs.readFileSync(invoicePath, "utf8");
         var start = window.performance.now();
-        const hbs = require("handlebars");
+        const hb = require("handlebars");
 
-        const T = hbs.compile(invoiceFile);
+        const T = hb.compile(invoiceFile);
         const compiledHTML = T(context);
 
         const resp = await fetch(
