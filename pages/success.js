@@ -56,29 +56,22 @@ export async function getServerSideProps({ query, locale }) {
         const T = hbs.compile(invoiceFile);
         const compiledHTML = T(context);
 
-        var html_to_pdf = require("html-pdf-node");
-        let options = { format: "A4" };
-        let file = { content: compiledHTML };
-
-        const pdfBuffer = await html_to_pdf.generatePdf(file, options);
-        const base64PDF = Buffer.from(pdfBuffer).toString("base64");
-        console.log(base64PDF);
-        /*const resp = await fetch(
-          "https://regal-melomakarona-dc80f3.netlify.app/api/getPDF",
+        const resp = await fetch(
+          "https://dzzl49198i.execute-api.us-east-1.amazonaws.com/prod/convert",
           {
             method: "POST",
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
+              "X-Api-Key": process.env.AWS,
             },
             body: JSON.stringify({
-              token: process.env.HTML2PDF_TOKEN,
-              html: invoiceFile,
-              context: context,
+              html: compiledHTML,
             }),
           }
         );
-        const respJSON = await resp.json();*/
+        const base64PDF = await resp.json();
+        console.log(base64PDF);
 
         var stop = window.performance.now();
         console.log(
@@ -153,9 +146,9 @@ export async function getServerSideProps({ query, locale }) {
         });
 
         /* STEP 3 : Notify admin to prepare the order */
-        /*var hbs = require("nodemailer-express-handlebars");
+        var hbs = require("nodemailer-express-handlebars");
         var nodemailer = require("nodemailer");
-
+        start = window.performance.now();
         const transporter = nodemailer.createTransport({
           host: process.env.HOSTMAIL,
           port: 465,
@@ -185,7 +178,11 @@ export async function getServerSideProps({ query, locale }) {
           template: "notifyOrder",
         };
 
-        await transporter.sendMail(mail);*/
+        await transporter.sendMail(mail);
+        stop = window.performance.now();
+        console.log(
+          `Time Taken to send notify = ${(stop - start) / 1000} seconds`
+        );
       } catch (err) {
         console.log(err.message);
       }
