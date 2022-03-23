@@ -10,10 +10,6 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 
 export async function getServerSideProps({ query, locale }) {
-  const { JSDOM } = require("jsdom");
-
-  const { window } = new JSDOM();
-
   const URL_session_id = query.session_id;
 
   const checkout = await fetch(
@@ -50,12 +46,10 @@ export async function getServerSideProps({ query, locale }) {
         const fs = require("fs");
         const invoicePath = path.resolve("templates/invoice.html");
         const invoiceFile = fs.readFileSync(invoicePath, "utf8");
-        var start = window.performance.now();
         const hb = require("handlebars");
-
         const T = hb.compile(invoiceFile);
         const compiledHTML = T(context);
-
+        // self implemented HTML to PDF on AWS lambda with API key
         const resp = await fetch(
           "https://dzzl49198i.execute-api.us-east-1.amazonaws.com/prod/convert",
           {
@@ -70,19 +64,12 @@ export async function getServerSideProps({ query, locale }) {
             }),
           }
         );
+
         const base64PDF = await resp.json();
-        console.log(base64PDF);
-
-        var stop = window.performance.now();
-        console.log(
-          `Time Taken to execute PDF fetch = ${(stop - start) / 1000} seconds`
-        );
-
         const template =
           "fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr"
             ? "d-e9d5aad158834b0d86925e9140733ff8"
             : "d-2714a9e6d65d4e79ad2ba5159ba2f0fa";
-
         const msg = {
           from: {
             email: process.env.MAIL,
@@ -109,7 +96,6 @@ export async function getServerSideProps({ query, locale }) {
           ],
         };
         const axios = require("axios");
-        start = window.performance.now();
         axios({
           method: "post",
           url: "https://api.sendgrid.com/v3/mail/send",
@@ -118,10 +104,6 @@ export async function getServerSideProps({ query, locale }) {
           },
           data: msg,
         });
-        var stop = window.performance.now();
-        console.log(
-          `Time Taken to execute send mail = ${(stop - start) / 1000} seconds`
-        );
 
         /* STEP 2 : Update email state with firecbase admin sdk */
         const admin = require("firebase-admin");
@@ -148,7 +130,6 @@ export async function getServerSideProps({ query, locale }) {
         /* STEP 3 : Notify admin to prepare the order */
         var hbs = require("nodemailer-express-handlebars");
         var nodemailer = require("nodemailer");
-        start = window.performance.now();
         const transporter = nodemailer.createTransport({
           host: process.env.HOSTMAIL,
           port: 465,
@@ -179,10 +160,6 @@ export async function getServerSideProps({ query, locale }) {
         };
 
         await transporter.sendMail(mail);
-        stop = window.performance.now();
-        console.log(
-          `Time Taken to send notify = ${(stop - start) / 1000} seconds`
-        );
       } catch (err) {
         console.log(err.message);
       }
