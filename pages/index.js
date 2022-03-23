@@ -172,7 +172,7 @@ export default function Home({
         )}
 
         {/*Separator */}
-        <div className="w-full">
+        <div className="w-full border-none">
           <svg
             className="flex-no-shrink fill-current"
             id="visual"

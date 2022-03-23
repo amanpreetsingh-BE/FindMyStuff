@@ -35,7 +35,7 @@ function HiwSectionMob({ Image, motion, t }) {
 
   /* Import images */
   const qrIllustration = require("@images/home/qr.png");
-  const phoneIllustration = require("@images/home/phone.png");
+  const phoneIllustration = require("@images/home/phone-.png");
   const foundIllustration = require("@images/home/devices-min.png");
 
   return (

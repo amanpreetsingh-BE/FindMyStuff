@@ -2,39 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base{
-    body {
-        @apply bg-[#fafafa] text-primary overscroll-y-none overscroll-x-none;
-    }
+@layer base {
+  body {
+    @apply bg-primary text-[#FAFAFA] overscroll-y-none overscroll-x-none;
+  }
 }
 
-@layer base{
-    [type='text'],
-    [type='email'],
-    [type='url'],
-    [type='password'],
-    [type='number'],
-    [type='date'],
-    [type='datetime-local'],
-    [type='month'],
-    [type='search'],
-    [type='tel'],
-    [type='time'],
-    [type='week'],
-    [multiple],
-    textarea,
-    select {
-        @apply w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-700 font-medium transition ease-in-out duration-[300ms];
-    }
-    [type='checkbox'],
-    [type='radio'] {
-        @apply rounded border-gray-300 text-indigo-600 focus:ring-indigo-500;
-    }
+@layer base {
+  [type="text"],
+  [type="email"],
+  [type="url"],
+  [type="password"],
+  [type="number"],
+  [type="date"],
+  [type="datetime-local"],
+  [type="month"],
+  [type="search"],
+  [type="tel"],
+  [type="time"],
+  [type="week"],
+  [multiple],
+  textarea,
+  select {
+    @apply w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-700 font-medium transition ease-in-out duration-[300ms];
+  }
+  [type="checkbox"],
+  [type="radio"] {
+    @apply rounded border-gray-300 text-indigo-600 focus:ring-indigo-500;
+  }
 }
-
 
 @layer utilities {
-    .swiper-pagination-bullet{
-        background-color: #20b075 !important;
-    }
+  .swiper-pagination-bullet {
+    background-color: #20b075 !important;
+  }
 }
