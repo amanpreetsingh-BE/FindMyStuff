@@ -24,18 +24,38 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 
 import { writeBatch, doc, getDoc } from "firebase/firestore";
-import { firestore } from "@lib/firebase";
+import { auth, firestore } from "@lib/firebase";
 
 export async function getServerSideProps({ req, locale }) {
-  let productsJSON;
-  let firebaseToken;
+  /* Get host (local or dev) */
   const hostname = process.env.HOSTNAME;
-  if (req.cookies.firebaseToken) {
-    firebaseToken = req.cookies.firebaseToken;
+  let isConnected = null;
+  /* import admin-sdk firebase to check user is connected */
+  const admin = require("firebase-admin");
+  const serviceAccount = JSON.parse(
+    Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
+  );
+  const app = !admin.apps.length
+    ? admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+      })
+    : admin.app();
+
+  const firebaseToken = req.cookies.firebaseToken;
+  let decodedToken = null;
+  if (firebaseToken) {
+    try {
+      decodedToken = await app.auth().verifyIdToken(firebaseToken, true);
+      isConnected = true;
+    } catch (err) {
+      isConnected = false;
+    }
   } else {
-    firebaseToken = null;
+    isConnected = false;
   }
 
+  /* Fetch products to display for customers */
+  let productsJSON;
   try {
     let products = await fetch(`${process.env.HOSTNAME}/api/products`);
     productsJSON = await products.json();
@@ -49,18 +69,14 @@ export async function getServerSideProps({ req, locale }) {
       locale,
       productsJSON,
       hostname,
-      firebaseToken,
+      isConnected,
     },
   };
 }
 
-export default function Home({
-  locale,
-  productsJSON,
-  hostname,
-  firebaseToken,
-}) {
+export default function Home({ locale, productsJSON, hostname, isConnected }) {
   const { t } = useTranslation();
+  auth.signOut();
   /* navbar */
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => {
@@ -132,7 +148,7 @@ export default function Home({
         Link={Link}
         toggle={toggle}
         locale={locale}
-        firebaseToken={firebaseToken}
+        isConnected={isConnected}
         t={t}
       />
       <MobileNav
@@ -142,7 +158,7 @@ export default function Home({
         Link={Link}
         toggle={toggle}
         isOpen={isOpen}
-        firebaseToken={firebaseToken}
+        isConnected={isConnected}
         t={t}
       />
 

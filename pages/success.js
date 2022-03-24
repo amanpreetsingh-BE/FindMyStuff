@@ -67,7 +67,7 @@ export async function getServerSideProps({ query, locale }) {
 
         const base64PDF = await resp.json();
         const template =
-          "fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr"
+          locale === ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
             ? "d-e9d5aad158834b0d86925e9140733ff8"
             : "d-2714a9e6d65d4e79ad2ba5159ba2f0fa";
         const msg = {
@@ -188,25 +188,25 @@ export default function Success(props) {
   const customer_email = JSON.parse(props.order_email);
   return (
     <main>
-      <NavReduced darkLogo={true} />
-      <div className="w-4/5 mt-12 max-w-2xl mx-auto flex flex-col items-center space-y-2">
+      <NavReduced darkLogo={false} />
+      <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
         <CheckCircleIcon className="w-10 text-secondaryHover h-10 sm:w-12 sm:h-12" />
-        <h1 className="text-xl text-center tracking-wide font-['Roboto'] sm:text-2xl">
+        <h1 className="text-xl text-center tracking-wide  sm:text-2xl">
           {t("payment:heading")}
         </h1>
         <p className="text-xs sm:text-sm text-center">{t("payment:desc")}</p>
-        <p className="text-xs sm:text-sm text-gray-600 text-center">
+        <p className="text-xs sm:text-sm text-secondary text-center">
           {order_id}
         </p>
         <p className="text-xs sm:text-sm text-center max-w-xs">
           {t("payment:sub_desc")}
         </p>
-        <p className="text-xs sm:text-sm text-gray-600 text-center">
+        <p className="text-xs sm:text-sm text-secondaryHover text-center">
           {customer_email}
         </p>
         <button
           onClick={() => router.push("/")}
-          className="bg-secondary cursor-pointer hover:bg-secondaryHover text-white font-bold rounded-lg px-12 py-4"
+          className="border-2 border-secondary hover:border-secondaryHover cursor-pointer  text-white font-bold rounded-lg px-12 py-4"
         >
           {t("payment:goHome")}
         </button>

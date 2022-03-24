@@ -1,75 +1,75 @@
-{   
-    "seo": {
-        "title": "FindMyStuff | Bringing back lost objects",
-        "description": "Find lost object through innovative use of QR code",
-        "keywords": "lost, object, phone, smartphone, gsm, track, find, qr, code, find, my, stuff, forget, keys, wallet, bag, found"
+{
+  "seo": {
+    "title": "FindMyStuff | Bringing back lost objects",
+    "description": "Find lost object through innovative use of QR code",
+    "keywords": "lost, object, phone, smartphone, gsm, track, find, qr, code, find, my, stuff, forget, keys, wallet, bag, found"
+  },
+  "heading": "Bringing back lost objects.",
+  "description": "Take care of your stuff ! Never lose your items again thanks to the system we have implemented. We will reward the one who will find and give your lost item back to you !",
+  "nav": {
+    "how": "How It Works",
+    "prod": "Products",
+    "contact": "Contact",
+    "sign": "Sign In",
+    "gotodash": "Go to dashboard"
+  },
+  "hiw": {
+    "title": "How It Works",
+    "step1": "To register, scan the QR code on the back of your new product.",
+    "step2": "Anyone who finds your lost item can now scan the QR code and report the finding. We will indicate to him the 1 400 associated pickup parcelpoints in Belgium where he will be able to deposit your item for a monetary reward or a donation offered to a NGO.",
+    "step3": "You just have to wait for your item to get back ! You will be notified when it will be delivered into your favorite pickup parcelpoint that you have chosen during the activation. The first back shipping is free !",
+    "activate": "Activate",
+    "lost": "Lost",
+    "found": "Found"
+  },
+  "prod": {
+    "title": "Model configurator",
+    "configurator": {
+      "h1": "Products",
+      "h2": "Select your color",
+      "h3": "Your selection",
+      "price": "Price : € ",
+      "shipping": "Free shipping",
+      "packaging": "Delivery in 3 days",
+      "material": "No tracking",
+      "holder": "Anodized aluminium",
+      "activate": "Need to activate when received",
+      "checkout": "Checkout",
+      "stock": "In Stock",
+      "outStock": "Out Of Stock"
     },
-    "heading": "Bringing back lost objects.",
-    "description": "Take care of your stuff ! Never lose your items again thanks to the system we have implemented. We will reward the one who will find and give your lost item back to you !",
-    "nav": {
-        "how": "How It Works",
-        "prod": "Products",
-        "contact": "Contact",
-        "sign": "Sign In",
-        "gotodash": "Go to dashboard"
+    "stickersCat": {
+      "h1": "Stickers"
     },
-    "hiw": {
-        "title": "How It Works",
-        "step1": "To register, scan the QR code on the back of your new product.",
-        "step2": "Anyone who finds your lost item can now scan the QR code and report the finding. We will indicate to him the 1 400 associated pickup parcelpoints in Belgium where he will be able to deposit your item for a monetary reward or a donation offered to a NGO.",
-        "step3": "You just have to wait for your item to get back ! You will be notified when it will be delivered into your favorite pickup parcelpoint that you have chosen during the activation. The first back shipping is free !",
-        "activate": "Activate",
-        "lost": "Lost",
-        "found": "Found"
+    "trackerCat": {
+      "h1": "Stickers"
     },
-    "prod": {
-        "title":"Model configurator",
-        "configurator":{
-            "h1" : "Products",
-            "h2": "Select your color",
-            "h3" : "Your selection",
-            "price": "Price : € ",
-            "shipping": "Free shipping",
-            "packaging": "Delivery in 3 days",
-            "material": "No tracking",
-            "holder": "Anodized aluminium",
-            "activate": "Need to activate when received",
-            "checkout": "Checkout",
-            "stock": "In Stock",
-            "outStock": "Out Of Stock"
-        },
-        "stickersCat":{
-            "h1": "Stickers"
-        },
-        "trackerCat":{
-            "h1": "Stickers"
-        },
-        "otherCat":{
-            "h1": "Stickers"
-        }
-    },
-    "contact":{
-        "heading":"Any questions ?",
-        "subtitle":"Contact us.",
-        "name":"Full name",
-        "email":"Email address ",
-        "msg": "Your message",
-        "submit": "Submit",
-        "success": "Your message has been sent !",
-        "error": "Error, please try again"
-    },
-    "footer":{
-        "company" : "Company",
-        "companyAbout" : "About us",
-        "companyCareer" : "Career",
-        "companyTerms" : "Terms and conditions",
-        "companyPrivacy" : "Privacy policy",
-        "help" : "Help",
-        "helpFaq" : "FAQ",
-        "helpContact" : "Contact",
-        "social" : "Social"
-    },
-    "stripe": {
-        "error": "Error, please try again"
+    "otherCat": {
+      "h1": "Stickers"
     }
+  },
+  "contact": {
+    "heading": "Any questions ?",
+    "subtitle": "Contact us.",
+    "name": "Full name",
+    "email": "Email address ",
+    "msg": "Your message",
+    "submit": "Submit",
+    "success": "Your message has been sent !",
+    "error": "Error, please try again"
+  },
+  "footer": {
+    "company": "Company",
+    "companyAbout": "About us",
+    "companyCareer": "Career",
+    "companyTerms": "Terms and conditions",
+    "companyPrivacy": "Privacy policy",
+    "help": "Help",
+    "helpFaq": "FAQ",
+    "helpContact": "Contact",
+    "social": "Social"
+  },
+  "stripe": {
+    "error": "Error, please try again"
+  }
 }

@@ -5,17 +5,7 @@ import { MenuAlt3Icon } from "@heroicons/react/outline";
 /* Components */
 import LanguageBox from "@components/misc/LanguageBox";
 
-function Nav({
-  useContext,
-  UserContext,
-  Image,
-  Link,
-  locale,
-  firebaseToken,
-  toggle,
-  t,
-}) {
-  const { email } = useContext(UserContext);
+function Nav({ Image, Link, locale, isConnected, toggle, t }) {
   const logo = require("@images/icons/logo_white.svg");
   function toggleHome() {
     scroll.scrollToTop();
@@ -95,16 +85,10 @@ function Nav({
             </LinkS>
           </li>
           <li className="flex justify-center items-center h-full">
-            <Link
-              passHref
-              href={firebaseToken ? `/dashboard/?user=${email}` : "/sign"}
-            >
+            <Link passHref href={isConnected ? "/dashboard" : "/sign"}>
               <div className="group cursor-pointer mr-10 rounded-xl bg-secondary px-8 py-4 hover:bg-secondaryHover text-white font-extrabold transition ease-in-out duration-300">
-                {firebaseToken ? t("home:nav:gotodash") : t("home:nav:sign")}{" "}
-                &nbsp;{" "}
-                <div className="absolute hidden group-hover:inline ">
-                  &rarr;
-                </div>
+                {isConnected ? t("home:nav:gotodash") : t("home:nav:sign")}{" "}
+                &nbsp; &rarr;
               </div>
             </Link>
           </li>

@@ -10,6 +10,11 @@ const app = !admin.apps.length
     })
   : admin.app();
 
+/*
+ * Description : GET messages posted by customers
+ * Level of credential : Private (ADMIN)
+ * Method : GET
+ */
 export default async function handler(req, res) {
   if (
     req.method === "GET" &&

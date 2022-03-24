@@ -3,20 +3,10 @@ import { XIcon } from "@heroicons/react/outline";
 /* Smooth scroll */
 import { Link as LinkS } from "react-scroll";
 
-function MobileNav({
-  useContext,
-  UserContext,
-  Image,
-  Link,
-  toggle,
-  firebaseToken,
-  t,
-  isOpen,
-}) {
+function MobileNav({ Image, Link, toggle, isConnected, t, isOpen }) {
   const opacity = isOpen ? " opacity-0 " : " opacity-100 ";
   const top = isOpen ? " top-full" : " -top-0 ";
 
-  const { email } = useContext(UserContext);
   const logo = require("@images/icons/logo_white.svg");
 
   return (
@@ -88,13 +78,10 @@ function MobileNav({
           </LinkS>
         </ul>
         <div className="flex justify-center">
-          <Link
-            passHref
-            href={firebaseToken ? `/dashboard/?user=${email}` : "/sign"}
-          >
+          <Link passHref href={isConnected ? "/dashboard" : "/sign"}>
             <div className="transition ease-in-out duration-300  cursor-pointer font-semibold rounded-xl bg-secondary px-8 py-4 hover:bg-secondaryHover ">
-              {firebaseToken ? t("home:nav:gotodash") : t("home:nav:sign")}{" "}
-              &nbsp; &rarr;
+              {isConnected ? t("home:nav:gotodash") : t("home:nav:sign")} &nbsp;
+              &rarr;
             </div>
           </Link>
         </div>

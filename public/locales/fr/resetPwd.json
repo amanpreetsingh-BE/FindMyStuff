@@ -1,0 +1,10 @@
+{
+  "heading": "Réinitialiser le mot de passe",
+  "in1": "Nouveau mot de passe",
+  "in2": "Répeter le nouveau mot de passe",
+  "confirm": "Confirmer",
+  "successReset": "Succès, veuillez vous reconnectez",
+  "errorReset": "Erreur .. Merci de réessayer plus tard",
+  "notsame": "Le mot de passe n'est pas le même !",
+  "atleast6": "Le mot de passe doit contenir au moins 6 caractères !"
+}

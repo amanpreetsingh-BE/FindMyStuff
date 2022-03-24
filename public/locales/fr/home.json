@@ -1,76 +1,75 @@
 {
-    "seo": {
-        "title": "FindMyStuff | Bringing back lost objects",
-        "description": "Plateforme permettant de retrouver les objets perdus à l'aide de QR codes",
-        "keywords": "perdu, objet, téléphone, smartphone, gsm, track, trouver, qr, code, chercher, mon, truc, oublié, clefs, portefeuille, sac, trouvé"
+  "seo": {
+    "title": "FindMyStuff | Bringing back lost objects",
+    "description": "Plateforme permettant de retrouver les objets perdus à l'aide de QR codes",
+    "keywords": "perdu, objet, téléphone, smartphone, gsm, track, trouver, qr, code, chercher, mon, truc, oublié, clefs, portefeuille, sac, trouvé"
+  },
+  "heading": "Bringing back lost objects.",
+  "description": "Prends soin de tes affaires ! Ne perds plus tes objets grâce au système que nous avons mis en place. Nous rémunérons la personne qui retrouvera ton objet perdu.",
+  "nav": {
+    "how": "Comment ça fonctionne",
+    "prod": "Produits",
+    "contact": "Contact",
+    "sign": "Se connecter",
+    "gotodash": "Mon compte"
+  },
+  "hiw": {
+    "title": "Comment ça fonctionne ?",
+    "step1": "Pour t'enregistrer, scanne le QR code au dos de ton nouveau produit.",
+    "step2": "Quiconque retrouve ton objet pourra scanner le code QR et aura accès à 1400 points relais en Belgique où il pourra déposer ton objet en échange d’une rémunération ou d’un don à une ASBL.",
+    "step3": "Tu n'as plus qu'à attendre le retour de ton objet ! Tu seras notifié lorsque ton objet aura été livré à ton point relais séléctionné lors de ton activation. Le premier retour est gratuit !",
+    "activate": "Activation",
+    "lost": "Perdu",
+    "found": "Retrouvé"
+  },
+  "prod": {
+    "title": "Configurateur de modèle",
+    "configurator": {
+      "h1": "Produits",
+      "h2": "Choisissez votre couleur",
+      "h3": "Votre selection",
+      "price": "Prix : € ",
+      "shipping": "Livraison gratuite",
+      "packaging": "Livraison en 3 jours ouvrés",
+      "material": "Aucun traceur",
+      "holder": "Aluminium anodisé",
+      "activate": "Activation après achat",
+      "checkout": "Acheter",
+      "stock": "En stock",
+      "outStock": "Hors stock"
     },
-    "heading": "Bringing back lost objects.",
-    "description": "Prends soin de tes affaires ! Ne perds plus tes objets grâce au système que nous avons mis en place. Nous rémunérons la personne qui retrouvera ton objet perdu.",
-    "nav": {
-        "how": "Comment ça fonctionne",
-        "prod": "Produits",
-        "contact": "Contact",
-        "sign": "Se connecter",
-        "gotodash": "Mon compte"
+    "stickersCat": {
+      "h1": "Stickers"
     },
-    "hiw": {
-        "title": "Comment ça fonctionne ?",
-        "step1": "Pour t'enregistrer, scanne le QR code au dos de ton nouveau produit.",
-        "step2": "Quiconque retrouve ton objet pourra scanner le code QR et aura accès à 1400 points relais en Belgique où il pourra déposer ton objet en échange d’une rémunération ou d’un don à une ASBL.",
-        "step3": "Tu n'as plus qu'à attendre le retour de ton objet ! Tu seras notifié lorsque ton objet aura été livré à ton point relais séléctionné lors de ton activation. Le premier retour est gratuit !",
-        "activate": "Activation",
-        "lost": "Perdu",
-        "found": "Retrouvé"
+    "trackerCat": {
+      "h1": "Stickers"
     },
-    "prod": {
-        "title":"Configurateur de modèle",
-        "configurator":{
-            "h1" : "Produits",
-            "h2": "Choisissez votre couleur",
-            "h3" : "Votre selection",
-            "price": "Prix : € ",
-            "shipping": "Livraison gratuite",
-            "packaging": "Livraison en 3 jours ouvrés",
-            "material": "Aucun traceur",
-            "holder": "Aluminium anodisé",
-            "activate": "Activation après achat",
-            "checkout": "Acheter",
-            "stock": "En stock",
-            "outStock": "Hors stock"
-        },
-        "stickersCat":{
-            "h1": "Stickers"
-        },
-        "trackerCat":{
-            "h1": "Stickers"
-        },
-        "otherCat":{
-            "h1": "Stickers"
-        }
-    },
-    "contact":{
-        "heading":"Avez-vous une question ?",
-        "subtitle":"Contactez-nous.",
-        "name":"Nom et prénom",
-        "email":"Adresse email",
-        "msg": "Votre message",
-        "submit": "Envoyer",
-        "success": "Votre message a été envoyé !",
-        "error": "Erreur, veuillez réessayer plus tard"
-    },
-    "footer":{
-        "company" : "Entreprise",
-        "companyAbout" : "À propos de nous",
-        "companyCareer" : "Emplois",
-        "companyTerms" : "CGV et CGU",
-        "companyPrivacy" : "Politique de confidentialité",
-        "help" : "Aide",
-        "helpFaq" : "FAQ",
-        "helpContact" : "Contact",
-        "social" : "Réseaux"
-    },
-    "stripe": {
-        "error": "Erreur"
+    "otherCat": {
+      "h1": "Stickers"
     }
-
+  },
+  "contact": {
+    "heading": "Avez-vous une question ?",
+    "subtitle": "Contactez-nous.",
+    "name": "Nom et prénom",
+    "email": "Adresse email",
+    "msg": "Votre message",
+    "submit": "Envoyer",
+    "success": "Votre message a été envoyé !",
+    "error": "Erreur, veuillez réessayer plus tard"
+  },
+  "footer": {
+    "company": "Entreprise",
+    "companyAbout": "À propos de nous",
+    "companyCareer": "Emplois",
+    "companyTerms": "CGV et CGU",
+    "companyPrivacy": "Politique de confidentialité",
+    "help": "Aide",
+    "helpFaq": "FAQ",
+    "helpContact": "Contact",
+    "social": "Réseaux"
+  },
+  "stripe": {
+    "error": "Erreur"
+  }
 }

@@ -1,0 +1,10 @@
+{
+  "heading": "Reset your password",
+  "in1": "New password",
+  "in2": "Repeat new password",
+  "confirm": "Confirm",
+  "successReset": "Success, please login again",
+  "errorReset": "Error while reset .. Please try again",
+  "notsame": "Password do not match !",
+  "atleast6": "Password must contain at least 6 characters !"
+}

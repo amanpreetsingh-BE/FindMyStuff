@@ -1,23 +1,23 @@
-{   
-    "heading1": "Qui sommes-nous ?",
-    "whoarewe":"L’équipe de FindMyStuff se compose de trois jeunes entrepreneurs réunis avec l’ambition de lutter contre la perte des objets personnels. Le projet entame son développement au début du mois de septembre 2020 et fusionne différents profils ayant des qualifications différentes. Cela permet ainsi de couvrir l'ensemble des quêtes et challenges qu'une entreprise doit affronter dans le monde du marché actuel.",
-    "heading2": "Notre mission",
-    "mission":"Notre objectif principal est la lutte contre la perte des objets permettant de rallonger leur durée de vie et lutter ainsi contre le surachat. Nous aspirons ainsi à réunir une communauté soudée, fondamentale pour le bon fonctionnement de notre société. La constante recherche d'innovation est au coeur de nos initiatives de plus qu'une perpetuelle amélioration de nos produits afin d'offrir à nos clients un service optimal. Le respect de l'anonymat de nos clients est évidemment primordial afin d'assurer leur sécurité et protéger leurs données personnelles.",
-    "heading3": "L’équipe FindMyStuff.",
-    "formation": "Formation",
-    "amanpreetsingh":{
-        "name": "Amanpreet Singh",
-        "school": "UCLouvain",
-        "study": "Ingénieur électronique"
-    },
-    "federicosonnino":{
-        "name": "Federico Sonnino",
-        "school": "HULT, San Francisco, CA",
-        "study": "Business innovation et entrepreneurship"
-    },
-    "mohamedchaabani":{
-        "name": "Mohamed Chaabani",
-        "school": "UCLouvain",
-        "study": "Ingénieur civil en construction"
-    }
+{
+  "heading1": "Qui sommes-nous ?",
+  "whoarewe": "L’équipe de FindMyStuff se compose de trois jeunes entrepreneurs réunis avec l’ambition de lutter contre la perte des objets personnels. Le projet entame son développement au début du mois de septembre 2020 et fusionne différents profils ayant des qualifications différentes. Cela permet ainsi de couvrir l'ensemble des quêtes et challenges qu'une entreprise doit affronter dans le monde du marché actuel.",
+  "heading2": "Notre mission",
+  "mission": "Notre objectif principal est la lutte contre la perte des objets permettant de rallonger leur durée de vie et lutter ainsi contre le surachat. Nous aspirons ainsi à réunir une communauté soudée, fondamentale pour le bon fonctionnement de notre société. La constante recherche d'innovation est au coeur de nos initiatives de plus qu'une perpetuelle amélioration de nos produits afin d'offrir à nos clients un service optimal. Le respect de l'anonymat de nos clients est évidemment primordial afin d'assurer leur sécurité et protéger leurs données personnelles.",
+  "heading3": "L’équipe FindMyStuff.",
+  "formation": "Formation",
+  "amanpreetsingh": {
+    "name": "Amanpreet Singh",
+    "school": "UCLouvain",
+    "study": "Ingénieur électronique"
+  },
+  "federicosonnino": {
+    "name": "Federico Sonnino",
+    "school": "HULT, San Francisco, CA",
+    "study": "Business innovation et entrepreneurship"
+  },
+  "mohamedchaabani": {
+    "name": "Mohamed Chaabani",
+    "school": "UCLouvain",
+    "study": "Ingénieur civil en construction"
+  }
 }

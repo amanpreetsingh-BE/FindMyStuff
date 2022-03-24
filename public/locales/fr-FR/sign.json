@@ -1,50 +1,52 @@
 {
-    "signin": "Se connecter",
-    "signup": "Création d'un compte",
-    "noAccount": "Pas encore de compte ?",
-    "account" : "Avez-vous déjà un compte ?",
-    "forgotPassword": "Mot de passe oublié ?",
-    "signupBtn": "Inscrivez-vous",
-    "signinBtn": "Se connecter",
-    "signinButtonTxt": "Se connecter",
-    "signupButtonTxt": "S'enregistrer",
-    "terms": "conditions générales",
-    "privacy": "politique de confidentialité",
-    "agree" : "J'accepte les",
-    "and" : "et",
-    "field":{
-        "firstname" : "Prénom",
-        "lastname" : "Nom de famille",
-        "email": "Adresse email",
-        "password": "Mot de passe",
-        "repeatPassword": "Répéter mot de passe"
-    },
-    "signInWithGoogle" : "Se connecter avec Google",
-    "signInWithFacebook" : "Se connecter avec Facebook",
-    "or" : "ou",
-    "errorName":{
-        "specialC" : "Le nom/prénom ne doivent contenir que des lettres sans espaces !",
-        "tooMuchC" : "Le nom/prénom ne peuvent pas contenir plus de 18 caractères",
-        "tooLowC" : "Le nom/prénom doivent contenir au moins 3 caractères !"
-    },
-    "errorPwd":{
-        "notsame": "Le mot de passe n'est pas le même !",
-        "atleast6" : "Le mot de passe doit contenir au moins 6 caractères !"
-    },
-    "errorSignIn" : "Erreur identifiant",
-    "errorSignFb": "Erreur en se connectant à Facebook",
-    "errorSignGoogle": "Erreur en se connectant à Google",
-    "errorMakingAccount": "Erreur lors de la création du compte, merci de réessayer",
-    "accountAlreadyExist": "Le compte existe déja !",
-    "emailBadlyFormatted": "L'email est incorrect",
-    "forgot":{
-        "heading":"Mot de passe oublié ?",
-        "desc" : "Merci de rentrer votre adresse mail pour réinitialiser votre mot de passe. Vous allez recevoir un email avec un lien de réinitialisation.",
-        "rstButtonText":"Réinitialiser",
-        "emailSendSuccess": "Email de réinitialisation envoyé",
-        "emailSendUser": "Utilisateur non existant",
-        "emailSendEmpty": "Merci de rentrer une adresse mail",
-        "errorEmailSend": "Erreur lors de la réinitialisation",
-        "emailSendInvalid": "Merci de rentrer une adresse mail valide"
-    }
+  "signin": "Se connecter",
+  "signup": "Création d'un compte",
+  "noAccount": "Pas encore de compte ?",
+  "account": "Avez-vous déjà un compte ?",
+  "forgotPassword": "Mot de passe oublié ?",
+  "signupBtn": "Inscrivez-vous",
+  "signinBtn": "Se connecter",
+  "signinButtonTxt": "Se connecter",
+  "signupButtonTxt": "S'enregistrer",
+  "terms": "conditions générales",
+  "privacy": "politique de confidentialité",
+  "agree": "J'accepte les",
+  "and": "et",
+  "errorLogin": "Email et/ou mot de passe incorrect !",
+  "userNotFound": "Utilisateur inexistant !",
+  "field": {
+    "firstname": "Prénom",
+    "lastname": "Nom de famille",
+    "email": "Adresse email",
+    "password": "Mot de passe",
+    "repeatPassword": "Répéter mot de passe"
+  },
+  "signInWithGoogle": "Se connecter avec Google",
+  "signInWithFacebook": "Se connecter avec Facebook",
+  "or": "ou",
+  "errorName": {
+    "specialC": "Le nom/prénom ne doivent contenir que des lettres sans espaces !",
+    "tooMuchC": "Le nom/prénom ne peuvent pas contenir plus de 18 caractères",
+    "tooLowC": "Le nom/prénom doivent contenir au moins 3 caractères !"
+  },
+  "errorPwd": {
+    "notsame": "Le mot de passe n'est pas le même !",
+    "atleast6": "Le mot de passe doit contenir au moins 6 caractères !"
+  },
+  "errorSignIn": "Erreur identifiant",
+  "errorSignFb": "Erreur en se connectant à Facebook",
+  "errorSignGoogle": "Erreur en se connectant à Google",
+  "errorMakingAccount": "Erreur lors de la création du compte, merci de réessayer",
+  "accountAlreadyExist": "Le compte existe déja !",
+  "emailBadlyFormatted": "L'email est incorrect",
+  "forgot": {
+    "heading": "Mot de passe oublié ?",
+    "desc": "Merci de rentrer votre adresse mail pour réinitialiser votre mot de passe. Vous allez recevoir un email avec un lien de réinitialisation.",
+    "rstButtonText": "Réinitialiser",
+    "emailSendSuccess": "Email de réinitialisation envoyé",
+    "emailSendUser": "Utilisateur non existant",
+    "emailSendEmpty": "Merci de rentrer une adresse mail",
+    "errorEmailSend": "Erreur lors de la réinitialisation",
+    "emailSendInvalid": "Merci de rentrer une adresse mail valide"
+  }
 }

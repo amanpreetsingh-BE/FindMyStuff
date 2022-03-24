@@ -10,7 +10,11 @@ const app = !admin.apps.length
     })
   : admin.app();
 
-/* return a JSON of products */
+/*
+ * Description : GET JSON of products
+ * Level of credential : Public
+ * Method : GET
+ */
 export default async function handler(req, res) {
   if (req.method === "GET") {
     const productsJSON = [];
