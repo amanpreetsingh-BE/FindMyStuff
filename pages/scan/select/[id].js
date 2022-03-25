@@ -1,6 +1,5 @@
 /* React imports */
-import { useState, useContext, useRef } from "react";
-import { UserContext } from "@lib/context";
+import { useState, useRef } from "react";
 /* Built-in Next.js imports */
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -179,18 +178,17 @@ export async function getServerSideProps({ params, req, res, locale }) {
 export default function SelectPage({ id, hostname, locale, oob }) {
   /* Handle language */
   const { t } = useTranslation();
-
   const en_flag = require("@images/icons/gb.svg");
   const fr_flag = require("@images/icons/fr.svg");
   /* Used to push to dashboard */
   const router = useRouter();
-  const { email } = useContext(UserContext);
 
   const cp = useRef();
   const [center, setCenter] = useState([50.85034, 4.35171]);
   const [listPt, setListPt] = useState(null);
   const [selected, setSelected] = useState(false);
   const [selection, setSelection] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function LanguageBox(locale, fr_flag, en_flag) {
     const flag = locale === "en" ? en_flag : fr_flag;
@@ -304,6 +302,7 @@ export default function SelectPage({ id, hostname, locale, oob }) {
 
   const handleLoc = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const data = {
         cp: cp.current.value,
@@ -330,15 +329,18 @@ export default function SelectPage({ id, hostname, locale, oob }) {
         zipJSON.filter(({ zip }) => zip === cp.current.value)[0].lng,
       ]);
       setSelected(true);
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       return toast.error(t("scan:select:errLoc"));
     }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     if (selection == "") {
+      setLoading(false);
       return toast.error(t("scan:select:noSelect"));
     } else {
       try {
@@ -360,9 +362,11 @@ export default function SelectPage({ id, hostname, locale, oob }) {
           toast.success(t("scan:select:success"));
           router.push(`${hostname}/${locale}/dashboard`);
         } else {
+          setLoading(false);
           toast.error(t("scan:select:err"));
         }
       } catch (err) {
+        setLoading(false);
         return toast.error(t("scan:select:err"));
       }
     }
@@ -392,7 +396,10 @@ export default function SelectPage({ id, hostname, locale, oob }) {
               ref={cp}
               required
             />
-            <button className="max-w-xl ml-2 py-2 px-4 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg">
+            <button
+              disabled={loading}
+              className="max-w-xl ml-2 py-2 px-4 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg"
+            >
               <LocationMarkerIcon className="w-6 h-6 text-white" />
             </button>
           </form>
@@ -418,6 +425,7 @@ export default function SelectPage({ id, hostname, locale, oob }) {
               <button
                 className="max-w-xl py-4 mt-8 px-4 font-bold text-md border-2 border-secondary rounded-lg"
                 onClick={handleRegister}
+                disabled={loading}
               >
                 {t("scan:select:saveBtn")}
               </button>

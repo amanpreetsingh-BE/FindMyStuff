@@ -224,6 +224,7 @@ export default function Home({ locale, productsJSON, hostname, isConnected }) {
           hostname={hostname}
           motion={motion}
           toast={toast}
+          useState={useState}
           t={t}
           Image={Image}
           productsJSON={productsJSON}

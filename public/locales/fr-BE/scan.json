@@ -50,7 +50,8 @@
   },
   "successQRregister": "Enregistrement réussi !",
   "failureQRregister": "Echec lors de l'enregistrement, veuillez contacter le support",
-  "noJetons": "Si vous êtes le propriétaire de ce QR code, merci de bien vouloir recharger votre jeton afin qu'on puisse le remettre dans le point relais de votre choix.",
+  "noJetons": "Si vous êtes le propriétaire de ce QR code, merci de bien vouloir vous connectez pour recharger votre jeton afin qu'on puisse le remettre dans le point relais de votre choix.",
+  "goHome": "Se connecter",
   "chooseRelais": "Si vous êtes le propriétaire de ce QR code, merci de bien vouloir finir l'enregistrement en choisissant le point relais sur le dashboard.",
   "select": {
     "heading": "Point relais",

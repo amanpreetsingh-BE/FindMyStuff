@@ -196,7 +196,7 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
           </div>
 
           <div
-            className={`flex items-center justify-center h-full w-1/2 max-w-xs`}
+            className={`flex items-center justify-center h-full w-1/2 max-w-xs `}
           >
             <motion.div
               animate={inView ? "visible" : "hidden"}
@@ -205,11 +205,9 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
               ref={ref}
             >
               <div
-                className={`relative ${
-                  showStep[1]
-                    ? "w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-96 lg:h-96"
-                    : "w-40 h-40 sm:w-48 sm:h-48 md:w-60 md:h-60 lg:w-80 lg:h-80"
-                }  `}
+                className={
+                  "relative w-40 h-40 sm:w-48 sm:h-48 md:w-60 md:h-60 lg:w-80 lg:h-80"
+                }
               >
                 <Image
                   src={illustration}

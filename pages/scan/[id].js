@@ -24,8 +24,6 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  sendEmailVerification,
-  sendPasswordResetEmail,
 } from "firebase/auth";
 import { writeBatch, doc, getDoc, Timestamp } from "firebase/firestore";
 
@@ -59,37 +57,36 @@ export async function getServerSideProps({ params, locale }) {
   let oob = null;
   try {
     const docSnapshot = await app.firestore().collection("QR").doc(id).get();
-    // fetch non sensitive data on this QR
     if (docSnapshot.exists) {
+      // valid QR ; FETCH data
+      console.log("VALID QR");
       activate = docSnapshot.data().activate;
       relais = docSnapshot.data().relais;
       jetons = docSnapshot.data().jetons;
       timestamp = docSnapshot.data().timestamp;
       oob = activate ? null : md5(`${id}${process.env.SS_API_KEY}`);
-      /* Notify the user of scan found if activated */
-      if (activate) {
-        const docNotifRef = await app
-          .firestore()
-          .collection("notifications")
-          .doc(id)
-          .get();
+      // Notify the user of scan found if activated and loaded
+      if (activate && jetons >= 1) {
+        console.log("ACTIVATED QR");
+        const notifRef = app.firestore().collection("notifications").doc(id);
+        const docNotifRef = await notifRef.get();
         if (docNotifRef.exists) {
           var s = docNotifRef.data().scan;
           s.push({ timestamp: admin.firestore.Timestamp.now().seconds });
           notifRef.update({
             scan: s,
           });
+          console.log("add notif");
         } else {
           var s = [];
-          s.push({
-            timestamp: admin.firestore.Timestamp.now().seconds,
-          });
+          s.push({ timestamp: admin.firestore.Timestamp.now().seconds });
           app.firestore().collection("notifications").doc(id).set({
             id: id,
             scan: s,
             delivery: [],
             needToGenerate: false,
           });
+          console.log("add first notif");
         }
       }
 
@@ -107,6 +104,7 @@ export async function getServerSideProps({ params, locale }) {
         },
       };
     } else {
+      console.log("NOT VALID QR");
       return {
         notFound: true, // not a valid QR
       };
@@ -135,6 +133,8 @@ export default function ScanPage({
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
   /* Import images */
+  const jetonsLogo = require("@images/scan/jeton.svg");
+  const uncomplete = require("@images/scan/uncomplete2.svg");
   const icon = require("@images/icons/icon_white.svg");
   const en_flag = require("@images/icons/gb.svg");
   const fr_flag = require("@images/icons/fr.svg");
@@ -148,8 +148,7 @@ export default function ScanPage({
   const router = useRouter();
 
   /* handle form values through ref */
-  const [formLoading, setFormLoading] =
-    useState(false); /* is the form processing ? */
+  const [formLoading, setFormLoading] = useState(false);
   const [isPwdVisible, setIsPwdVisible] = useState(false);
   const formFirstname = useRef();
   const formLastname = useRef();
@@ -454,9 +453,9 @@ export default function ScanPage({
     try {
       const data = {
         cp: cp.current.value,
-        authorization: process.env.NEXT_PUBLIC_API_KEY,
+        oob: oob,
       };
-      const response = await fetch(`${hostname}/api/qr/findPointByCP/`, {
+      const response = await fetch(`${hostname}/api/qr/findPointByCP`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -509,7 +508,7 @@ export default function ScanPage({
           <ul className="absolute hidden text-gray-700 pt-1 group-hover:block">
             <li className="">
               <a
-                href={`/en/scan/${id}`}
+                href={`${hostname}/en/scan/${id}`}
                 className="rounded-t cursor-pointer bg-transparent hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
               >
                 <Image
@@ -524,7 +523,7 @@ export default function ScanPage({
             </li>
             <li className="">
               <a
-                href={`/fr/scan/${id}`}
+                href={`${hostname}/fr/scan/${id}`}
                 className="bg-transparent cursor-pointer hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
               >
                 <Image
@@ -542,21 +541,30 @@ export default function ScanPage({
       </nav>
     );
   }
-
+  /* NEED TO RECHARGE */
   if (jetons < 1) {
     return (
       <main className="w-full flex flex-col justify-center items-center text-white bg-primary h-screen">
         <div className="absolute top-16 right-4">
           {LanguageBox(id, locale, fr_flag, en_flag)}
         </div>
+
         <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
-          <div className="text-secondary font-bold mx-8 py-12 px-8 text-lg max-w-sm text-center rounded-lg">
+          <Image src={jetonsLogo} width={200} height={200} />
+          <div className="text-white font-bold mx-8 py-8 px-8 text-lg max-w-sm text-center rounded-lg">
             {t("scan:noJetons")}
           </div>
+          <button
+            onClick={() => router.push(`${hostname}/${locale}/sign`)}
+            className="w-60 py-4 flex justify-center items-center font-bold text-white border-2 border-secondary rounded-lg"
+          >
+            {t("scan:goHome")}
+          </button>
         </div>
       </main>
     );
-  } else if (activate && jetons >= 1) {
+  } else if (activate && jetons >= 1 && relais) {
+    // FOUND
     return (
       <main className="w-full flex flex-col justify-center items-center text-white bg-primary min-h-screen">
         <div className="absolute top-16 right-4">
@@ -773,10 +781,18 @@ export default function ScanPage({
         <div className="absolute top-16 right-4">
           {LanguageBox(id, locale, fr_flag, en_flag)}
         </div>
-        <div className="flex items-center justify-center flex-col">
-          <div className="border-secondary border-2 mx-8 py-12 px-8 text-lg max-w-sm text-center rounded-lg">
+
+        <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
+          <Image src={uncomplete} width={200} height={200} />
+          <div className="text-white font-bold mx-8 py-8 px-8 text-lg max-w-sm text-center rounded-lg">
             {t("scan:chooseRelais")}
           </div>
+          <button
+            onClick={() => router.push(`${hostname}/${locale}/sign`)}
+            className="w-60 py-4 flex justify-center items-center font-bold text-white border-2 border-secondary rounded-lg"
+          >
+            {t("scan:goHome")}
+          </button>
         </div>
       </main>
     );

@@ -51,7 +51,8 @@
   },
   "successQRregister": "Successful registration !",
   "failureQRregister": "Failure while registration, please contact support",
-  "noJetons": "If you are the owner of this QR, please recharge your QR via the dashboard.",
+  "noJetons": "If you are the owner of this QR, please sign in to recharge your QR via the dashboard.",
+  "goHome": "Sign in",
   "chooseRelais": "If you are the owner of this QR, please finish the registration and choose the pickup parcelshop via the dashboard.",
   "select": {
     "heading": "Pickup parcelshop",

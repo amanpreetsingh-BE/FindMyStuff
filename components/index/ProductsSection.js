@@ -5,10 +5,20 @@ import { CheckCircleIcon, TruckIcon } from "@heroicons/react/solid";
 import axios from "axios";
 import getStripe from "@lib/stripe";
 
-function ProductsSection({ motion, toast, Image, t, productsJSON, locale }) {
+function ProductsSection({
+  motion,
+  useState,
+  toast,
+  Image,
+  t,
+  productsJSON,
+  locale,
+}) {
+  const [loading, setLoading] = useState(false);
   /* Handle products */
   const redirectToCheckout = async (e, cat, product) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const {
         data: { id },
@@ -23,6 +33,7 @@ function ProductsSection({ motion, toast, Image, t, productsJSON, locale }) {
       await stripe.redirectToCheckout({ sessionId: id });
     } catch (err) {
       toast.error(t("home:stripe:error"));
+      setLoading(false);
     }
   };
 
@@ -77,7 +88,7 @@ function ProductsSection({ motion, toast, Image, t, productsJSON, locale }) {
               <div className="pt-2 w-full flex flex-col justify-center items-center">
                 <button
                   onClick={(e) => redirectToCheckout(e, "Keychain", keychain)}
-                  disabled={keychain.quantity > 0 ? false : true}
+                  disabled={keychain.quantity > 0 && !loading ? false : true}
                   className="bg-secondary cursor-pointer hover:bg-secondaryHover text-white font-bold rounded-lg px-12 py-4"
                 >
                   {t("home:prod:configurator:checkout")}
@@ -128,7 +139,7 @@ function ProductsSection({ motion, toast, Image, t, productsJSON, locale }) {
                 />
                 <button
                   onClick={(e) => redirectToCheckout(e, "Sticker", product)}
-                  disabled={color.quantity > 0 ? false : true}
+                  disabled={color.quantity > 0 && !loading ? false : true}
                   className="bg-secondary text-sm mt-4 hover:bg-secondaryHover text-white font-bold rounded-lg px-8 py-4"
                 >
                   {t("home:prod:configurator:checkout")}
@@ -167,7 +178,7 @@ function ProductsSection({ motion, toast, Image, t, productsJSON, locale }) {
               />
               <button
                 onClick={(e) => redirectToCheckout(e, "Sticker", product)}
-                disabled={product.data.quantity > 0 ? false : true}
+                disabled={product.data.quantity > 0 && !loading ? false : true}
                 className="bg-secondary text-sm mt-4 hover:bg-secondaryHover text-white font-bold rounded-lg px-8 py-4"
               >
                 {t("home:prod:configurator:checkout")}
