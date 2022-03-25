@@ -131,7 +131,6 @@ export default function ScanPage({
   const { t } = useTranslation();
 
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
   /* Import images */
   const jetonsLogo = require("@images/scan/jeton.svg");
   const uncomplete = require("@images/scan/uncomplete2.svg");
@@ -190,7 +189,7 @@ export default function ScanPage({
     };
 
     try {
-      const response = await fetch(`${hostname}/api/qr/activate/`, {
+      const response = await fetch(`/api/qr/activate`, {
         method: "POST",
         headers: {
           Accept: "application/json",
