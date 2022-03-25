@@ -190,7 +190,7 @@ export default function ScanPage({
     };
 
     try {
-      const response = await fetch(`${hostname}/api/qr/activate`, {
+      const response = await fetch(`${hostname}/api/qr/activate/`, {
         method: "POST",
         headers: {
           Accept: "application/json",
