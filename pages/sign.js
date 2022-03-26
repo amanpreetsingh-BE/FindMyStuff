@@ -239,11 +239,12 @@ export default function Sign({ locale, hostname }) {
         }),
       });
       const responseJSON = await response.json();
-      if (!responseJSON.success) {
-        throw new Error(t("scan:forgot:emailSendInvalid"));
-      } else {
+      if (responseJSON.received) {
         setShowModal(false);
         return toast.success(t("scan:forgot:emailSendSuccess"));
+        throw new Error(t("scan:forgot:emailSendInvalid"));
+      } else {
+        throw new Error(t("scan:forgot:emailSendInvalid"));
       }
     } catch (error) {
       setShowModal(false);
