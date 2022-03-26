@@ -13,6 +13,7 @@ export default async function handler(req, res) {
     const cat = req.body.cat;
     const color = req.body.color;
     const qrID = req.body.qrID;
+    const imgURL = req.body.imgURL;
     const isReload =
       model == "reload" &&
       cat == "reload" &&
@@ -64,6 +65,7 @@ export default async function handler(req, res) {
             cat: cat,
             model: model,
             color: color,
+            imgURL: imgURL,
           },
         });
       }

@@ -152,6 +152,7 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
         total_details: session.total_details,
         allow_promotion_codes: session.allow_promotion_codes,
         promotion_code: global_COUPON,
+        imgURL: `${session.metadata.imgURL}`,
       });
   }
 };

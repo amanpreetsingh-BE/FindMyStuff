@@ -17,7 +17,7 @@ import zipJSON from "@root/public/misc/zipcode-belgium.json";
 import { LocationMarkerIcon } from "@heroicons/react/outline";
 
 /* Firebase components imports */
-import { auth, firestore } from "@lib/firebase";
+import { auth } from "@lib/firebase";
 import {
   GoogleAuthProvider,
   FacebookAuthProvider,
@@ -25,7 +25,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { writeBatch, doc, getDoc, Timestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
 /* Custom components imports */
 import Modal from "@components/misc/Modal";
@@ -202,8 +202,8 @@ export default function ScanPage({
         return toast.success(t("scan:successQRregister"));
       }
     } catch (err) {
-      return toast.error(err.message);
-      //return toast.error(t("scan:failureQRregister"));
+      //return toast.error(err.message);
+      return toast.error(t("scan:failureQRregister"));
     }
   };
 
@@ -221,30 +221,30 @@ export default function ScanPage({
       ) {
         // number and special characters test
         setFormLoading(false);
-        return toast.error(t("sign:errorName:specialC"));
+        return toast.error(t("scan:errorName:specialC"));
       } else if (
         formFirstname.current.value.length > 26 ||
         formLastname.current.value.length > 26
       ) {
         setFormLoading(false);
-        return toast.error(t("sign:errorName:tooMuchC"));
+        return toast.error(t("scan:errorName:tooMuchC"));
       } else if (
         formFirstname.current.value.length < 3 ||
         formLastname.current.value.length < 3
       ) {
         setFormLoading(false);
-        return toast.error(t("sign:errorName:tooLowC"));
+        return toast.error(t("scan:errorName:tooLowC"));
       } else if (
         formPassword.current.value !== formRepeatPassword.current.value
       ) {
         setFormLoading(false);
-        return toast.error(t("sign:errorPwd:notsame"));
+        return toast.error(t("scan:errorPwd:notsame"));
       } else if (
         formPassword.current.value.length < 6 ||
         formRepeatPassword.current.value.length < 6
       ) {
         setFormLoading(false);
-        return toast.error(t("sign:errorPwd:atleast6"));
+        return toast.error(t("scan:errorPwd:atleast6"));
       } else {
         try {
           const userCredential = await createUserWithEmailAndPassword(
@@ -252,34 +252,43 @@ export default function ScanPage({
             formEmail.current.value,
             formPassword.current.value
           );
-
-          const userDoc = doc(firestore, "users", `${userCredential.user.uid}`);
-          const batch = writeBatch(firestore);
-          batch.set(userDoc, {
+          const userData = {
+            uid: userCredential.user.uid,
             email: formEmail.current.value,
             firstName: formFirstname.current.value,
             lastName: formLastname.current.value,
             signMethod: "email",
-            admin: false,
-            verifySent: false,
+          };
+          const response = await fetch(`/api/user/settings/addInfo`, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
           });
+          const responseJSON = await response.json();
+          if (responseJSON.error) {
+            // error while adding info on user ...
+            console.log(responseJSON.error.message);
+            throw new Error(t("sign:errorMakingAccount"));
+          }
 
-          await batch.commit();
           await handleRegister(id, formEmail.current.value);
           router.push(`${hostname}/scan/select/${id}`);
         } catch (err) {
           if (err.code === "auth/invalid-email") {
             setFormLoading(false);
-            return toast.error(t("sign:emailBadlyFormatted"));
+            return toast.error(t("scan:emailBadlyFormatted"));
           } else if (err.code === "auth/email-already-in-use") {
             setFormLoading(false);
-            return toast.error(t("sign:accountAlreadyExist"));
+            return toast.error(t("scan:accountAlreadyExist"));
           } else if (err.code === "auth/weak-password") {
             setFormLoading(false);
-            return toast.error(t("sign:errorPwd:atleast6"));
+            return toast.error(t("scan:errorPwd:atleast6"));
           } else {
             setFormLoading(false);
-            return toast.error(t("sign:errorLogin"));
+            return toast.error(t("scan:errorLogin"));
           }
         }
       }
@@ -297,10 +306,10 @@ export default function ScanPage({
       } catch (err) {
         if (err.code === "auth/user-not-found") {
           setFormLoading(false);
-          return toast.error(t("sign:userNotFound"));
+          return toast.error(t("scan:userNotFound"));
         } else {
           setFormLoading(false);
-          return toast.error(t("sign:errorLogin"));
+          return toast.error(t("scan:errorLogin"));
         }
       }
 
@@ -311,7 +320,7 @@ export default function ScanPage({
   const resetPassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${hostname}/api/mailer/send-reset`, {
+      const response = await fetch(`/api/mailer/send-reset`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -325,15 +334,14 @@ export default function ScanPage({
       });
       const responseJSON = await response.json();
       if (responseJSON.error) {
-        throw new Error(t("sign:forgot:emailSendInvalid"));
+        throw new Error(t("scan:forgot:emailSendInvalid"));
       } else {
         setShowModal(false);
-        return toast.success(t("sign:forgot:emailSendSuccess"));
+        return toast.success(t("scan:forgot:emailSendSuccess"));
       }
     } catch (error) {
       setShowModal(false);
-      return toast.error(error.message);
-      //return toast.error(t("sign:forgot:errorEmailSend"));
+      return toast.error(t("scan:forgot:errorEmailSend"));
     }
   };
 
@@ -479,10 +487,17 @@ export default function ScanPage({
     }
   };
 
-  function LanguageBox(id, locale, fr_flag, en_flag) {
+  function LanguageBox(id, locale, fr_flag, en_flag, select) {
     const flag = locale === "en" ? en_flag : fr_flag;
+    const pathEN = select
+      ? `${hostname}/en/scan/select/${id}`
+      : `${hostname}/en/scan/${id}`;
+    const pathFR = select
+      ? `${hostname}/fr/scan/select/${id}`
+      : `${hostname}/fr/scan/${id}`;
+
     return (
-      <nav className="flex -mt-12 justify-end items-center top-0 w-full h-20">
+      <nav className="flex absolute right-0 justify-end items-center top-0 w-full h-20">
         <div className="group inline-block relative">
           <button className="bg-transparent text-gray-700 font-semibold py-3 px-4 rounded inline-flex items-center">
             <span className="mr-2 pt-1">
@@ -507,7 +522,7 @@ export default function ScanPage({
           <ul className="absolute hidden text-gray-700 pt-1 group-hover:block">
             <li className="">
               <a
-                href={`${hostname}/en/scan/${id}`}
+                href={pathEN}
                 className="rounded-t cursor-pointer bg-transparent hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
               >
                 <Image
@@ -522,7 +537,7 @@ export default function ScanPage({
             </li>
             <li className="">
               <a
-                href={`${hostname}/fr/scan/${id}`}
+                href={pathFR}
                 className="bg-transparent cursor-pointer hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
               >
                 <Image
@@ -540,12 +555,13 @@ export default function ScanPage({
       </nav>
     );
   }
-  /* NEED TO RECHARGE */
+
   if (jetons < 1) {
+    // RECHARGE
     return (
       <main className="w-full flex flex-col justify-center items-center text-white bg-primary h-screen">
         <div className="absolute top-16 right-4">
-          {LanguageBox(id, locale, fr_flag, en_flag)}
+          {LanguageBox(id, locale, fr_flag, en_flag, false)}
         </div>
 
         <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
@@ -567,7 +583,7 @@ export default function ScanPage({
     return (
       <main className="w-full flex flex-col justify-center items-center text-white bg-primary min-h-screen">
         <div className="absolute top-16 right-4">
-          {LanguageBox(id, locale, fr_flag, en_flag)}
+          {LanguageBox(id, locale, fr_flag, en_flag, false)}
         </div>
         {step == 0 ? (
           <div className="flex items-center justify-center flex-col">
@@ -775,10 +791,11 @@ export default function ScanPage({
       </main>
     );
   } else if (activate && !relais) {
+    // SELECT RELAIS
     return (
       <main className="w-full flex flex-col justify-center items-center text-white bg-primary h-screen">
         <div className="absolute top-16 right-4">
-          {LanguageBox(id, locale, fr_flag, en_flag)}
+          {LanguageBox(id, locale, fr_flag, en_flag, true)}
         </div>
 
         <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
@@ -796,21 +813,24 @@ export default function ScanPage({
       </main>
     );
   } else {
+    // REGISTER
     return (
       <>
-        <main className="w-full pt-12 flex flex-col justify-center items-center bg-primary min-h-screen">
-          {LanguageBox(id, locale, fr_flag, en_flag)}
-          <div className="space-y-8 pb-8">
+        <main
+          className={`w-full pt-16 pb-4 flex flex-col justify-center items-center bg-primary min-h-screen`}
+        >
+          {LanguageBox(id, locale, fr_flag, en_flag, false)}
+          <div className="space-y-4 pb-4">
             <Link passHref href="/">
               <div className="flex justify-center">
-                <div className="cursor-pointer relative w-[58px] h-[58px] sm:w-[80px] sm:h-[80px]">
+                <div className="cursor-pointer relative w-[58px] h-[58px] sm:w-[64px] sm:h-[64px]">
                   <Image src={icon} priority layout="fill" alt="logoReduceds" />
                 </div>
               </div>
             </Link>
 
             <div className="">
-              <div className="text-gray-300 text-center font-extrabold text-xl sm:text-2xl max-w-xs">
+              <div className="text-gray-300 text-center font-extrabold text-lg sm:text-xl max-w-sm">
                 {t("scan:welcome")}
               </div>
               <div className="text-gray-200 text-center text-xs sm:text-base flex justify-center items-center w-full mt-1">
@@ -826,8 +846,8 @@ export default function ScanPage({
           </div>
 
           <div className="mx-auto w-full max-w-xs sm:max-w-lg">
-            <div className="bg-white py-8 px-8 mb-8 shadow rounded-xl sm:px-10 text-gray-800">
-              <form className="mb-0 space-y-4" onSubmit={onSubmit}>
+            <div className="bg-white py-6 px-8 mb-8 shadow rounded-xl sm:px-10 text-gray-800">
+              <form className="mb-0 space-y-3" onSubmit={onSubmit}>
                 {signupState ? (
                   <>
                     <div>
@@ -950,7 +970,7 @@ export default function ScanPage({
                       >
                         <span> {t("scan:agree")} </span>
                         <a
-                          href={`${hostname}/terms`}
+                          href={`${hostname}/${locale}/terms`}
                           target="_blank"
                           rel="noreferrer"
                           className="text-indigo-600 hover:text-indigo-500"
@@ -959,7 +979,7 @@ export default function ScanPage({
                         </a>
                         <span> {t("scan:and")} </span>
                         <a
-                          href={`${hostname}/privacy`}
+                          href={`${hostname}/${locale}/privacy`}
                           target="_blank"
                           rel="noreferrer"
                           className="text-indigo-600 hover:text-indigo-500"
@@ -1023,13 +1043,21 @@ export default function ScanPage({
                     </div>
 
                     <div className="w-full text-center border-b-[1px] border-gray-400 leading-[5px]">
-                      <span className="bg-white py-2 px-2">{t("scan:or")}</span>
+                      <span className="bg-white py-1 px-1">{t("scan:or")}</span>
                     </div>
 
                     <div className="flex flex-col">
-                      <SignInGoogleButton id={id} />
+                      <SignInGoogleButton
+                        id={id}
+                        hostname={hostname}
+                        locale={locale}
+                      />
 
-                      <SignInFacebookButton id={id} />
+                      <SignInFacebookButton
+                        id={id}
+                        hostname={hostname}
+                        locale={locale}
+                      />
                     </div>
                   </>
                 )}
@@ -1043,38 +1071,34 @@ export default function ScanPage({
 }
 
 // Sign in with Google button
-function SignInGoogleButton(id) {
+function SignInGoogleButton() {
   const { t } = useTranslation();
   const router = useRouter();
-  async function manageGoogleUserData(userDoc, userCredential) {
-    const batch = writeBatch(firestore);
-    const last =
+
+  async function manageGoogleUserData(userCredential) {
+    let lastName =
       userCredential.user.displayName.split(" ").length == 1
         ? ""
         : userCredential.user.displayName.split(" ")[1];
-    const docSnap = await getDoc(userDoc);
-    if (docSnap.exists()) {
-      batch.update(userDoc, {
-        email: userCredential.user.email,
-        firstName: userCredential.user.displayName.split(" ")[0],
-        lastName: last,
-      });
-    } else {
-      batch.set(userDoc, {
-        email: userCredential.user.email,
-        firstName: userCredential.user.displayName.split(" ")[0],
-        lastName: last,
-        signMethod: "google",
-        admin: false,
-        verifySent: false,
-      });
-    }
-
-    try {
-      await batch.commit();
-      await handleRegister(id.id, userCredential.user.email);
-    } catch (err) {
-      console.error(error);
+    const userData = {
+      uid: userCredential.user.uid,
+      email: userCredential.user.email,
+      firstName: userCredential.user.displayName.split(" ")[0],
+      lastName: lastName,
+      signMethod: "google",
+    };
+    const response = await fetch(`/api/user/settings/addInfo`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+    const responseJSON = await response.json();
+    if (responseJSON.error) {
+      // error while adding info on user ...
+      throw new Error(t("sign:errorSignGoogle"));
     }
   }
 
@@ -1085,16 +1109,18 @@ function SignInGoogleButton(id) {
     });
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
-      const userDoc = doc(firestore, "users", `${userCredential.user.uid}`);
-      await manageGoogleUserData(userDoc, userCredential);
-      router.push(`${hostname}/scan/select/${id}`);
+      await manageGoogleUserData(userCredential);
+      await handleRegister(id, userCredential.user.email);
+      router.push(`${hostname}/${locale}/scan/select/${id}`);
     } catch (err) {
+      console.log(err.message); // debug
       return toast.error(t("sign:errorSignGoogle"));
     }
   };
 
   return (
     <button
+      type="button"
       className="bg-transparent border-2 border-gray-50 shadow-md hover:bg-gray-50 text-gray-700 w-full py-4 flex items-center justify-center no-underline font-md rounded cursor-pointer mx-auto my-2"
       onClick={signInWithGoogle}
     >
@@ -1110,38 +1136,35 @@ function SignInGoogleButton(id) {
 }
 
 // Sign in with Facebook button
-function SignInFacebookButton(id) {
+function SignInFacebookButton() {
   const { t } = useTranslation();
   const router = useRouter();
-  async function manageFacebookUserData(userDoc, userCredential) {
-    const batch = writeBatch(firestore);
-    const last =
+
+  async function manageFacebookUserData(userCredential) {
+    let lastName =
       userCredential.user.displayName.split(" ").length == 1
         ? ""
         : userCredential.user.displayName.split(" ")[1];
-    const docSnap = await getDoc(userDoc);
-    if (docSnap.exists()) {
-      batch.update(userDoc, {
-        email: userCredential.user.email,
-        firstName: userCredential.user.displayName.split(" ")[0],
-        lastName: last,
-      });
-    } else {
-      batch.set(userDoc, {
-        email: userCredential.user.email,
-        firstName: userCredential.user.displayName.split(" ")[0],
-        lastName: last,
-        signMethod: "facebook",
-        admin: false,
-        verifySent: false,
-      });
-    }
 
-    try {
-      await batch.commit();
-      await handleRegister(id.id, userCredential.user.email);
-    } catch (err) {
-      console.error(error);
+    const response = await fetch(`/api/user/settings/addInfo`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        uid: userCredential.user.uid,
+        email: userCredential.user.email,
+        firstName: userCredential.user.displayName.split(" ")[0],
+        lastName: lastName,
+        signMethod: "facebook",
+      }),
+    });
+    const responseJSON = await response.json();
+
+    if (responseJSON.error) {
+      // error while adding info on user ...
+      throw new Error(t("sign:errorSignFb"));
     }
   }
 
@@ -1153,18 +1176,18 @@ function SignInFacebookButton(id) {
 
     try {
       const userCredential = await signInWithPopup(auth, facebookProvider);
-      const userDoc = doc(firestore, "users", `${userCredential.user.uid}`);
-      await manageFacebookUserData(userDoc, userCredential);
-      router.push(`${hostname}/scan/select/${id}`);
+      await manageFacebookUserData(userCredential);
+      await handleRegister(id, userCredential.user.email);
+      router.push(`${hostname}/${locale}/scan/select/${id}`);
     } catch (err) {
-      const errorMessage = error.message;
-      console.log(errorMessage);
+      console.log(err.message); // debug
       return toast.error(t("sign:errorSignFb"));
     }
   };
 
   return (
     <button
+      type="button"
       className="bg-facebook shadow-md hover:bg-facebookHover border-none text-white w-full py-4 flex items-center justify-center no-underline font-md rounded cursor-pointer mx-auto my-2"
       onClick={signInWithFacebook}
     >

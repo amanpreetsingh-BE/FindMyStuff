@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-primary text-[#FAFAFA] overscroll-y-none overscroll-x-none;
+    @apply bg-primary text-[#FAFAFA] overscroll-y-none overscroll-x-none whitespace-pre-line;
   }
 }
 

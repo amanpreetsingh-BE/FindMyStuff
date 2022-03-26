@@ -41,16 +41,18 @@ export async function getServerSideProps({ query, locale }) {
           totalAmount: (orderJSON.amount / 100).toFixed(2),
           htvaAmont: ((orderJSON.amount / 100) * 0.79).toFixed(2),
           tva: ((orderJSON.amount / 100) * 0.21).toFixed(2),
+          prodURL: orderJSON.imgURL,
         };
+        console.log(orderJSON.imgURL);
         const path = require("path");
-        const fs = require("fs");
+        /*const fs = require("fs");
         const invoicePath = path.resolve("templates/invoice.html");
         const invoiceFile = fs.readFileSync(invoicePath, "utf8");
         const hb = require("handlebars");
         const T = hb.compile(invoiceFile);
         const compiledHTML = T(context);
         // self implemented HTML to PDF on AWS lambda with API key
-        const resp = await fetch(
+        /*const resp = await fetch(
           "https://dzzl49198i.execute-api.us-east-1.amazonaws.com/prod/convert",
           {
             method: "POST",
@@ -63,9 +65,9 @@ export async function getServerSideProps({ query, locale }) {
               html: compiledHTML,
             }),
           }
-        );
+        );*/
 
-        const base64PDF = await resp.json();
+        //const base64PDF = await resp.json();
         const template =
           locale === ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
             ? "d-e9d5aad158834b0d86925e9140733ff8"
@@ -86,14 +88,14 @@ export async function getServerSideProps({ query, locale }) {
               dynamic_template_data: context,
             },
           ],
-          attachments: [
+          /*attachments: [
             {
               content: `${base64PDF}`,
               filename: "receipt.pdf",
               type: "application/pdf",
               disposition: "attachment",
             },
-          ],
+          ],*/
         };
         const axios = require("axios");
         axios({
@@ -123,7 +125,7 @@ export async function getServerSideProps({ query, locale }) {
         await docRef.get().then((doc) => {
           docRef.update({
             emailSent: true,
-            receipt: base64PDF,
+            //receipt: base64PDF,
           });
         });
 

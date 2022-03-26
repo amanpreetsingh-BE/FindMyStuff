@@ -47,6 +47,7 @@ export async function getServerSideProps({ res, req, locale }) {
   let userEmail = null;
   let firstName = null;
   let lastName = null;
+  let signMethod = null;
   let isAdmin = false;
   let createdAt = null;
   let lastLoginAt = null;
@@ -73,6 +74,7 @@ export async function getServerSideProps({ res, req, locale }) {
         firstName = data.firstName;
         lastName = data.lastName;
         verifySent = data.verifySent;
+        signMethod = data.signMethod;
         if (doc.data().admin) {
           isAdmin = true;
         } else {
@@ -169,8 +171,8 @@ export async function getServerSideProps({ res, req, locale }) {
   // verify link legit
   const oob = emailVerified ? null : md5(`${uid}${process.env.SS_API_KEY}`);
 
-  // send verification email, if not sent
-  if (!verifySent) {
+  // send verification email (if only email sign method), if not sent
+  if (!verifySent && signMethod === "email") {
     const template =
       locale === ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
         ? "d-0aaff71cc7cb4fd597128d669dfe3fd3"
@@ -259,13 +261,7 @@ export default function Dashboard(props) {
 
   const resendEmailActivation = async (e) => {
     e.preventDefault();
-    /*await sendEmailVerification(props.emailVerified); // firebase vanila
-    try {
-      setDisabledResend(true); // avoid spam
-      return toast.success(t("dashboard:notVerified:successResend"));
-    } catch (error) {
-      return toast.error(t("dashboard:notVerified:errorResend"));
-    }*/
+
     if (props.emailVerified) {
       return toast.error(t("dashboard:notVerified:alreadyActivated"));
     } else {

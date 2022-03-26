@@ -27,6 +27,7 @@ function ProductsSection({
         priceID: cat == "Keychain" ? product.priceID : product.data.priceID, // ambiguous, need to update in V2
         model: cat == "Keychain" ? "Square keychain" : product.id, // to be changed in V2 to selectedModel[0].model
         color: cat == "Keychain" ? product.color : product.data.color, // ambiguous, need to update in V2
+        imgURL: cat == "Keychain" ? product.imageURL : product.data.imageURL, // ambiguous, need to update in V2
         locale: locale,
       });
       const stripe = await getStripe();

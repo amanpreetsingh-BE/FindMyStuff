@@ -1,5 +1,5 @@
 {
-  "welcome": "Welcome to the registration process",
+  "welcome": "Welcome to the registration \n process",
   "hello": "Hello",
   "signin": "Sign in",
   "signup": "Create your account",
@@ -25,19 +25,19 @@
   "signInWithFacebook": "Sign in with Facebook",
   "or": "or",
   "errorName": {
-    "specialC": "Firstname/Lastname must only contain letters without spaces !",
-    "tooMuchC": "Firstname/Lastname can not contain more than 18 characters !",
-    "tooLowC": "Firstname/Lastname must contain at least 3 characters !"
+    "specialC": "Firstname/Lastname must only contain letters without spaces ",
+    "tooMuchC": "Firstname/Lastname can not contain more than 18 characters ",
+    "tooLowC": "Firstname/Lastname must contain at least 3 characters "
   },
   "errorPwd": {
-    "notsame": "Password do not match !",
-    "atleast6": "Password must contain at least 6 characters !"
+    "notsame": "Password do not match ",
+    "atleast6": "Password must contain at least 6 characters "
   },
   "errorSignIn": "Error credential",
   "errorSignFb": "Error while connecting to Facebook",
   "errorSignGoogle": "Error while connecting to Google",
   "errorMakingAccount": "Error making an account, please try again",
-  "accountAlreadyExist": "Account already exists !",
+  "accountAlreadyExist": "Account already exists ",
   "emailBadlyFormatted": "Email is incorrect",
   "forgot": {
     "heading": "Did you forgot your password ?",
@@ -49,7 +49,7 @@
     "errorEmailSend": "Error while resetting password",
     "emailSendInvalid": "Please enter valid email"
   },
-  "successQRregister": "Successful registration !",
+  "successQRregister": "Successful registration ",
   "failureQRregister": "Failure while registration, please contact support",
   "noJetons": "If you are the owner of this QR, please sign in to recharge your QR via the dashboard.",
   "goHome": "Sign in",
@@ -61,16 +61,16 @@
     "popupStreet": "Address : ",
     "popupCode": "ZIP code : ",
     "saveBtn": "Confirm",
-    "success": "The pickup point has been chosen !",
+    "success": "The pickup point has been chosen ",
     "err": "Error",
     "errLoc": "Please enter a valid ZIP code",
-    "noSelect": "Please select a pickup point !"
+    "noSelect": "Please select a pickup point "
   },
   "found": {
-    "H1": "You found a lost item!",
-    "h1": "Help us get it back to its owner and get a reward from us!",
+    "H1": "You found a lost item",
+    "h1": "Help us get it back to its owner and get a reward from us",
     "desc1": "",
-    "btn1": "Let's do it!",
+    "btn1": "Let's do it",
     "li1": "Just deposit the lost item to the nearest pickup parcelshop point.",
     "li2": "By clicking on 'GENERATE', a QR code will be made. This can take up to 15 minutes",
     "li3": "Show the generated QR code to the pickup parcelshop that you will choose in the next page. Don't forget to pack the object. The list of pickup parcelshop around your ZIP code will be shown, you can deposit the item to any of them.",
@@ -80,6 +80,6 @@
     "errorRew": "Please enter your fullname and your IBAN",
     "qrZIP": "ZIP code",
     "qrGeneration": "The QR code will appear in max 15 minutes",
-    "qrGenerated": "Please deposit the packed item with this QR code to the nearest pickup point !"
+    "qrGenerated": "Please deposit the packed item with this QR code to the nearest pickup point "
   }
 }

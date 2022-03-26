@@ -12,8 +12,8 @@
   "privacy": "Privacy Policy",
   "agree": "I agree to the",
   "and": "and",
-  "errorLogin": "Email and/or password incorrect !",
-  "userNotFound": "User not found !",
+  "errorLogin": "Email and/or password incorrect ",
+  "userNotFound": "User not found ",
   "field": {
     "firstname": "Firstname",
     "lastname": "Lastname",
@@ -25,19 +25,19 @@
   "signInWithFacebook": "Sign in with Facebook",
   "or": "or",
   "errorName": {
-    "specialC": "Firstname/Lastname must only contain letters without spaces !",
-    "tooMuchC": "Firstname/Lastname can not contain more than 18 characters !",
-    "tooLowC": "Firstname/Lastname must contain at least 3 characters !"
+    "specialC": "Firstname/Lastname must only contain letters without spaces ",
+    "tooMuchC": "Firstname/Lastname can not contain more than 18 characters ",
+    "tooLowC": "Firstname/Lastname must contain at least 3 characters "
   },
   "errorPwd": {
-    "notsame": "Password do not match !",
-    "atleast6": "Password must contain at least 6 characters !"
+    "notsame": "Password do not match ",
+    "atleast6": "Password must contain at least 6 characters "
   },
   "errorSignIn": "Error credential",
   "errorSignFb": "Error while connecting to Facebook",
   "errorSignGoogle": "Error while connecting to Google",
   "errorMakingAccount": "Error making an account, please try again",
-  "accountAlreadyExist": "Account already exists !",
+  "accountAlreadyExist": "Account already exists ",
   "emailBadlyFormatted": "Email is incorrect",
   "forgot": {
     "heading": "Did you forgot your password ?",

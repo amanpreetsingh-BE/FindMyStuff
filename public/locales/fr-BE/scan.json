@@ -1,5 +1,5 @@
 {
-  "welcome": "Bienvenue au processus d'enregistrement",
+  "welcome": "Bienvenue au processus \n d'enregistrement",
   "signin": "Se connecter",
   "signup": "Création d'un compte",
   "noAccount": "Pas encore de compte ?",
@@ -24,19 +24,19 @@
   "signInWithFacebook": "Se connecter avec Facebook",
   "or": "ou",
   "errorName": {
-    "specialC": "Le nom/prénom ne doivent contenir que des lettres sans espaces !",
+    "specialC": "Le nom/prénom ne doivent contenir que des lettres sans espaces ",
     "tooMuchC": "Le nom/prénom ne peuvent pas contenir plus de 18 caractères",
-    "tooLowC": "Le nom/prénom doivent contenir au moins 3 caractères !"
+    "tooLowC": "Le nom/prénom doivent contenir au moins 3 caractères "
   },
   "errorPwd": {
-    "notsame": "Le mot de passe n'est pas le même !",
-    "atleast6": "Le mot de passe doit contenir au moins 6 caractères !"
+    "notsame": "Le mot de passe n'est pas le même ",
+    "atleast6": "Le mot de passe doit contenir au moins 6 caractères "
   },
   "errorSignIn": "Erreur identifiant",
   "errorSignFb": "Erreur en se connectant à Facebook",
   "errorSignGoogle": "Erreur en se connectant à Google",
   "errorMakingAccount": "Erreur lors de la création du compte, merci de réessayer",
-  "accountAlreadyExist": "Le compte existe déja !",
+  "accountAlreadyExist": "Le compte existe déja ",
   "emailBadlyFormatted": "L'email est incorrect",
   "forgot": {
     "heading": "Mot de passe oublié ?",
@@ -48,7 +48,7 @@
     "errorEmailSend": "Erreur lors de la réinitialisation",
     "emailSendInvalid": "Merci de rentrer une adresse mail valide"
   },
-  "successQRregister": "Enregistrement réussi !",
+  "successQRregister": "Enregistrement réussi ",
   "failureQRregister": "Echec lors de l'enregistrement, veuillez contacter le support",
   "noJetons": "Si vous êtes le propriétaire de ce QR code, merci de bien vouloir vous connectez pour recharger votre jeton afin qu'on puisse le remettre dans le point relais de votre choix.",
   "goHome": "Se connecter",
@@ -60,17 +60,17 @@
     "popupStreet": "Addresse : ",
     "popupCode": "Code postal : ",
     "saveBtn": "Enregistrer",
-    "success": "Le point relais a été choisi !",
+    "success": "Le point relais a été choisi ",
     "err": "Error",
     "errLoc": "Code postal erroné",
-    "noSelect": "Merci de selectionner un point relais !"
+    "noSelect": "Merci de selectionner un point relais "
   },
   "found": {
-    "H1": "Vous avez trouvé un objet perdu !",
+    "H1": "Vous avez trouvé un objet perdu ",
     "h1": "Aidez nous à le remettre à son propriétaire.",
     "desc1": "En plus d'accomplir une bonne action, une récompense vous attend. Souhaitez-vous en apprendre plus ?",
     "btn1": "OUI",
-    "li1": "Votre mission est de déposer l'objet que vous avez trouvé dans un des 1400 points relais ssociés en Belgique, et vous serez rémunéré pour cela !",
+    "li1": "Votre mission est de déposer l'objet que vous avez trouvé dans un des 1400 points relais ssociés en Belgique, et vous serez rémunéré pour cela ",
     "li2": "En cliquant sur le bouton 'GENERER', un code QR sera créé dans un délai de maximum 15 minutes. Raffraîchissez la page après ce délai pour voir s'afficher le code QR.",
     "li3": "Il suffit ensuite de présenter ce code QR au gérant du point relais avec l'objet perdu et celui-ci se charge du reste. Pensez à emballer l'objet perdu. Sur la page suivante, vous trouverez la liste des points relais disponibles dans la commune de votre choix",
     "btn2": "GENERER",
@@ -79,7 +79,7 @@
     "errorRew": "Merci de rentrer votre IBAN et votre nom complet",
     "qrZIP": "Code postal",
     "qrGeneration": "Le code QR apparaîtra au maximum dans 15 minutes",
-    "qrGenerated": "Merci de présenter le paquet au point relais le plus proche avec ce code QR !",
+    "qrGenerated": "Merci de présenter le paquet au point relais le plus proche avec ce code QR ",
     "errorIBAN": "Merci de rentrer un IBAN valide"
   }
 }

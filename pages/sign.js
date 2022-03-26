@@ -1,5 +1,5 @@
 /* React imports */
-import React, { useRef, useState, useContext, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 /* Next imports */
 import Image from "next/image";
@@ -10,17 +10,14 @@ import { useRouter } from "next/router";
 import { EyeOffIcon, EyeIcon } from "@heroicons/react/solid";
 
 /* Firebase components imports */
-import { auth, firestore } from "@lib/firebase";
+import { auth } from "@lib/firebase";
 import {
   GoogleAuthProvider,
   FacebookAuthProvider,
   signInWithPopup,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  sendEmailVerification,
-  sendPasswordResetEmail,
 } from "firebase/auth";
-import { writeBatch, doc, getDoc } from "firebase/firestore";
 
 /* Custom components imports */
 import Modal from "@components/misc/Modal";
@@ -101,7 +98,6 @@ export default function Sign({ locale, hostname }) {
   function openModal() {
     setShowModal((prev) => !prev);
   }
-
   /* handle form values through ref */
   const formFirstname = useRef();
   const formLastname = useRef();
@@ -162,21 +158,27 @@ export default function Sign({ locale, hostname }) {
             formEmail.current.value,
             formPassword.current.value
           );
-
-          const userDoc = doc(firestore, "users", `${userCredential.user.uid}`);
-          const batch = writeBatch(firestore);
-          batch.set(userDoc, {
+          const userData = {
+            uid: userCredential.user.uid,
             email: formEmail.current.value,
             firstName: formFirstname.current.value,
             lastName: formLastname.current.value,
             signMethod: "email",
-            admin: false,
-            verifySent: false,
+          };
+          const response = await fetch(`/api/user/settings/addInfo`, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
           });
-
-          await batch.commit();
-
-          // await sendEmailVerification(auth.currentUser); conventional but not customized ..
+          const responseJSON = await response.json();
+          if (responseJSON.error) {
+            // error while adding info on user ...
+            console.log(responseJSON.error.message);
+            throw new Error(t("sign:errorMakingAccount"));
+          }
 
           router.push(`/dashboard`);
         } catch (err) {
@@ -191,7 +193,7 @@ export default function Sign({ locale, hostname }) {
             return toast.error(t("sign:errorPwd:atleast6"));
           } else {
             setFormLoading(false);
-            return toast.error(t("sign:errorLogin"));
+            return toast.error(t("sign:errorMakingAccount"));
           }
         }
       }
@@ -222,29 +224,9 @@ export default function Sign({ locale, hostname }) {
   /* Reset pwd logic */
   const resetPassword = async (e) => {
     e.preventDefault();
-    /* try { // vanila reset 
-      await sendPasswordResetEmail(auth, formForgot.current.value);
-      setShowModal(false);
-      return toast.success(t("sign:forgot:emailSendSuccess"));
-    } catch (err) {
-      const errorMessage = error.code;
-      if (errorMessage == "auth/user-not-found") {
-        setShowModal(false);
-        return toast.error(t("sign:forgot:emailSendUser"));
-      } else if (errorMessage == "auth/missing-email") {
-        setShowModal(false);
-        return toast.error(t("sign:forgot:emailSendEmpty"));
-      } else if (errorMessage == "auth/invalid-email") {
-        setShowModal(false);
-        return toast.error(t("sign:forgot:emailSendInvalid"));
-      } else {
-        setShowModal(false);
-        return toast.error(t("sign:forgot:errorEmailSend"));
-      }
-    } */
-
+    // vanila reset sendPasswordResetEmail from firebase but no custom possible ..
     try {
-      const response = await fetch(`${hostname}/api/mailer/send-reset`, {
+      const response = await fetch(`/api/mailer/send-reset`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -257,7 +239,7 @@ export default function Sign({ locale, hostname }) {
         }),
       });
       const responseJSON = await response.json();
-      if (responseJSON.error) {
+      if (!responseJSON.success) {
         throw new Error(t("scan:forgot:emailSendInvalid"));
       } else {
         setShowModal(false);
@@ -265,8 +247,8 @@ export default function Sign({ locale, hostname }) {
       }
     } catch (error) {
       setShowModal(false);
-      return toast.error(error.message);
-      //return toast.error(t("sign:forgot:errorEmailSend"));
+      //return toast.error(error.message);
+      return toast.error(t("sign:forgot:errorEmailSend"));
     }
   };
 
@@ -521,34 +503,30 @@ function SignInGoogleButton() {
   const { t } = useTranslation();
   const router = useRouter();
 
-  async function manageGoogleUserData(userDoc, userCredential) {
-    const batch = writeBatch(firestore);
-    const last =
+  async function manageGoogleUserData(userCredential) {
+    let lastName =
       userCredential.user.displayName.split(" ").length == 1
         ? ""
         : userCredential.user.displayName.split(" ")[1];
-    const docSnap = await getDoc(userDoc);
-    if (docSnap.exists()) {
-      batch.update(userDoc, {
-        email: userCredential.user.email,
-        firstName: userCredential.user.displayName.split(" ")[0],
-        lastName: last,
-      });
-    } else {
-      batch.set(userDoc, {
-        email: userCredential.user.email,
-        firstName: userCredential.user.displayName.split(" ")[0],
-        lastName: last,
-        signMethod: "google",
-        admin: false,
-        verifySent: false,
-      });
-    }
-
-    try {
-      await batch.commit();
-    } catch (err) {
-      console.error(error);
+    const userData = {
+      uid: userCredential.user.uid,
+      email: userCredential.user.email,
+      firstName: userCredential.user.displayName.split(" ")[0],
+      lastName: lastName,
+      signMethod: "google",
+    };
+    const response = await fetch(`/api/user/settings/addInfo`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+    const responseJSON = await response.json();
+    if (responseJSON.error) {
+      // error while adding info on user ...
+      throw new Error(t("sign:errorSignGoogle"));
     }
   }
 
@@ -559,16 +537,17 @@ function SignInGoogleButton() {
     });
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
-      const userDoc = doc(firestore, "users", `${userCredential.user.uid}`);
-      await manageGoogleUserData(userDoc, userCredential);
+      await manageGoogleUserData(userCredential);
       router.push("/dashboard");
     } catch (err) {
+      console.log(err.message); // debug
       return toast.error(t("sign:errorSignGoogle"));
     }
   };
 
   return (
     <button
+      type="button"
       className="bg-transparent border-2 border-gray-50 shadow-md hover:bg-gray-50 text-gray-700 w-full py-4 flex items-center justify-center no-underline font-md rounded cursor-pointer mx-auto my-2"
       onClick={signInWithGoogle}
     >
@@ -588,34 +567,30 @@ function SignInFacebookButton() {
   const { t } = useTranslation();
   const router = useRouter();
 
-  async function manageFacebookUserData(userDoc, userCredential) {
-    const batch = writeBatch(firestore);
-    const last =
+  async function manageFacebookUserData(userCredential) {
+    let lastName =
       userCredential.user.displayName.split(" ").length == 1
         ? ""
         : userCredential.user.displayName.split(" ")[1];
-    const docSnap = await getDoc(userDoc);
-    if (docSnap.exists()) {
-      batch.update(userDoc, {
-        email: userCredential.user.email,
-        firstName: userCredential.user.displayName.split(" ")[0],
-        lastName: last,
-      });
-    } else {
-      batch.set(userDoc, {
-        email: userCredential.user.email,
-        firstName: userCredential.user.displayName.split(" ")[0],
-        lastName: last,
-        signMethod: "facebook",
-        admin: false,
-        verifySent: false,
-      });
-    }
 
-    try {
-      await batch.commit();
-    } catch (err) {
-      console.error(error);
+    const response = await fetch(`/api/user/settings/addInfo`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        uid: userCredential.user.uid,
+        email: userCredential.user.email,
+        firstName: userCredential.user.displayName.split(" ")[0],
+        lastName: lastName,
+        signMethod: "facebook",
+      }),
+    });
+    const responseJSON = await response.json();
+    if (responseJSON.error) {
+      // error while adding info on user ...
+      throw new Error(t("sign:errorSignFb"));
     }
   }
 
@@ -627,18 +602,17 @@ function SignInFacebookButton() {
 
     try {
       const userCredential = await signInWithPopup(auth, facebookProvider);
-      const userDoc = doc(firestore, "users", `${userCredential.user.uid}`);
-      await manageFacebookUserData(userDoc, userCredential);
+      await manageFacebookUserData(userCredential);
       router.push("/dashboard");
     } catch (err) {
-      const errorMessage = error.message;
-      console.log(errorMessage);
+      console.log(err.message); // debug
       return toast.error(t("sign:errorSignFb"));
     }
   };
 
   return (
     <button
+      type="button"
       className="bg-facebook shadow-md hover:bg-facebookHover border-none text-white w-full py-4 flex items-center justify-center no-underline font-md rounded cursor-pointer mx-auto my-2"
       onClick={signInWithFacebook}
     >
