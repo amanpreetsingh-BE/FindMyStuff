@@ -1,0 +1,237 @@
+<mjml>
+  <mj-body>
+    <mj-raw>
+      <!-- Your content goes here -->
+    </mj-raw>
+    <mj-section background-color="#20C17F" padding="15px 0px 15px 0px">
+      <mj-column>
+        <mj-table>
+          <tr style="text-align: center">
+            <th style="color: #fafafa; width: 100%">
+              <img
+                style="width: 150px; height: 30px; vertical-align: middle"
+                src="http://cdn.mcauto-images-production.sendgrid.net/3e35095692e6586a/d93880ef-0224-4bb5-84ba-85e79dbf14be/342x62.png"
+                alt="logo"
+              />
+            </th>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#171717" padding-bottom="0px">
+      <mj-column>
+        <mj-text color="#FFF" align="center">
+          <h3>Hello, {{fullname}}</h3>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#171717" padding="0px">
+      <mj-column>
+        <mj-table color="#FAFAFA" font-size="12px">
+          <tr style="text-align: center; padding: 15px 0">
+            <th style="color: #fafafa; font-size: 1.2rem; width: 100%">
+              <img
+                style="
+                  width: 22px;
+                  height: 22px;
+                  vertical-align: middle;
+                  padding-bottom: 1px;
+                "
+                src="http://cdn.mcauto-images-production.sendgrid.net/3e35095692e6586a/6c3c51a4-ebac-4258-a80a-9cb1e41930b8/800x800.png"
+                alt="check"
+              />
+              <span style="">THANK YOU FOR YOUR ORDER</span>
+            </th>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#171717" padding="0px">
+      <mj-column>
+        <mj-text color="#20C17F" align="center">
+          <h3>#{{orderNumber}}</h3>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#232323" padding="15px 0px 0px 0px">
+      <mj-column>
+        <mj-table color="#FFF" font-size="12px">
+          <tr style="text-align: center">
+            <th style="color: #fafafa; font-size: 1.2rem; width: 100%">
+              <img
+                style="
+                  width: 20px;
+                  height: 20px;
+                  vertical-align: middle;
+                  padding-bottom: 3px;
+                "
+                src="http://cdn.mcauto-images-production.sendgrid.net/3e35095692e6586a/daf148a7-f829-4d9c-8ecd-509db21451e1/48x48.png"
+                alt="order"
+              />
+              <span>ORDER</span>
+            </th>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#232323" padding="0px">
+      <mj-column>
+        <mj-table color="#FAFAFA" font-size="11px">
+          <tr
+            style="
+              border-bottom: 1px solid #20c17f;
+              text-align: center;
+              padding: 0px;
+            "
+          >
+            <th style="padding: 0px; width: 50%">Item</th>
+            <th style="padding: 0px; width: 50%">Color</th>
+          </tr>
+          <tr style="text-align: center">
+            <td style="padding: 0px; width: 50%">{{model}}</td>
+            <td style="padding: 0px; width: 50%">{{model_description}}</td>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#232323" padding="15px 0px">
+      <mj-column>
+        <mj-table>
+          <tr style="text-align: center">
+            <th style="color: #fafafa; width: 100%">
+              <img
+                style="width: 150px; height: 150px; vertical-align: middle"
+                src="{{prodURL}}"
+                alt="prod"
+              />
+            </th>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#232323" padding="0px">
+      <mj-column>
+        <mj-table color="#FAFAFA" font-size="11px">
+          <tr
+            style="
+              border-bottom: 1px solid #20c17f;
+              text-align: center;
+              padding: 10px 0;
+            "
+          >
+            <th style="padding: 15px 0px">Payment Method</th>
+            <th style="padding: 15px 0px">Quantity</th>
+            <th style="padding: 15px 0px">Unit Price</th>
+            <th style="padding: 15px 0px">TAX (21%)</th>
+            <th style="padding: 15px 0px">Price TVAC</th>
+          </tr>
+          <tr style="text-align: center">
+            <td style="padding: 15px 0px">{{paymentMethod}}</td>
+            <td style="padding: 15px 25px">1</td>
+            <td style="padding: 15px 0px">€{{htvaAmont}}</td>
+            <td style="padding: 15px 0px">€{{tva}}</td>
+            <td style="padding: 15px 0px">€{{totalAmount}}</td>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#171717" padding="0px">
+      <mj-column>
+        <mj-spacer height="50px"></mj-spacer>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#232323" padding="15px 0px 0px 0px">
+      <mj-column>
+        <mj-table color="#FFF" font-size="12px">
+          <tr style="text-align: center">
+            <th style="color: #fafafa; font-size: 1.2rem; width: 100%">
+              <img
+                style="
+                  width: 20px;
+                  height: 20px;
+                  vertical-align: middle;
+                  padding-bottom: 3px;
+                "
+                src="http://cdn.mcauto-images-production.sendgrid.net/3e35095692e6586a/501965b9-0379-4d95-b4c2-ccfc29a32949/48x48.png"
+                alt="shipping"
+              />
+              <span>SHIPPING</span>
+            </th>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#232323" padding="0px">
+      <mj-column>
+        <mj-text color="#FAFAFA" align="center">{{fullname}}</mj-text>
+        <mj-text color="#FAFAFA" align="center">{{street}} , {{zip}}</mj-text>
+        <mj-text color="#FAFAFA" align="center">{{country}}</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#171717">
+      <mj-column>
+        <mj-text color="#FAFAFA" align="center"
+          >Your FindMyStuff order is confirmed. <br />And we're just as excited
+          as you are.<br />You will be notified by email when it will be shipped
+          (2-3 working days).</mj-text
+        >
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#20C17F" padding-bottom="0px">
+      <mj-column>
+        <mj-text color="#FFF" align="center"
+          >Follow us on social medias</mj-text
+        >
+      </mj-column>
+    </mj-section>
+    <mj-section
+      background-color="#20C17F"
+      padding-bottom="10px"
+      padding-top="0px"
+    >
+      <mj-column>
+        <mj-table>
+          <tr>
+            <th style="width: 100%">
+              <a
+                href="https://www.linkedin.com/findmystuff.be/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  style="width: 32px; height: 32px"
+                  src="http://cdn.mcauto-images-production.sendgrid.net/3e35095692e6586a/f22504c7-55c1-4cb5-b43c-331cd9fb245a/500x500.png"
+                  alt="social1"
+                />
+              </a>
+              <a
+                href="https://www.instagram.com/findmystuff_be/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  style="margin: 0px 12px; width: 32px; height: 32px"
+                  src="http://cdn.mcauto-images-production.sendgrid.net/3e35095692e6586a/dabf0b81-c229-4ae7-929e-d2690b480d35/500x500.png"
+                  alt="social2"
+              /></a>
+              <a
+                href="https://www.facebook.com/findmystuff.be/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  style="width: 32px; height: 32px"
+                  src="http://cdn.mcauto-images-production.sendgrid.net/3e35095692e6586a/7751a7d4-7702-44d8-b3ce-1830be967d91/1076x1076.png"
+                  alt="social3"
+              /></a>
+            </th>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

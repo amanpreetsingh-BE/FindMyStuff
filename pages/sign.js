@@ -247,8 +247,8 @@ export default function Sign({ locale, hostname }) {
       }
     } catch (error) {
       setShowModal(false);
-      //return toast.error(error.message);
-      return toast.error(t("sign:forgot:errorEmailSend"));
+      return toast.error(error.message);
+      //return toast.error(t("sign:forgot:errorEmailSend"));
     }
   };
 

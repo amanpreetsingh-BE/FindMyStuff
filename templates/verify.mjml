@@ -1,0 +1,127 @@
+<mjml>
+  <mj-body>
+    <mj-raw>
+      <!-- Your content goes here -->
+    </mj-raw>
+    <mj-section background-color="#20C17F" padding="15px 0px 15px 0px">
+      <mj-column>
+        <mj-table>
+          <tr style="text-align: center">
+            <th style="color: #fafafa; width: 100%">
+              <img
+                style="width: 150px; height: 30px; vertical-align: middle"
+                src="http://cdn.mcauto-images-production.sendgrid.net/3e35095692e6586a/d93880ef-0224-4bb5-84ba-85e79dbf14be/342x62.png"
+                alt="logo"
+              />
+            </th>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#232323" padding-bottom="0px">
+      <mj-column>
+        <mj-text color="#FFF" align="center">
+          <h3>Hello, {{firstName}} {{lastName}}</h3>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#232323" padding="0px">
+      <mj-column>
+        <mj-table color="#FAFAFA" font-size="12px">
+          <tr style="text-align: center; padding: 15px 0">
+            <th style="color: #fafafa; font-size: 1.2rem; width: 100%">
+              <img
+                style="
+                  width: 22px;
+                  height: 22px;
+                  vertical-align: middle;
+                  padding-bottom: 1px;
+                "
+                src="http://cdn.mcauto-images-production.sendgrid.net/3e35095692e6586a/6c3c51a4-ebac-4258-a80a-9cb1e41930b8/800x800.png"
+                alt="check"
+              />
+              <span style="">ACTIVATION DE VOTRE COMPTE</span>
+            </th>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#232323" padding="0px">
+      <mj-column>
+        <mj-text color="#FFF" align="center">
+          Votre compte FindMyStuff a été crée.<br />
+          Merci de bien vouloir cliquer sur le lien suivant pour confirmer votre
+          compte.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#232323">
+      <mj-column>
+        <mj-button
+          href="{{url}}"
+          target="_blank"
+          font-family="Helvetica"
+          background-color="#20C17F"
+          color="white"
+        >
+          CONFIRMER
+        </mj-button>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#20C17F" padding-bottom="0px">
+      <mj-column>
+        <mj-text color="#FFF" align="center"
+          >Follow us on social medias</mj-text
+        >
+      </mj-column>
+    </mj-section>
+    <mj-section
+      background-color="#20C17F"
+      padding-bottom="10px"
+      padding-top="0px"
+    >
+      <mj-column>
+        <mj-table>
+          <tr>
+            <th style="width: 100%">
+              <a
+                href="https://www.linkedin.com/findmystuff.be/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  style="width: 32px; height: 32px"
+                  src="http://cdn.mcauto-images-production.sendgrid.net/3e35095692e6586a/f22504c7-55c1-4cb5-b43c-331cd9fb245a/500x500.png"
+                  alt="social1"
+                />
+              </a>
+              <a
+                href="https://www.instagram.com/findmystuff_be/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  style="margin: 0px 12px; width: 32px; height: 32px"
+                  src="http://cdn.mcauto-images-production.sendgrid.net/3e35095692e6586a/dabf0b81-c229-4ae7-929e-d2690b480d35/500x500.png"
+                  alt="social2"
+              /></a>
+              <a
+                href="https://www.facebook.com/findmystuff.be/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  style="width: 32px; height: 32px"
+                  src="http://cdn.mcauto-images-production.sendgrid.net/3e35095692e6586a/7751a7d4-7702-44d8-b3ce-1830be967d91/1076x1076.png"
+                  alt="social3"
+              /></a>
+            </th>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

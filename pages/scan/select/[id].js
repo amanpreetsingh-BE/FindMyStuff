@@ -309,7 +309,7 @@ export default function SelectPage({ id, hostname, locale, oob }) {
         id: id,
         oob: oob,
       };
-      const response = await fetch(`${hostname}/api/qr/findPointByCP`, {
+      const response = await fetch(`/api/qr/findPointByCP`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -349,7 +349,7 @@ export default function SelectPage({ id, hostname, locale, oob }) {
           oob: oob,
           selection: selection,
         };
-        const response = await fetch(`${hostname}/api/qr/registerRelais`, {
+        const response = await fetch(`/api/qr/registerRelais`, {
           method: "POST",
           headers: {
             Accept: "application/json",
