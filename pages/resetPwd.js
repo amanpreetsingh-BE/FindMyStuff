@@ -62,7 +62,7 @@ export default function ResetPwdPage({ locale, hostname, oob, uid }) {
       return toast.error(t("resetPwd:atleast6"));
     } else {
       try {
-        await fetch(`${hostname}/api/user/settings/resetPwd`, {
+        await fetch(`/api/user/settings/resetPwd`, {
           method: "POST",
           headers: {
             Accept: "application/json",
