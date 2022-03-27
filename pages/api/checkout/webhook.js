@@ -119,7 +119,7 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
         charge: charge,
         emailSent: false,
         receipt: "",
-        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+        timestamp: admin.firestore.Timestamp.now().seconds,
       });
   } else {
     // Product type of checkout
@@ -147,7 +147,7 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
         charge: charge,
         emailSent: false,
         receipt: "",
-        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+        timestamp: admin.firestore.Timestamp.now().seconds,
         shipped: false,
         total_details: session.total_details,
         allow_promotion_codes: session.allow_promotion_codes,

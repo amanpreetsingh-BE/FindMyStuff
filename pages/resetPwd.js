@@ -62,7 +62,7 @@ export default function ResetPwdPage({ locale, hostname, oob, uid }) {
       return toast.error(t("resetPwd:atleast6"));
     } else {
       try {
-        await fetch(`/api/user/settings/resetPwd`, {
+        await fetch(`/api/user/resetPwd`, {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -87,7 +87,7 @@ export default function ResetPwdPage({ locale, hostname, oob, uid }) {
     <main className="bg-primary min-h-screen">
       <NavReduced darkLogo={false} />
 
-      <div className="flex pb-12 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
+      <div className="flex pb-12 max-w-xl justify-center flex-col items-center mx-8 my-4 sm:my-8 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
         <Image
           src={resetIllustration}
           priority

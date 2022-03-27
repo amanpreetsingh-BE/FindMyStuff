@@ -28,6 +28,7 @@ export default async function handler(req, res) {
       let uid = user.uid;
       let firstName = null;
       let lastName = null;
+      let signMethod = null;
       const oob = md5(`${uid}${process.env.SS_API_KEY}`);
       const query = app
         .firestore()
@@ -39,7 +40,12 @@ export default async function handler(req, res) {
         const data = doc.data();
         firstName = data.firstName;
         lastName = data.lastName;
+        signMethod = data.signMethod;
       });
+
+      if (signMethod != "email") {
+        throw new Error("Signed with facebook or google");
+      }
 
       const context = {
         url: `${req.body.hostname}/${req.body.locale}/resetPwd?oob=${oob}&uid=${uid}`,

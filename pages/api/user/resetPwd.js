@@ -12,7 +12,7 @@ const app = !admin.apps.length
     })
   : admin.app();
 /*
- * Description : Allow to send password change by mail
+ * Description : Allow to change password
  * Level of credential : Public
  * Method : POST
  */

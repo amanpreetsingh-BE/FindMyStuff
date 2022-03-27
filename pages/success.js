@@ -116,7 +116,7 @@ export async function getServerSideProps({ query, locale }) {
           data: msg,
         });
 
-        docRef.update({
+        await docRef.update({
           emailSent: true,
         });
       } catch (err) {
