@@ -8,7 +8,6 @@ import Link from "next/link";
 
 /* Firebase components imports */
 import { auth } from "@lib/firebase";
-import { sendEmailVerification } from "firebase/auth";
 
 /* Custom components imports */
 import NavReduced from "@components/navbar/NavReduced";
@@ -32,7 +31,7 @@ import cookie from "js-cookie";
 export async function getServerSideProps({ res, req, locale }) {
   /* import admin-sdk firebase to check user */
   const admin = require("firebase-admin");
-  const md5 = require("md5"); // used to resend email verification via button
+  const md5 = require("md5");
   const serviceAccount = JSON.parse(
     Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
   );
@@ -99,71 +98,207 @@ export async function getServerSideProps({ res, req, locale }) {
     return { props: {} };
   }
 
-  // Get products (read authorized by everyone)
-  const products = isAdmin
-    ? await fetch(`${process.env.HOSTNAME}/api/products`)
-    : null;
-  const productsJSON = isAdmin ? await products.json() : null;
+  let productsJSON = [];
+  let ordersJSON = [];
+  let messagesJSON = [];
+  let statsJSON = null;
+  let couponsJSON = [];
+  let qrToGenerateJSON = [];
+  let findersJSON = [];
+  let userProductsJSON = [];
+  let userNotificationsJSON = [];
 
-  // Get orders
-  const orders = isAdmin
-    ? await fetch(
-        `${process.env.HOSTNAME}/api/orders?authorization=${process.env.SS_API_KEY}`
-      )
-    : null;
-  const ordersJSON = isAdmin ? await orders.json() : null;
+  if (isAdmin) {
+    // ADMIN
+    /* GET PRODUCTS */
+    try {
+      var keychainRef = app.firestore().collection("products/Keychain/id/");
+      const keychainSnapshot = await keychainRef.get();
+      const keychainsID = [];
+      const keychains = [];
+      keychainSnapshot.forEach((keychainDoc) => {
+        keychainsID.push(keychainDoc.id);
+      });
+      for (let i = 0; i < keychainsID.length; i++) {
+        var colorRef = app
+          .firestore()
+          .collection(`products/Keychain/id/${keychainsID[i]}/colors/`);
+        const colorSnapshot = await colorRef.get();
+        const colors = [];
+        colorSnapshot.forEach((colorDoc) => {
+          colors.push(colorDoc.data());
+        });
+        keychains.push({
+          id: keychainsID[i],
+          colors: colors,
+        });
+      }
 
-  // Get messages
-  const messages = isAdmin
-    ? await fetch(
-        `${process.env.HOSTNAME}/api/messages?authorization=${process.env.SS_API_KEY}`
-      )
-    : null;
-  const messagesJSON = isAdmin ? await messages.json() : null;
+      var StickerRef = app.firestore().collection("products/Sticker/id");
+      const stickerSnapshot = await StickerRef.get();
+      const stickers = [];
+      stickerSnapshot.forEach((stickerDoc) => {
+        stickers.push({
+          id: stickerDoc.id,
+          data: stickerDoc.data(),
+        });
+      });
 
-  // Get stats
-  const stats = isAdmin
-    ? await fetch(
-        `${process.env.HOSTNAME}/api/statistics?authorization=${process.env.SS_API_KEY}`
-      )
-    : null;
-  const statsJSON = isAdmin ? await stats.json() : null;
+      var TrackerRef = app.firestore().collection("products/Tracker/id");
+      const trackerSnapshot = await TrackerRef.get();
+      const trackers = [];
+      trackerSnapshot.forEach((trackerDoc) => {
+        trackers.push({
+          id: trackerDoc.id,
+          data: trackerDoc.data(),
+        });
+      });
 
-  // Get coupons
-  const coupons = isAdmin
-    ? await fetch(
-        `${process.env.HOSTNAME}/api/promo?authorization=${process.env.SS_API_KEY}`
-      )
-    : null;
-  const couponsJSON = isAdmin ? await coupons.json() : null;
+      var OtherRef = app.firestore().collection("products/Other/id");
+      const OtherSnapshot = await OtherRef.get();
+      const others = [];
+      OtherSnapshot.forEach((otherDoc) => {
+        others.push({
+          id: otherDoc.id,
+          data: otherDoc.data(),
+        });
+      });
 
-  // Get QR to generate
-  const qrToGenerate = isAdmin
-    ? await fetch(
-        `${process.env.HOSTNAME}/api/qr/getQrToGenerate?authorization=${process.env.SS_API_KEY}`
-      )
-    : null;
-  const qrToGenerateJSON = isAdmin ? await qrToGenerate.json() : null;
+      keychains.reverse();
+      productsJSON.push(keychains);
+      productsJSON.push(stickers);
+      productsJSON.push(trackers);
+      productsJSON.push(others);
+    } catch (err) {
+      console.log(err.message);
+      productsJSON = null;
+    }
 
-  // Get potential finders to reward
-  const finders = isAdmin
-    ? await fetch(
-        `${process.env.HOSTNAME}/api/qr/getFinders?authorization=${process.env.SS_API_KEY}`
-      )
-    : null;
-  const findersJSON = isAdmin ? await finders.json() : null;
+    /* GET ORDERS */
+    try {
+      const query = app
+        .firestore()
+        .collection("orders")
+        .orderBy("timestamp", "desc");
+      const snapshot = await query.get();
+      snapshot.forEach((doc) => {
+        ordersJSON.push(doc.data());
+      });
+    } catch (err) {
+      console.log(err.message);
+      ordersJSON = null;
+    }
 
-  // Get user products
-  const userProducts = await fetch(
-    `${process.env.HOSTNAME}/api/user/products?user=${userEmail}&authorization=${process.env.SS_API_KEY}`
-  );
-  const userProductsJSON = await userProducts.json();
+    /* GET MESSAGES */
+    try {
+      const query = app
+        .firestore()
+        .collection("messages")
+        .orderBy("timestamp", "desc");
+      const snapshot = await query.get();
+      snapshot.forEach((doc) => {
+        messagesJSON.push(doc.data());
+      });
+    } catch (err) {
+      console.log(err.message);
+      messagesJSON = null;
+    }
 
-  // Get user notifications
-  const userNotifications = await fetch(
-    `${process.env.HOSTNAME}/api/user/notifications?user=${userEmail}&authorization=${process.env.SS_API_KEY}`
-  );
-  const userNotificationsJSON = await userNotifications.json();
+    /* GET STATS */
+    try {
+      var usersRef = app.firestore().collection("users");
+      const users = await usersRef.get();
+      const usersNum = users.size;
+      var ordersRef = app.firestore().collection("orders");
+      const orders = await ordersRef.get();
+      const ordersNum = orders.size;
+      var msgRef = app.firestore().collection("messages");
+      const msg = await msgRef.get();
+      const msgNum = msg.size;
+      statsJSON = {
+        ordersNum: ordersNum,
+        usersNum: usersNum,
+        msgNum: msgNum,
+      };
+    } catch (err) {
+      console.log(err.message);
+      statsJSON = null;
+    }
+
+    /* GET COUPONS */
+    try {
+      var couponsRef = app.firestore().collection("coupons");
+      const couponsSnapshot = await couponsRef.get();
+      couponsSnapshot.forEach((doc) => {
+        couponsJSON.push(doc.data());
+      });
+    } catch (err) {
+      console.log(err.message);
+      couponsJSON = null;
+    }
+
+    /* GET QR TO GENERATE */
+    try {
+      const querySnapshot = await app
+        .firestore()
+        .collection("notifications")
+        .where("needToGenerate", "==", true)
+        .get();
+      querySnapshot.forEach((doc) => {
+        qrToGenerateJSON.push(doc.data());
+      });
+    } catch (err) {
+      console.log(err.message);
+      qrToGenerateJSON = null;
+    }
+
+    /* GET FINDERS TO REWARD */
+    try {
+      var findersRef = app.firestore().collection("finders");
+      const findersSnapshot = await findersRef.get();
+      findersSnapshot.forEach((doc) => {
+        findersJSON.push(doc.data());
+      });
+    } catch (err) {
+      console.log(err.message);
+      findersJSON = null;
+    }
+  } else {
+    // USER
+
+    /* GET USER PRODUCTS */
+    try {
+      const querySnapshot = await app
+        .firestore()
+        .collection("QR")
+        .where("email", "==", userEmail)
+        .get();
+      querySnapshot.forEach((doc) => {
+        userProductsJSON.push({ id: doc.id, data: doc.data() });
+      });
+    } catch (err) {
+      console.log(err.message);
+      userProductsJSON = null;
+    }
+
+    /* GET USER NOTIFICATIONS */
+    try {
+      const querySnapshot = await app
+        .firestore()
+        .collection("notifications")
+        .where("email", "==", userEmail)
+        .get();
+      querySnapshot.forEach((doc) => {
+        var i = doc.id;
+        var s = doc.data().scan ? doc.data().scan : null;
+        var d = doc.data().delivery ? doc.data().delivery : null;
+        userNotificationsJSON.push({ id: i, scan: s, delivery: d });
+      });
+    } catch (err) {
+      console.log(err.message);
+      userNotificationsJSON = null;
+    }
+  }
 
   // hostname (localhost or production)
   const hostname = process.env.HOSTNAME;
@@ -267,7 +402,7 @@ export default function Dashboard(props) {
     } else {
       try {
         setDisabledResend(true); // avoid spam
-        await fetch(`${props.hostname}/api/mailer/resend-verify`, {
+        await fetch(`/api/mailer/resend-verify`, {
           method: "POST",
           headers: {
             Accept: "application/json",

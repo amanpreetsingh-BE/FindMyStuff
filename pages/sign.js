@@ -165,7 +165,7 @@ export default function Sign({ locale, hostname }) {
             lastName: formLastname.current.value,
             signMethod: "email",
           };
-          const response = await fetch(`/api/user/settings/addInfo`, {
+          const response = await fetch(`/api/user/addInfo`, {
             method: "POST",
             headers: {
               Accept: "application/json",
@@ -178,9 +178,9 @@ export default function Sign({ locale, hostname }) {
             // error while adding info on user ...
             console.log(responseJSON.error.message);
             throw new Error(t("sign:errorMakingAccount"));
+          } else {
+            router.push(`/dashboard`);
           }
-
-          router.push(`/dashboard`);
         } catch (err) {
           if (err.code === "auth/invalid-email") {
             setFormLoading(false);
@@ -224,7 +224,6 @@ export default function Sign({ locale, hostname }) {
   /* Reset pwd logic */
   const resetPassword = async (e) => {
     e.preventDefault();
-    // vanila reset sendPasswordResetEmail from firebase but no custom possible ..
     try {
       const response = await fetch(`/api/mailer/send-reset`, {
         method: "POST",
@@ -247,7 +246,6 @@ export default function Sign({ locale, hostname }) {
       }
     } catch (error) {
       setShowModal(false);
-      //return toast.error(error.message);
       return toast.error(t("sign:forgot:errorEmailSend"));
     }
   };
@@ -515,7 +513,7 @@ function SignInGoogleButton() {
       lastName: lastName,
       signMethod: "google",
     };
-    const response = await fetch(`/api/user/settings/addInfo`, {
+    const response = await fetch(`/api/user/addInfo`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -573,7 +571,7 @@ function SignInFacebookButton() {
         ? ""
         : userCredential.user.displayName.split(" ")[1];
 
-    const response = await fetch(`/api/user/settings/addInfo`, {
+    const response = await fetch(`/api/user/addInfo`, {
       method: "POST",
       headers: {
         Accept: "application/json",

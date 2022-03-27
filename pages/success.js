@@ -44,7 +44,7 @@ export async function getServerSideProps({ query, locale }) {
   }
 
   /* If the checkout session is valid and paid, fetch the order */
-  if (checkoutJSON.id && checkoutJSON.payment_status == "paid") {
+  if (checkoutJSON && checkoutJSON.payment_status == "paid") {
     let orderJSON = null;
     const docRef = app
       .firestore()

@@ -22,9 +22,9 @@ export default async function handler(req, res) {
       const lastName = req.body.lastName;
       const signMethod = req.body.signMethod;
       const email = req.body.email;
-      console.log(firstName);
+
       await app.auth().getUser(uid); // check if the user is legit
-      console.log("user legit");
+
       const userDocRef = app.firestore().collection("users").doc(uid);
       const userDoc = await userDocRef.get();
       if (userDoc.exists) {
