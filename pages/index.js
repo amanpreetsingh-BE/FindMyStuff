@@ -23,12 +23,10 @@ import { motion } from "framer-motion";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 
-import { auth } from "@lib/firebase";
-
 export async function getServerSideProps({ req, locale }) {
   /* Get host (local or dev) */
   const hostname = process.env.HOSTNAME;
-  /* import admin-sdk firebase to check user is connected */
+  /* import admin-sdk firebase */
   const admin = require("firebase-admin");
   const serviceAccount = JSON.parse(
     Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
@@ -38,14 +36,12 @@ export async function getServerSideProps({ req, locale }) {
         credential: admin.credential.cert(serviceAccount),
       })
     : admin.app();
-
+  /* check user is connected for navbar login button display */
   const firebaseToken = req.cookies.firebaseToken;
-
-  let decodedToken = null;
   let isConnected = null;
   if (firebaseToken) {
     try {
-      decodedToken = await app.auth().verifyIdToken(firebaseToken, true);
+      await app.auth().verifyIdToken(firebaseToken, true);
       isConnected = true;
     } catch (err) {
       isConnected = false;
@@ -53,10 +49,8 @@ export async function getServerSideProps({ req, locale }) {
   } else {
     isConnected = false;
   }
-
-  /* Fetch products to display for customers */
+  /* Fetch products from DB to display for customers */
   let productsJSON = [];
-
   try {
     /* KEYCHAINS */
     var keychainRef = app.firestore().collection("products/Keychain/id/");
@@ -128,7 +122,7 @@ export async function getServerSideProps({ req, locale }) {
     productsJSON.push(trackers);
     productsJSON.push(others);
   } catch (err) {
-    console.log(err);
+    console.log(err); // debug on server
     productsJSON = null;
   }
 
@@ -144,8 +138,8 @@ export async function getServerSideProps({ req, locale }) {
 }
 
 export default function Home({ locale, productsJSON, hostname, isConnected }) {
+  /* handle translations */
   const { t } = useTranslation();
-  auth.signOut();
   /* navbar */
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => {
@@ -166,37 +160,6 @@ export default function Home({ locale, productsJSON, hostname, isConnected }) {
     };
   }, []);
 
-  /*const tester = async () => {
-    const batch = writeBatch(firestore);
-    const pdoc = doc(
-      firestore,
-      "products",
-      "Keychain",
-      "id",
-      "Square keychain",
-      "colors",
-      "Dark gray"
-    );
-    const docSnap = await getDoc(pdoc);
-    if (docSnap.exists()) {
-      console.log("UPDATE");
-      batch.update(pdoc, {
-        quantity: -1,
-        status: "fekk",
-      });
-    } else {
-      console.log("Error no exist");
-    }
-    batch
-      .commit()
-      .then(() => {
-        console.log("Batch operation successful");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-  tester();*/
   return (
     <div>
       {/* Head SEO */}

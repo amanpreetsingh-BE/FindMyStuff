@@ -10,94 +10,103 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 
 export async function getServerSideProps({ query, locale }) {
+  /* Libs needed for checkout logic */
+  const path = require("path");
+  const axios = require("axios");
+  var hbs = require("nodemailer-express-handlebars");
+  var nodemailer = require("nodemailer");
+  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+  const admin = require("firebase-admin");
+
+  const serviceAccount = JSON.parse(
+    Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
+  );
+  const app = !admin.apps.length
+    ? admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+      })
+    : admin.app();
+  /* Get checkout ID */
+
   const URL_session_id = query.session_id;
 
-  const checkout = await fetch(
-    `${process.env.HOSTNAME}/api/checkout/${URL_session_id}`
-  );
-  const checkoutJSON = await checkout.json();
+  let checkoutJSON = null;
+  try {
+    if (!URL_session_id.startsWith("cs_")) {
+      throw Error("Incorrect CheckoutSession ID.");
+    } else {
+      checkoutJSON = await stripe.checkout.sessions.retrieve(
+        `${URL_session_id}`
+      );
+    }
+  } catch (err) {
+    console.log(err.message);
+  }
 
-  // If the checkout session is valid and paid, fetch the data
+  /* If the checkout session is valid and paid, fetch the order */
   if (checkoutJSON.id && checkoutJSON.payment_status == "paid") {
-    const order = await fetch(
-      `${process.env.HOSTNAME}/api/orders/${URL_session_id}`
-    );
-    const orderJSON = await order.json();
+    let orderJSON = null;
+    const docRef = app
+      .firestore()
+      .collection("orders")
+      .doc(`${URL_session_id}`);
+    const docSnap = await docRef.get();
+    try {
+      if (docSnap.exists) {
+        orderJSON = docSnap.data();
+      } else {
+        throw Error("No order found in DB :(");
+      }
+    } catch (err) {
+      console.log(err.message);
+      return {
+        notFound: true,
+      };
+    }
+
     // If the email confirmation is not sent, do logic else refresh only
     if (!orderJSON.emailSent) {
-      try {
-        /* STEP 1 : Generate PDF base64 and send email to customer  */
-        const context = {
-          fullname: orderJSON.shipping_name,
-          email: orderJSON.customer_email,
-          model: orderJSON.model,
-          model_description: orderJSON.color,
-          paymentMethod: orderJSON.paymentType,
-          street: orderJSON.shipping_address.line1,
-          zip: orderJSON.shipping_address.postal_code,
-          country: orderJSON.shipping_address.country,
-          orderNumber: orderJSON.order_id,
-          date: new Date(orderJSON.timestamp._seconds * 1000).toDateString(),
-          totalAmount: (orderJSON.amount / 100).toFixed(2),
-          htvaAmont: ((orderJSON.amount / 100) * 0.79).toFixed(2),
-          tva: ((orderJSON.amount / 100) * 0.21).toFixed(2),
-          prodURL: orderJSON.imgURL,
-        };
-        console.log(orderJSON.imgURL);
-        const path = require("path");
-        /*const fs = require("fs");
-        const invoicePath = path.resolve("templates/invoice.html");
-        const invoiceFile = fs.readFileSync(invoicePath, "utf8");
-        const hb = require("handlebars");
-        const T = hb.compile(invoiceFile);
-        const compiledHTML = T(context);
-        // self implemented HTML to PDF on AWS lambda with API key
-        /*const resp = await fetch(
-          "https://dzzl49198i.execute-api.us-east-1.amazonaws.com/prod/convert",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              "X-Api-Key": process.env.AWS,
-            },
-            body: JSON.stringify({
-              html: compiledHTML,
-            }),
-          }
-        );*/
+      /* STEP 1 : Send email to customer with context and update email state */
+      const context = {
+        fullname: orderJSON.shipping_name,
+        email: orderJSON.customer_email,
+        model: orderJSON.model,
+        model_description: orderJSON.color,
+        paymentMethod: orderJSON.paymentType,
+        street: orderJSON.shipping_address.line1,
+        zip: orderJSON.shipping_address.postal_code,
+        country: orderJSON.shipping_address.country,
+        orderNumber: orderJSON.order_id,
+        date: new Date(orderJSON.timestamp._seconds * 1000).toDateString(),
+        totalAmount: (orderJSON.amount / 100).toFixed(2),
+        htvaAmont: ((orderJSON.amount / 100) * 0.79).toFixed(2),
+        tva: ((orderJSON.amount / 100) * 0.21).toFixed(2),
+        prodURL: orderJSON.imgURL,
+      };
 
-        //const base64PDF = await resp.json();
-        const template =
-          locale === ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
-            ? "d-e9d5aad158834b0d86925e9140733ff8"
-            : "d-2714a9e6d65d4e79ad2ba5159ba2f0fa";
-        const msg = {
-          from: {
-            email: process.env.MAIL,
-            name: "FindMyStuff",
+      const template =
+        locale === ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
+          ? "d-e9d5aad158834b0d86925e9140733ff8"
+          : "d-2714a9e6d65d4e79ad2ba5159ba2f0fa";
+
+      const msg = {
+        from: {
+          email: process.env.MAIL,
+          name: "FindMyStuff",
+        },
+        template_id: template,
+        personalizations: [
+          {
+            to: [
+              {
+                email: orderJSON.customer_email,
+              },
+            ],
+            dynamic_template_data: context,
           },
-          template_id: template,
-          personalizations: [
-            {
-              to: [
-                {
-                  email: orderJSON.customer_email,
-                },
-              ],
-              dynamic_template_data: context,
-            },
-          ],
-          /*attachments: [
-            {
-              content: `${base64PDF}`,
-              filename: "receipt.pdf",
-              type: "application/pdf",
-              disposition: "attachment",
-            },
-          ],*/
-        };
-        const axios = require("axios");
+        ],
+      };
+      try {
         axios({
           method: "post",
           url: "https://api.sendgrid.com/v3/mail/send",
@@ -107,60 +116,43 @@ export async function getServerSideProps({ query, locale }) {
           data: msg,
         });
 
-        /* STEP 2 : Update email state with firecbase admin sdk */
-        const admin = require("firebase-admin");
-        const serviceAccount = JSON.parse(
-          Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
-        );
-        const app = !admin.apps.length
-          ? admin.initializeApp({
-              credential: admin.credential.cert(serviceAccount),
-            })
-          : admin.app();
-        var docRef = app
-          .firestore()
-          .collection("orders")
-          .doc(`${orderJSON.stripe_checkoutID}`);
-
-        await docRef.get().then((doc) => {
-          docRef.update({
-            emailSent: true,
-            //receipt: base64PDF,
-          });
+        docRef.update({
+          emailSent: true,
         });
+      } catch (err) {
+        console.log(message.err);
+      }
 
-        /* STEP 3 : Notify admin to prepare the order */
-        var hbs = require("nodemailer-express-handlebars");
-        var nodemailer = require("nodemailer");
-        const transporter = nodemailer.createTransport({
-          host: process.env.HOSTMAIL,
-          port: 465,
-          secure: true, // Must be true, false will fail
-          auth: {
-            user: process.env.MAIL,
-            pass: process.env.SECRET_MAIL,
-          },
-        });
+      /* STEP 2 : Notify admin to prepare the order */
+      const transporter = nodemailer.createTransport({
+        host: process.env.HOSTMAIL,
+        port: 465,
+        secure: true, // Must be true, false will fail
+        auth: {
+          user: process.env.MAIL,
+          pass: process.env.SECRET_MAIL,
+        },
+      });
 
-        const options = {
-          viewEngine: {
-            extName: ".html",
-            partialsDir: path.resolve("templates"),
-            defaultLayout: false,
-          },
-          viewPath: path.resolve("templates"),
-          extName: ".handlebars",
-        };
+      const options = {
+        viewEngine: {
+          extName: ".html",
+          partialsDir: path.resolve("templates"),
+          defaultLayout: false,
+        },
+        viewPath: path.resolve("templates"),
+        extName: ".handlebars",
+      };
 
-        transporter.use("compile", hbs(options));
+      transporter.use("compile", hbs(options));
 
-        const mail = {
-          from: process.env.MAIL,
-          to: process.env.MAIL,
-          subject: "Nouvelle commande / New order ! ",
-          template: "notifyOrder",
-        };
-
+      const mail = {
+        from: process.env.MAIL,
+        to: process.env.MAIL,
+        subject: "Nouvelle commande / New order ! ",
+        template: "notifyOrder",
+      };
+      try {
         await transporter.sendMail(mail);
       } catch (err) {
         console.log(err.message);

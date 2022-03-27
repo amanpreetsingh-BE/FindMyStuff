@@ -1,6 +1,4 @@
 /* Animations */
-import { animateScroll as scroll } from "react-scroll";
-import { useViewportScroll, useTransform, useSpring } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
 /* Swiper */
@@ -13,9 +11,6 @@ SwiperCore.use([Pagination]);
 
 function HiwSectionMob({ Image, motion, t }) {
   /* Handle framer animations */
-  const { scrollY } = useViewportScroll();
-  const yRange = useTransform(scrollY, [0, 500], [0, -50]);
-  const dY = useSpring(yRange, { type: "tween" });
   const [ref, inView] = useInView({
     threshold: 0.5,
     triggerOnce: true,
