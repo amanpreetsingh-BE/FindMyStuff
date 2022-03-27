@@ -26,7 +26,7 @@ import { useTranslation } from "next-i18next";
 import { writeBatch, doc, getDoc } from "firebase/firestore";
 import { auth, firestore } from "@lib/firebase";
 
-export async function getServerSideProps({ req, locale }) {
+export async function getStaticProps({ req, locale }) {
   /* Get host (local or dev) */
   const hostname = process.env.HOSTNAME;
   let isConnected = null;

@@ -241,15 +241,14 @@ export default function Sign({ locale, hostname }) {
       const responseJSON = await response.json();
       if (responseJSON.received) {
         setShowModal(false);
-        return toast.success(t("scan:forgot:emailSendSuccess"));
-        throw new Error(t("scan:forgot:emailSendInvalid"));
+        return toast.success(t("sign:forgot:emailSendSuccess"));
       } else {
-        throw new Error(t("scan:forgot:emailSendInvalid"));
+        throw new Error(t("sign:forgot:emailSendInvalid"));
       }
     } catch (error) {
       setShowModal(false);
-      return toast.error(error.message);
-      //return toast.error(t("sign:forgot:errorEmailSend"));
+      //return toast.error(error.message);
+      return toast.error(t("sign:forgot:errorEmailSend"));
     }
   };
 
