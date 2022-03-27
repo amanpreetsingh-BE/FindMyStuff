@@ -23,13 +23,11 @@ import { motion } from "framer-motion";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 
-import { writeBatch, doc, getDoc } from "firebase/firestore";
-import { auth, firestore } from "@lib/firebase";
+import { auth } from "@lib/firebase";
 
-export async function getStaticProps({ req, locale }) {
+export async function getServerSideProps({ req, locale }) {
   /* Get host (local or dev) */
   const hostname = process.env.HOSTNAME;
-  let isConnected = null;
   /* import admin-sdk firebase to check user is connected */
   const admin = require("firebase-admin");
   const serviceAccount = JSON.parse(
@@ -42,7 +40,9 @@ export async function getStaticProps({ req, locale }) {
     : admin.app();
 
   const firebaseToken = req.cookies.firebaseToken;
+
   let decodedToken = null;
+  let isConnected = null;
   if (firebaseToken) {
     try {
       decodedToken = await app.auth().verifyIdToken(firebaseToken, true);
@@ -55,11 +55,80 @@ export async function getStaticProps({ req, locale }) {
   }
 
   /* Fetch products to display for customers */
-  let productsJSON;
+  let productsJSON = [];
+
   try {
-    let products = await fetch(`${process.env.HOSTNAME}/api/products`);
-    productsJSON = await products.json();
+    /* KEYCHAINS */
+    var keychainRef = app.firestore().collection("products/Keychain/id/");
+    const keychainSnapshot = await keychainRef.get();
+
+    const keychainsID = [];
+    const keychains = [];
+
+    keychainSnapshot.forEach((keychainDoc) => {
+      keychainsID.push(keychainDoc.id);
+    });
+    for (let i = 0; i < keychainsID.length; i++) {
+      var colorRef = app
+        .firestore()
+        .collection(`products/Keychain/id/${keychainsID[i]}/colors/`);
+      const colorSnapshot = await colorRef.get();
+      const colors = [];
+      colorSnapshot.forEach((colorDoc) => {
+        colors.push(colorDoc.data());
+      });
+
+      keychains.push({
+        id: keychainsID[i],
+        colors: colors,
+      });
+    }
+    /* STICKERS */
+    var StickerRef = app.firestore().collection("products/Sticker/id");
+    const stickerSnapshot = await StickerRef.get();
+
+    const stickers = [];
+
+    stickerSnapshot.forEach((stickerDoc) => {
+      stickers.push({
+        id: stickerDoc.id,
+        data: stickerDoc.data(),
+      });
+    });
+
+    /* TRACKERS */
+    var TrackerRef = app.firestore().collection("products/Tracker/id");
+    const trackerSnapshot = await TrackerRef.get();
+
+    const trackers = [];
+
+    trackerSnapshot.forEach((trackerDoc) => {
+      trackers.push({
+        id: trackerDoc.id,
+        data: trackerDoc.data(),
+      });
+    });
+
+    /* OTHERS */
+    var OtherRef = app.firestore().collection("products/Other/id");
+    const OtherSnapshot = await OtherRef.get();
+
+    const others = [];
+
+    OtherSnapshot.forEach((otherDoc) => {
+      others.push({
+        id: otherDoc.id,
+        data: otherDoc.data(),
+      });
+    });
+
+    keychains.reverse();
+    productsJSON.push(keychains);
+    productsJSON.push(stickers);
+    productsJSON.push(trackers);
+    productsJSON.push(others);
   } catch (err) {
+    console.log(err);
     productsJSON = null;
   }
 
