@@ -14,6 +14,8 @@ export default async function handler(req, res) {
     const color = req.body.color;
     const qrID = req.body.qrID;
     const imgURL = req.body.imgURL;
+    const locale = req.body.locale;
+
     const isReload =
       model == "reload" &&
       cat == "reload" &&
@@ -41,6 +43,7 @@ export default async function handler(req, res) {
             model: model,
             color: color,
             qrID: qrID,
+            locale: locale,
           },
         });
       } else {
@@ -66,6 +69,7 @@ export default async function handler(req, res) {
             model: model,
             color: color,
             imgURL: imgURL,
+            locale: locale,
           },
         });
       }

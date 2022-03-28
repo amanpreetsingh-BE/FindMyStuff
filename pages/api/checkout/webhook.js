@@ -118,9 +118,8 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
         customer_email: session.customer_details.email,
         charge: charge,
         emailSent: false,
-        receipt: "",
         timestamp: admin.firestore.Timestamp.now().seconds,
-        locale: session.metadata.locale,
+        locale: `${session.metadata.locale}`,
       });
   } else {
     // Product type of checkout
@@ -147,14 +146,13 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
         shipping_address: session.shipping.address,
         charge: charge,
         emailSent: false,
-        receipt: "",
         timestamp: admin.firestore.Timestamp.now().seconds,
         shipped: false,
         total_details: session.total_details,
         allow_promotion_codes: session.allow_promotion_codes,
         promotion_code: global_COUPON,
         imgURL: `${session.metadata.imgURL}`,
-        locale: session.metadata.locale,
+        locale: `${session.metadata.locale}`,
       });
   }
 };
