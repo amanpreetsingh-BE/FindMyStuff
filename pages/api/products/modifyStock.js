@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 
+/* Import base64 encoded private key from firebase and initialize firebase */
 const serviceAccount = JSON.parse(
   Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
 );
@@ -10,6 +11,11 @@ const app = !admin.apps.length
     })
   : admin.app();
 
+/*
+ * Description : Allow to change the stock of a new product (add or remove)
+ * Level of credential : Private
+ * Method : POST
+ */
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const category = req.body.category;

@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       if (userDoc.exists) {
         if (signMethod == "google" || signMethod == "facebook") {
           // not first time login with fb or google
-          userDocRef.update({
+          await userDocRef.update({
             email: email,
             firstName: firstName,
             lastName: req.body.lastName,

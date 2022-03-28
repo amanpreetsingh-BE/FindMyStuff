@@ -1,11 +1,4 @@
-export default function Promo({
-  useState,
-  useRef,
-  toast,
-  hostname,
-  Modal,
-  couponsJSON,
-}) {
+export default function Promo({ useState, useRef, toast, Modal, couponsJSON }) {
   /* Coupons menu state : open or closed */
   const [isCouponsMenu, setIsCouponsMenu] = useState(true);
   /* Add coupons menu state : open or closed */
@@ -60,7 +53,6 @@ export default function Promo({
     const data = {
       promoID: modalPromoID,
       couponID: modalCouponID,
-      authorization: process.env.NEXT_PUBLIC_API_KEY,
     };
     const response = await fetch(`/api/promo/delete`, {
       method: "POST",

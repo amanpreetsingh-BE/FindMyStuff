@@ -19,7 +19,7 @@ function ContactSection({ t, useState, toast }) {
       message: formMessage.current.value,
     };
     try {
-      const response = await fetch("/api/messages/post-message", {
+      const response = await fetch("/api/messages/post", {
         method: "POST",
         headers: {
           Accept: "application/json",

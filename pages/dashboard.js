@@ -338,7 +338,7 @@ export async function getServerSideProps({ res, req, locale }) {
     const axios = require("axios");
 
     try {
-      axios({
+      await axios({
         method: "post",
         url: "https://api.sendgrid.com/v3/mail/send",
         headers: {
@@ -402,7 +402,7 @@ export default function Dashboard(props) {
     } else {
       try {
         setDisabledResend(true); // avoid spam
-        await fetch(`/api/mailer/resend-verify`, {
+        await fetch(`/api/mailer/send-verify`, {
           method: "POST",
           headers: {
             Accept: "application/json",

@@ -107,7 +107,7 @@ export async function getServerSideProps({ query, locale }) {
         ],
       };
       try {
-        axios({
+        await axios({
           method: "post",
           url: "https://api.sendgrid.com/v3/mail/send",
           headers: {

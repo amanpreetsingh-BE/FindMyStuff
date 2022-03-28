@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 
+/* Import base64 encoded private key from firebase and initialize firebase */
 const serviceAccount = JSON.parse(
   Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
 );
@@ -10,6 +11,11 @@ const app = !admin.apps.length
     })
   : admin.app();
 
+/*
+ * Description : Allow to reply to a message signed by FMS
+ * Level of credential : Private
+ * Method : POST
+ */
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
@@ -73,7 +79,7 @@ export default async function handler(req, res) {
         };
       }
       const axios = require("axios");
-      axios({
+      await axios({
         method: "post",
         url: "https://api.sendgrid.com/v3/mail/send",
         headers: {
@@ -85,7 +91,7 @@ export default async function handler(req, res) {
       var docRef = app.firestore().collection(`messages`).doc(`${id}`);
       docRef.get().then(async (doc) => {
         if (doc.exists) {
-          docRef.update({
+          await docRef.update({
             replied: true,
           });
         } else {

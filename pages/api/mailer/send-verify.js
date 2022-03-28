@@ -40,7 +40,7 @@ export default async function handler(req, res) {
         ],
       };
       const axios = require("axios");
-      axios({
+      await axios({
         method: "post",
         url: "https://api.sendgrid.com/v3/mail/send",
         headers: {

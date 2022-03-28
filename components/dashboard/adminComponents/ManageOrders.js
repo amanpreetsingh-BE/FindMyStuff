@@ -1,12 +1,4 @@
-function ManageOrders({
-  useState,
-  hostname,
-  locale,
-  Modal,
-  ordersJSON,
-  toast,
-  t,
-}) {
+function ManageOrders({ useState, locale, Modal, ordersJSON, toast, t }) {
   /* Modal variables states for orders */
   const [modalOrderCustomerEmail, setModalOrderCustomerEmail] = useState("");
   const [modalOrderShippingName, setModalOrderShippingName] = useState("");
@@ -18,6 +10,8 @@ function ManageOrders({
   const [modalOrderCS, setModalOrderCS] = useState("");
   const [showModalOrder, setShowModalOrder] = useState(false);
   const [modalOrderShipped, setModalOrderShipped] = useState(false);
+  const [modalOrderLocale, setModalOrderLocale] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   function openModalOrder() {
@@ -35,7 +29,8 @@ function ManageOrders({
     postal,
     emailSent,
     cs,
-    shipped
+    shipped,
+    locale
   ) {
     setModalOrderCustomerEmail(email);
     setModalOrderShippingName(name);
@@ -46,11 +41,13 @@ function ManageOrders({
     setModalOrderEmailSent(emailSent);
     setModalOrderCS(cs);
     setModalOrderShipped(shipped);
+    setModalOrderLocale(locale);
     openModalOrder();
   }
 
   ordersJSON.forEach((element) => {
     const email = element.customer_email;
+    const locale = element.locale;
     const name = element.shipping_name;
     const city = element.shipping_address.city;
     const line1 = element.shipping_address.line1;
@@ -75,7 +72,8 @@ function ManageOrders({
             postal,
             emailSent,
             cs,
-            shipped
+            shipped,
+            locale
           )
         }
         className={
@@ -100,7 +98,7 @@ function ManageOrders({
 
     const data = {
       id: modalOrderCS,
-      locale: locale,
+      locale: modalOrderLocale,
       email: modalOrderCustomerEmail,
     };
     try {
@@ -162,6 +160,7 @@ function ManageOrders({
               <li>Postal code : {modalOrderPostalCode}</li>
               <li>Confirmation email sent : {modalOrderEmailSent}</li>
               <li>Shipped : {`${modalOrderShipped} `}</li>
+              <li>Locale used during checkout : {`${modalOrderLocale}`}</li>
             </ul>
             <button
               disabled={loading}

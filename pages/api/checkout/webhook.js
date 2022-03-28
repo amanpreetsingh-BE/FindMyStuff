@@ -120,6 +120,7 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
         emailSent: false,
         receipt: "",
         timestamp: admin.firestore.Timestamp.now().seconds,
+        locale: session.metadata.locale,
       });
   } else {
     // Product type of checkout
@@ -153,6 +154,7 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
         allow_promotion_codes: session.allow_promotion_codes,
         promotion_code: global_COUPON,
         imgURL: `${session.metadata.imgURL}`,
+        locale: session.metadata.locale,
       });
   }
 };
@@ -177,6 +179,8 @@ export default async function handler(req, res) {
       );
 
       if (event.type === "customer.discount.created") {
+        global_COUPON = event.data.object.promotion_code; // set promo code if applied at checkout
+      } else if (event.type === "promotion.code.updated") {
         global_COUPON = event.data.object.promotion_code; // set promo code if applied at checkout
       } else if (event.type === "checkout.session.completed") {
         const session = event.data.object;
