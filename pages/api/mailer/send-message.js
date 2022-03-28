@@ -1,84 +1,103 @@
-import * as admin from 'firebase-admin'
+import * as admin from "firebase-admin";
 
-const serviceAccount = JSON.parse(Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, 'base64'))
+const serviceAccount = JSON.parse(
+  Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
+);
 
-const app = !admin.apps.length ? admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-  }) : admin.app()
-  
+const app = !admin.apps.length
+  ? admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    })
+  : admin.app();
+
 export default async function handler(req, res) {
-    if (req.method === 'POST' && req.body.authorization == process.env.NEXT_PUBLIC_API_KEY) {
-      try {
-        var hbs = require('nodemailer-express-handlebars');
-        var nodemailer = require('nodemailer')
-        const path = require("path")
-        const id = req.body.id
+  if (req.method === "POST") {
+    try {
+      const id = req.body.id;
+      let msg = null;
 
-        const transporter = nodemailer.createTransport({
-            host: process.env.HOSTMAIL,
-            port: 465,
-            secure: true, // true for 465, false for other ports
-            auth: {
-                user: process.env.MAIL,
-                pass: process.env.SECRET_MAIL,
+      const template = "d-1f4fb5bdde5842c2877676c26829064a";
+
+      const context = {
+        sub: req.body.formTitle,
+        fullname: req.body.fullname,
+        txt: req.body.formMessage,
+      };
+      if (req.body.file) {
+        const content = `${req.body.file}`.replace(
+          "data:application/pdf;base64,",
+          ""
+        );
+        msg = {
+          from: {
+            email: process.env.MAIL,
+            name: "FindMyStuff",
+          },
+          template_id: template,
+          personalizations: [
+            {
+              to: [
+                {
+                  email: req.body.modalEmail,
+                },
+              ],
+              dynamic_template_data: context,
             },
-        });
-
-        const options = {
-            viewEngine: {
-                extName: ".html",
-                partialsDir: path.resolve('./pages/api/mailer/views'),
-                defaultLayout: false, 
+          ],
+          attachments: [
+            {
+              content: content,
+              filename: `${req.body.fileName}`,
+              type: "application/pdf",
+              disposition: "attachment",
             },
-            viewPath: path.resolve('./pages/api/mailer/views'),
-            extName: ".handlebars"
-        }
-
-        transporter.use('compile', hbs(options));
-        
-        let attach = null
-
-        if(req.body.fileURL){
-            attach = {
-                filename: req.body.fileName,
-                path: req.body.fileURL
-            }
-        }
-
-        const mail = {
-            from: process.env.MAIL,
-            to: req.body.modalEmail,
-            subject: req.body.formTitle,
-            template: 'sendEmail',
-            context: {
-                fullname: req.body.fullname,
-                txt: req.body.formMessage 
+          ],
+        };
+      } else {
+        msg = {
+          from: {
+            email: process.env.MAIL,
+            name: "FindMyStuff",
+          },
+          template_id: template,
+          personalizations: [
+            {
+              to: [
+                {
+                  email: req.body.modalEmail,
+                },
+              ],
+              dynamic_template_data: context,
             },
-            attachments: attach
-         }
-
-        await transporter.sendMail(mail).then(() => {
-            try {
-                var docRef = app.firestore().collection(`messages`).doc(`${id}`)
-                docRef.get().then(async (doc) => {
-                    if (doc.exists) {
-                        docRef.update({
-                            replied: true
-                        })
-                    } else {
-                        console.log("No such document!");
-                    }
-                });
-            } catch (err) {
-                res.status(400).json({ received: false });
-            }
-            res.json({ received: true });
-        });
-      } catch (err) {
-        res.status(err.statusCode || 500).json({error:err.message});
+          ],
+        };
       }
-    } else {
-      res.setHeader('Allow', 'POST');
-      res.status(405).end('Method Not Allowed');
+      const axios = require("axios");
+      axios({
+        method: "post",
+        url: "https://api.sendgrid.com/v3/mail/send",
+        headers: {
+          Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+        },
+        data: msg,
+      });
+
+      var docRef = app.firestore().collection(`messages`).doc(`${id}`);
+      docRef.get().then(async (doc) => {
+        if (doc.exists) {
+          docRef.update({
+            replied: true,
+          });
+        } else {
+          console.log("No such document!");
+        }
+      });
+      res.status(200).json({ received: true });
+    } catch (err) {
+      res.status(err.statusCode || 500).json({ error: err.message });
     }
+  } else {
+    res.setHeader("Allow", "POST");
+    res.status(405).end("Method Not Allowed");
+  }
 }

@@ -504,6 +504,7 @@ export default function Dashboard(props) {
         couponsJSON={props.couponsJSON}
         qrToGenerateJSON={props.qrToGenerateJSON}
         findersJSON={props.findersJSON}
+        locale={props.locale}
       />
     );
   } else {

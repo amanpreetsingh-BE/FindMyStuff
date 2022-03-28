@@ -34,8 +34,7 @@ function AdminLayout({
   SignOutButton,
   firstName,
   lastName,
-  address,
-  email,
+  locale,
   t,
   hostname,
   productsJSON,
@@ -182,6 +181,7 @@ function AdminLayout({
                 ordersJSON={ordersJSON}
                 t={t}
                 toast={toast}
+                locale={locale}
               />
             ) : renderOption == "messages" ? (
               <ManageMessages
