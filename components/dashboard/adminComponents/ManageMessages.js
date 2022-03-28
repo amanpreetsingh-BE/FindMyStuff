@@ -116,6 +116,7 @@ function ManageMessages({
     e.preventDefault();
     setFile(null);
   };
+
   function getBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

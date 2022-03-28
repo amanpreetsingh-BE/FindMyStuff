@@ -11,68 +11,64 @@ const app = !admin.apps.length
     })
   : admin.app();
 
+/*
+ * Description : Allow to send newsletter
+ * Level of credential : Private
+ * Method : POST
+ */
 export default async function handler(req, res) {
-  if (
-    req.method === "POST" &&
-    req.body.authorization == process.env.NEXT_PUBLIC_API_KEY
-  ) {
+  if (req.method === "POST") {
     try {
-      var hbs = require("nodemailer-express-handlebars");
-      var nodemailer = require("nodemailer");
-      const path = require("path");
-
-      const transporter = nodemailer.createTransport({
-        host: process.env.HOSTMAIL,
-        port: 465,
-        secure: true, // true for 465, false for other ports
-        auth: {
-          user: process.env.MAIL,
-          pass: process.env.SECRET_MAIL,
-        },
-      });
-
-      const options = {
-        viewEngine: {
-          extName: ".html",
-          partialsDir: path.resolve("./pages/api/mailer/views"),
-          defaultLayout: false,
-        },
-        viewPath: path.resolve("./pages/api/mailer/views"),
-        extName: ".handlebars",
+      const axios = require("axios");
+      let msg = null;
+      let template = null;
+      const context = {
+        title: req.body.title,
+        message: req.body.message,
+        fileURL: req.body.fileURL,
+        fileName: req.body.fileName,
       };
-
-      transporter.use("compile", hbs(options));
-
-      let attach = null;
-
       if (req.body.fileURL) {
-        attach = {
-          filename: req.body.fileName,
-          path: req.body.fileURL,
-        };
+        template = "d-4bcf0603f54b4764b7d0a7f4d40e1c54";
+      } else {
+        template = "d-7a18a0497f314ed991f183e6a5dbbf69";
       }
-
       app
         .firestore()
         .collection("users")
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach(async (doc) => {
-            doc.data().email;
-            await transporter.sendMail({
-              from: process.env.MAIL,
-              to: doc.data().email,
-              subject: req.body.title,
-              template: "sendNewsletter",
-              context: {
-                message: req.body.message,
+            msg = {
+              from: {
+                email: process.env.MAIL,
+                name: "FindMyStuff",
               },
-              attachments: attach,
+              template_id: template,
+              personalizations: [
+                {
+                  to: [
+                    {
+                      email: `${doc.data().email}`,
+                    },
+                  ],
+                  dynamic_template_data: context,
+                },
+              ],
+            };
+
+            await axios({
+              method: "post",
+              url: "https://api.sendgrid.com/v3/mail/send",
+              headers: {
+                Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+              },
+              data: msg,
             });
           });
         });
 
-      res.json({ received: true });
+      res.status(200).json({ received: true });
     } catch (err) {
       res.status(err.statusCode || 500).json({ error: err.message });
     }
