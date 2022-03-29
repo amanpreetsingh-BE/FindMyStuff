@@ -282,15 +282,15 @@ export default function SelectPage({ id, hostname, locale, oob }) {
           }}
         >
           <Popup>
-            <div className="text-lg font-bold">{heading}</div>
-            <div className="text-sm font-md">
-              {t("scan:select:popupStreet")} {street}
+            <div className="text-lg font-bold max-w-[150px]">{heading}</div>
+            <div className="text-sm font-md max-w-[150px]">
+              <b>{t("scan:select:popupStreet")}</b> {street}
             </div>
-            <div className="text-sm font-md mb-6">
-              {t("scan:select:popupCode")} {code}
+            <div className="text-sm font-md pb-2">
+              <b>{t("scan:select:popupCode")}</b> {code}
             </div>
-            <div className="flex justify-center items-center">
-              <Image src={urlPhoto} width={200} height={200} />
+            <div className="flex justify-left items-center">
+              <Image src={urlPhoto} width={150} height={150} />
             </div>
           </Popup>
         </Marker>
@@ -375,15 +375,15 @@ export default function SelectPage({ id, hostname, locale, oob }) {
   return (
     <main className="bg-primary text-white min-h-screen px-8 py-12">
       <div className="mb-12">{LanguageBox(locale, fr_flag, en_flag)}</div>
-      <div className="flex py-12 max-w-3xl justify-center flex-col items-center mx-8 mt-4 sm:mt-12 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
-        <div className="font-bold text-xl sm:text-2xl -mt-8">
+      <div className="flex py-12 max-w-3xl justify-center flex-col items-center  sm:mt-4 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
+        <div className="font-bold text-xl sm:text-2xl ">
           {t("scan:select:heading")}
         </div>
-        <div className="max-w-sm text-center">{t("scan:select:desc")}</div>
-        <div className="mt-8 w-full px-12 text-center flex flex-col justify-center items-center">
+        <div className="max-w-sm px-4 text-center">{t("scan:select:desc")}</div>
+        <div className="mt-8 w-full px-4 text-center flex flex-col justify-center items-center">
           <label
             htmlFor="cp"
-            className="block-inline text-sm font-medium text-gray-200"
+            className="block-inline text-sm font-medium text-gray-200 text-left"
           >
             {t("scan:select:code")}
           </label>
@@ -398,37 +398,35 @@ export default function SelectPage({ id, hostname, locale, oob }) {
             />
             <button
               disabled={loading}
-              className="max-w-xl ml-2 py-2 px-4 font-bold text-md bg-emerald-500 hover:bg-emerald-600 rounded-lg"
+              className="max-w-xl ml-2 py-2 px-4 font-bold text-md bg-secondary hover:bg-secondaryHover rounded-lg"
             >
               <LocationMarkerIcon className="w-6 h-6 text-white" />
             </button>
           </form>
-          <div className={"w-full h-96 pt-4"}>
-            {selected ? (
-              <Map className="w-full h-full" center={center} zoom={13}>
-                {({ TileLayer, Marker, Popup }) => (
-                  <>
-                    <TileLayer
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    {generateMarker(Marker, Popup)}
-                  </>
-                )}
-              </Map>
-            ) : (
-              ""
-            )}
-          </div>
           {selected ? (
-            <div className="flex justify-center items-center">
-              <button
-                className="max-w-xl py-4 mt-8 px-4 font-bold text-md border-2 border-secondary rounded-lg"
-                onClick={handleRegister}
-                disabled={loading}
-              >
-                {t("scan:select:saveBtn")}
-              </button>
+            <div className="w-full">
+              <div className={"w-full h-96 py-4"}>
+                <Map className="w-full h-full" center={center} zoom={13}>
+                  {({ TileLayer, Marker, Popup }) => (
+                    <>
+                      <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                      />
+                      {generateMarker(Marker, Popup)}
+                    </>
+                  )}
+                </Map>
+              </div>
+              <div className="flex justify-center items-center">
+                <button
+                  className="max-w-xl py-4  px-4 font-bold text-md border-2 border-secondary rounded-lg"
+                  onClick={handleRegister}
+                  disabled={loading}
+                >
+                  {t("scan:select:saveBtn")}
+                </button>
+              </div>
             </div>
           ) : (
             ""

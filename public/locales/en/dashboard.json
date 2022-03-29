@@ -82,7 +82,10 @@
       "tokenDesc": "The number of tokens is the number of delivery remaining, if there is no token available, you need to reload the QR (7.5e) to make the delivery possible.",
       "tokenState": "Number of remaining tokens : ",
       "reloadBtn": "Reload",
-      "stripeError": "Error, please try again"
+      "stripeError": "Error, please try again",
+      "qty": "Quantity to reload",
+      "specifyQty": "Please specify the number of token to reload",
+      "specifyQtyPos": "Invalid number of tokens to reload"
     },
 
     "notifPage": {
@@ -93,7 +96,8 @@
       "empty2": "You don't have any lost item belonging to you in shipping to your choosen pick up point, yet.",
       "scanned": "Scanned at : ",
       "sent": "Sent at : ",
-      "clear": "Delete notifications"
+      "clear": "Delete notifications",
+      "cleared": "Notifications cleared"
     }
   },
   "welcomeModal": {

@@ -4,9 +4,7 @@ service cloud.firestore {
     function isAdmin() {
       return request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
     }
-    function isOwner() {
-      return request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
-    }
+    
     match /rateLimiter/{docID} {
       allow read: if isAdmin();
       allow write: if isAdmin();
@@ -46,8 +44,8 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     match /users/{docID} {
-      allow read: if true;
-      allow write: if true;
+      allow read: if isAdmin();
+      allow write: if isAdmin();
     }
   }
 }

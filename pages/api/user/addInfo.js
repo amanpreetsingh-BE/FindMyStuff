@@ -23,33 +23,48 @@ export default async function handler(req, res) {
       const signMethod = req.body.signMethod;
       const email = req.body.email;
 
-      await app.auth().getUser(uid); // check if the user is legit
+      /* check user input server side */
+      const re = /^[a-zA-Z]*$/;
 
-      const userDocRef = app.firestore().collection("users").doc(uid);
-      const userDoc = await userDocRef.get();
-      if (userDoc.exists) {
-        if (signMethod == "google" || signMethod == "facebook") {
-          // not first time login with fb or google
-          await userDocRef.update({
+      if (!re.test(firstName) || !re.test(lastName)) {
+        // number and special characters test
+        setFormLoading(false);
+        return toast.error(t("sign:errorName:specialC"));
+      } else if (firstName.length > 26 || lastName.length > 26) {
+        setFormLoading(false);
+        return toast.error(t("sign:errorName:tooMuchC"));
+      } else if (firstName.length < 3 || lastName.length < 3) {
+        setFormLoading(false);
+        return toast.error(t("sign:errorName:tooLowC"));
+      } else {
+        await app.auth().getUser(uid); // check if the user request is legit
+
+        const userDocRef = app.firestore().collection("users").doc(uid);
+        const userDoc = await userDocRef.get();
+        if (userDoc.exists) {
+          if (signMethod == "google" || signMethod == "facebook") {
+            // not first time login with fb or google
+            await userDocRef.update({
+              email: email,
+              firstName: firstName,
+              lastName: req.body.lastName,
+            });
+          } else {
+            throw new Error("Email user already exists");
+          }
+        } else {
+          // first time login with fb or google or email
+          await userDocRef.set({
             email: email,
             firstName: firstName,
-            lastName: req.body.lastName,
+            lastName: lastName,
+            signMethod: signMethod,
+            verifySent: false,
+            admin: false,
           });
-        } else {
-          throw new Error("Email user already exists");
         }
-      } else {
-        // first time login with fb or google or email
-        userDocRef.set({
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
-          signMethod: signMethod,
-          verifySent: false,
-          admin: false,
-        });
+        res.status(200).json({ received: true });
       }
-      res.status(200).json({ received: true });
     } catch (err) {
       console.log(err.message);
       res.status(err.statusCode || 500).json({ error: err.message });

@@ -60,7 +60,7 @@ function UserLayout({
   const [renderOption, setRenderOption] = useState("");
   const classMainSection = triggerComponent
     ? "min-h-screen"
-    : "grid place-items-center max-w-7xl mx-auto px-8 py-16 min-h-screen";
+    : "grid place-items-center max-w-7xl mx-auto px-8 min-h-screen";
   const gridVisibility = !triggerComponent ? " " : " hidden ";
   const closeMenu = (option) => {
     setIsMenu(false);
@@ -88,7 +88,7 @@ function UserLayout({
   };
 
   return (
-    <main className="bg-[#171C26] font-nxt text-white">
+    <main className="bg-primary font-nxt text-white">
       {/* Nav */}
       <nav className="z-20 flex top-0 h-20">
         <div className="flex justify-between items-center pl-10 pr-10 h-full w-full ">
@@ -178,7 +178,7 @@ function UserLayout({
           animate={isMenu ? "open" : "closed"}
           variants={variants}
           className={
-            "grid bg-[#1B212E] p-8 sm:p-20 gap-4 grid-cols-2 sm:grid-cols-3" +
+            "grid bg-[#191919] rounded-lg shadow-lg p-6 -mt-12 gap-4 grid-cols-2 sm:grid-cols-3" +
             gridVisibility
           }
         >
@@ -188,7 +188,7 @@ function UserLayout({
             animate={isMenu ? "open" : "closed"}
             variants={variants}
             whileHover={{ scale: 1.05, transition: { duration: 0.1 } }}
-            className="bg-[#64cd83] text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-xl hover:shadow-xl h-44 rounded-2xl col-span-1 sm:col-span-2 "
+            className="bg-secondary hover:bg-secondary text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-xl hover:shadow-xl h-32  sm:h-44 rounded-2xl col-span-1 sm:col-span-2 "
           >
             <h2 className="mx-4">{t("dashboard:user:prod")}</h2>
           </motion.div>
@@ -198,7 +198,7 @@ function UserLayout({
             animate={isMenu ? "open" : "closed"}
             variants={variants}
             whileHover={{ scale: 1.05, transition: { duration: 0.1 } }}
-            className="bg-[#64cd83] text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-xl h-44 rounded-2xl"
+            className="bg-secondary hover:bg-secondary text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-xl h-32 sm:h-44 rounded-2xl"
           >
             <h2 className="mx-4">{t("dashboard:user:notif")}</h2>
           </motion.div>
@@ -209,7 +209,7 @@ function UserLayout({
             animate={isMenu ? "open" : "closed"}
             variants={variants}
             whileHover={{ scale: 1.05, transition: { duration: 0.1 } }}
-            className="bg-[#64cd83] relative text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-xl h-44 rounded-2xl col-span-2 sm:col-span-3"
+            className="bg-secondary hover:bg-secondary  relative text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-xl h-32  sm:h-44 rounded-2xl col-span-2 sm:col-span-3"
           >
             <h2 className="mx-4">{t("dashboard:user:param")}</h2>
           </motion.div>
@@ -218,7 +218,7 @@ function UserLayout({
             animate={isMenu ? "open" : "closed"}
             variants={variants}
             whileHover={{ scale: 1.05, transition: { duration: 0.1 } }}
-            className="bg-[#C64177] text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-lg hover:shadow-xl h-44 rounded-2xl col-span-2 sm:col-span-3 "
+            className="bg-red-500 text-lg sm:text-xl text-center font-bold cursor-pointer flex justify-center items-center shadow-lg hover:shadow-xl h-32  sm:h-44 rounded-2xl col-span-2 sm:col-span-3 "
           >
             <SignOutButton />
           </motion.div>
@@ -244,7 +244,7 @@ function UserLayout({
                       <p className="mb-2 mt-1 text-gray-800">
                         {t("dashboard:welcomeModal:s1")}
                       </p>
-                      <ul className="list-disc border-2 border-emerald-600 rounded-lg px-8 py-2 text-left text-gray-800">
+                      <ul className="list-disc border-2 border-secondaryHover rounded-lg px-8 py-2 text-left text-gray-800">
                         <li>{t("dashboard:welcomeModal:l1")}</li>
                         <li>{t("dashboard:welcomeModal:l2")}</li>
                         <li>{t("dashboard:welcomeModal:l3")}</li>
@@ -261,7 +261,7 @@ function UserLayout({
                       <p className="mb-2 mt-1 text-gray-800">
                         {t("dashboard:welcomeModal:s2")}
                       </p>
-                      <p className="mb-2 border-2 border-emerald-600 rounded-lg px-4 py-4 mt-1 text-gray-800">
+                      <p className="mb-2 border-2 border-secondaryHover rounded-lg px-4 py-4 mt-1 text-gray-800">
                         {t("dashboard:welcomeModal:d2")}
                       </p>
                     </div>
@@ -276,7 +276,7 @@ function UserLayout({
                       <p className="mb-2 mt-1 text-gray-800">
                         {t("dashboard:welcomeModal:s3")}
                       </p>
-                      <p className="mb-2 border-2 rounded-lg border-emerald-600 px-4 py-2 mt-1 text-gray-800">
+                      <p className="mb-2 border-2 rounded-lg border-secondaryHover px-4 py-2 mt-1 text-gray-800">
                         {t("dashboard:welcomeModal:d3")}
                       </p>
                     </div>
@@ -291,7 +291,7 @@ function UserLayout({
                       <p className="mb-2 mt-1 text-gray-800">
                         {t("dashboard:welcomeModal:s4")}
                       </p>
-                      <p className="mb-2 border-2 rounded-lg border-emerald-600 px-4 py-4 mt-1 text-gray-800">
+                      <p className="mb-2 border-2 rounded-lg border-secondaryHover px-4 py-4 mt-1 text-gray-800">
                         {t("dashboard:welcomeModal:d4")}
                       </p>
                     </div>
@@ -306,7 +306,7 @@ function UserLayout({
                       <p className="mb-2 mt-1 text-gray-800">
                         {t("dashboard:welcomeModal:s5")}
                       </p>
-                      <p className="mb-2 border-2 border-emerald-600 rounded-lg px-4 py-4 mt-1 text-gray-800">
+                      <p className="mb-2 border-2 border-secondaryHover rounded-lg px-4 py-4 mt-1 text-gray-800">
                         {t("dashboard:welcomeModal:d5")}
                       </p>
                     </div>

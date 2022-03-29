@@ -46,10 +46,13 @@ export async function getServerSideProps({ query, locale }) {
   /* If the checkout session is valid and paid, fetch the order */
   if (checkoutJSON && checkoutJSON.payment_status == "paid") {
     let orderJSON = null;
-    const docRef = app
-      .firestore()
-      .collection("orders")
-      .doc(`${URL_session_id}`);
+    let docRef = null;
+    if (checkoutJSON.metadata.qrID) {
+      docRef = app.firestore().collection("reloads").doc(`${URL_session_id}`);
+    } else {
+      docRef = app.firestore().collection("orders").doc(`${URL_session_id}`);
+    }
+
     const docSnap = await docRef.get();
     try {
       if (docSnap.exists) {
@@ -67,27 +70,45 @@ export async function getServerSideProps({ query, locale }) {
     // If the email confirmation is not sent, do logic else refresh only
     if (!orderJSON.emailSent) {
       /* STEP 1 : Send email to customer with context and update email state */
-      const context = {
-        fullname: orderJSON.shipping_name,
-        email: orderJSON.customer_email,
-        model: orderJSON.model,
-        model_description: orderJSON.color,
-        paymentMethod: orderJSON.paymentType,
-        street: orderJSON.shipping_address.line1,
-        zip: orderJSON.shipping_address.postal_code,
-        country: orderJSON.shipping_address.country,
-        orderNumber: orderJSON.order_id,
-        date: new Date(orderJSON.timestamp._seconds * 1000).toDateString(),
-        totalAmount: (orderJSON.amount / 100).toFixed(2),
-        htvaAmont: ((orderJSON.amount / 100) * 0.79).toFixed(2),
-        tva: ((orderJSON.amount / 100) * 0.21).toFixed(2),
-        prodURL: orderJSON.imgURL,
-      };
+      var context = null;
+      var template = null;
+      if (orderJSON.qrID) {
+        // reload order
+        context = {
+          qrID: orderJSON.qrID,
+          quantity: orderJSON.quantity,
+          paymentMethod: orderJSON.paymentType,
+          email: orderJSON.customer_email,
+          orderNumber: orderJSON.order_id,
+        };
+        template =
+          orderJSON.locale ===
+          ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
+            ? "d-ce7e57476d68465bacf070c3078607ec"
+            : "d-8cbc937813974eeea65200ecd338ab8f";
+      } else {
+        context = {
+          fullname: orderJSON.shipping_name,
+          email: orderJSON.customer_email,
+          model: orderJSON.model,
+          model_description: orderJSON.color,
+          paymentMethod: orderJSON.paymentType,
+          street: orderJSON.shipping_address.line1,
+          zip: orderJSON.shipping_address.postal_code,
+          country: orderJSON.shipping_address.country,
+          orderNumber: orderJSON.order_id,
+          date: new Date(orderJSON.timestamp._seconds * 1000).toDateString(),
+          totalAmount: (orderJSON.amount / 100).toFixed(2),
+          htvaAmont: ((orderJSON.amount / 100) * 0.79).toFixed(2),
+          tva: ((orderJSON.amount / 100) * 0.21).toFixed(2),
+          prodURL: orderJSON.imgURL,
+        };
 
-      const template =
-        locale === ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
-          ? "d-e9d5aad158834b0d86925e9140733ff8"
-          : "d-2714a9e6d65d4e79ad2ba5159ba2f0fa";
+        template =
+          locale === ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
+            ? "d-e9d5aad158834b0d86925e9140733ff8"
+            : "d-2714a9e6d65d4e79ad2ba5159ba2f0fa";
+      }
 
       const msg = {
         from: {

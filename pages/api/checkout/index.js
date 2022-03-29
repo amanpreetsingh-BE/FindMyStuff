@@ -15,6 +15,7 @@ export default async function handler(req, res) {
     const qrID = req.body.qrID;
     const imgURL = req.body.imgURL;
     const locale = req.body.locale;
+    const quantity = req.body.quantity;
 
     const isReload =
       model == "reload" &&
@@ -29,12 +30,12 @@ export default async function handler(req, res) {
           line_items: [
             {
               price: priceID,
-              quantity: 1,
+              quantity: quantity,
               tax_rates: ["txr_1KBLtIK5KPA8d9OvylyxPlOz"], // no need to encode, always same in BE
             },
           ],
           mode: "payment",
-          success_url: `${req.headers.origin}/${req.body.locale}/reloaded/?session_id={CHECKOUT_SESSION_ID}`,
+          success_url: `${req.headers.origin}/${req.body.locale}/success/?session_id={CHECKOUT_SESSION_ID}`,
           cancel_url: `${req.headers.origin}/${req.body.locale}`,
           billing_address_collection: "required",
           metadata: {
@@ -44,6 +45,7 @@ export default async function handler(req, res) {
             color: color,
             qrID: qrID,
             locale: locale,
+            quantity: quantity,
           },
         });
       } else {

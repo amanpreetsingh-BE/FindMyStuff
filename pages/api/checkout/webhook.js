@@ -41,13 +41,13 @@ const increaseCouponUsage = async () => {
 };
 
 /* Function allowing to increment the number of delivery of a specific QR */
-const incrementToken = async (qrID) => {
+const incrementToken = async (qrID, qty) => {
   let docRef = app.firestore().collection("QR").doc(`${qrID}`);
 
   await docRef.get().then((doc) => {
     if (doc.exists) {
       docRef.update({
-        jetons: doc.data().jetons + 1,
+        jetons: doc.data().jetons + qty,
       });
     } else {
       console.log("No such document!");
@@ -99,7 +99,7 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
     session.metadata.color == "reload" &&
     session.metadata.priceID == "price_1KZcrlK5KPA8d9OvKtznbNWq"
   ) {
-    await incrementToken(session.metadata.qrID);
+    await incrementToken(session.metadata.qrID, session.metadata.quantity);
     await app
       .firestore()
       .collection("reloads")
@@ -112,7 +112,7 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
         order_id: order_id,
         qrID: session.metadata.qrID,
         paymentType: paymentType,
-        amount: amount,
+        quantity: `${session.metadata.quantity}`,
         model: `${session.metadata.model}`,
         color: `${session.metadata.color ? session.metadata.color : "none"}`,
         customer_email: session.customer_details.email,

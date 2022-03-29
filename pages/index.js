@@ -22,6 +22,7 @@ import { motion } from "framer-motion";
 /* Translation */
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { auth } from "@lib/firebase";
 
 export async function getServerSideProps({ req, locale }) {
   /* Get host (local or dev) */
@@ -122,7 +123,6 @@ export async function getServerSideProps({ req, locale }) {
     productsJSON.push(trackers);
     productsJSON.push(others);
   } catch (err) {
-    console.log(err); // debug on server
     productsJSON = null;
   }
 
@@ -140,6 +140,7 @@ export async function getServerSideProps({ req, locale }) {
 export default function Home({ locale, productsJSON, hostname, isConnected }) {
   /* handle translations */
   const { t } = useTranslation();
+  //auth.signOut();
   /* navbar */
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => {

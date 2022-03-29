@@ -1,9 +1,9 @@
 import { XIcon } from "@heroicons/react/outline";
+import { useRouter } from "next/router";
 
 export default function Notifications({
   useState,
   t,
-  hostname,
   toast,
   email,
   userNotificationsJSON,
@@ -13,82 +13,74 @@ export default function Notifications({
   const notifClass = "grid place-items-center gap-8 grid-cols-1 mx-auto ";
   const emptyNotifsClass =
     "flex justify-center items-center max-w-7xl mx-auto px-8 py-16";
-  const [scanNotifs, setScanNotifs] = useState(true);
-  const [deliveryNotifs, setDeliveryNotifs] = useState(true);
+  const [notifs, setNotifs] = useState(true);
   const [clearing, setClearing] = useState(false);
-
-  const clearScanNotifs = async (e) => {
+  /* Used to push to dashboard */
+  const router = useRouter();
+  const clearNotif = async (e) => {
     e.preventDefault();
     setClearing(true);
     try {
       const data = {
         email: email,
-        type: "scan",
-        authorization: process.env.NEXT_PUBLIC_API_KEY,
+        oob: oob,
+        uid: uid,
       };
 
-      await fetch(`${hostname}/api/qr/notifications/clear`, {
+      await fetch(`/api/user/clearNotifications`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      }).then(() => {
-        setScanNotifs(false);
       });
+      setNotifs(false);
+      toast.success(t("dashboard:user:notifPage:cleared"));
+      router.reload();
     } catch (err) {
       return toast.error(err.message);
     }
   };
 
-  const clearDeliveryNotifs = async (e) => {
-    e.preventDefault();
-    setClearing(true);
-    try {
-      const data = {
-        email: email,
-        type: "delivery",
-        authorization: process.env.NEXT_PUBLIC_API_KEY,
-      };
-
-      await fetch(`${hostname}/api/qr/notifications/clear`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }).then(() => {
-        setDeliveryNotifs(false);
-      });
-    } catch (err) {
-      return toast.error(err.message);
-    }
-  };
-
-  const renderScan = (notifications) => {
+  const renderNotif = (notifications) => {
     const cards = [];
+    var k = 0;
     notifications.forEach((qr) => {
-      if (qr.scan.length > 0) {
-        var id = qr.id;
-        qr.scan.forEach((ns) => {
-          cards.push(
-            <div
-              key={ns.timestamp}
-              className={
-                "flex flex-col justify-center cursor-pointer px-8 py-12 items-center w-full h-12 rounded-lg bg-[#1c222e] shadow-lg hover:shadow-lg"
-              }
-            >
-              <div className="text-lg font-bold ">{id}</div>
-              <div className="text-emerald-500 font-bold text-sm">
-                {t("dashboard:user:notifPage:scanned")}{" "}
-                {new Date(ns.timestamp * 1000).toLocaleString()}
-              </div>
+      //push delivery notif
+      var id = qr.id;
+      qr.delivery.forEach((nd) => {
+        k += 1;
+        cards.push(
+          <div
+            key={nd.timestamp + k}
+            className="flex flex-col justify-center px-8 py-12 items-center w-full h-12 rounded-lg bg-[#1B212E] shadow-lg hover:shadow-lg"
+          >
+            <div className="text-lg font-bold ">{id}</div>
+            <div className="text-emerald-500 font-bold text-sm">
+              {t("dashboard:user:notifPage:sent")}{" "}
+              {new Date(nd.timestamp * 1000).toLocaleString()}
             </div>
-          );
-        });
-      }
+          </div>
+        );
+      });
+      qr.scan.forEach((ns) => {
+        k += 1;
+        cards.push(
+          <div
+            key={ns.timestamp + k}
+            className={
+              "flex flex-col justify-center cursor-pointer px-8 py-12 items-center w-full h-12 rounded-lg bg-[#1c222e] shadow-lg hover:shadow-lg"
+            }
+          >
+            <div className="text-lg font-bold ">{id}</div>
+            <div className="text-emerald-500 font-bold text-sm">
+              {t("dashboard:user:notifPage:scanned")}{" "}
+              {new Date(ns.timestamp * 1000).toLocaleString()}
+            </div>
+          </div>
+        );
+      });
     });
 
     if (cards.length == 0) {
@@ -103,60 +95,10 @@ export default function Notifications({
           <div className="flex w-full justify-end items-center ">
             <button
               disabled={clearing}
-              onClick={clearScanNotifs}
-              className="flex border-2 px-2 py-2 rounded-lg cursor-pointer"
+              onClick={clearNotif}
+              className="flex px-2 py-2 rounded-lg cursor-pointer"
             >
               <XIcon className="text-red-400 w-6 h-6" />
-              {t("dashboard:user:notifPage:clear")}
-            </button>
-          </div>
-          {cards}
-        </>
-      );
-    }
-  };
-
-  const renderDelivery = (notifications) => {
-    const cards = [];
-    notifications.forEach((qr) => {
-      if (qr.delivery.length > 0) {
-        var id = qr.id;
-        qr.delivery.forEach((nd) => {
-          if (nd.visible) {
-            cards.push(
-              <div
-                key={nd.timestamp}
-                className="flex flex-col justify-center px-8 py-12 items-center w-full h-12 rounded-lg bg-[#1B212E] shadow-lg hover:shadow-lg"
-              >
-                <div className="text-lg font-bold ">{id}</div>
-                <div className="text-emerald-500 font-bold text-sm">
-                  {t("dashboard:user:notifPage:sent")}{" "}
-                  {new Date(nd.timestamp * 1000).toLocaleString()}
-                </div>
-              </div>
-            );
-          }
-        });
-      }
-    });
-
-    if (cards.length == 0) {
-      return (
-        <div className="text-center max-w-sm">
-          {t("dashboard:user:notifPage:empty2")}
-        </div>
-      );
-    } else {
-      return (
-        <>
-          <div className="flex w-full justify-end items-center ">
-            <button
-              disabled={clearing}
-              onClick={clearDeliveryNotifs}
-              className="flex border-2 px-2 py-2 rounded-lg cursor-pointer"
-            >
-              <XIcon className="text-red-400 w-6 h-6" />
-              {t("dashboard:user:notifPage:clear")}
             </button>
           </div>
           {cards}
@@ -166,43 +108,28 @@ export default function Notifications({
   };
 
   return (
-    <div className="mt-20 mx-12 lg:mx-auto px-12 py-12 bg-[#1B212E] max-w-4xl ">
-      <div className="flex text-center font-mono justify-center items-center font-bold text-2xl lg:text-3xl mb-8">
-        {t("dashboard:user:notifPage:heading")}
+    <>
+      <div className="mt-20 mx-12 lg:mx-auto px-12 py-12 bg-[#1B212E] max-w-4xl ">
+        <div className="flex text-center font-mono justify-center items-center font-bold text-2xl lg:text-3xl mb-8">
+          {t("dashboard:user:notifPage:heading")}
+        </div>
+
+        <div
+          className={
+            userNotificationsJSON.length > 0 ? notifClass : emptyNotifsClass
+          }
+        >
+          {userNotificationsJSON.length > 0 && notifs ? (
+            renderNotif(userNotificationsJSON)
+          ) : (
+            <div className="text-center max-w-sm">
+              {t("dashboard:user:notifPage:empty1")}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="flex text-center mb-8 border-2 border-blue-600 rounded-lg px-8 py-4 justify-center max-w-7xl xl:mx-auto items-center font-bold text-md shadow-lg">
-        {t("dashboard:user:notifPage:h1")}
-      </div>
-      <div
-        className={
-          userNotificationsJSON.length > 0 ? notifClass : emptyNotifsClass
-        }
-      >
-        {userNotificationsJSON.length > 0 && scanNotifs ? (
-          renderScan(userNotificationsJSON)
-        ) : (
-          <div className="text-center max-w-sm">
-            {t("dashboard:user:notifPage:empty1")}
-          </div>
-        )}
-      </div>
-      <div className="flex text-center my-8 border-2 border-blue-600 rounded-lg px-8 py-4 justify-center max-w-7xl xl:mx-auto items-center font-bold text-md shadow-lg">
-        {t("dashboard:user:notifPage:h2")}
-      </div>
-      <div
-        className={
-          userNotificationsJSON.length > 0 ? notifClass : emptyNotifsClass
-        }
-      >
-        {userNotificationsJSON.length > 0 && deliveryNotifs ? (
-          renderDelivery(userNotificationsJSON)
-        ) : (
-          <div className="text-center max-w-sm">
-            {t("dashboard:user:notifPage:empty2")}
-          </div>
-        )}
-      </div>
-    </div>
+      <div className="h-20"></div>
+    </>
   );
 }

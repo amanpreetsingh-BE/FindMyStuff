@@ -5,7 +5,7 @@ function ManageQR({
   useRef,
   useState,
   toast,
-  hostname,
+  authorization,
   Modal,
   qrToGenerateJSON,
   findersJSON,
@@ -142,9 +142,9 @@ function ManageQR({
     try {
       const data = {
         formNumberQR: formNumberQR.current.value,
-        authorization: process.env.NEXT_PUBLIC_API_KEY,
+        authorization: authorization,
       };
-      const response = await fetch(`${hostname}/api/qr/add/`, {
+      const response = await fetch(`/api/qr/add/`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -164,8 +164,6 @@ function ManageQR({
         );
         doc.save("newQR.pdf");
         return toast.success("Success response !");
-      } else {
-        return toast.error("Error .. please contact amanpreet@outlook.be !");
       }
     } catch (err) {
       return toast.error(err.message);

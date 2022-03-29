@@ -303,7 +303,6 @@ export async function getServerSideProps({ res, req, locale }) {
       userNotificationsJSON = null;
     }
   }
-
   // hostname (localhost or production)
   const hostname = process.env.HOSTNAME;
 
@@ -392,7 +391,6 @@ export async function getServerSideProps({ res, req, locale }) {
 export default function Dashboard(props) {
   /* Handle language */
   const { t } = useTranslation();
-
   /* Import image */
   const mailIllustration = require("@images/dashboard/mailConfirm.svg");
 

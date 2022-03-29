@@ -55,15 +55,18 @@ export async function getServerSideProps({ params, locale }) {
   let relais = null;
   let timestamp = null;
   let oob = null;
+  let userEmail = null;
   try {
     const docSnapshot = await app.firestore().collection("QR").doc(id).get();
     if (docSnapshot.exists) {
       // valid QR ; FETCH data
       console.log("VALID QR");
-      activate = docSnapshot.data().activate;
-      relais = docSnapshot.data().relais;
-      jetons = docSnapshot.data().jetons;
-      timestamp = docSnapshot.data().timestamp;
+      const data = docSnapshot.data();
+      activate = data.activate;
+      userEmail = data.email;
+      relais = data.relais;
+      jetons = data.jetons;
+      timestamp = data.timestamp;
       oob = activate ? null : md5(`${id}${process.env.SS_API_KEY}`);
       // Notify the user of scan found if activated and loaded
       if (activate && jetons >= 1) {
@@ -82,6 +85,7 @@ export async function getServerSideProps({ params, locale }) {
           s.push({ timestamp: admin.firestore.Timestamp.now().seconds });
           app.firestore().collection("notifications").doc(id).set({
             id: id,
+            email: userEmail,
             scan: s,
             delivery: [],
             needToGenerate: false,
@@ -202,7 +206,6 @@ export default function ScanPage({
         return toast.success(t("scan:successQRregister"));
       }
     } catch (err) {
-      //return toast.error(err.message);
       return toast.error(t("scan:failureQRregister"));
     }
   };
@@ -259,7 +262,7 @@ export default function ScanPage({
             lastName: formLastname.current.value,
             signMethod: "email",
           };
-          const response = await fetch(`/api/user/settings/addInfo`, {
+          const response = await fetch(`/api/user/addInfo`, {
             method: "POST",
             headers: {
               Accept: "application/json",
@@ -270,7 +273,6 @@ export default function ScanPage({
           const responseJSON = await response.json();
           if (responseJSON.error) {
             // error while adding info on user ...
-            console.log(responseJSON.error.message);
             throw new Error(t("sign:errorMakingAccount"));
           }
 
@@ -437,14 +439,14 @@ export default function ScanPage({
           }}
         >
           <Popup>
-            <div className="text-lg font-bold">{heading}</div>
-            <div className="text-sm font-md">
-              {t("scan:select:popupStreet")} {street}
+            <div className="text-lg font-bold max-w-[150px]">{heading}</div>
+            <div className="text-sm font-md max-w-[150px]">
+              <b>{t("scan:select:popupStreet")}</b> {street}
             </div>
-            <div className="text-sm font-md mb-6">
-              {t("scan:select:popupCode")} {code}
+            <div className="text-sm font-md pb-2">
+              <b>{t("scan:select:popupCode")}</b> {code}
             </div>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-left items-center">
               <Image src={urlPhoto} width={150} height={150} />
             </div>
           </Popup>
@@ -462,7 +464,7 @@ export default function ScanPage({
         cp: cp.current.value,
         oob: oob,
       };
-      const response = await fetch(`${hostname}/api/qr/findPointByCP`, {
+      const response = await fetch(`/api/qr/findPointByCP`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -1113,7 +1115,6 @@ function SignInGoogleButton() {
       await handleRegister(id, userCredential.user.email);
       router.push(`${hostname}/${locale}/scan/select/${id}`);
     } catch (err) {
-      console.log(err.message); // debug
       return toast.error(t("sign:errorSignGoogle"));
     }
   };
@@ -1180,7 +1181,6 @@ function SignInFacebookButton() {
       await handleRegister(id, userCredential.user.email);
       router.push(`${hostname}/${locale}/scan/select/${id}`);
     } catch (err) {
-      console.log(err.message); // debug
       return toast.error(t("sign:errorSignFb"));
     }
   };

@@ -176,7 +176,6 @@ export default function Sign({ locale, hostname }) {
           const responseJSON = await response.json();
           if (responseJSON.error) {
             // error while adding info on user ...
-            console.log(responseJSON.error.message);
             throw new Error(t("sign:errorMakingAccount"));
           } else {
             router.push(`/dashboard`);
@@ -221,6 +220,7 @@ export default function Sign({ locale, hostname }) {
       setFormLoading(false);
     }
   };
+
   /* Reset pwd logic */
   const resetPassword = async (e) => {
     e.preventDefault();
@@ -538,7 +538,6 @@ function SignInGoogleButton() {
       await manageGoogleUserData(userCredential);
       router.push("/dashboard");
     } catch (err) {
-      console.log(err.message); // debug
       return toast.error(t("sign:errorSignGoogle"));
     }
   };
@@ -603,7 +602,6 @@ function SignInFacebookButton() {
       await manageFacebookUserData(userCredential);
       router.push("/dashboard");
     } catch (err) {
-      console.log(err.message); // debug
       return toast.error(t("sign:errorSignFb"));
     }
   };
