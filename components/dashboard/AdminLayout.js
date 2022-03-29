@@ -44,6 +44,7 @@ function AdminLayout({
   couponsJSON,
   qrToGenerateJSON,
   findersJSON,
+  authorization,
 }) {
   /* States for managing open and close of menu */
   const [isMenu, setIsMenu] = useState(true);
@@ -164,6 +165,7 @@ function AdminLayout({
                 productsJSON={productsJSON}
                 toast={toast}
                 t={t}
+                authorization={authorization}
               />
             ) : renderOption == "addProducts" ? (
               <AddProducts
@@ -172,6 +174,7 @@ function AdminLayout({
                 hostname={hostname}
                 Image={Image}
                 toast={toast}
+                authorization={authorization}
               />
             ) : renderOption == "orders" ? (
               <ManageOrders
@@ -182,6 +185,7 @@ function AdminLayout({
                 t={t}
                 toast={toast}
                 locale={locale}
+                authorization={authorization}
               />
             ) : renderOption == "messages" ? (
               <ManageMessages
@@ -192,6 +196,7 @@ function AdminLayout({
                 messagesJSON={messagesJSON}
                 t={t}
                 toast={toast}
+                authorization={authorization}
               />
             ) : renderOption == "promo" ? (
               <Promo
@@ -201,6 +206,7 @@ function AdminLayout({
                 hostname={hostname}
                 toast={toast}
                 couponsJSON={couponsJSON}
+                authorization={authorization}
               />
             ) : renderOption == "newsletter" ? (
               <Newsletter
@@ -208,9 +214,15 @@ function AdminLayout({
                 useRef={useRef}
                 hostname={hostname}
                 toast={toast}
+                authorization={authorization}
               />
             ) : renderOption == "newAdmin" ? (
-              <NewAdmin useRef={useRef} hostname={hostname} toast={toast} />
+              <NewAdmin
+                useRef={useRef}
+                hostname={hostname}
+                toast={toast}
+                authorization={authorization}
+              />
             ) : renderOption == "manageQR" ? (
               <ManageQR
                 useState={useState}
@@ -220,6 +232,7 @@ function AdminLayout({
                 Modal={Modal}
                 qrToGenerateJSON={qrToGenerateJSON}
                 findersJSON={findersJSON}
+                authorization={authorization}
               />
             ) : renderOption == "statsUsers" ? (
               <StatsUsers />

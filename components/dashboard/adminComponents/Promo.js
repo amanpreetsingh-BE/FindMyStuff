@@ -1,4 +1,11 @@
-export default function Promo({ useState, useRef, toast, Modal, couponsJSON }) {
+export default function Promo({
+  useState,
+  useRef,
+  toast,
+  Modal,
+  couponsJSON,
+  authorization,
+}) {
   /* Coupons menu state : open or closed */
   const [isCouponsMenu, setIsCouponsMenu] = useState(true);
   /* Add coupons menu state : open or closed */
@@ -6,7 +13,7 @@ export default function Promo({ useState, useRef, toast, Modal, couponsJSON }) {
 
   const [showModal, setShowModal] = useState(false);
   const [modalPromoID, setModalPromoID] = useState("");
-  const [modalCouponID, setModalCouponID] = useState("");
+  const [moplomdalCouponID, setModalCouponID] = useState("");
   const [modalCodeName, setModalCodeName] = useState("");
   const [modalOFF, setModalOFF] = useState("");
   const [modalUsage, setModalUsage] = useState("");
@@ -30,6 +37,7 @@ export default function Promo({ useState, useRef, toast, Modal, couponsJSON }) {
       const data = {
         code: formCoupon.current.value,
         percent: formPercentage.current.value,
+        authorization: authorization,
       };
       const response = await fetch(`/api/promo/add`, {
         method: "POST",
@@ -53,6 +61,7 @@ export default function Promo({ useState, useRef, toast, Modal, couponsJSON }) {
     const data = {
       promoID: modalPromoID,
       couponID: modalCouponID,
+      authorization: authorization,
     };
     const response = await fetch(`/api/promo/delete`, {
       method: "POST",

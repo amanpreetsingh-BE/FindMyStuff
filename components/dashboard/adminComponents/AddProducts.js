@@ -5,7 +5,7 @@ import { CloudUploadIcon, BackspaceIcon } from "@heroicons/react/outline";
 import { storage } from "@lib/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-function AddProducts({ useRef, useState, hostname, Image, toast }) {
+function AddProducts({ useRef, useState, Image, toast, authorization }) {
   /* handle form values through ref */
   const type = useRef();
   const name = useRef();
@@ -59,6 +59,7 @@ function AddProducts({ useRef, useState, hostname, Image, toast }) {
             quantity: quantity.current.value,
             price: price.current.value,
             imageURL: url,
+            authorization: authorization,
           };
           const response = await fetch(`/api/products/add`, {
             method: "POST",

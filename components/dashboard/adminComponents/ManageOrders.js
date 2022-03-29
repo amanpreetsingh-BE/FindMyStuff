@@ -1,4 +1,11 @@
-function ManageOrders({ useState, locale, Modal, ordersJSON, toast, t }) {
+function ManageOrders({
+  useState,
+  authorization,
+  Modal,
+  ordersJSON,
+  toast,
+  t,
+}) {
   /* Modal variables states for orders */
   const [modalOrderCustomerEmail, setModalOrderCustomerEmail] = useState("");
   const [modalOrderShippingName, setModalOrderShippingName] = useState("");
@@ -100,6 +107,7 @@ function ManageOrders({ useState, locale, Modal, ordersJSON, toast, t }) {
       id: modalOrderCS,
       locale: modalOrderLocale,
       email: modalOrderCustomerEmail,
+      authorization: authorization,
     };
     try {
       const response = await fetch(`/api/mailer/send-shipping-confirmation`, {

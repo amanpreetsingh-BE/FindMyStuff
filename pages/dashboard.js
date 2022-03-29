@@ -107,6 +107,7 @@ export async function getServerSideProps({ res, req, locale }) {
   let findersJSON = [];
   let userProductsJSON = [];
   let userNotificationsJSON = [];
+  let authorization = null;
 
   if (isAdmin) {
     // ADMIN
@@ -263,6 +264,9 @@ export async function getServerSideProps({ res, req, locale }) {
       console.log(err.message);
       findersJSON = null;
     }
+
+    /* GET AUTHORIZATION hash */
+    authorization = md5(process.env.SS_API_KEY);
   } else {
     // USER
 
@@ -380,6 +384,7 @@ export async function getServerSideProps({ res, req, locale }) {
       lastName,
       userEmail,
       oob,
+      authorization,
     },
   };
 }
@@ -427,7 +432,6 @@ export default function Dashboard(props) {
   };
 
   const [showDash, setShowDash] = useState(false);
-
   useEffect(() => {
     /* Handle popup hello */
     if (
@@ -505,6 +509,7 @@ export default function Dashboard(props) {
         qrToGenerateJSON={props.qrToGenerateJSON}
         findersJSON={props.findersJSON}
         locale={props.locale}
+        authorization={props.authorization}
       />
     );
   } else {

@@ -1,7 +1,5 @@
 import * as admin from "firebase-admin";
-import Stripe from "stripe";
 const md5 = require("md5"); // used to check oob
-
 /* Import base64 encoded private key from firebase and initialize firebase */
 const serviceAccount = JSON.parse(
   Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
@@ -13,10 +11,8 @@ const app = !admin.apps.length
     })
   : admin.app();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
 /*
- * Description : Allow to add a new coupon
+ * Description : Allow to make a user admin
  * Level of credential : Private
  * Method : POST
  */
@@ -25,29 +21,25 @@ export default async function handler(req, res) {
     req.method === "POST" &&
     req.body.authorization === md5(process.env.SS_API_KEY)
   ) {
-    const code = req.body.code;
-    const percent = req.body.percent;
+    const email = req.body.email;
 
     try {
-      const coupon = await stripe.coupons.create({
-        percent_off: percent,
-        currency: "eur",
-      });
+      const user = await app.auth().getUserByEmail(email); // check if legit
+      let docRef;
 
-      const promotionCode = await stripe.promotionCodes.create({
-        coupon: coupon.id,
-        code: code,
-      });
-
-      app.firestore().collection("coupons").doc(promotionCode.id).set({
-        promotionCode: promotionCode,
-        usage: 0,
-      });
+      docRef = app.firestore().collection(`users`).doc(`${user.uid}`);
+      doc = await docRef.get();
+      if (doc.data().admin) {
+        throw new Error("Already admin !");
+      } else {
+        await docRef.update({
+          admin: true,
+        });
+      }
+      res.json({ received: true });
     } catch (err) {
-      console.log(err);
-      res.status(400).json({ err: err.message });
+      res.status(err.statusCode || 500).json({ error: err.message });
     }
-    res.json({ success: true });
   } else {
     res.setHeader("Allow", "POST");
     res.status(405).end("Method Not Allowed");

@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 import Stripe from "stripe";
+const md5 = require("md5"); // used to check oob
 
 /* Import base64 encoded private key from firebase and initialize firebase */
 const serviceAccount = JSON.parse(
@@ -20,7 +21,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
  * Method : POST
  */
 export default async function handler(req, res) {
-  if (req.method === "POST") {
+  if (
+    req.method === "POST" &&
+    req.body.authorization === md5(process.env.SS_API_KEY)
+  ) {
     const type = req.body.type;
     const name = req.body.name;
     const color = req.body.color;

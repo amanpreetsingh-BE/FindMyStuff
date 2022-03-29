@@ -1,11 +1,8 @@
 import { CloudUploadIcon, BackspaceIcon } from "@heroicons/react/outline";
-/* firebase v9 lib to handle new product */
-import { storage } from "@lib/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 function ManageMessages({
   useState,
-  hostname,
+  authorization,
   useRef,
   Modal,
   messagesJSON,
@@ -60,6 +57,7 @@ function ManageMessages({
           formMessage: formMessage.current.value,
           file: fileBASE64,
           fileName: file.name,
+          authorization: authorization,
         };
         const response = await fetch(`/api/mailer/send-message`, {
           method: "POST",
@@ -85,6 +83,7 @@ function ManageMessages({
           formMessage: formMessage.current.value,
           file: null,
           fileName: null,
+          authorization: authorization,
         };
         const response = await fetch(`/api/mailer/send-message`, {
           method: "POST",

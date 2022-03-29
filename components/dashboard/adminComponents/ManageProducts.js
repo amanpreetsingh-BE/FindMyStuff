@@ -5,6 +5,7 @@ function ManageProducts({
   Modal,
   toast,
   productsJSON,
+  authorization,
   t,
 }) {
   /* Keychain menu state : open or closed */
@@ -141,6 +142,7 @@ function ManageProducts({
         id: modalProductModel,
         color: modalProductColor,
         increment: formProductStockIncrement.current.value,
+        authorization: authorization,
       };
       const response = await fetch("/api/products/modifyStock", {
         method: "POST",
@@ -167,6 +169,7 @@ function ManageProducts({
       id: modalProductModel,
       color: modalProductColor,
       priceID: modalProductKey,
+      authorization: authorization,
     };
     const response = await fetch("/api/products/delete", {
       method: "POST",

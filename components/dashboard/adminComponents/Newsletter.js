@@ -3,7 +3,7 @@ import { CloudUploadIcon, BackspaceIcon } from "@heroicons/react/outline";
 import { storage } from "@lib/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-function Newsletter({ useState, useRef, toast, hostname }) {
+function Newsletter({ useState, useRef, toast, authorization }) {
   const title = useRef();
   const message = useRef();
 
@@ -24,6 +24,7 @@ function Newsletter({ useState, useRef, toast, hostname }) {
               message: message.current.value,
               fileURL: url,
               fileName: file.name,
+              authorization: authorization,
             };
             const response = await fetch(`/api/mailer/send-newsletter`, {
               method: "POST",
@@ -47,6 +48,7 @@ function Newsletter({ useState, useRef, toast, hostname }) {
           message: message.current.value,
           fileURL: null,
           fileName: null,
+          authorization: authorization,
         };
         const response = await fetch(`/api/mailer/send-newsletter`, {
           method: "POST",
