@@ -307,8 +307,8 @@ export async function getServerSideProps({ res, req, locale }) {
   // hostname (localhost or production)
   const hostname = process.env.HOSTNAME;
 
-  // verify link legit
-  const oob = emailVerified ? null : md5(`${uid}${process.env.SS_API_KEY}`);
+  // allow to sign a request of the profile
+  const oob = md5(`${uid}${process.env.SS_API_KEY}`);
 
   // send verification email (if only email sign method), if not sent
   if (!verifySent && signMethod === "email") {
@@ -530,6 +530,7 @@ export default function Dashboard(props) {
         t={t}
         userProductsJSON={props.userProductsJSON}
         userNotificationsJSON={props.userNotificationsJSON}
+        oob={props.oob}
       />
     );
   }

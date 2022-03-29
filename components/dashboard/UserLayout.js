@@ -43,6 +43,7 @@ function UserLayout({
   t,
   userProductsJSON,
   userNotificationsJSON,
+  oob,
 }) {
   const [showModal, setShowModal] = useState(true);
   function openModal() {
@@ -133,6 +134,8 @@ function UserLayout({
                 email={email}
                 hostname={hostname}
                 userProductsJSON={userProductsJSON}
+                uid={uid}
+                oob={oob}
               />
             ) : renderOption == "notif" ? (
               <Notifications
@@ -145,6 +148,8 @@ function UserLayout({
                 hostname={hostname}
                 motion={motion}
                 email={email}
+                uid={uid}
+                oob={oob}
               />
             ) : renderOption == "param" ? (
               <Parameters
@@ -153,6 +158,7 @@ function UserLayout({
                 firstName={firstName}
                 lastName={lastName}
                 uid={uid}
+                oob={oob}
                 hostname={hostname}
                 useRef={useRef}
                 Modal={Modal}

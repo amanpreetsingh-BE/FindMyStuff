@@ -7,6 +7,8 @@ export default function Notifications({
   toast,
   email,
   userNotificationsJSON,
+  uid,
+  oob,
 }) {
   const notifClass = "grid place-items-center gap-8 grid-cols-1 mx-auto ";
   const emptyNotifsClass =

@@ -15,6 +15,7 @@ export default function Parameters({
   firstName,
   lastName,
   uid,
+  oob,
 }) {
   const formFirstname = useRef();
   const formLastname = useRef();
@@ -26,30 +27,7 @@ export default function Parameters({
 
   const resetPassword = async (e) => {
     e.preventDefault();
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        toast.success(t("dashboard:user:paramPage:forgot:emailSendSuccess"));
-      })
-      .catch((error) => {
-        const errorMessage = error.code;
-        if (errorMessage == "auth/user-not-found") {
-          return toast.error(
-            t("dashboard:user:paramPage:forgot:emailSendUser")
-          );
-        } else if (errorMessage == "auth/missing-email") {
-          return toast.error(
-            t("dashboard:user:paramPage:forgot:forgot:emailSendEmpty")
-          );
-        } else if (errorMessage == "auth/invalid-email") {
-          return toast.error(
-            t("dashboard:user:paramPage:forgot:forgot:emailSendInvalid")
-          );
-        } else {
-          return toast.error(
-            t("dashboard:user:paramPage:forgot:forgot:errorEmailSend")
-          );
-        }
-      });
+    router.push(`/resetPwd?oob=${oob}&uid=${uid}`);
   };
 
   const deleteAcc = async (e) => {
@@ -57,9 +35,10 @@ export default function Parameters({
     try {
       const data = {
         uid: uid,
+        oob: oob,
         email: email,
       };
-      const response = await fetch(`${hostname}/api/user/settings/delete`, {
+      const response = await fetch(`/api/user/delete`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -82,7 +61,6 @@ export default function Parameters({
   const updateAcc = async (e) => {
     e.preventDefault();
     const re = /^[a-zA-Z]*$/;
-    console.log();
     if (formFirstname.current.value == "" && formLastname.current.value == "") {
       return toast.error(t("dashboard:user:paramPage:updateFL"));
     } else if (
@@ -107,6 +85,7 @@ export default function Parameters({
       try {
         const data = {
           uid: uid,
+          oob: oob,
           firstName:
             formFirstname.current.value == ""
               ? firstName
@@ -115,19 +94,15 @@ export default function Parameters({
             formLastname.current.value == ""
               ? lastName
               : formLastname.current.value,
-          authorization: process.env.NEXT_PUBLIC_API_KEY,
         };
-        const response = await fetch(
-          `${hostname}/api/user/settings/updateInfo`,
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
+        const response = await fetch(`/api/user/updateInfo`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
         const responseJSON = await response.json();
         if (responseJSON.success) {
           toast.success(t("dashboard:user:paramPage:pupdate"));

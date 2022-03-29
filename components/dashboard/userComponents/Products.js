@@ -18,6 +18,8 @@ export default function Products({
   Image,
   email,
   userProductsJSON,
+  uid,
+  oob,
 }) {
   /* Used to push to dashboard */
   const router = useRouter();
