@@ -47,7 +47,7 @@ const incrementToken = async (qrID, qty) => {
   await docRef.get().then((doc) => {
     if (doc.exists) {
       docRef.update({
-        jetons: doc.data().jetons + qty,
+        jetons: doc.data().jetons + parseInt(qty),
       });
     } else {
       console.log("No such document!");

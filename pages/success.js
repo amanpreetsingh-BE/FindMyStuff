@@ -204,7 +204,7 @@ export default function Success(props) {
   return (
     <main>
       <NavReduced darkLogo={false} />
-      <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
+      <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-4 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
         <CheckCircleIcon className="w-10 text-secondaryHover h-10 sm:w-12 sm:h-12" />
         <h1 className="text-xl text-center tracking-wide  sm:text-2xl">
           {t("payment:heading")}
