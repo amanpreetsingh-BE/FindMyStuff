@@ -791,7 +791,7 @@ export default function ScanPage({
             ) : (
               <>
                 <div className="text-center max-w-xs my-4">
-                  {t("scan:found:qrGeneration")}
+                  {t("scan:found:li2")}
                 </div>
                 <svg
                   role="status"

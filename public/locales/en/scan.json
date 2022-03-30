@@ -74,7 +74,7 @@
     "desc1": "",
     "btn1": "Let's do it",
     "li1": "Just deposit the lost item to the nearest pickup parcelshop point.",
-    "li2": "By clicking on 'GENERATE', a QR code will be made. This can take up to 15 minutes",
+    "li2": "By clicking on 'GENERATE', a QR code will be made. This can take up to 15 minutes. Please refresh the page every 15 minutes.",
     "li3": "Show the generated QR code to the pickup parcelshop that you will choose in the next page. Don't forget to pack the object. The list of pickup parcelshop around your ZIP code will be shown, you can deposit the item to any of them.",
     "btn2": "GENERATE",
     "optB": "I want an amount of 3 euros to be transfered to a NGO.",
