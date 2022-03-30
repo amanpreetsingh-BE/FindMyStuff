@@ -433,7 +433,8 @@ export default function ScanPage({
         }
       } catch (err) {
         setGenerating(false);
-        return toast.error(t("scan:failureQRGeneration"));
+        return toast.error(err.message);
+        //return toast.error(t("scan:failureQRGeneration"));
       }
     }
   };
