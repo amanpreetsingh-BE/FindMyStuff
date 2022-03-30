@@ -42,9 +42,9 @@ export async function getServerSideProps({ query, locale }) {
   } catch (err) {
     console.log(err.message);
   }
-
   /* If the checkout session is valid and paid, fetch the order */
   if (checkoutJSON && checkoutJSON.payment_status == "paid") {
+    console.log(checkoutJSON);
     let orderJSON = null;
     let docRef = null;
     if (checkoutJSON.metadata.qrID) {
