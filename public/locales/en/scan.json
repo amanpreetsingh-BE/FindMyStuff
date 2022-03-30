@@ -50,6 +50,8 @@
     "emailSendInvalid": "Please enter valid email"
   },
   "successQRregister": "Successful registration ",
+  "successQRGeneration": "Successful generation ",
+  "failureQRGeneration": "Failure while generating",
   "failureQRregister": "Failure while registration, please contact support",
   "noJetons": "If you are the owner of this QR, please sign in to recharge your QR via the dashboard.",
   "goHome": "Sign in",
@@ -80,6 +82,7 @@
     "errorRew": "Please enter your fullname and your IBAN",
     "qrZIP": "ZIP code",
     "qrGeneration": "The QR code will appear in max 15 minutes",
-    "qrGenerated": "Please deposit the packed item with this QR code to the nearest pickup point "
+    "qrGenerated": "Please deposit the packed item with this QR code to the nearest pickup point ",
+    "errorIBAN": "Please enter a valid BE IBAN"
   }
 }

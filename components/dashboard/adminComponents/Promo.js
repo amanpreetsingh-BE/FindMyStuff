@@ -13,7 +13,7 @@ export default function Promo({
 
   const [showModal, setShowModal] = useState(false);
   const [modalPromoID, setModalPromoID] = useState("");
-  const [moplomdalCouponID, setModalCouponID] = useState("");
+  const [modalCouponID, setModalCouponID] = useState("");
   const [modalCodeName, setModalCodeName] = useState("");
   const [modalOFF, setModalOFF] = useState("");
   const [modalUsage, setModalUsage] = useState("");

@@ -115,13 +115,11 @@ export default function Parameters({
 
   return (
     <>
-      <div className="mt-20 mx-12 lg:mx-auto px-12 py-12 bg-[#1B212E] max-w-4xl ">
+      <div className="my-20 mx-12 lg:mx-auto px-12 py-12 bg-[#191919] max-w-4xl rounded-lg shadow-lg p-6">
         <div className="flex text-center font-mono justify-center items-center font-bold text-2xl lg:text-3xl mb-8">
           {t("dashboard:user:paramPage:heading")}
         </div>
-        <div className="flex mb-8 text-center border-2 border-blue-600 rounded-lg px-8 py-4 justify-center max-w-7xl xl:mx-auto items-center font-bold text-md shadow-lg">
-          {t("dashboard:user:paramPage:h1")}
-        </div>
+
         <div className="">
           <label
             htmlFor="email"
@@ -176,15 +174,11 @@ export default function Parameters({
           <div className="flex justify-center items-center">
             <button
               onClick={updateAcc}
-              className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-emerald-500 hover:border-emerald-600 rounded-lg"
+              className="max-w-lg py-3 px-4 mx-auto my-4 font-bold text-md border-2 border-secondary hover:border-secondaryHover rounded-lg"
             >
               {t("dashboard:user:paramPage:update")}
             </button>
           </div>
-        </div>
-
-        <div className="flex my-8 text-center border-2 border-blue-600 rounded-lg px-8 py-4 justify-center max-w-7xl xl:mx-auto items-center font-bold text-md shadow-lg">
-          {t("dashboard:user:paramPage:h2")}
         </div>
 
         <div className="flex mt-4 text-sm font-bold">
@@ -194,7 +188,7 @@ export default function Parameters({
               className="cursor-pointer flex justify-start items-center"
             >
               {" "}
-              <MailIcon className="w-4 h-4 mr-1" />
+              <MailIcon className="w-6 h-6 mr-2" />
               {t("dashboard:user:paramPage:reset")}
             </li>
             <li
@@ -202,7 +196,7 @@ export default function Parameters({
               className="cursor-pointer text-red-400 flex justify-start items-center"
             >
               {" "}
-              <XIcon className="w-4 h-4 mr-1" />
+              <XIcon className="w-6 h-6 mr-2" />
               {t("dashboard:user:paramPage:delete")}
             </li>
             <div className="absolute">

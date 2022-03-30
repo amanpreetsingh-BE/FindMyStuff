@@ -92,10 +92,10 @@ export default function ResetPwdPage({ locale, hostname, oob, uid }) {
           src={resetIllustration}
           priority
           alt="mailConfirm"
-          width={264}
-          height={264}
+          width={230}
+          height={230}
         />
-        <div className="font-bold pb-8 text-2xl">{t("resetPwd:heading")}</div>
+        <div className="font-bold pb-8 text-xl">{t("resetPwd:heading")}</div>
         <div>
           <label
             htmlFor="password"

@@ -134,8 +134,6 @@ function UserLayout({
                 email={email}
                 hostname={hostname}
                 userProductsJSON={userProductsJSON}
-                uid={uid}
-                oob={oob}
               />
             ) : renderOption == "notif" ? (
               <Notifications

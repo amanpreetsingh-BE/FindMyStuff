@@ -1,5 +1,10 @@
 const md5 = require("md5");
 
+/*
+ * Description : Allow to find Mondial Relay point by CP
+ * Level of credential : Private
+ * Method : POST
+ */
 export default async function handler(req, res) {
   if (
     req.method === "POST" &&

@@ -11,7 +11,7 @@ function ManageQR({
   findersJSON,
 }) {
   const formNumberQR = useRef();
-
+  const trackingNumber = useRef();
   /* menu state to show or not */
   const [isAddMenu, setIsAddMenu] = useState(true);
   const [isDropMenu, setIsDropMenu] = useState(true);
@@ -32,6 +32,7 @@ function ManageQR({
   const [modalDonation, setModalDonation] = useState("");
   const [modalRelaisNum, setModalRelaisNum] = useState("");
   const [modalRelaisHeading, setModalRelaisHeading] = useState("");
+  const [modalTackingNumber, setModalRelaisTrackingNumber] = useState("");
 
   const [file, setFile] = useState(null);
 
@@ -51,7 +52,8 @@ function ManageQR({
     id,
     donation,
     relaisNum,
-    relaisHeading
+    relaisHeading,
+    trackingNumber
   ) {
     setModalFinderFullname(finderFullname);
     setModalIban(iban);
@@ -61,6 +63,7 @@ function ManageQR({
     setModalDonation(donation);
     setModalRelaisNum(relaisNum);
     setModalRelaisHeading(relaisHeading);
+    setModalRelaisTrackingNumber(trackingNumber);
     setShowFinderModal((prev) => !prev);
   }
 
@@ -87,7 +90,7 @@ function ManageQR({
   var tr = [];
   var trf = [];
   qrToGenerateJSON.forEach((element) => {
-    const email = element.email;
+    const email = element.data.email;
     const id = element.id;
     tr.push(
       <tr
@@ -111,6 +114,7 @@ function ManageQR({
     const donation = element.donation ? "Yes" : "No";
     const relaisNum = element.relaisNum;
     const relaisHeading = element.relaisHeading;
+    const trackingNumber = element.trackingNumber;
 
     trf.push(
       <tr
@@ -124,7 +128,8 @@ function ManageQR({
             id,
             donation,
             relaisNum,
-            relaisHeading
+            relaisHeading,
+            trackingNumber
           )
         }
         className={
@@ -171,15 +176,19 @@ function ManageQR({
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
+      if (trackingNumber.current.value === "") {
+        throw new Error("Please put Mondial Relay tracking number");
+      }
       getBase64(file).then(async (data) => {
         const dat = {
           pdf: data,
-          email: modalQREmail,
+          trackingNumber: trackingNumber,
           id: modalQRID,
-          authorization: process.env.NEXT_PUBLIC_API_KEY,
+          authorization: authorization,
         };
-        await fetch(`/api/qr/addQRtoDB`, {
+        await fetch(`/api/qr/generate`, {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -193,212 +202,252 @@ function ManageQR({
       return toast.error(err.message);
     }
   };
-  const handleRewardSubmit = async (e) => {};
+  const handleRewardSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const dat = {
+        id: modalId,
+        authorization: authorization,
+      };
+      await fetch(`/api/qr/removeFinder`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dat),
+      });
+      return toast.success("The finder is removed from the database");
+    } catch (err) {
+      return toast.error(err.message);
+    }
+  };
   return (
-    <div className="mt-20 mx-12 lg:mx-auto px-12 py-12 bg-[#1B212E] max-w-4xl ">
-      <div className="flex font-mono justify-center items-center font-bold text-2xl lg:text-3xl mb-8">
-        QR Manager
-      </div>
+    <>
+      <div className="mt-20 mx-12 lg:mx-auto px-12 py-12 bg-[#1B212E] max-w-4xl ">
+        <div className="flex font-mono justify-center items-center font-bold text-2xl lg:text-3xl mb-8">
+          QR Manager
+        </div>
 
-      <div
-        onClick={() => setIsAddMenu(!isAddMenu)}
-        className="flex mb-8 bg-emerald-600 hover:bg-emerald-500 transition duration-150 ease-in-out rounded-lg mx-2 sm:mx-12 px-8 py-4 sm:py-8 justify-center max-w-7xl xl:mx-auto items-center font-bold text-xl cursor-pointer shadow-lg"
-      >
-        Add new QR
-      </div>
-      {isAddMenu ? (
-        <div>
-          <div className="mx-4 sm:mx-12 border-white ">
-            <label htmlFor="percent" className="block mt-4 text-sm font-medium">
-              Number of new QR codes to add in database
-            </label>
-            <div className="mt-1 max-w-sm">
-              <input
-                id="percent"
-                name="percent"
-                type="number"
-                ref={formNumberQR}
-                required
-              />
-            </div>
-            <div className="flex justify-center items-center">
-              <button
-                onClick={handleAdd}
-                className="px-3 mt-12 py-4 font-medium border-2 border-blue-500 hover:border-blue-600 rounded-lg"
+        <div
+          onClick={() => setIsAddMenu(!isAddMenu)}
+          className="flex mb-8 bg-emerald-600 hover:bg-emerald-500 transition duration-150 ease-in-out rounded-lg mx-2 sm:mx-12 px-8 py-4 sm:py-8 justify-center max-w-7xl xl:mx-auto items-center font-bold text-xl cursor-pointer shadow-lg"
+        >
+          Add new QR
+        </div>
+        {isAddMenu ? (
+          <div>
+            <div className="mx-4 sm:mx-12 border-white ">
+              <label
+                htmlFor="percent"
+                className="block mt-4 text-sm font-medium"
               >
-                Add new QR
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
-
-      <div
-        onClick={() => setIsDropMenu(!isDropMenu)}
-        className="flex my-8 bg-emerald-600 hover:bg-emerald-500 transition duration-150 ease-in-out rounded-lg mx-2 sm:mx-12 px-8 py-4 sm:py-8 justify-center max-w-7xl xl:mx-auto items-center font-bold text-xl cursor-pointer shadow-lg"
-      >
-        Generate QRs
-      </div>
-      {isDropMenu ? (
-        <div className="mx-4 sm:mx-12">
-          <div
-            className={
-              "overflow-y-scroll " + qrToGenerateJSON.length > 0
-                ? "h-[600px]"
-                : ""
-            }
-          >
-            <table className="border-collapse outline-none w-3/4 max-w-5xl mx-auto shadow-lg">
-              <thead>
-                <tr className="bg-[#242c3b] text-white text-center font-bold">
-                  <th className="px-4 py-4">QR's ID</th>
-                </tr>
-              </thead>
-              {qrToGenerateJSON.length > 0 ? (
-                <tbody className="">{tr}</tbody>
-              ) : (
-                ""
-              )}
-            </table>
-          </div>
-          {qrToGenerateJSON.length > 0 ? (
-            ""
-          ) : (
-            <div className="flex flex-col py-10 justify-center items-center text-white font-bold bg-[#1B212E] text-md  w-3/4 mx-auto ">
-              No QR to generate yet
-            </div>
-          )}
-
-          <div className="absolute">
-            <Modal showModal={showQRModal} setShowModal={setShowQRModal}>
-              <div className="w-full h-full flex flex-col justify-evenly items-center">
-                <h1 className="text-2xl font-mono">Drop zone</h1>
-                <ul className="list-disc font-medium mx-12">
-                  <li>The email of the owner is {modalQREmail}</li>
-                  <li>Enter a valid Mondial Relay QR code (pdf)</li>
-                  <li>
-                    Please double check if the QR code is the correct w.r.t QR
-                    ID
-                  </li>
-                </ul>
-                {file ? (
-                  <div className="flex flex-col justify-center items-center">
-                    <button
-                      onClick={handleSubmit}
-                      className="px-12 py-4 text-white font-bold bg-emerald-500 hover:bg-emerald-600 rounded-lg"
-                    >
-                      VALIDATE
-                    </button>
-                    <div className="flex justify-end items-center my-4 text-sm">
-                      <div
-                        className="flex justify-center items-center cursor-pointer"
-                        onClick={handleReset}
-                      >
-                        <BackspaceIcon className="w-7 h-7 mr-1" />
-                        Reset
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <input
-                      type="file"
-                      name="file"
-                      id="file"
-                      className="w-[0.1px] h-[0.1px] opacity-0 overflow-hidden absolute -z-10 "
-                      onChange={handleChange}
-                      accept="image/png, image/jpeg, image/webp, application/pdf"
-                    />
-                    <label
-                      htmlFor="file"
-                      className="font-medium cursor-pointer text-white bg-red-500 hover:bg-red-600 px-12 py-4 flex justify-center items-center"
-                    >
-                      <CloudUploadIcon className="w-8 h-8 mr-1 " />
-                      Upload QR PDF
-                    </label>
-                  </div>
-                )}
+                Number of new QR codes to add in database
+              </label>
+              <div className="mt-1 max-w-sm">
+                <input
+                  id="percent"
+                  name="percent"
+                  type="number"
+                  ref={formNumberQR}
+                  required
+                />
               </div>
-            </Modal>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
-
-      <div
-        onClick={() => setIsRewardMenu(!isRewardMenu)}
-        className="flex my-8 bg-emerald-600 hover:bg-emerald-500 transition duration-150 ease-in-out rounded-lg mx-2 sm:mx-12 px-8 py-4 sm:py-8 justify-center max-w-7xl xl:mx-auto items-center font-bold text-xl cursor-pointer shadow-lg"
-      >
-        Reward finders
-      </div>
-      {isRewardMenu ? (
-        <div className="mx-4 sm:mx-12">
-          <div
-            className={
-              "overflow-y-scroll " + findersJSON.length > 0 ? "h-[600px]" : ""
-            }
-          >
-            <table className="border-collapse outline-none w-3/4 max-w-5xl mx-auto shadow-lg">
-              <thead>
-                <tr className="bg-[#242c3b] text-white text-center font-bold">
-                  <th className="px-4 py-4">QR's ID</th>
-                </tr>
-              </thead>
-              {findersJSON.length > 0 ? <tbody className="">{trf}</tbody> : ""}
-            </table>
-          </div>
-          {findersJSON.length > 0 ? (
-            ""
-          ) : (
-            <div className="flex flex-col py-10 justify-center items-center text-white font-bold bg-[#1B212E] text-md  w-3/4 mx-auto ">
-              No finders yet
-            </div>
-          )}
-
-          <div className="absolute">
-            <Modal
-              showModal={showFinderModal}
-              setShowModal={setShowFinderModal}
-            >
-              <div className="w-full h-full flex flex-col justify-evenly items-center">
-                <h1 className="text-2xl font-mono">Reward zone</h1>
-                <ul className="list-disc font-medium mx-12">
-                  {modalFinderFullname ? (
-                    <li>The fullname of the finder is {modalFinderFullname}</li>
-                  ) : (
-                    ""
-                  )}
-                  {modalIban ? (
-                    <li>The IBAN of the finder is {modalIban}</li>
-                  ) : (
-                    ""
-                  )}
-                  <li>The relais name is {modalRelaisHeading}</li>
-                  <li>The relais num is {modalRelaisNum}</li>
-                  <li>
-                    The owner is{" "}
-                    {modalOwnerFirstName + " " + modalOwnerLastName}
-                  </li>
-                  <li>The email of the owner is {modalFinderFullname}</li>
-                  <li>The type of reward is a donation : {modalDonation}</li>
-                </ul>
+              <div className="flex justify-center items-center">
                 <button
-                  onClick={handleRewardSubmit}
-                  className="px-12 py-4 text-white font-bold bg-emerald-500 hover:bg-emerald-600 rounded-lg"
+                  onClick={handleAdd}
+                  className="px-3 mt-12 py-4 font-medium border-2 border-blue-500 hover:border-blue-600 rounded-lg"
                 >
-                  VALIDATE REWARD
+                  Add new QR
                 </button>
               </div>
-            </Modal>
+            </div>
           </div>
+        ) : (
+          ""
+        )}
+
+        <div
+          onClick={() => setIsDropMenu(!isDropMenu)}
+          className="flex my-8 bg-emerald-600 hover:bg-emerald-500 transition duration-150 ease-in-out rounded-lg mx-2 sm:mx-12 px-8 py-4 sm:py-8 justify-center max-w-7xl xl:mx-auto items-center font-bold text-xl cursor-pointer shadow-lg"
+        >
+          Generate QRs
         </div>
-      ) : (
-        ""
-      )}
-    </div>
+        {isDropMenu ? (
+          <div className="mx-4 sm:mx-12">
+            <div
+              className={
+                "overflow-y-scroll " + qrToGenerateJSON.length > 0
+                  ? "h-[600px]"
+                  : ""
+              }
+            >
+              <table className="border-collapse outline-none w-3/4 max-w-5xl mx-auto shadow-lg">
+                <thead>
+                  <tr className="bg-[#242c3b] text-white text-center font-bold">
+                    <th className="px-4 py-4">QR's ID</th>
+                  </tr>
+                </thead>
+                {qrToGenerateJSON.length > 0 ? (
+                  <tbody className="">{tr}</tbody>
+                ) : (
+                  ""
+                )}
+              </table>
+            </div>
+            {qrToGenerateJSON.length > 0 ? (
+              ""
+            ) : (
+              <div className="flex flex-col py-10 justify-center items-center text-white font-bold bg-[#1B212E] text-md  w-3/4 mx-auto ">
+                No QR to generate yet
+              </div>
+            )}
+
+            <div className="absolute">
+              <Modal showModal={showQRModal} setShowModal={setShowQRModal}>
+                <div className="w-full h-full flex flex-col justify-evenly items-center">
+                  <h1 className="text-2xl font-mono">Drop zone</h1>
+                  <ul className="list-disc font-medium mx-12">
+                    <li>The email of the owner is {modalQREmail}</li>
+                    <li>Enter a valid Mondial Relay QR code (pdf)</li>
+                    <li>
+                      Please double check if the QR code is the correct w.r.t QR
+                      ID
+                    </li>
+                  </ul>
+                  {file ? (
+                    <div className="flex flex-col justify-center items-center">
+                      <input
+                        type="text"
+                        name="text"
+                        id="text"
+                        placeholder="Tracking number"
+                        ref={trackingNumber}
+                        className="my-2"
+                      />
+                      <button
+                        onClick={handleSubmit}
+                        className="px-12 py-4 text-white font-bold bg-emerald-500 hover:bg-emerald-600 rounded-lg"
+                      >
+                        VALIDATE
+                      </button>
+                      <div className="flex justify-end items-center my-4 text-sm">
+                        <div
+                          className="flex justify-center items-center cursor-pointer"
+                          onClick={handleReset}
+                        >
+                          <BackspaceIcon className="w-7 h-7 mr-1" />
+                          Reset
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <input
+                        type="file"
+                        name="file"
+                        id="file"
+                        className="w-[0.1px] h-[0.1px] opacity-0 overflow-hidden absolute -z-10 "
+                        onChange={handleChange}
+                        accept="image/png, image/jpeg, image/webp, application/pdf"
+                      />
+                      <label
+                        htmlFor="file"
+                        className="font-medium cursor-pointer text-white bg-red-500 hover:bg-red-600 px-12 py-4 flex justify-center items-center"
+                      >
+                        <CloudUploadIcon className="w-8 h-8 mr-1 " />
+                        Upload QR PDF
+                      </label>
+                    </div>
+                  )}
+                </div>
+              </Modal>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
+        <div
+          onClick={() => setIsRewardMenu(!isRewardMenu)}
+          className="flex my-8 bg-emerald-600 hover:bg-emerald-500 transition duration-150 ease-in-out rounded-lg mx-2 sm:mx-12 px-8 py-4 sm:py-8 justify-center max-w-7xl xl:mx-auto items-center font-bold text-xl cursor-pointer shadow-lg"
+        >
+          Reward finders
+        </div>
+        {isRewardMenu ? (
+          <div className="mx-4 sm:mx-12">
+            <div
+              className={
+                "overflow-y-scroll " + findersJSON.length > 0 ? "h-[600px]" : ""
+              }
+            >
+              <table className="border-collapse outline-none w-3/4 max-w-5xl mx-auto shadow-lg">
+                <thead>
+                  <tr className="bg-[#242c3b] text-white text-center font-bold">
+                    <th className="px-4 py-4">QR's ID</th>
+                  </tr>
+                </thead>
+                {findersJSON.length > 0 ? (
+                  <tbody className="">{trf}</tbody>
+                ) : (
+                  ""
+                )}
+              </table>
+            </div>
+            {findersJSON.length > 0 ? (
+              ""
+            ) : (
+              <div className="flex flex-col py-10 justify-center items-center text-white font-bold bg-[#1B212E] text-md  w-3/4 mx-auto ">
+                No finders yet
+              </div>
+            )}
+
+            <div className="absolute">
+              <Modal
+                showModal={showFinderModal}
+                setShowModal={setShowFinderModal}
+              >
+                <div className="w-full h-full flex flex-col justify-evenly items-center">
+                  <h1 className="text-2xl font-mono">Reward zone</h1>
+                  <ul className="list-disc font-medium mx-12">
+                    {modalFinderFullname ? (
+                      <li>
+                        The fullname of the finder is {modalFinderFullname}
+                      </li>
+                    ) : (
+                      ""
+                    )}
+                    {modalIban ? (
+                      <li>The IBAN of the finder is {modalIban}</li>
+                    ) : (
+                      ""
+                    )}
+                    <li>The relais name is {modalRelaisHeading}</li>
+                    <li>The relais num is {modalRelaisNum}</li>
+                    <li>
+                      The owner is{" "}
+                      {modalOwnerFirstName + " " + modalOwnerLastName}
+                    </li>
+                    <li>The email of the owner is {modalFinderFullname}</li>
+                    <li>The type of reward is a donation : {modalDonation}</li>
+                    <li>The tracking number is : {modalTackingNumber}</li>
+                  </ul>
+                  <button
+                    onClick={handleRewardSubmit}
+                    className="px-12 py-4 text-white font-bold bg-emerald-500 hover:bg-emerald-600 rounded-lg"
+                  >
+                    VALIDATE REWARD
+                  </button>
+                </div>
+              </Modal>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
+      <div className="h-20"></div>
+    </>
   );
 }
 

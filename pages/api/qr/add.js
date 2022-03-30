@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 const md5 = require("md5");
+
 /* Import base64 encoded private key from firebase and initialize firebase */
 const serviceAccount = JSON.parse(
   Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")

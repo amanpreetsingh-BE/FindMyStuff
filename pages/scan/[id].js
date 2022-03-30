@@ -54,6 +54,7 @@ export async function getServerSideProps({ params, locale }) {
   let jetons = null;
   let relais = null;
   let timestamp = null;
+  let pdf = null;
   let oob = null;
   let userEmail = null;
   try {
@@ -67,7 +68,8 @@ export async function getServerSideProps({ params, locale }) {
       relais = data.relais;
       jetons = data.jetons;
       timestamp = data.timestamp;
-      oob = activate ? null : md5(`${id}${process.env.SS_API_KEY}`);
+      pdf = data.pdf;
+      oob = md5(`${id}${process.env.SS_API_KEY}`);
       // Notify the user of scan found if activated and loaded
       if (activate && jetons >= 1) {
         console.log("ACTIVATED QR");
@@ -76,19 +78,18 @@ export async function getServerSideProps({ params, locale }) {
         if (docNotifRef.exists) {
           var s = docNotifRef.data().scan;
           s.push({ timestamp: admin.firestore.Timestamp.now().seconds });
-          notifRef.update({
+          await notifRef.update({
             scan: s,
           });
           console.log("add notif");
         } else {
           var s = [];
           s.push({ timestamp: admin.firestore.Timestamp.now().seconds });
-          app.firestore().collection("notifications").doc(id).set({
+          await app.firestore().collection("notifications").doc(id).set({
             id: id,
             email: userEmail,
             scan: s,
             delivery: [],
-            needToGenerate: false,
           });
           console.log("add first notif");
         }
@@ -105,6 +106,7 @@ export async function getServerSideProps({ params, locale }) {
           timestamp,
           hostname,
           oob,
+          pdf,
         },
       };
     } else {
@@ -130,6 +132,7 @@ export default function ScanPage({
   hostname,
   locale,
   oob,
+  pdf,
 }) {
   /* Handle language */
   const { t } = useTranslation();
@@ -162,6 +165,7 @@ export default function ScanPage({
 
   const [show, setShow] = useState(true);
   const [checked, setChecked] = useState(true);
+  const [generating, setGenerating] = useState(false);
   const fullName = useRef();
   const iban = useRef();
 
@@ -277,7 +281,7 @@ export default function ScanPage({
           }
 
           await handleRegister(id, formEmail.current.value);
-          router.push(`${hostname}/scan/select/${id}`);
+          router.push(`${hostname}/${locale}/scan/select/${id}`);
         } catch (err) {
           if (err.code === "auth/invalid-email") {
             setFormLoading(false);
@@ -349,19 +353,34 @@ export default function ScanPage({
 
   const handleGenerateQR = async (e) => {
     e.preventDefault();
+    setGenerating(true);
+    const re = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+
     if (
       !checked &&
       (fullName.current.value == "" || iban.current.value == "")
     ) {
+      setGenerating(false);
       return toast.error(t("scan:found:errorRew"));
     } else if (
       !checked &&
-      (iban.current.value.substr(0, 2) != "BE" ||
-        iban.current.value.substr(0, 2) != "be" ||
-        iban.current.value.length != 16)
+      iban.current.value.substr(0, 2) != "BE" &&
+      iban.current.value.substr(0, 2) != "be" &&
+      iban.current.value.length != 16
     ) {
+      setGenerating(false);
       return toast.error(t("scan:found:errorIBAN"));
+    } else if (!checked && !re.test(fullName.current.value)) {
+      setGenerating(false);
+      return toast.error(t("scan:errorName:specialC"));
+    } else if (!checked && fullName.current.value.length > 26) {
+      setGenerating(false);
+      return toast.error(t("scan:errorName:tooMuchC"));
+    } else if (!checked && fullName.current.value.length < 3) {
+      setGenerating(false);
+      return toast.error(t("scan:errorName:tooLowC"));
     } else {
+      // checked false
       const exp = 2505600;
       let data = null;
 
@@ -373,7 +392,7 @@ export default function ScanPage({
           expire: false,
           timestamp: timestamp,
           donation: checked,
-          authorization: process.env.NEXT_PUBLIC_API_KEY,
+          oob: oob,
         };
       } else if (timestamp && Timestamp.now().seconds >= timestamp + exp) {
         data = {
@@ -383,7 +402,7 @@ export default function ScanPage({
           expire: true,
           timestamp: timestamp,
           donation: checked,
-          authorization: process.env.NEXT_PUBLIC_API_KEY,
+          oob: oob,
         };
       } else {
         data = {
@@ -393,19 +412,28 @@ export default function ScanPage({
           expire: null,
           timestamp: timestamp,
           donation: checked,
-          authorization: process.env.NEXT_PUBLIC_API_KEY,
+          oob: oob,
         };
       }
-      await fetch(`${hostname}/api/qr/notifications/notifyGenerate`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      setStep(2);
+      try {
+        const response = await fetch(`/api/qr/handleGenerate`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        const responseJSON = await response.json();
+        if (responseJSON.success) {
+          setGenerating(false);
+          setStep(2);
+          return toast.success(t("scan:successQRGeneration"));
+        }
+      } catch (err) {
+        setGenerating(false);
+        return toast.error(t("scan:failureQRGeneration"));
+      }
     }
   };
 
@@ -462,6 +490,7 @@ export default function ScanPage({
     try {
       const data = {
         cp: cp.current.value,
+        id: id,
         oob: oob,
       };
       const response = await fetch(`/api/qr/findPointByCP`, {
@@ -562,9 +591,7 @@ export default function ScanPage({
     // RECHARGE
     return (
       <main className="w-full flex flex-col justify-center items-center text-white bg-primary h-screen">
-        <div className="absolute top-16 right-4">
-          {LanguageBox(id, locale, fr_flag, en_flag, false)}
-        </div>
+        {LanguageBox(id, locale, fr_flag, en_flag, false)}
 
         <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
           <Image src={jetonsLogo} width={200} height={200} />
@@ -584,16 +611,14 @@ export default function ScanPage({
     // FOUND
     return (
       <main className="w-full flex flex-col justify-center items-center text-white bg-primary min-h-screen">
-        <div className="absolute top-16 right-4">
-          {LanguageBox(id, locale, fr_flag, en_flag, false)}
-        </div>
+        {LanguageBox(id, locale, fr_flag, en_flag, false)}
         {step == 0 ? (
           <div className="flex items-center justify-center flex-col">
             {show ? (
               <Image src={animatedFound} width={300} height={300} />
             ) : (
-              <>
-                <div className="border-gray-500 border-2 space-y-4 py-12 px-4 max-w-sm mx-12 text-center rounded-lg">
+              <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
+                <div className="border-gray-500 border-2 space-y-4 py-12 px-4 max-w-sm mx-8 text-center rounded-lg">
                   <p>{t("scan:found:H1")}</p>
                   <p className="text-sm font-extrabold">{t("scan:found:h1")}</p>
                 </div>
@@ -602,24 +627,24 @@ export default function ScanPage({
                 </div>
                 <button
                   onClick={() => setStep(1)}
-                  className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-emerald-500 hover:border-emerald-600 rounded-lg"
+                  className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-secondary hover:border-secondaryHover rounded-lg"
                 >
                   {t("scan:found:btn1")}
                 </button>
-              </>
+              </div>
             )}
           </div>
         ) : step == 1 ? (
-          <div className="flex items-center justify-center flex-col my-12">
-            <div className="border-gray-500 border-2 space-y-4 py-1 px-8 max-w-sm mx-4 mt-12 text-center rounded-lg">
+          <div className="flex py-4 space-y-4 max-w-xl justify-center flex-col items-center mx-8 my-20 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
+            <div className="border-gray-500 border-2 space-y-4 py-1 px-8 max-w-sm mx-4 mt-4 text-center rounded-lg">
               <ul className="list-disc text-left space-y-2">
                 <li>{t("scan:found:li1")}</li>
                 <li>{t("scan:found:li2")}</li>
                 <li>{t("scan:found:li3")}</li>
               </ul>
             </div>
-            <div className="text-center mx-12 mt-4 text-gray-300">
-              <div className="form-check flex mt-2 justify-center items-center">
+            <div className="text-center mx-2 max-w-sm mt-4 text-gray-300">
+              <div className="form-check flex mt-2 justify-left items-center">
                 <input
                   className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                   type="radio"
@@ -629,13 +654,13 @@ export default function ScanPage({
                   onChange={() => setChecked(!checked)}
                 />
                 <label
-                  className="form-check-label text-left max-w-sm inline-block text-gray-200"
+                  className="form-check-label text-left  inline-block text-gray-200"
                   htmlFor="flexRadioDefault1"
                 >
-                  {t("scan:found:optA")}
+                  {t("scan:found:optB")}
                 </label>
               </div>
-              <div className="form-check flex mt-2 justify-center items-center">
+              <div className="form-check flex mt-2 justify-left items-center">
                 <input
                   className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                   type="radio"
@@ -645,7 +670,7 @@ export default function ScanPage({
                   onChange={() => setChecked(!checked)}
                 />
                 <label
-                  className="form-check-label text-left max-w-sm inline-block text-gray-200"
+                  className="form-check-label text-left inline-block text-gray-200"
                   htmlFor="flexRadioDefault2"
                 >
                   {t("scan:found:optA")}
@@ -694,8 +719,9 @@ export default function ScanPage({
               )}
             </div>
             <button
+              disabled={generating}
               onClick={handleGenerateQR}
-              className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-emerald-500 hover:border-emerald-600 rounded-lg cursor-pointer"
+              className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-secondary hover:border-secondaryHover rounded-lg cursor-pointer"
             >
               {t("scan:found:btn2")}
             </button>
@@ -707,7 +733,7 @@ export default function ScanPage({
             </div>
           </div>
         ) : step == 2 ? (
-          <div className="flex -mt-24 items-center justify-start flex-col">
+          <div className="flex py-4 space-y-4 max-w-xl justify-center flex-col items-center mx-8 my-20 sm:my-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
             <div className="w-[98%]">
               <label
                 htmlFor="cp"
@@ -754,7 +780,7 @@ export default function ScanPage({
                 <div
                   style={{
                     position: "absolute",
-                    top: selected ? "70%" : "60%",
+                    top: selected ? "80%" : "60%",
                     clip: "rect(25px,130px,147px,9px)",
                   }}
                 >
@@ -796,9 +822,7 @@ export default function ScanPage({
     // SELECT RELAIS
     return (
       <main className="w-full flex flex-col justify-center items-center text-white bg-primary h-screen">
-        <div className="absolute top-16 right-4">
-          {LanguageBox(id, locale, fr_flag, en_flag, true)}
-        </div>
+        {LanguageBox(id, locale, fr_flag, en_flag, true)}
 
         <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
           <Image src={uncomplete} width={200} height={200} />

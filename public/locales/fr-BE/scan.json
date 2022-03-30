@@ -50,6 +50,8 @@
   },
   "successQRregister": "Enregistrement réussi ",
   "failureQRregister": "Echec lors de l'enregistrement, veuillez contacter le support",
+  "successQRGeneration": "Génération réussie",
+  "failureQRGeneration": "Echec lors de la génération",
   "noJetons": "Si vous êtes le propriétaire de ce QR code, merci de bien vouloir vous connectez pour recharger votre jeton afin qu'on puisse le remettre dans le point relais de votre choix.",
   "goHome": "Se connecter",
   "chooseRelais": "Si vous êtes le propriétaire de ce QR code, merci de bien vouloir finir l'enregistrement en choisissant le point relais sur le dashboard.",
@@ -80,6 +82,6 @@
     "qrZIP": "Code postal",
     "qrGeneration": "Le code QR apparaîtra au maximum dans 15 minutes",
     "qrGenerated": "Merci de présenter le paquet au point relais le plus proche avec ce code QR ",
-    "errorIBAN": "Merci de rentrer un IBAN valide"
+    "errorIBAN": "Merci de rentrer un IBAN belge valide"
   }
 }

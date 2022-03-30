@@ -18,8 +18,6 @@ export default function Products({
   Image,
   email,
   userProductsJSON,
-  uid,
-  oob,
   useRef,
 }) {
   /* Used to push to dashboard */

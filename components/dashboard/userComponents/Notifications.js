@@ -57,7 +57,7 @@ export default function Notifications({
             className="flex flex-col justify-center px-8 py-12 items-center w-full h-12 rounded-lg bg-[#1B212E] shadow-lg hover:shadow-lg"
           >
             <div className="text-lg font-bold ">{id}</div>
-            <div className="text-emerald-500 font-bold text-sm">
+            <div className="text-secondary text-center font-bold text-sm">
               {t("dashboard:user:notifPage:sent")}{" "}
               {new Date(nd.timestamp * 1000).toLocaleString()}
             </div>
@@ -74,7 +74,7 @@ export default function Notifications({
             }
           >
             <div className="text-lg font-bold ">{id}</div>
-            <div className="text-emerald-500 font-bold text-sm">
+            <div className="text-secondary text-center font-bold text-sm">
               {t("dashboard:user:notifPage:scanned")}{" "}
               {new Date(ns.timestamp * 1000).toLocaleString()}
             </div>
@@ -99,6 +99,7 @@ export default function Notifications({
               className="flex px-2 py-2 rounded-lg cursor-pointer"
             >
               <XIcon className="text-red-400 w-6 h-6" />
+              {t("dashboard:user:notifPage:clear")}
             </button>
           </div>
           {cards}
@@ -109,7 +110,7 @@ export default function Notifications({
 
   return (
     <>
-      <div className="mt-20 mx-12 lg:mx-auto px-12 py-12 bg-[#1B212E] max-w-4xl ">
+      <div className="my-20 mx-12 lg:mx-auto px-12 py-12 bg-[#191919] max-w-4xl rounded-lg shadow-lg p-6">
         <div className="flex text-center font-mono justify-center items-center font-bold text-2xl lg:text-3xl mb-8">
           {t("dashboard:user:notifPage:heading")}
         </div>

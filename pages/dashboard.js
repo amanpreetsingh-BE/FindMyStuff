@@ -242,17 +242,16 @@ export async function getServerSideProps({ res, req, locale }) {
     try {
       const querySnapshot = await app
         .firestore()
-        .collection("notifications")
+        .collection("QR")
         .where("needToGenerate", "==", true)
         .get();
       querySnapshot.forEach((doc) => {
-        qrToGenerateJSON.push(doc.data());
+        qrToGenerateJSON.push({ data: doc.data(), id: doc.id });
       });
     } catch (err) {
       console.log(err.message);
       qrToGenerateJSON = null;
     }
-
     /* GET FINDERS TO REWARD */
     try {
       var findersRef = app.firestore().collection("finders");
