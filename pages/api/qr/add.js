@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     const allQR = [];
     const newQR = [];
     try {
-      /*const docs = await app.firestore().collection("QR").listDocuments();
+      const docs = await app.firestore().collection("QR").listDocuments();
       docs.forEach((doc) => {
         allQR.push(doc.id);
       });
@@ -44,8 +44,7 @@ export default async function handler(req, res) {
           }
         }
       }
-      console.log(newQR);
-      await addQRtoDB(newQR);*/
+      //await addQRtoDB(newQR);
       await generateNemesis();
       res.status(200).json({ success: true, newQR: newQR });
     } catch (err) {

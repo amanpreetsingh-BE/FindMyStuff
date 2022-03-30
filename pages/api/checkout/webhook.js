@@ -97,7 +97,7 @@ const fulfillOrder = async (session, charge, paymentType, amount) => {
     session.metadata.model == "reload" &&
     session.metadata.cat == "reload" &&
     session.metadata.color == "reload" &&
-    session.metadata.priceID == "price_1Kiy4CK5KPA8d9OvQzVaAiQD"
+    session.metadata.priceID == "price_1KZcrlK5KPA8d9OvKtznbNWq"
   ) {
     await incrementToken(session.metadata.qrID, session.metadata.quantity);
     await app
