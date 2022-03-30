@@ -208,7 +208,7 @@ export default function Products({
           cat: "reload",
           model: "reload", // to be changed in V2 to selectedModel[0].model
           color: "reload",
-          priceID: "price_1KZcrlK5KPA8d9OvKtznbNWq",
+          priceID: "price_1Kiy4CK5KPA8d9OvQzVaAiQD",
           qrID: modalID,
           locale: locale,
           quantity: qty.current.value,
