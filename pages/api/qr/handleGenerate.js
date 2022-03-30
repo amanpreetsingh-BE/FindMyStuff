@@ -62,7 +62,6 @@ export default async function handler(req, res) {
           ownerLastName: userData.lastName,
           relaisNum: qrData.relais.num,
           relaisHeading: qrData.relais.heading,
-          trackingNumber: qrData.trackingNumber,
         });
       } else {
         await finderRef.set({
@@ -74,7 +73,6 @@ export default async function handler(req, res) {
           ownerLastName: userData.lastName,
           relaisNum: qrData.relais.num,
           relaisHeading: qrData.relais.heading,
-          trackingNumber: qrData.trackingNumber,
         });
       }
 

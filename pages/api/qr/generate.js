@@ -28,6 +28,11 @@ export default async function handler(req, res) {
       const pdf = req.body.pdf;
       const trackingNumber = req.body.trackingNumber;
       const qrRef = app.firestore().collection("QR").doc(id);
+      const finderRef = app.firestore().collection("finders").doc(id);
+      await finderRef.update({
+        trackingNumber: trackingNumber,
+      });
+
       await qrRef.update({
         timestamp: admin.firestore.Timestamp.now().seconds,
         pdf: pdf,

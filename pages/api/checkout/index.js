@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       model == "reload" &&
       cat == "reload" &&
       color == "reload" &&
-      priceID == "price_1KZcrlK5KPA8d9OvKtznbNWq";
+      priceID == "price_1Kiy4CK5KPA8d9OvQzVaAiQD";
     let session;
     try {
       // Create Checkout Sessions from body params.
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
             {
               price: priceID,
               quantity: quantity,
-              tax_rates: ["txr_1KBLtIK5KPA8d9OvylyxPlOz"], // no need to encode, always same in BE
+              tax_rates: ["txr_1Kiy3DK5KPA8d9OvTMraCjwK"], // no need to encode, always same in BE
             },
           ],
           mode: "payment",
@@ -54,7 +54,7 @@ export default async function handler(req, res) {
             {
               price: priceID,
               quantity: 1,
-              tax_rates: ["txr_1KBLtIK5KPA8d9OvylyxPlOz"], // no need to encode, always same in BE
+              tax_rates: ["txr_1Kiy3DK5KPA8d9OvTMraCjwK"], // no need to encode, always same in BE
             },
           ],
           mode: "payment",

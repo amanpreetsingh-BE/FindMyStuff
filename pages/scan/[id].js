@@ -163,19 +163,19 @@ export default function ScanPage({
   const formRepeatPassword = useRef();
   const formForgot = useRef();
 
-  const [show, setShow] = useState(true);
+  //const [show, setShow] = useState(true);
   const [checked, setChecked] = useState(true);
   const [generating, setGenerating] = useState(false);
   const fullName = useRef();
   const iban = useRef();
 
-  const delay = 3;
+  /*const delay = 3;
   useEffect(() => {
     let timer1 = setTimeout(() => setShow(false), delay * 1000);
     return () => {
       clearTimeout(timer1);
     };
-  }, []);
+  }, []);*/
 
   const cp = useRef();
   const [center, setCenter] = useState([50.85034, 4.35171]);
@@ -616,25 +616,21 @@ export default function ScanPage({
         {LanguageBox(id, locale, fr_flag, en_flag, false)}
         {step == 0 ? (
           <div className="flex items-center justify-center flex-col">
-            {show ? (
-              <Image src={animatedFound} width={300} height={300} />
-            ) : (
-              <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
-                <div className="border-gray-500 border-2 space-y-4 py-12 px-4 max-w-sm mx-8 text-center rounded-lg">
-                  <p>{t("scan:found:H1")}</p>
-                  <p className="text-sm font-extrabold">{t("scan:found:h1")}</p>
-                </div>
-                <div className="text-center mx-12 mt-4 text-gray-300">
-                  {t("scan:found:desc1")}
-                </div>
-                <button
-                  onClick={() => setStep(1)}
-                  className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-secondary hover:border-secondaryHover rounded-lg"
-                >
-                  {t("scan:found:btn1")}
-                </button>
+            <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
+              <div className="border-gray-500 border-2 space-y-4 py-12 px-4 max-w-sm mx-8 text-center rounded-lg">
+                <p>{t("scan:found:H1")}</p>
+                <p className="text-sm font-extrabold">{t("scan:found:h1")}</p>
               </div>
-            )}
+              <div className="text-center mx-12 mt-4 text-gray-300">
+                {t("scan:found:desc1")}
+              </div>
+              <button
+                onClick={() => setStep(1)}
+                className="max-w-lg py-3 px-8 mx-auto my-4 font-bold text-md border-2 border-secondary hover:border-secondaryHover rounded-lg"
+              >
+                {t("scan:found:btn1")}
+              </button>
+            </div>
           </div>
         ) : step == 1 ? (
           <div className="flex py-4 space-y-4 max-w-xl justify-center flex-col items-center mx-8 my-20 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
