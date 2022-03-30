@@ -80,6 +80,7 @@ export default async function handler(req, res) {
 
       /* NOTIFY IF NEED TO GENERATE */
       if (!timestamp || expire) {
+        console.log("notifying ...");
         var hbs = require("nodemailer-express-handlebars");
         var nodemailer = require("nodemailer");
         const path = require("path");
@@ -130,6 +131,7 @@ export default async function handler(req, res) {
 
       res.status(200).json({ success: true });
     } catch (err) {
+      console.log(err.message);
       res.status(err.statusCode || 500).json(err.message);
     }
   } else {
