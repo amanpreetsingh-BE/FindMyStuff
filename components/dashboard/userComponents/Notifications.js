@@ -70,7 +70,7 @@ export default function Notifications({
           <div
             key={ns.timestamp + k}
             className={
-              "flex flex-col justify-center cursor-pointer px-8 py-12 items-center w-full h-12 rounded-lg bg-[#1c222e] shadow-lg hover:shadow-lg"
+              "flex flex-col justify-center cursor-pointer px-8 py-12 items-center w-full h-12 rounded-lg bg-[#202020] shadow-lg hover:shadow-lg"
             }
           >
             <div className="text-lg font-bold ">{id}</div>

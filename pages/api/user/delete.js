@@ -44,10 +44,14 @@ export default async function handler(req, res) {
           .get();
         userQrQuerySnap.forEach(async (doc) => {
           await doc.ref.update({
-            email: "",
-            relais: null,
             activate: false,
+            email: "",
             jetons: doc.data().jetons,
+            needToGenerate: false,
+            pdf: null,
+            relais: null,
+            timestamp: null,
+            trackingNumber: null,
           });
         });
 
