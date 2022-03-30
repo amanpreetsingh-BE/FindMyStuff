@@ -20,8 +20,9 @@ const app = !admin.apps.length
 export default async function handler(req, res) {
   if (
     req.method === "POST" &&
-    md5(`${req.body.id}${process.env.SS_API_KEY}`) === req.body.oob
+    md5(`${req.body.id}${process.env.SS_API_KEY}`) == req.body.oob
   ) {
+    console.log("run");
     const fullName = req.body.fullName;
     const iban = req.body.iban;
     const expire = req.body.expire;
@@ -36,7 +37,7 @@ export default async function handler(req, res) {
       const qrData = (
         await app.firestore().collection("QR").doc(id).get()
       ).data();
-
+      console.log(qrData);
       /* RETRIEVE OWNER OF QR DATA */
       const queryQrToOwner = await app
         .firestore()
@@ -47,6 +48,7 @@ export default async function handler(req, res) {
       queryQrToOwner.forEach((doc) => {
         userData = doc.data();
       });
+      console.log(userData);
 
       /* SET/UPDATE A FINDER */
       const finderRef = app.firestore().collection("finders").doc(id);

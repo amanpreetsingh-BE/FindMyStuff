@@ -149,7 +149,7 @@ function ManageQR({
         formNumberQR: formNumberQR.current.value,
         authorization: authorization,
       };
-      const response = await fetch(`/api/qr/add/`, {
+      const response = await fetch(`/api/qr/add`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -184,7 +184,7 @@ function ManageQR({
       getBase64(file).then(async (data) => {
         const dat = {
           pdf: data,
-          trackingNumber: trackingNumber,
+          trackingNumber: trackingNumber.current.value,
           id: modalQRID,
           authorization: authorization,
         };

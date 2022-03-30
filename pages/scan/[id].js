@@ -354,6 +354,7 @@ export default function ScanPage({
 
   const handleGenerateQR = async (e) => {
     e.preventDefault();
+
     setGenerating(true);
     const re = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
 

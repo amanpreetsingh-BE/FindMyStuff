@@ -54,7 +54,7 @@ export default function Notifications({
         cards.push(
           <div
             key={nd.timestamp + k}
-            className="flex flex-col justify-center px-8 py-12 items-center w-full h-12 rounded-lg bg-[#1B212E] shadow-lg hover:shadow-lg"
+            className="flex flex-col justify-center px-8 py-12 items-center w-full h-12 rounded-lg bg-[#202020] shadow-lg hover:shadow-lg"
           >
             <div className="text-lg font-bold ">{id}</div>
             <div className="text-secondary text-center font-bold text-sm">
