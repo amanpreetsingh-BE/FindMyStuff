@@ -1,6 +1,6 @@
 {
   "notVerified": {
-    "verifyEmail": "Un email avec un lien d'activation à été envoyé dans votre boîte de reception, merci d'activer votre compte en cliquant sur le lienenvoyé. Il se peut que le mail se soit glissé dans vos spams.",
+    "verifyEmail": "Un email avec un lien d'activation à été envoyé dans votre boîte de reception, merci d'activer votre compte en cliquant sur le lien envoyé. Il se peut que le mail se soit glissé dans vos spams.",
     "resendMsgBtn": "Renvoyer le mail",
     "successResend": "Email envoyé",
     "errorResend": "Erreur lors de l'envoie de l'email",
