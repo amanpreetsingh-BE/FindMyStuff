@@ -277,7 +277,7 @@ export default function ScanPage({
           const responseJSON = await response.json();
           if (responseJSON.error) {
             // error while adding info on user ...
-            throw new Error(t("sign:errorMakingAccount"));
+            throw new Error(t("scan:errorMakingAccount"));
           }
 
           await handleRegister(id, formEmail.current.value);
@@ -308,6 +308,7 @@ export default function ScanPage({
           formEmail.current.value,
           formPassword.current.value
         );
+        await handleRegister(id, formEmail.current.value);
         router.push(`${hostname}/scan/select/${id}`);
       } catch (err) {
         if (err.code === "auth/user-not-found") {
@@ -1124,7 +1125,7 @@ function SignInGoogleButton() {
     const responseJSON = await response.json();
     if (responseJSON.error) {
       // error while adding info on user ...
-      throw new Error(t("sign:errorSignGoogle"));
+      throw new Error(t("scan:errorSignGoogle"));
     }
   }
 
@@ -1139,7 +1140,7 @@ function SignInGoogleButton() {
       await handleRegister(id, userCredential.user.email);
       router.push(`${hostname}/${locale}/scan/select/${id}`);
     } catch (err) {
-      return toast.error(t("sign:errorSignGoogle"));
+      return toast.error(t("scan:errorSignGoogle"));
     }
   };
 
@@ -1155,7 +1156,7 @@ function SignInGoogleButton() {
         width={20}
         height={20}
       />{" "}
-      <span className="ml-2">{t("sign:signInWithGoogle")}</span>
+      <span className="ml-2">{t("scan:signInWithGoogle")}</span>
     </button>
   );
 }
@@ -1189,7 +1190,7 @@ function SignInFacebookButton() {
 
     if (responseJSON.error) {
       // error while adding info on user ...
-      throw new Error(t("sign:errorSignFb"));
+      throw new Error(t("scan:errorSignFb"));
     }
   }
 
@@ -1205,7 +1206,7 @@ function SignInFacebookButton() {
       await handleRegister(id, userCredential.user.email);
       router.push(`${hostname}/${locale}/scan/select/${id}`);
     } catch (err) {
-      return toast.error(t("sign:errorSignFb"));
+      return toast.error(t("scan:errorSignFb"));
     }
   };
 
@@ -1221,7 +1222,7 @@ function SignInFacebookButton() {
         width={20}
         height={20}
       />{" "}
-      <span className="ml-2">{t("sign:signInWithFacebook")}</span>
+      <span className="ml-2">{t("scan:signInWithFacebook")}</span>
     </button>
   );
 }

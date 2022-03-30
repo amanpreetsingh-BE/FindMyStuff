@@ -1,8 +1,7 @@
 /* Firebase components imports */
 import { auth } from "@lib/firebase";
-import { sendPasswordResetEmail } from "firebase/auth";
-import { useRouter } from "next/router";
 import { XIcon, MailIcon } from "@heroicons/react/outline";
+import { useRouter } from "next/router";
 
 export default function Parameters({
   useState,
@@ -106,6 +105,7 @@ export default function Parameters({
         const responseJSON = await response.json();
         if (responseJSON.success) {
           toast.success(t("dashboard:user:paramPage:pupdate"));
+          return router.reload();
         }
       } catch (err) {
         return toast.error(err.message);

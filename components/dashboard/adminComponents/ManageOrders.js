@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 function ManageOrders({
   useState,
   authorization,
@@ -6,6 +8,8 @@ function ManageOrders({
   toast,
   t,
 }) {
+  /* Handle reload */
+  const router = useRouter();
   /* Modal variables states for orders */
   const [modalOrderCustomerEmail, setModalOrderCustomerEmail] = useState("");
   const [modalOrderShippingName, setModalOrderShippingName] = useState("");
@@ -121,6 +125,7 @@ function ManageOrders({
       const responseJSON = await response.json();
       if (responseJSON.received) {
         toast.success("Shipping email sent !");
+        return router.reload();
       } else {
         toast.error("Error .. Please contact amanpreet@outlook.be");
       }

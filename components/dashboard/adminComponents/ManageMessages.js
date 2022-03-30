@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { CloudUploadIcon, BackspaceIcon } from "@heroicons/react/outline";
 
 function ManageMessages({
@@ -9,6 +10,8 @@ function ManageMessages({
   t,
   toast,
 }) {
+  /* Handle reload */
+  const router = useRouter();
   /* Modal variables states for orders */
   const [modalContactMessage, setModalContactMessage] = useState("");
   const [modalContactID, setModalContactID] = useState("");
@@ -69,7 +72,8 @@ function ManageMessages({
         });
         const responseJSON = await response.json();
         if (responseJSON.received) {
-          return toast.success("Successful response !");
+          toast.success("Successful response !");
+          return router.reload();
         } else {
           return toast.error("Error, please contact amanpreet@outlook.be");
         }
@@ -95,7 +99,8 @@ function ManageMessages({
         });
         const responseJSON = await response.json();
         if (responseJSON.received) {
-          return toast.success("Successful response !");
+          toast.success("Successful response !");
+          return router.reload();
         } else {
           return toast.error("Error, please contact amanpreet@outlook.be");
         }

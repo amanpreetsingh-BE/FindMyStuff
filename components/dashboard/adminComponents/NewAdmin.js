@@ -1,5 +1,8 @@
+import { useRouter } from "next/router";
 function NewAdmin({ useRef, toast, authorization }) {
   const formEmail = useRef();
+  /* Handle reload */
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +21,8 @@ function NewAdmin({ useRef, toast, authorization }) {
       });
       const responseJSON = await response.json();
       if (responseJSON.received) {
-        return toast.success("Successful response !");
+        toast.success("Successful response !");
+        return router.reload();
       }
     } catch (err) {
       console.log(err.message);

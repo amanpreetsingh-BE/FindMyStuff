@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 function ManageProducts({
   useState,
   useRef,
@@ -8,6 +10,8 @@ function ManageProducts({
   authorization,
   t,
 }) {
+  /* Handle reload */
+  const router = useRouter();
   /* Keychain menu state : open or closed */
   const [isKeychainMenu, setIsKeychainMenu] = useState(true);
   /* Sticker menu state : open or closed */
@@ -154,7 +158,8 @@ function ManageProducts({
       });
       const responseJSON = await response.json();
       if (responseJSON.received) {
-        return toast.success("Successful stock update");
+        toast.success("Successful stock update");
+        return router.reload();
       } else {
         return toast.error(
           "Unsuccessful stock update, please contact amanpreet@outlook.be"
@@ -181,7 +186,8 @@ function ManageProducts({
     });
     const responseJSON = await response.json();
     if (responseJSON.received) {
-      return toast.success("Successful delete");
+      toast.success("Successful delete");
+      return router.reload();
     } else {
       return toast.error(
         "Unsuccessful delete, please contact amanpreet@outlook.be"

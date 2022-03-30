@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 export default function Promo({
   useState,
   useRef,
@@ -6,6 +8,8 @@ export default function Promo({
   couponsJSON,
   authorization,
 }) {
+  /* Handle reload */
+  const router = useRouter();
   /* Coupons menu state : open or closed */
   const [isCouponsMenu, setIsCouponsMenu] = useState(true);
   /* Add coupons menu state : open or closed */
@@ -49,7 +53,8 @@ export default function Promo({
       });
       const responseJSON = await response.json();
       if (responseJSON.success) {
-        return toast.success("Successful response !");
+        toast.success("Successful response !");
+        return router.reload();
       } else {
         return toast.error(responseJSON.err);
       }
@@ -73,7 +78,8 @@ export default function Promo({
     });
     const responseJSON = await response.json();
     if (responseJSON.success) {
-      return toast.success("Successful response !");
+      toast.success("Successful response !");
+      return router.reload();
     } else {
       return toast.error(responseJSON.err);
     }

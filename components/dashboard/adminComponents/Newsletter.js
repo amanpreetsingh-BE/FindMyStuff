@@ -2,8 +2,11 @@ import { CloudUploadIcon, BackspaceIcon } from "@heroicons/react/outline";
 /* firebase v9 lib to handle new product */
 import { storage } from "@lib/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useRouter } from "next/router";
 
 function Newsletter({ useState, useRef, toast, authorization }) {
+  /* Handle reload */
+  const router = useRouter();
   const title = useRef();
   const message = useRef();
 
@@ -36,7 +39,8 @@ function Newsletter({ useState, useRef, toast, authorization }) {
             });
             const responseJSON = await response.json();
             if (responseJSON.received) {
-              return toast.success("Successful response !");
+              toast.success("Successful response !");
+              return router.reload();
             } else {
               return toast.error("Error, please contact amanpreet@outlook.be");
             }
@@ -60,7 +64,8 @@ function Newsletter({ useState, useRef, toast, authorization }) {
         });
         const responseJSON = await response.json();
         if (responseJSON.received) {
-          return toast.success("Successful response !");
+          toast.success("Successful response !");
+          toast.success("Successful response !");
         } else {
           return toast.error("Error, please contact amanpreet@outlook.be");
         }
