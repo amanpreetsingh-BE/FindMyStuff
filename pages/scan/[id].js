@@ -367,6 +367,7 @@ export default function ScanPage({
       !checked &&
       iban.current.value.substr(0, 2) != "BE" &&
       iban.current.value.substr(0, 2) != "be" &&
+      iban.current.valuesubstr(0, 2) != "Be" &&
       iban.current.value.length != 16
     ) {
       setGenerating(false);
@@ -433,8 +434,8 @@ export default function ScanPage({
         }
       } catch (err) {
         setGenerating(false);
-        return toast.error(err.message);
-        //return toast.error(t("scan:failureQRGeneration"));
+        //return toast.error(err.message);
+        return toast.error(t("scan:failureQRGeneration"));
       }
     }
   };
