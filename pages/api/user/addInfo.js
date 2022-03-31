@@ -29,8 +29,9 @@ export default async function handler(req, res) {
 
       const userDocRef = app.firestore().collection("users").doc(uid);
       const userDoc = await userDocRef.get();
+
       if (userDoc.exists) {
-        if (signMethod == "google" || signMethod == "facebook") {
+        if (signMethod === "google" || signMethod === "facebook") {
           // not first time login with fb or google
           await userDocRef.update({
             email: email,
@@ -40,7 +41,7 @@ export default async function handler(req, res) {
         } else {
           throw new Error("Email user already exists");
         }
-
+      } else {
         // first time login with fb or google or email
         await userDocRef.set({
           email: email,
@@ -50,9 +51,9 @@ export default async function handler(req, res) {
           verifySent: false,
           admin: false,
         });
-
-        res.status(200).json({ received: true });
       }
+
+      res.status(200).json({ received: true });
     } catch (err) {
       console.log(err.message);
       res.status(err.statusCode || 500).json({ error: err.message });
