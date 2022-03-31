@@ -308,7 +308,7 @@ export async function getServerSideProps({ res, req, locale }) {
   // allow to sign a request of the profile
   const oob = md5(`${uid}${process.env.SS_API_KEY}`);
 
-  if (signMethod != email) {
+  if (signMethod != userEmail) {
     await app.auth().updateUser(uid, { emailVerified: true });
     var docRef = app.firestore().collection("users").doc(`${uid}`);
 
