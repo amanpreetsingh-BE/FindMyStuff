@@ -84,7 +84,7 @@ function FooterSection({ t, Image, hostname }) {
         </div>
         <div className="space-x-2 md:space-x-3.5">
           <a
-            href="https://www.linkedin.com/findmystuff-be/"
+            href="https://www.linkedin.com/company/findmystuff-be/"
             target="_blank"
             rel="noreferrer"
           >
