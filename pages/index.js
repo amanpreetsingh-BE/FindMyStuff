@@ -22,9 +22,9 @@ import { motion } from "framer-motion";
 /* Translation */
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-import { auth } from "@lib/firebase";
 
 export async function getServerSideProps({ req, locale }) {
+  console.log("HELLO WORLD");
   /* Get host (local or dev) */
   const hostname = process.env.HOSTNAME;
   /* import admin-sdk firebase */
