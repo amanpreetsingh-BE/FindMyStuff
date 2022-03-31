@@ -28,14 +28,11 @@ export default async function handler(req, res) {
 
       if (!re.test(firstName) || !re.test(lastName)) {
         // number and special characters test
-        setFormLoading(false);
-        return toast.error(t("sign:errorName:specialC"));
+        throw new Error("BAD FORMAT");
       } else if (firstName.length > 26 || lastName.length > 26) {
-        setFormLoading(false);
-        return toast.error(t("sign:errorName:tooMuchC"));
+        throw new Error("BAD FORMAT");
       } else if (firstName.length < 3 || lastName.length < 3) {
-        setFormLoading(false);
-        return toast.error(t("sign:errorName:tooLowC"));
+        throw new Error("BAD FORMAT");
       } else {
         await app.auth().getUser(uid); // check if the user request is legit
 

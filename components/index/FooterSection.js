@@ -24,7 +24,7 @@ function FooterSection({ t, Image, hostname }) {
         </div>
       </div>
 
-      <div className="pt-8 ml-6 md:ml-0 relative w-48 h-full">
+      <div className="pt-8 ml-6 md:ml-0 relative w-48 pl-2 h-full">
         <div className="text-lg text-gray-50 font-bold mb-10">
           {t("home:footer:company")}
         </div>
@@ -52,7 +52,7 @@ function FooterSection({ t, Image, hostname }) {
         </ul>
       </div>
 
-      <div className="pt-8 relative w-48 h-full">
+      <div className="pt-8 relative pl-8 w-48 h-full">
         <div className="text-lg text-gray-50 font-bold mb-10">
           {t("home:footer:help")}
         </div>
@@ -78,17 +78,17 @@ function FooterSection({ t, Image, hostname }) {
         </ul>
       </div>
 
-      <div className="pt-8 relative w-48 h-full">
+      <div className="pt-8 relative w-52 h-full">
         <div className="text-lg text-gray-50 font-bold mb-10">
           {t("home:footer:social")}
         </div>
         <div className="space-x-2 md:space-x-3.5">
           <a
-            href="https://www.linkedin.com/findmystuff.be/"
+            href="https://www.linkedin.com/findmystuff-be/"
             target="_blank"
             rel="noreferrer"
           >
-            <div className="cursor-pointer inline-block relative w-[28px] h-[28px] md:w-[48px] md:h-[48px]">
+            <div className="cursor-pointer inline-block relative w-[30px] h-[30px] md:w-[48px] md:h-[48px]">
               <Image
                 src={linkLogo}
                 loading="eager"
@@ -102,7 +102,7 @@ function FooterSection({ t, Image, hostname }) {
             target="_blank"
             rel="noreferrer"
           >
-            <div className="cursor-pointer inline-block relative w-[28px] h-[28px] md:w-[48px] md:h-[48px]">
+            <div className="cursor-pointer inline-block relative w-[30px] h-[30px] md:w-[48px] md:h-[48px]">
               <Image
                 src={fbLogo}
                 loading="eager"
@@ -116,7 +116,7 @@ function FooterSection({ t, Image, hostname }) {
             target="_blank"
             rel="noreferrer"
           >
-            <div className="cursor-pointer inline-block relative w-[28px] h-[28px] md:w-[48px] md:h-[48px]">
+            <div className="cursor-pointer inline-block relative w-[30px] h-[30px] md:w-[48px] md:h-[48px]">
               <Image
                 src={instaLogo}
                 loading="eager"

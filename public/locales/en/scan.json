@@ -77,7 +77,7 @@
     "li2": "By clicking on 'GENERATE', a QR code will be made. This can take up to 15 minutes. Please refresh the page every 15 minutes.",
     "li3": "Show the generated QR code to the pickup parcelshop that you will choose in the next page. Don't forget to pack the object. The list of pickup parcelshop around your ZIP code will be shown, you can deposit the item to any of them.",
     "btn2": "GENERATE",
-    "optB": "I want an amount of 3 euros to be transfered to a NGO.",
+    "optB": "I want an amount of 3 euros to be transfered to Red Cross.",
     "optA": "I want to get rewarded by an amount of 3 euros.",
     "errorRew": "Please enter your fullname and your IBAN",
     "qrZIP": "ZIP code",

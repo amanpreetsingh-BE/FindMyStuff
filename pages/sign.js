@@ -252,7 +252,7 @@ export default function Sign({ locale, hostname }) {
 
   return (
     <main className="w-full min-h-screen bg-primary flex flex-col justify-start items-center">
-      <div className={`${signupState ? "pt-8" : "pt-12"} pb-4`}>
+      <div className={`pt-16 pb-4`}>
         <Link passHref href="/">
           <div className="flex justify-center">
             <div className="cursor-pointer relative w-[58px] h-[58px] sm:w-[80px] sm:h-[80px]">

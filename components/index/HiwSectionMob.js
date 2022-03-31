@@ -66,7 +66,7 @@ function HiwSectionMob({ Image, motion, t }) {
               </motion.div>
             </div>
 
-            <div className="text-gray-300 h-1/2 mx-24 font-bold text-center flex items-start pt-4 pb-8 justify-center">
+            <div className="text-gray-300 h-1/2 mx-12 font-bold text-center flex items-start pt-4 pb-8 justify-center">
               {t("home:hiw:step1")}
             </div>
           </div>
@@ -84,7 +84,7 @@ function HiwSectionMob({ Image, motion, t }) {
               </div>
             </div>
 
-            <div className="text-gray-300 h-1/2 mx-24 font-bold text-center flex items-start pt-4 pb-8 justify-center">
+            <div className="text-gray-300 h-1/2 mx-12 font-bold text-center flex items-start pt-4 pb-8 justify-center">
               {t("home:hiw:step2")}
             </div>
           </div>
@@ -102,7 +102,7 @@ function HiwSectionMob({ Image, motion, t }) {
               </div>
             </div>
 
-            <div className="text-gray-300 h-1/2 mx-24 font-bold text-center flex items-start pt-4 pb-8 justify-center">
+            <div className="text-gray-300 h-1/2 mx-12 font-bold text-center flex items-start pt-4 pb-8 justify-center">
               {t("home:hiw:step3")}
             </div>
           </div>

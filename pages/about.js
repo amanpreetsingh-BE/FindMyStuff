@@ -78,8 +78,8 @@ export default function About({ hostname }) {
       <h1 className="text-white text-xl md:text-2xl font-bold w-1/2 min-w-[300px] max-w-[640px] border-b-4 border-secondary flex items-end justify-end my-16">
         {t("about:heading3")}
       </h1>
-      <div className="flex flex-col justify-center items-center lg:flex-row mx-10 text-white pb-32">
-        <div className="w-full lg:w-1/3 flex flex-col justify-center items-center space-y-4 ">
+      <div className="flex flex-col justify-center items-center lg:flex-row mx-8 text-white pb-12">
+        <div className="w-full lg:w-1/3 flex flex-col justify-center items-center space-y-4 pb-12">
           <div className="font-bold text-xl">
             {t("about:amanpreetsingh:name")}
           </div>
@@ -91,17 +91,17 @@ export default function About({ hostname }) {
               alt={"aman"}
             />
           </div>
-          <div className="font-semibold text-secondary text-lg">
+          <div className="font-semibold text-center mx-4 text-secondary text-lg">
             {t("about:formation")}
           </div>
-          <div className="font-medium text-gray-300 text-sm ">
+          <div className="font-medium text-center mx-4 text-gray-300 text-sm ">
             {t("about:amanpreetsingh:school")}
           </div>
-          <div className="font-medium text-white text-base ">
+          <div className="font-medium text-center mx-4 text-white text-base ">
             {t("about:amanpreetsingh:study")}
           </div>
         </div>
-        <div className="w-full lg:w-1/3  flex flex-col justify-center items-center space-y-4 ">
+        <div className="w-full lg:w-1/3  flex flex-col justify-center items-center space-y-4 pb-12 ">
           <div className="font-bold text-xl">
             {t("about:federicosonnino:name")}
           </div>
@@ -113,17 +113,17 @@ export default function About({ hostname }) {
               alt={"fede"}
             />
           </div>
-          <div className="font-semibold text-secondary text-lg">
+          <div className="font-semibold text-center mx-4 text-secondary text-lg">
             {t("about:formation")}
           </div>
-          <div className="font-medium text-gray-300 text-sm ">
+          <div className="font-medium text-center mx-4 text-gray-300 text-sm ">
             {t("about:federicosonnino:school")}
           </div>
-          <div className="font-medium text-white text-base ">
+          <div className="font-medium text-center mx-4  text-white text-base ">
             {t("about:federicosonnino:study")}
           </div>
         </div>
-        <div className="w-full lg:w-1/3 flex flex-col justify-center items-center space-y-4 ">
+        <div className="w-full lg:w-1/3 flex flex-col justify-center items-center space-y-4 pb-12">
           <div className="font-bold text-xl">
             {t("about:mohamedchaabani:name")}
           </div>
@@ -135,13 +135,13 @@ export default function About({ hostname }) {
               alt={"mohamed"}
             />
           </div>
-          <div className="font-semibold text-secondary text-lg">
+          <div className="font-semibold text-center mx-4 text-secondary text-lg">
             {t("about:formation")}
           </div>
-          <div className="font-medium text-gray-300 text-sm ">
+          <div className="font-medium text-center mx-4 text-gray-300 text-sm ">
             {t("about:mohamedchaabani:school")}
           </div>
-          <div className="font-medium text-white text-base ">
+          <div className="font-medium text-center mx-4 text-white text-base ">
             {t("about:mohamedchaabani:study")}
           </div>
         </div>

@@ -76,7 +76,7 @@
     "li2": "En cliquant sur le bouton 'GENERER', un code QR sera créé dans un délai de maximum 15 minutes. Raffraîchissez la page après ce délai pour voir s'afficher le code QR.",
     "li3": "Il suffit ensuite de présenter ce code QR au gérant du point relais avec l'objet perdu et celui-ci se charge du reste. Pensez à emballer l'objet perdu. Sur la page suivante, vous trouverez la liste des points relais disponibles dans la commune de votre choix",
     "btn2": "GENERER",
-    "optB": "Une fois l'objet déposé à un point relais, je souhaite qu'un montant de 3 euros soit versé à une association.",
+    "optB": "Une fois l'objet déposé à un point relais, je souhaite qu'un montant de 3 euros soit versé à la Croix-Rouge.",
     "optA": "Une fois l'objet déposé à un point relais, je souhaite être rémunéré de 3 euros. Je renseigne mes coordonnées ci-dessous pour recevoir la transaction.",
     "errorRew": "Merci de rentrer votre IBAN et votre nom complet",
     "qrZIP": "Code postal",
