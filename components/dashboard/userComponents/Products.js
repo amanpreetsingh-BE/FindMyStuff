@@ -51,8 +51,7 @@ export default function Products({
       relaisCP,
       relaisStreet,
       relaisPhoto,
-      jetons,
-      activate
+      jetons
     ) {
       setModalID(id);
       setModalRelaisHeading(relaisHeading);
@@ -60,38 +59,33 @@ export default function Products({
       setModalRelaisStreet(relaisStreet);
       setModalRelaisPhoto(relaisPhoto);
       setModalJetons(jetons);
-      if (!activate) {
-        router.push(`/scan/select/${id}`);
-      } else {
-        openModal();
-      }
+      openModal();
     }
 
     products.forEach((product) => {
       const id = product.id;
       const jetons = product.data.jetons;
-      const activate = product.data.activate;
-      const relaisHeading =
-        product.data.relais == null ? null : product.data.relais.heading;
-      const relaisCP =
-        product.data.relais == null ? null : product.data.relais.code;
-      const relaisStreet =
-        product.data.relais == null ? null : product.data.relais.street;
-      const relaisPhoto =
-        product.data.relais == null ? null : product.data.relais.urlPhoto;
+      const relais = product.data.relais;
+      const relaisHeading = relais == null ? null : relais.heading;
+      const relaisCP = relais == null ? null : relais.code;
+      const relaisStreet = relais == null ? null : relais.street;
+      const relaisPhoto = relais == null ? null : relais.urlPhoto;
+
       cards.push(
         <div
           key={id}
-          onClick={() =>
-            openStockModal(
-              id,
-              relaisHeading,
-              relaisCP,
-              relaisStreet,
-              relaisPhoto,
-              jetons,
-              activate
-            )
+          onClick={
+            relais
+              ? () =>
+                  openStockModal(
+                    id,
+                    relaisHeading,
+                    relaisCP,
+                    relaisStreet,
+                    relaisPhoto,
+                    jetons
+                  )
+              : () => router.push(`/scan/select/${id}`)
           }
           className="flex flex-col justify-center items-center w-52 h-52 sm:w-72 sm:h-72 rounded-lg bg-[#191919] shadow-sm shadow-secondary border-secondary border-2 hover:shadow-lg cursor-pointer"
         >

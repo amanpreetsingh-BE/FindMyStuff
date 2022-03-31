@@ -87,7 +87,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
         } else if (activate && userEmail === qrEmail) {
           // valid user and owner, want to change or add new relais
 
-          if (signMethod != email && !emailVerified) {
+          if (signMethod != "email" && !emailVerified) {
             await app.auth().updateUser(uid, { emailVerified: true });
             var docRef = app.firestore().collection("users").doc(`${uid}`);
 
