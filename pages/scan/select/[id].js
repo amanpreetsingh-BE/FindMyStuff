@@ -71,7 +71,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
         activate = docSnapshot.data().activate;
         relais = docSnapshot.data().relais;
         /* QR not activated and no relais saved -> go to QR registration again*/
-        if (!activate && !relais) {
+        if (!activate) {
           res.setHeader(
             "location",
             `${process.env.HOSTNAME}/${locale}/scan/${id}`

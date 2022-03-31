@@ -51,7 +51,8 @@ export default function Products({
       relaisCP,
       relaisStreet,
       relaisPhoto,
-      jetons
+      jetons,
+      activate
     ) {
       setModalID(id);
       setModalRelaisHeading(relaisHeading);
@@ -59,22 +60,25 @@ export default function Products({
       setModalRelaisStreet(relaisStreet);
       setModalRelaisPhoto(relaisPhoto);
       setModalJetons(jetons);
-
-      openModal();
+      if (!activate) {
+        router.push(`/scan/select/${id}`);
+      } else {
+        openModal();
+      }
     }
 
     products.forEach((product) => {
       const id = product.id;
       const jetons = product.data.jetons;
-
+      const activate = product.data.activate;
       const relaisHeading =
-        product.data.relais == null ? "Empty" : product.data.relais.heading;
+        product.data.relais == null ? null : product.data.relais.heading;
       const relaisCP =
-        product.data.relais == null ? "Empty" : product.data.relais.code;
+        product.data.relais == null ? null : product.data.relais.code;
       const relaisStreet =
-        product.data.relais == null ? "Empty" : product.data.relais.street;
+        product.data.relais == null ? null : product.data.relais.street;
       const relaisPhoto =
-        product.data.relais == null ? "Empty" : product.data.relais.urlPhoto;
+        product.data.relais == null ? null : product.data.relais.urlPhoto;
       cards.push(
         <div
           key={id}
@@ -85,7 +89,8 @@ export default function Products({
               relaisCP,
               relaisStreet,
               relaisPhoto,
-              jetons
+              jetons,
+              activate
             )
           }
           className="flex flex-col justify-center items-center w-52 h-52 sm:w-72 sm:h-72 rounded-lg bg-[#191919] shadow-sm shadow-secondary border-secondary border-2 hover:shadow-lg cursor-pointer"
