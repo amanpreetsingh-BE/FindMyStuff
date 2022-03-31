@@ -60,7 +60,7 @@ export default function Products({
       setModalRelaisPhoto(relaisPhoto);
       setModalJetons(jetons);
       if (!relaisHeading && !relaisCP && !relaisStreet && !relaisPhoto) {
-        router.push(`${hostname}/scan/select?id=${id}&user=${email}`);
+        router.push(`${hostname}/scan/select/${id}`);
       } else {
         openModal();
       }
