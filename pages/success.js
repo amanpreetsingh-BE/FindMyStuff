@@ -112,7 +112,7 @@ export async function getServerSideProps({ query, locale }) {
 
       const msg = {
         from: {
-          email: process.env.MAIL,
+          email: "team@findmystuff.io",
           name: "FindMyStuff",
         },
         template_id: template,
@@ -146,11 +146,11 @@ export async function getServerSideProps({ query, locale }) {
 
       /* STEP 2 : Notify admin to prepare the order */
       const transporter = nodemailer.createTransport({
-        host: process.env.HOSTMAIL,
+        host: "mail.privateemail.com",
         port: 465,
         secure: true, // Must be true, false will fail
         auth: {
-          user: process.env.MAIL,
+          user: "team@findmystuff.io",
           pass: process.env.SECRET_MAIL,
         },
       });
@@ -168,8 +168,8 @@ export async function getServerSideProps({ query, locale }) {
       transporter.use("compile", hbs(options));
 
       const mail = {
-        from: process.env.MAIL,
-        to: process.env.MAIL,
+        from: "team@findmystuff.io",
+        to: "team@findmystuff.io",
         subject: "Nouvelle commande / New order ! ",
         template: "notifyOrder",
       };

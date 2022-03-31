@@ -331,7 +331,7 @@ export async function getServerSideProps({ res, req, locale }) {
     };
     const msg = {
       from: {
-        email: process.env.MAIL,
+        email: "team@findmystuff.io",
         name: "FindMyStuff",
       },
       template_id: template,

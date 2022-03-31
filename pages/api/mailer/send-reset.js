@@ -54,7 +54,7 @@ export default async function handler(req, res) {
       };
       const msg = {
         from: {
-          email: process.env.MAIL,
+          email: "team@findmystuff.io",
           name: "FindMyStuff",
         },
         template_id: template,

@@ -86,11 +86,11 @@ export default async function handler(req, res) {
         const path = require("path");
 
         const transporter = nodemailer.createTransport({
-          host: process.env.HOSTMAIL,
+          host: "mail.privateemail.com",
           port: 465,
           secure: true, // true for 465, false for other ports
           auth: {
-            user: process.env.MAIL,
+            user: "team@findmystuff.io",
             pass: process.env.SECRET_MAIL,
           },
         });
@@ -107,8 +107,8 @@ export default async function handler(req, res) {
 
         transporter.use("compile", hbs(options));
         const mail = {
-          from: process.env.MAIL,
-          to: process.env.MAIL,
+          from: "team@findmystuff.io",
+          to: "team@findmystuff.io",
           subject: `${id} NEEDS QR GENERATION !`,
           template: "notifyGenerate",
           context: {

@@ -45,7 +45,7 @@ export default async function handler(req, res) {
           querySnapshot.forEach(async (doc) => {
             msg = {
               from: {
-                email: process.env.MAIL,
+                email: "team@findmystuff.io",
                 name: "FindMyStuff",
               },
               template_id: template,
