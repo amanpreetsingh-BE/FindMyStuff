@@ -1078,11 +1078,11 @@ export default function ScanPage({
                         locale={locale}
                       />
 
-                      <SignInFacebookButton
+                      {/*<SignInFacebookButton
                         id={id}
                         hostname={hostname}
                         locale={locale}
-                      />
+                      />*/}
                     </div>
                   </>
                 )}
@@ -1160,7 +1160,7 @@ function SignInGoogleButton({ id, hostname, locale }) {
 }
 
 // Sign in with Facebook button
-function SignInFacebookButton({ id, hostname, locale }) {
+/*function SignInFacebookButton({ id, hostname, locale }) {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -1224,3 +1224,4 @@ function SignInFacebookButton({ id, hostname, locale }) {
     </button>
   );
 }
+*/
