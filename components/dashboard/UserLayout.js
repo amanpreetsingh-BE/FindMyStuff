@@ -338,7 +338,7 @@ function UserLayout({
                         </div>
                       </a>
                       <a
-                        href="https://www.linkedin.com/findmystuff.be/"
+                        href="https://www.linkedin.com/company/findmystuff-be/"
                         target="_blank"
                         rel="noreferrer"
                       >

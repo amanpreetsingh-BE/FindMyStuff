@@ -1096,7 +1096,7 @@ export default function ScanPage({
 }
 
 // Sign in with Google button
-function SignInGoogleButton() {
+function SignInGoogleButton({ id, hostname, locale }) {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -1160,7 +1160,7 @@ function SignInGoogleButton() {
 }
 
 // Sign in with Facebook button
-function SignInFacebookButton() {
+function SignInFacebookButton({ id, hostname, locale }) {
   const { t } = useTranslation();
   const router = useRouter();
 
