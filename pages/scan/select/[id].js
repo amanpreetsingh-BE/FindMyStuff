@@ -44,6 +44,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
     let activate = null;
     let relais = null;
     let verifySent = null;
+    let signMethod = null;
     try {
       decodedToken = await app.auth().verifyIdToken(firebaseToken, true);
       user = await app.auth().getUser(decodedToken.uid);
@@ -61,6 +62,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
         firstName = data.firstName;
         lastName = data.lastName;
         verifySent = data.verifySent;
+        signMethod = data.signMethod;
       });
       const docSnapshot = await app.firestore().collection("QR").doc(id).get();
       // check if is the owner of the QR making the request and is connected
@@ -84,6 +86,15 @@ export async function getServerSideProps({ params, req, res, locale }) {
           };
         } else if (activate && userEmail === qrEmail) {
           // valid user and owner, want to change or add new relais
+
+          if (signMethod != email && !emailVerified) {
+            await app.auth().updateUser(uid, { emailVerified: true });
+            var docRef = app.firestore().collection("users").doc(`${uid}`);
+
+            await docRef.update({
+              verifySent: true,
+            });
+          }
 
           if (!emailVerified && !verifySent) {
             // send verification email, if not sent for the next step
