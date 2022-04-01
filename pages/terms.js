@@ -12,7 +12,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 
 /* Handle language */
-export async function getStaticProps({ locale }) {
+export async function getServerSideProps({ locale }) {
   const hostname = process.env.HOSTNAME;
   return {
     props: {
