@@ -392,6 +392,7 @@ export async function getServerSideProps({ res, req, locale }) {
       userEmail,
       oob,
       authorization,
+      signMethod,
     },
   };
 }
@@ -537,6 +538,7 @@ export default function Dashboard(props) {
         userProductsJSON={props.userProductsJSON}
         userNotificationsJSON={props.userNotificationsJSON}
         oob={props.oob}
+        signMethod={props.signMethod}
       />
     );
   }

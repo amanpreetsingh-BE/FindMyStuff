@@ -183,14 +183,18 @@ export default function Parameters({
 
         <div className="flex mt-4 text-sm font-bold">
           <ul className="space-y-4">
-            <li
-              onClick={resetPassword}
-              className="cursor-pointer flex justify-start items-center"
-            >
-              {" "}
-              <MailIcon className="w-6 h-6 mr-2" />
-              {t("dashboard:user:paramPage:reset")}
-            </li>
+            {signMethod != "email" ? (
+              ""
+            ) : (
+              <li
+                onClick={resetPassword}
+                className="cursor-pointer flex justify-start items-center"
+              >
+                {" "}
+                <MailIcon className="w-6 h-6 mr-2" />
+                {t("dashboard:user:paramPage:reset")}
+              </li>
+            )}
             <li
               onClick={openModal}
               className="cursor-pointer text-red-400 flex justify-start items-center"

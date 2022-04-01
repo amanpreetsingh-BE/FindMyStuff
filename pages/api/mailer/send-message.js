@@ -94,6 +94,7 @@ export default async function handler(req, res) {
       var docRef = app.firestore().collection(`messages`).doc(`${id}`);
       docRef.get().then(async (doc) => {
         if (doc.exists) {
+          console.log("MSG doc id exist");
           await docRef.update({
             replied: true,
           });
