@@ -5,7 +5,7 @@ import { MenuAlt3Icon } from "@heroicons/react/outline";
 /* Components */
 import LanguageBox from "@components/misc/LanguageBox";
 
-function Nav({ Image, Link, locale, isConnected, toggle, t }) {
+function Nav({ Image, Link, locale, isConnected, toggle, t, hostname }) {
   const logo = require("@images/icons/logo_white.svg");
   function toggleHome() {
     scroll.scrollToTop();
@@ -85,7 +85,10 @@ function Nav({ Image, Link, locale, isConnected, toggle, t }) {
             </LinkS>
           </li>
           <li className="flex justify-center items-center h-full">
-            <Link passHref href={isConnected ? "/dashboard" : "/sign"}>
+            <Link
+              passHref
+              href={isConnected ? `${hostname}/dashboard` : `${hostname}/sign`}
+            >
               <div className="group cursor-pointer mr-10 rounded-xl bg-secondary px-8 py-4 hover:bg-secondaryHover text-white font-extrabold transition ease-in-out duration-300">
                 {isConnected ? t("home:nav:gotodash") : t("home:nav:sign")}{" "}
                 &nbsp; &rarr;

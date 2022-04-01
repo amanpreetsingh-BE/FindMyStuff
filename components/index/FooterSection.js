@@ -18,7 +18,7 @@ function FooterSection({ t, Image, hostname }) {
     >
       <div className="hidden md:flex md:justify-center md:items-center w-32">
         <div className="relative w-20 h-20">
-          <a href={hostname}>
+          <a href="/">
             <Image src={footerLogo} loading="eager" layout="fill" alt="home" />
           </a>
         </div>

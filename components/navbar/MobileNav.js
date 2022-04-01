@@ -3,7 +3,7 @@ import { XIcon } from "@heroicons/react/outline";
 /* Smooth scroll */
 import { Link as LinkS } from "react-scroll";
 
-function MobileNav({ Image, Link, toggle, isConnected, t, isOpen }) {
+function MobileNav({ Image, Link, toggle, isConnected, t, isOpen, hostname }) {
   const opacity = isOpen ? " opacity-0 " : " opacity-100 ";
   const top = isOpen ? " top-full" : " -top-0 ";
 

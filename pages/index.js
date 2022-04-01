@@ -181,6 +181,7 @@ export default function Home({ locale, productsJSON, hostname, isConnected }) {
         Link={Link}
         toggle={toggle}
         locale={locale}
+        hostname={hostname}
         isConnected={isConnected}
         t={t}
       />
@@ -191,6 +192,7 @@ export default function Home({ locale, productsJSON, hostname, isConnected }) {
         Link={Link}
         toggle={toggle}
         isOpen={isOpen}
+        hostname={hostname}
         isConnected={isConnected}
         t={t}
       />
