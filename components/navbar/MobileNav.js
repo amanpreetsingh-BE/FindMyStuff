@@ -78,7 +78,10 @@ function MobileNav({ Image, Link, toggle, isConnected, t, isOpen, hostname }) {
           </LinkS>
         </ul>
         <div className="flex justify-center">
-          <Link passHref href={isConnected ? "/dashboard" : "/sign"}>
+          <Link
+            passHref
+            href={isConnected ? `${hostname}/dashboard` : `${hostname}/sign`}
+          >
             <div className="transition ease-in-out duration-300  cursor-pointer font-semibold rounded-xl bg-secondary px-8 py-4 hover:bg-secondaryHover ">
               {isConnected ? t("home:nav:gotodash") : t("home:nav:sign")} &nbsp;
               &rarr;
