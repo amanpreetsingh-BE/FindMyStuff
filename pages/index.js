@@ -41,7 +41,7 @@ export async function getServerSideProps({ req, locale }) {
     ) + decipher.final("utf8");
 
   const env = JSON.parse(decrypted);
-  console.log(env);
+
   /* Libs */
   const admin = require("firebase-admin");
 
