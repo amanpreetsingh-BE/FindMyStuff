@@ -12,22 +12,44 @@ import { useTranslation } from "next-i18next";
 import { EyeOffIcon, EyeIcon } from "@heroicons/react/solid";
 /* Animations */
 import toast from "react-hot-toast";
+import { encrypted } from "@root/service-account.enc";
 
-export async function getServerSideProps({ query, req, locale }) {
-  /* Get host (local or dev) */
-  const hostname = process.env.HOSTNAME;
-  const md5 = require("md5"); // used to check oob
-  const oob = query.oob;
-  const uid = query.uid;
+export async function getServerSideProps({ query, locale }) {
+  /* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
+  const crypto = require("crypto");
 
-  if (oob === md5(`${uid}${process.env.SS_API_KEY}`)) {
+  var decipher = crypto.createDecipheriv(
+    "AES-256-CBC",
+    process.env.SERVICE_ENCRYPTION_KEY,
+    process.env.SERVICE_ENCRYPTION_IV
+  );
+  var decrypted =
+    decipher.update(
+      Buffer.from(encrypted, "base64").toString("utf-8"),
+      "base64",
+      "utf8"
+    ) + decipher.final("utf8");
+
+  const env = JSON.parse(decrypted);
+
+  /* QUERY params */
+  const rx_oob = query.oob;
+  const rx_uid = query.uid;
+
+  /* Stack */
+  const oob = crypto
+    .createHash("MD5")
+    .update(`${rx_uid}${env.SS_API_KEY}`)
+    .digest("hex");
+
+  if (rx_oob === oob) {
     return {
       props: {
         ...(await serverSideTranslations(locale, ["resetPwd"])),
         locale,
-        hostname,
-        oob,
-        uid,
+        hostname: env.HOSTNAME,
+        oob: rx_oob,
+        uid: rx_uid,
       },
     };
   } else {

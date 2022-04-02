@@ -1,45 +1,53 @@
 /* React imports */
 import React, { useRef, useState, useEffect } from "react";
-
 /* Next imports */
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
 /* Import Hero icons */
 import { EyeOffIcon, EyeIcon } from "@heroicons/react/solid";
-
 /* Firebase components imports */
 import { auth } from "@lib/firebase";
 import {
   GoogleAuthProvider,
-  FacebookAuthProvider,
   signInWithPopup,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-
 /* Custom components imports */
 import Modal from "@components/misc/Modal";
-
 /* Various animations imports */
 import toast from "react-hot-toast";
-
 /* Translate imports */
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-
 /* Cookie handler */
 import cookie from "js-cookie";
+import { encrypted } from "@root/service-account.enc";
 
-/* Handle language */
 export async function getServerSideProps({ res, req, locale }) {
-  // hostname (localhost or production)
-  const hostname = process.env.HOSTNAME;
-  /* import admin-sdk firebase to check user */
+  /* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
+  const crypto = require("crypto");
+
+  var decipher = crypto.createDecipheriv(
+    "AES-256-CBC",
+    process.env.SERVICE_ENCRYPTION_KEY,
+    process.env.SERVICE_ENCRYPTION_IV
+  );
+  var decrypted =
+    decipher.update(
+      Buffer.from(encrypted, "base64").toString("utf-8"),
+      "base64",
+      "utf8"
+    ) + decipher.final("utf8");
+
+  const env = JSON.parse(decrypted);
+
+  /* Libs */
   const admin = require("firebase-admin");
+
   const serviceAccount = JSON.parse(
-    Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
+    Buffer.from(env.SECRET_SERVICE_ACCOUNT, "base64")
   );
   const app = !admin.apps.length
     ? admin.initializeApp({
@@ -47,12 +55,13 @@ export async function getServerSideProps({ res, req, locale }) {
       })
     : admin.app();
 
+  /* Stack */
   const firebaseToken = req.cookies.firebaseToken;
 
   if (firebaseToken) {
     try {
       await app.auth().verifyIdToken(firebaseToken, true);
-      res.setHeader("location", `${hostname}/${locale}/dashboard`); // connected
+      res.setHeader("location", `${env.HOSTNAME}/${locale}/dashboard`); // connected
       res.statusCode = 302;
       res.end();
       return { props: {} };
@@ -62,7 +71,7 @@ export async function getServerSideProps({ res, req, locale }) {
         props: {
           ...(await serverSideTranslations(locale, ["sign"])),
           locale,
-          hostname,
+          hostname: env.HOSTNAME,
         },
       };
     }
@@ -72,7 +81,7 @@ export async function getServerSideProps({ res, req, locale }) {
       props: {
         ...(await serverSideTranslations(locale, ["sign"])),
         locale,
-        hostname,
+        hostname: env.HOSTNAME,
       },
     };
   }

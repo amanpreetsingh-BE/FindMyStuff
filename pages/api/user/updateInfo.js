@@ -1,8 +1,23 @@
 import * as admin from "firebase-admin";
-const md5 = require("md5"); // used to check oob
+/* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
+const crypto = require("crypto");
+
+var decipher = crypto.createDecipheriv(
+  "AES-256-CBC",
+  process.env.SERVICE_ENCRYPTION_KEY,
+  process.env.SERVICE_ENCRYPTION_IV
+);
+var decrypted =
+  decipher.update(
+    Buffer.from(encrypted, "base64").toString("utf-8"),
+    "base64",
+    "utf8"
+  ) + decipher.final("utf8");
+
+const env = JSON.parse(decrypted);
 
 const serviceAccount = JSON.parse(
-  Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
+  Buffer.from(env.SECRET_SERVICE_ACCOUNT, "base64")
 );
 
 const app = !admin.apps.length
@@ -21,7 +36,13 @@ export default async function handler(req, res) {
     try {
       const uid = req.body.uid;
       const oob = req.body.oob;
-      if (md5(`${uid}${process.env.SS_API_KEY}`) != oob) {
+      if (
+        oob !=
+        crypto
+          .createHash("MD5")
+          .update(`${req.body.uid}${env.SS_API_KEY}`)
+          .digest("hex")
+      ) {
         throw new Error("NOT ALLOWED");
       } else {
         const firstName = req.body.firstName;

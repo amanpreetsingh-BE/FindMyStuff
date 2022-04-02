@@ -1,4 +1,19 @@
-const md5 = require("md5"); // used to resend email verification via button
+/* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
+const crypto = require("crypto");
+
+var decipher = crypto.createDecipheriv(
+  "AES-256-CBC",
+  process.env.SERVICE_ENCRYPTION_KEY,
+  process.env.SERVICE_ENCRYPTION_IV
+);
+var decrypted =
+  decipher.update(
+    Buffer.from(encrypted, "base64").toString("utf-8"),
+    "base64",
+    "utf8"
+  ) + decipher.final("utf8");
+
+const env = JSON.parse(decrypted);
 
 /*
  * Description : Allow to resend email activation, request verification with HASH
@@ -8,7 +23,8 @@ const md5 = require("md5"); // used to resend email verification via button
 export default async function handler(req, res) {
   if (
     req.method === "POST" &&
-    md5(`${req.body.uid}${process.env.SS_API_KEY}`) === req.body.oob // sanity check
+    req.body.oob ===
+      crypto.createHash("MD5").update(`${uid}${env.SS_API_KEY}`).digest("hex") // sanity check
   ) {
     try {
       const template =
@@ -44,7 +60,7 @@ export default async function handler(req, res) {
         method: "post",
         url: "https://api.sendgrid.com/v3/mail/send",
         headers: {
-          Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+          Authorization: `Bearer ${env.SENDGRID_API_KEY}`,
         },
         data: msg,
       });

@@ -1,59 +1,79 @@
 /* Custom components imports */
 import NavReduced from "@components/navbar/NavReduced";
 import { useRouter } from "next/router";
-
 /* Icons imports */
 import { CheckCircleIcon } from "@heroicons/react/outline";
-
 /* Translate imports */
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { encrypted } from "@root/service-account.enc";
 
 export async function getServerSideProps({ query, locale }) {
-  /* Libs needed for checkout logic */
-  const path = require("path");
-  const axios = require("axios");
-  var hbs = require("nodemailer-express-handlebars");
-  var nodemailer = require("nodemailer");
-  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+  /* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
+  const crypto = require("crypto");
+
+  var decipher = crypto.createDecipheriv(
+    "AES-256-CBC",
+    process.env.SERVICE_ENCRYPTION_KEY,
+    process.env.SERVICE_ENCRYPTION_IV
+  );
+  var decrypted =
+    decipher.update(
+      Buffer.from(encrypted, "base64").toString("utf-8"),
+      "base64",
+      "utf8"
+    ) + decipher.final("utf8");
+
+  const env = JSON.parse(decrypted);
+
+  /* Libs */
   const admin = require("firebase-admin");
+  const axios = require("axios");
+  const stripe = require("stripe")(env.STRIPE_SECRET_KEY);
 
   const serviceAccount = JSON.parse(
-    Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
+    Buffer.from(env.SECRET_SERVICE_ACCOUNT, "base64")
   );
   const app = !admin.apps.length
     ? admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
       })
     : admin.app();
-  /* Get checkout ID */
 
+  /* QUERY params */
   const URL_session_id = query.session_id;
 
+  /* Stack */
   let checkoutJSON = null;
+  let orderJSON = null;
+  let docRef = null;
+  let docSnap = null;
+  let context = null;
+  let template = null;
+  let customerMSG = null;
+  let adminMSG = null;
+
+  /* Check validity of query param */
   try {
-    if (!URL_session_id.startsWith("cs_")) {
-      throw Error("Incorrect CheckoutSession ID.");
-    } else {
-      checkoutJSON = await stripe.checkout.sessions.retrieve(
-        `${URL_session_id}`
-      );
-    }
+    checkoutJSON = await stripe.checkout.sessions.retrieve(`${URL_session_id}`);
   } catch (err) {
-    console.log(err.message);
+    console.log(err.message); // debug on server
+    return {
+      notFound: true,
+    };
   }
+
   /* If the checkout session is valid and paid, fetch the order */
   if (checkoutJSON && checkoutJSON.payment_status == "paid") {
-    console.log(checkoutJSON);
-    let orderJSON = null;
-    let docRef = null;
+    console.log("STRIPE CS : ");
+    console.log(checkoutJSON); // insight on server
     if (checkoutJSON.metadata.qrID) {
       docRef = app.firestore().collection("reloads").doc(`${URL_session_id}`);
     } else {
       docRef = app.firestore().collection("orders").doc(`${URL_session_id}`);
     }
 
-    const docSnap = await docRef.get();
+    docSnap = await docRef.get();
     try {
       if (docSnap.exists) {
         orderJSON = docSnap.data();
@@ -61,7 +81,7 @@ export async function getServerSideProps({ query, locale }) {
         throw Error("No order found in DB :(");
       }
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // debug on server
       return {
         notFound: true,
       };
@@ -69,9 +89,6 @@ export async function getServerSideProps({ query, locale }) {
 
     // If the email confirmation is not sent, do logic else refresh only
     if (!orderJSON.emailSent) {
-      /* STEP 1 : Send email to customer with context and update email state */
-      var context = null;
-      var template = null;
       if (orderJSON.qrID) {
         // reload order
         context = {
@@ -110,9 +127,9 @@ export async function getServerSideProps({ query, locale }) {
             : "d-2714a9e6d65d4e79ad2ba5159ba2f0fa";
       }
 
-      const msg = {
+      customerMSG = {
         from: {
-          email: "team@findmystuff.io",
+          email: env.MAIL,
           name: "FindMyStuff",
         },
         template_id: template,
@@ -127,56 +144,48 @@ export async function getServerSideProps({ query, locale }) {
           },
         ],
       };
+
+      adminMSG = {
+        from: {
+          email: env.MAIL,
+          name: "FindMyStuff",
+        },
+        template_id: "d-0345b7816de847ddb410396845cd27dc",
+        personalizations: [
+          {
+            to: [
+              {
+                email: env.MAIL,
+              },
+            ],
+          },
+        ],
+      };
+
       try {
         await axios({
           method: "post",
           url: "https://api.sendgrid.com/v3/mail/send",
           headers: {
-            Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+            Authorization: `Bearer ${env.SENDGRID_API_KEY}`,
           },
-          data: msg,
+          data: customerMSG,
+        });
+
+        await axios({
+          method: "post",
+          url: "https://api.sendgrid.com/v3/mail/send",
+          headers: {
+            Authorization: `Bearer ${env.SENDGRID_API_KEY}`,
+          },
+          data: adminMSG,
         });
 
         await docRef.update({
           emailSent: true,
         });
       } catch (err) {
-        console.log(message.err);
-      }
-
-      /* STEP 2 : Notify admin to prepare the order */
-      const transporter = nodemailer.createTransport({
-        host: "mail.privateemail.com",
-        port: 465,
-        secure: true, // Must be true, false will fail
-        auth: {
-          user: "team@findmystuff.io",
-          pass: process.env.SECRET_MAIL,
-        },
-      });
-
-      const options = {
-        viewEngine: {
-          extName: ".html",
-          partialsDir: path.resolve("templates"),
-          defaultLayout: false,
-        },
-        viewPath: path.resolve("templates"),
-        extName: ".handlebars",
-      };
-
-      transporter.use("compile", hbs(options));
-
-      const mail = {
-        from: "team@findmystuff.io",
-        to: "team@findmystuff.io",
-        subject: "Nouvelle commande / New order ! ",
-        template: "notifyOrder",
-      };
-      try {
-        await transporter.sendMail(mail);
-      } catch (err) {
-        console.log(err.message);
+        console.log(message.err); // debug on server
       }
     }
     return {

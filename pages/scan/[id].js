@@ -1,5 +1,5 @@
 /* React imports */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 /* Translate imports */
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
@@ -7,40 +7,54 @@ import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
+/* Icons */
 import { EyeOffIcon, EyeIcon } from "@heroicons/react/solid";
-
+import {
+  LocationMarkerIcon,
+  ArrowCircleLeftIcon,
+} from "@heroicons/react/outline";
+/* MAP render */
 import Map from "@components/Map";
+/* PDF render */
 import { Document, Page, pdfjs } from "react-pdf";
-
+/* ZIP code map */
 import zipJSON from "@root/public/misc/zipcode-belgium.json";
-import { LocationMarkerIcon } from "@heroicons/react/outline";
-
 /* Firebase components imports */
 import { auth } from "@lib/firebase";
 import {
   GoogleAuthProvider,
-  FacebookAuthProvider,
   signInWithPopup,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { Timestamp } from "firebase/firestore";
-
 /* Custom components imports */
 import Modal from "@components/misc/Modal";
-
 /* Various animations imports */
 import toast from "react-hot-toast";
-import { ArrowCircleLeftIcon } from "@heroicons/react/outline";
+import { encrypted } from "@root/service-account.enc";
 
-/* Handle language */
 export async function getServerSideProps({ params, locale }) {
-  const id = params.id;
-  const hostname = process.env.HOSTNAME;
-  const md5 = require("md5"); // used to check oob
-  /* import admin-sdk firebase to check user */
+  /* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
+  const crypto = require("crypto");
+
+  var decipher = crypto.createDecipheriv(
+    "AES-256-CBC",
+    process.env.SERVICE_ENCRYPTION_KEY,
+    process.env.SERVICE_ENCRYPTION_IV
+  );
+  var decrypted =
+    decipher.update(
+      Buffer.from(encrypted, "base64").toString("utf-8"),
+      "base64",
+      "utf8"
+    ) + decipher.final("utf8");
+
+  const env = JSON.parse(decrypted);
+
+  /* Libs */
   const admin = require("firebase-admin");
+
   const serviceAccount = JSON.parse(
     Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
   );
@@ -50,6 +64,10 @@ export async function getServerSideProps({ params, locale }) {
       })
     : admin.app();
 
+  /* QUERY params */
+  const id = params.id;
+
+  /* Stack */
   let activate = false;
   let jetons = null;
   let relais = null;
@@ -61,7 +79,7 @@ export async function getServerSideProps({ params, locale }) {
     const docSnapshot = await app.firestore().collection("QR").doc(id).get();
     if (docSnapshot.exists) {
       // valid QR ; FETCH data
-      console.log("VALID QR");
+      console.log(`QR ${id} scanned`); // debug on server
       const data = docSnapshot.data();
       activate = data.activate;
       userEmail = data.email;
@@ -69,10 +87,12 @@ export async function getServerSideProps({ params, locale }) {
       jetons = data.jetons;
       timestamp = data.timestamp;
       pdf = data.pdf;
-      oob = md5(`${id}${process.env.SS_API_KEY}`);
+      oob = crypto
+        .createHash("MD5")
+        .update(`${id}${env.SS_API_KEY}`)
+        .digest("hex");
       // Notify the user of scan found if activated and loaded
       if (activate && jetons >= 1) {
-        console.log("ACTIVATED QR");
         const notifRef = app.firestore().collection("notifications").doc(id);
         const docNotifRef = await notifRef.get();
         if (docNotifRef.exists) {
@@ -81,7 +101,6 @@ export async function getServerSideProps({ params, locale }) {
           await notifRef.update({
             scan: s,
           });
-          console.log("add notif");
         } else {
           var s = [];
           s.push({ timestamp: admin.firestore.Timestamp.now().seconds });
@@ -91,7 +110,6 @@ export async function getServerSideProps({ params, locale }) {
             scan: s,
             delivery: [],
           });
-          console.log("add first notif");
         }
       }
 
@@ -104,7 +122,7 @@ export async function getServerSideProps({ params, locale }) {
           jetons,
           relais,
           timestamp,
-          hostname,
+          hostname: env.HOSTNAME,
           oob,
           pdf,
         },
@@ -116,7 +134,7 @@ export async function getServerSideProps({ params, locale }) {
       };
     }
   } catch (err) {
-    console.log(err.message); // to debug on server, error with firebase
+    console.log(err.message); // debug on server
     return {
       notFound: true,
     };

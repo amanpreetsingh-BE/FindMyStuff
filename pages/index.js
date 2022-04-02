@@ -22,13 +22,29 @@ import { motion } from "framer-motion";
 /* Translation */
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { encrypted } from "@root/service-account.enc";
 
 export async function getServerSideProps({ req, locale }) {
-  console.log("HELLO WORLD");
-  /* Get host (local or dev) */
-  const hostname = process.env.HOSTNAME;
-  /* import admin-sdk firebase */
+  /* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
+  const crypto = require("crypto");
+
+  var decipher = crypto.createDecipheriv(
+    "AES-256-CBC",
+    process.env.SERVICE_ENCRYPTION_KEY,
+    process.env.SERVICE_ENCRYPTION_IV
+  );
+  var decrypted =
+    decipher.update(
+      Buffer.from(encrypted, "base64").toString("utf-8"),
+      "base64",
+      "utf8"
+    ) + decipher.final("utf8");
+
+  const env = JSON.parse(decrypted);
+
+  /* Libs */
   const admin = require("firebase-admin");
+
   const serviceAccount = JSON.parse(
     Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
   );
@@ -37,9 +53,13 @@ export async function getServerSideProps({ req, locale }) {
         credential: admin.credential.cert(serviceAccount),
       })
     : admin.app();
-  /* check user is connected for navbar login button display */
+
+  /* Stack */
   const firebaseToken = req.cookies.firebaseToken;
   let isConnected = null;
+  let productsJSON = [];
+
+  /* Check if is connected */
   if (firebaseToken) {
     try {
       await app.auth().verifyIdToken(firebaseToken, true);
@@ -50,8 +70,8 @@ export async function getServerSideProps({ req, locale }) {
   } else {
     isConnected = false;
   }
+
   /* Fetch products from DB to display for customers */
-  let productsJSON = [];
   try {
     /* KEYCHAINS */
     var keychainRef = app.firestore().collection("products/Keychain/id/");
@@ -78,50 +98,10 @@ export async function getServerSideProps({ req, locale }) {
         colors: colors,
       });
     }
-    /* STICKERS */
-    var StickerRef = app.firestore().collection("products/Sticker/id");
-    const stickerSnapshot = await StickerRef.get();
 
-    const stickers = [];
+    /* Fetch from other products (cfr branch main on git) */
 
-    stickerSnapshot.forEach((stickerDoc) => {
-      stickers.push({
-        id: stickerDoc.id,
-        data: stickerDoc.data(),
-      });
-    });
-
-    /* TRACKERS */
-    var TrackerRef = app.firestore().collection("products/Tracker/id");
-    const trackerSnapshot = await TrackerRef.get();
-
-    const trackers = [];
-
-    trackerSnapshot.forEach((trackerDoc) => {
-      trackers.push({
-        id: trackerDoc.id,
-        data: trackerDoc.data(),
-      });
-    });
-
-    /* OTHERS */
-    var OtherRef = app.firestore().collection("products/Other/id");
-    const OtherSnapshot = await OtherRef.get();
-
-    const others = [];
-
-    OtherSnapshot.forEach((otherDoc) => {
-      others.push({
-        id: otherDoc.id,
-        data: otherDoc.data(),
-      });
-    });
-
-    keychains.reverse();
     productsJSON.push(keychains);
-    productsJSON.push(stickers);
-    productsJSON.push(trackers);
-    productsJSON.push(others);
   } catch (err) {
     productsJSON = null;
   }
@@ -131,7 +111,7 @@ export async function getServerSideProps({ req, locale }) {
       ...(await serverSideTranslations(locale, ["home"])),
       locale,
       productsJSON,
-      hostname,
+      hostname: env.HOSTNAME,
       isConnected,
     },
   };

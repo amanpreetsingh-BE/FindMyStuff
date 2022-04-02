@@ -5,24 +5,39 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 /* Hero icons */
 import { LocationMarkerIcon } from "@heroicons/react/outline";
-
 /* Translate imports */
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+/* Various animations imports */
 import toast from "react-hot-toast";
-
+/* MAP render */
 import Map from "@components/Map";
-
+/* ZIP code map */
 import zipJSON from "@root/public/misc/zipcode-belgium.json";
+import { encrypted } from "@root/service-account.enc";
 
-/* Handle language */
 export async function getServerSideProps({ params, req, res, locale }) {
-  const id = params.id;
-  const hostname = process.env.HOSTNAME;
-  const md5 = require("md5"); // used to check oob
+  /* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
+  const crypto = require("crypto");
 
-  /* import admin-sdk firebase to check user */
+  var decipher = crypto.createDecipheriv(
+    "AES-256-CBC",
+    process.env.SERVICE_ENCRYPTION_KEY,
+    process.env.SERVICE_ENCRYPTION_IV
+  );
+  var decrypted =
+    decipher.update(
+      Buffer.from(encrypted, "base64").toString("utf-8"),
+      "base64",
+      "utf8"
+    ) + decipher.final("utf8");
+
+  const env = JSON.parse(decrypted);
+
+  /* Libs */
   const admin = require("firebase-admin");
+  const axios = require("axios");
+
   const serviceAccount = JSON.parse(
     Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
   );
@@ -31,7 +46,14 @@ export async function getServerSideProps({ params, req, res, locale }) {
         credential: admin.credential.cert(serviceAccount),
       })
     : admin.app();
+
+  /* QUERY params */
+  const id = params.id;
+
+  /* Stack */
   const firebaseToken = req.cookies.firebaseToken;
+
+  /* check if user is connected */
   if (firebaseToken) {
     let decodedToken = null;
     let user = null;
@@ -58,31 +80,29 @@ export async function getServerSideProps({ params, req, res, locale }) {
       const querySnapshot = await query.get();
 
       querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        firstName = data.firstName;
-        lastName = data.lastName;
-        verifySent = data.verifySent;
-        signMethod = data.signMethod;
+        const userData = doc.data();
+        firstName = userData.firstName;
+        lastName = userData.lastName;
+        verifySent = userData.verifySent;
+        signMethod = userData.signMethod;
       });
       const docSnapshot = await app.firestore().collection("QR").doc(id).get();
       // check if is the owner of the QR making the request and is connected
       if (docSnapshot.exists) {
-        qrEmail = docSnapshot.data().email;
-        activate = docSnapshot.data().activate;
-        relais = docSnapshot.data().relais;
+        const qrData = doc.data();
+        qrEmail = qrData.email;
+        activate = qrData.activate;
+        relais = qrData.relais;
         /* QR not activated and no relais saved -> go to QR registration again*/
         if (!activate) {
-          res.setHeader(
-            "location",
-            `${process.env.HOSTNAME}/${locale}/scan/${id}`
-          );
+          res.setHeader("location", `${env.HOSTNAME}/${locale}/scan/${id}`);
           res.statusCode = 302;
           res.end();
           return { props: {} };
         } else if (activate && userEmail !== qrEmail) {
           // connected, activated but not the owner ..
           return {
-            notFound: true, // not a valid QR
+            notFound: true,
           };
         } else if (activate && userEmail === qrEmail) {
           // valid user and owner, want to change or add new relais
@@ -98,7 +118,10 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
           if (!emailVerified && !verifySent) {
             // send verification email, if not sent for the next step
-            let oob = md5(`${uid}${process.env.SS_API_KEY}`);
+            let oob = crypto
+              .createHash("MD5")
+              .update(`${uid}${env.SS_API_KEY}`)
+              .digest("hex");
             const template =
               locale ===
               ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
@@ -106,13 +129,13 @@ export async function getServerSideProps({ params, req, res, locale }) {
                 : "d-6f085881bbd9471d8c5b83e285e798d6";
 
             const context = {
-              url: `${hostname}/verified?oob=${oob}&uid=${uid}`,
+              url: `${env.HOSTNAME}/verified?oob=${oob}&uid=${uid}`,
               firstName: firstName,
               lastName: lastName,
             };
             const msg = {
               from: {
-                email: "team@findmystuff.io",
+                email: env.MAIL,
                 name: "FindMyStuff",
               },
               template_id: template,
@@ -127,14 +150,13 @@ export async function getServerSideProps({ params, req, res, locale }) {
                 },
               ],
             };
-            const axios = require("axios");
 
             try {
               axios({
                 method: "post",
                 url: "https://api.sendgrid.com/v3/mail/send",
                 headers: {
-                  Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+                  Authorization: `Bearer ${env.SENDGRID_API_KEY}`,
                 },
                 data: msg,
               });
@@ -145,17 +167,21 @@ export async function getServerSideProps({ params, req, res, locale }) {
                 verifySent: true,
               });
             } catch (err) {
-              console.log(err.message);
+              console.log(err.message); // debug on server
             }
           }
 
-          let oob = md5(`${id}${process.env.SS_API_KEY}`);
+          let oob = crypto
+            .createHash("MD5")
+            .update(`${id}${env.SS_API_KEY}`)
+            .digest("hex");
+
           return {
             props: {
               ...(await serverSideTranslations(locale, ["scan"])),
               locale,
               id,
-              hostname,
+              hostname: env.HOSTNAME,
               oob,
             },
           };
@@ -170,16 +196,16 @@ export async function getServerSideProps({ params, req, res, locale }) {
         };
       }
     } catch (err) {
-      console.log(err.message); // debug purpose
+      console.log(err.message); // debug on server
       // Corrupted token, try to login again to erase corrupt one
-      res.setHeader("location", `${process.env.HOSTNAME}/${locale}/sign`); // connected
+      res.setHeader("location", `${env.HOSTNAME}/${locale}/sign`); // connected
       res.statusCode = 302;
       res.end();
       return { props: {} };
     }
   } else {
     // not connected, send to login
-    res.setHeader("location", `${process.env.HOSTNAME}/${locale}/sign`);
+    res.setHeader("location", `${env.HOSTNAME}/${locale}/sign`);
     res.statusCode = 302;
     res.end();
     return { props: {} };

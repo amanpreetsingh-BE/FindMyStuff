@@ -8,21 +8,43 @@ import NavReduced from "@components/navbar/NavReduced";
 /* Translation */
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { encrypted } from "@root/service-account.enc";
 
-export async function getServerSideProps({ query, req, locale }) {
-  /* Get host (local or dev) */
-  const hostname = process.env.HOSTNAME;
-  const md5 = require("md5"); // used to check oob
-  const oob = query.oob;
-  const uid = query.uid;
+export async function getServerSideProps({ query, locale }) {
+  /* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
+  const crypto = require("crypto");
+
+  var decipher = crypto.createDecipheriv(
+    "AES-256-CBC",
+    process.env.SERVICE_ENCRYPTION_KEY,
+    process.env.SERVICE_ENCRYPTION_IV
+  );
+  var decrypted =
+    decipher.update(
+      Buffer.from(encrypted, "base64").toString("utf-8"),
+      "base64",
+      "utf8"
+    ) + decipher.final("utf8");
+
+  const env = JSON.parse(decrypted);
+
+  /* QUERY params */
+  const rx_oob = query.oob;
+  const rx_uid = query.uid;
+
+  /* Stack */
   let isItVerified = false;
+  const oob = crypto
+    .createHash("MD5")
+    .update(`${rx_uid}${env.SS_API_KEY}`)
+    .digest("hex");
 
-  if (oob === md5(`${uid}${process.env.SS_API_KEY}`)) {
+  if (oob === rx_oob) {
     // if the request is legit
     /* import admin-sdk firebase, check if login */
     const admin = require("firebase-admin");
     const serviceAccount = JSON.parse(
-      Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
+      Buffer.from(env.SECRET_SERVICE_ACCOUNT, "base64")
     );
     const app = !admin.apps.length
       ? admin.initializeApp({
@@ -31,7 +53,7 @@ export async function getServerSideProps({ query, req, locale }) {
       : admin.app();
 
     try {
-      const user = await app.auth().getUser(uid);
+      const user = await app.auth().getUser(rx_uid);
       const emailVerified = user.emailVerified;
       if (emailVerified) {
         isItVerified = true;
@@ -39,10 +61,10 @@ export async function getServerSideProps({ query, req, locale }) {
         const doc = await app
           .firestore()
           .collection("users")
-          .doc(`${uid}`)
+          .doc(`${rx_uid}`)
           .get();
         if (doc.exists) {
-          await app.auth().updateUser(uid, { emailVerified: true });
+          await app.auth().updateUser(rx_uid, { emailVerified: true });
         } else {
           console.log("No such document!");
           return {
@@ -60,7 +82,7 @@ export async function getServerSideProps({ query, req, locale }) {
       props: {
         ...(await serverSideTranslations(locale, ["verified"])),
         locale,
-        hostname,
+        hostname: env.HOSTNAME,
         isItVerified,
       },
     };

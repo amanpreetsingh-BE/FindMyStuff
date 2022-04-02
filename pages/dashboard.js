@@ -1,37 +1,48 @@
 /* React imports */
 import React, { useEffect, useState } from "react";
-
 /* Next imports */
 import router from "next/router";
 import Image from "next/image";
 import Link from "next/link";
-
 /* Firebase components imports */
 import { auth } from "@lib/firebase";
-
 /* Custom components imports */
 import NavReduced from "@components/navbar/NavReduced";
 import AdminLayout from "@components/dashboard/AdminLayout";
 import UserLayout from "@components/dashboard/UserLayout";
-
 /* Icons imports */
 import { LogoutIcon, RefreshIcon } from "@heroicons/react/outline";
-
 /* Various animations imports */
 import toast from "react-hot-toast";
-
 /* Translate imports */
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-
 /* Cookie handler */
 import cookie from "js-cookie";
+import { encrypted } from "@root/service-account.enc";
 
-/* Handle language */
 export async function getServerSideProps({ res, req, locale }) {
-  /* import admin-sdk firebase to check user */
+  /* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
+  const crypto = require("crypto");
+
+  var decipher = crypto.createDecipheriv(
+    "AES-256-CBC",
+    process.env.SERVICE_ENCRYPTION_KEY,
+    process.env.SERVICE_ENCRYPTION_IV
+  );
+  var decrypted =
+    decipher.update(
+      Buffer.from(encrypted, "base64").toString("utf-8"),
+      "base64",
+      "utf8"
+    ) + decipher.final("utf8");
+
+  const env = JSON.parse(decrypted);
+
+  /* Libs */
   const admin = require("firebase-admin");
-  const md5 = require("md5");
+  const axios = require("axios");
+
   const serviceAccount = JSON.parse(
     Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
   );
@@ -41,8 +52,10 @@ export async function getServerSideProps({ res, req, locale }) {
       })
     : admin.app();
 
+  /* User Stack */
   const firebaseToken = req.cookies.firebaseToken;
   let user = null;
+  let userData = null;
   let userEmail = null;
   let firstName = null;
   let lastName = null;
@@ -54,6 +67,7 @@ export async function getServerSideProps({ res, req, locale }) {
   let emailVerified = false;
   let verifySent = false;
 
+  /* Check if user is connected */
   if (firebaseToken) {
     let decodedToken;
     try {
@@ -69,12 +83,12 @@ export async function getServerSideProps({ res, req, locale }) {
       const querySnapshot = await query.get();
 
       querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        firstName = data.firstName;
-        lastName = data.lastName;
-        verifySent = data.verifySent;
-        signMethod = data.signMethod;
-        if (doc.data().admin) {
+        userData = doc.data();
+        firstName = userData.firstName;
+        lastName = userData.lastName;
+        verifySent = userData.verifySent;
+        signMethod = userData.signMethod;
+        if (userData.admin) {
           isAdmin = true;
         } else {
           isAdmin = false;
@@ -83,21 +97,22 @@ export async function getServerSideProps({ res, req, locale }) {
         }
       });
     } catch (err) {
-      console.log(err.message); // debug purpose
+      console.log(err.message); // debug on server
       // Corrupted token, try to login again to erase corrupt one
-      res.setHeader("location", `${process.env.HOSTNAME}/${locale}/sign`); // connected
+      res.setHeader("location", `${env.HOSTNAME}/${locale}/sign`); // connected
       res.statusCode = 302;
       res.end();
       return { props: {} };
     }
   } else {
     // not connected, send to login
-    res.setHeader("location", `${process.env.HOSTNAME}/${locale}/sign`);
+    res.setHeader("location", `${env.HOSTNAME}/${locale}/sign`);
     res.statusCode = 302;
     res.end();
     return { props: {} };
   }
 
+  /* Admin and User Stack */
   let productsJSON = [];
   let ordersJSON = [];
   let messagesJSON = [];
@@ -108,6 +123,7 @@ export async function getServerSideProps({ res, req, locale }) {
   let userProductsJSON = [];
   let userNotificationsJSON = [];
   let authorization = null;
+  let oob = null;
 
   if (isAdmin) {
     // ADMIN
@@ -135,43 +151,9 @@ export async function getServerSideProps({ res, req, locale }) {
         });
       }
 
-      var StickerRef = app.firestore().collection("products/Sticker/id");
-      const stickerSnapshot = await StickerRef.get();
-      const stickers = [];
-      stickerSnapshot.forEach((stickerDoc) => {
-        stickers.push({
-          id: stickerDoc.id,
-          data: stickerDoc.data(),
-        });
-      });
-
-      var TrackerRef = app.firestore().collection("products/Tracker/id");
-      const trackerSnapshot = await TrackerRef.get();
-      const trackers = [];
-      trackerSnapshot.forEach((trackerDoc) => {
-        trackers.push({
-          id: trackerDoc.id,
-          data: trackerDoc.data(),
-        });
-      });
-
-      var OtherRef = app.firestore().collection("products/Other/id");
-      const OtherSnapshot = await OtherRef.get();
-      const others = [];
-      OtherSnapshot.forEach((otherDoc) => {
-        others.push({
-          id: otherDoc.id,
-          data: otherDoc.data(),
-        });
-      });
-
-      keychains.reverse();
       productsJSON.push(keychains);
-      productsJSON.push(stickers);
-      productsJSON.push(trackers);
-      productsJSON.push(others);
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // debug on server
       productsJSON = null;
     }
 
@@ -186,7 +168,7 @@ export async function getServerSideProps({ res, req, locale }) {
         ordersJSON.push(doc.data());
       });
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // debug on server
       ordersJSON = null;
     }
 
@@ -201,7 +183,7 @@ export async function getServerSideProps({ res, req, locale }) {
         messagesJSON.push(doc.data());
       });
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // debug on server
       messagesJSON = null;
     }
 
@@ -222,7 +204,7 @@ export async function getServerSideProps({ res, req, locale }) {
         msgNum: msgNum,
       };
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // debug on server
       statsJSON = null;
     }
 
@@ -234,7 +216,7 @@ export async function getServerSideProps({ res, req, locale }) {
         couponsJSON.push(doc.data());
       });
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // debug on server
       couponsJSON = null;
     }
 
@@ -249,9 +231,10 @@ export async function getServerSideProps({ res, req, locale }) {
         qrToGenerateJSON.push({ data: doc.data(), id: doc.id });
       });
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // debug on server
       qrToGenerateJSON = null;
     }
+
     /* GET FINDERS TO REWARD */
     try {
       var findersRef = app.firestore().collection("finders");
@@ -260,12 +243,15 @@ export async function getServerSideProps({ res, req, locale }) {
         findersJSON.push(doc.data());
       });
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // debug on server
       findersJSON = null;
     }
 
     /* GET AUTHORIZATION hash */
-    authorization = md5(process.env.SS_API_KEY);
+    authorization = crypto
+      .createHash("MD5")
+      .update(`${env.SS_API_KEY}`)
+      .digest("hex");
   } else {
     // USER
 
@@ -280,7 +266,7 @@ export async function getServerSideProps({ res, req, locale }) {
         userProductsJSON.push({ id: doc.id, data: doc.data() });
       });
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // debug on server
       userProductsJSON = null;
     }
 
@@ -298,17 +284,19 @@ export async function getServerSideProps({ res, req, locale }) {
         userNotificationsJSON.push({ id: i, scan: s, delivery: d });
       });
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // debug on server
       userNotificationsJSON = null;
     }
+
+    // allow to sign a request of the profile
+    oob = crypto
+      .createHash("MD5")
+      .update(`${uid}${env.SS_API_KEY}`)
+      .digest("hex");
   }
-  // hostname (localhost or production)
-  const hostname = process.env.HOSTNAME;
 
-  // allow to sign a request of the profile
-  const oob = md5(`${uid}${process.env.SS_API_KEY}`);
-
-  if (signMethod != "email") {
+  /* Never send an confirmation email to a verified, normally never happened */
+  if (signMethod != "email" && !emailVerified) {
     await app.auth().updateUser(uid, { emailVerified: true });
     var docRef = app.firestore().collection("users").doc(`${uid}`);
 
@@ -318,20 +306,20 @@ export async function getServerSideProps({ res, req, locale }) {
   }
 
   // send verification email (if only email sign method), if not sent
-  if (!verifySent && signMethod === "email") {
+  if (signMethod === "email" && !verifySent) {
     const template =
       locale === ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
         ? "d-0aaff71cc7cb4fd597128d669dfe3fd3"
         : "d-6f085881bbd9471d8c5b83e285e798d6";
 
     const context = {
-      url: `${hostname}/verified?oob=${oob}&uid=${uid}`,
+      url: `${env.HOSTNAME}/verified?oob=${oob}&uid=${uid}`,
       firstName: firstName,
       lastName: lastName,
     };
     const msg = {
       from: {
-        email: "team@findmystuff.io",
+        email: env.MAIL,
         name: "FindMyStuff",
       },
       template_id: template,
@@ -346,7 +334,6 @@ export async function getServerSideProps({ res, req, locale }) {
         },
       ],
     };
-    const axios = require("axios");
 
     try {
       await axios({
@@ -357,6 +344,7 @@ export async function getServerSideProps({ res, req, locale }) {
         },
         data: msg,
       });
+
       /* update verify sent, so next refresh it does not send again the verification email */
       var docRef = app.firestore().collection("users").doc(`${uid}`);
 
@@ -364,7 +352,7 @@ export async function getServerSideProps({ res, req, locale }) {
         verifySent: true,
       });
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // debug on server
     }
   }
 
@@ -382,7 +370,7 @@ export async function getServerSideProps({ res, req, locale }) {
       qrToGenerateJSON,
       findersJSON,
       isAdmin,
-      hostname,
+      hostname: env.HOSTNAME,
       createdAt,
       lastLoginAt,
       emailVerified,

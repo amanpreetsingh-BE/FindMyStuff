@@ -1,10 +1,26 @@
 import Stripe from "stripe";
 import { buffer } from "micro";
 import * as admin from "firebase-admin";
+/* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
+const crypto = require("crypto");
+
+var decipher = crypto.createDecipheriv(
+  "AES-256-CBC",
+  process.env.SERVICE_ENCRYPTION_KEY,
+  process.env.SERVICE_ENCRYPTION_IV
+);
+var decrypted =
+  decipher.update(
+    Buffer.from(encrypted, "base64").toString("utf-8"),
+    "base64",
+    "utf8"
+  ) + decipher.final("utf8");
+
+const env = JSON.parse(decrypted);
 
 /* Import base64 encoded private key from firebase and initialize firebase */
 const serviceAccount = JSON.parse(
-  Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
+  Buffer.from(env.SECRET_SERVICE_ACCOUNT, "base64")
 );
 
 const app = !admin.apps.length
@@ -13,7 +29,7 @@ const app = !admin.apps.length
     })
   : admin.app();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // import stripe secret key
+const stripe = new Stripe(env.STRIPE_SECRET_KEY); // import stripe secret key
 const orderid = require("order-id")("key"); // generator of order-id based on timestamp
 
 export const config = {
@@ -173,7 +189,7 @@ export default async function handler(req, res) {
       event = stripe.webhooks.constructEvent(
         rawBody.toString(),
         signature,
-        process.env.STRIPE_WEBHOOK_SECRET
+        env.STRIPE_WEBHOOK_SECRET
       );
 
       if (event.type === "customer.discount.created") {
