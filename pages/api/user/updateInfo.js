@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 /* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
+import { encrypted } from "@root/service-account.enc";
 const crypto = require("crypto");
 
 var decipher = crypto.createDecipheriv(

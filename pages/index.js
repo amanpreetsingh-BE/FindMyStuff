@@ -41,7 +41,7 @@ export async function getServerSideProps({ req, locale }) {
     ) + decipher.final("utf8");
 
   const env = JSON.parse(decrypted);
-
+  console.log(env);
   /* Libs */
   const admin = require("firebase-admin");
 
@@ -99,9 +99,50 @@ export async function getServerSideProps({ req, locale }) {
       });
     }
 
-    /* Fetch from other products (cfr branch main on git) */
+    /* STICKERS */
+    var StickerRef = app.firestore().collection("products/Sticker/id");
+    const stickerSnapshot = await StickerRef.get();
 
+    const stickers = [];
+
+    stickerSnapshot.forEach((stickerDoc) => {
+      stickers.push({
+        id: stickerDoc.id,
+        data: stickerDoc.data(),
+      });
+    });
+
+    /* TRACKERS */
+    var TrackerRef = app.firestore().collection("products/Tracker/id");
+    const trackerSnapshot = await TrackerRef.get();
+
+    const trackers = [];
+
+    trackerSnapshot.forEach((trackerDoc) => {
+      trackers.push({
+        id: trackerDoc.id,
+        data: trackerDoc.data(),
+      });
+    });
+
+    /* OTHERS */
+    var OtherRef = app.firestore().collection("products/Other/id");
+    const OtherSnapshot = await OtherRef.get();
+
+    const others = [];
+
+    OtherSnapshot.forEach((otherDoc) => {
+      others.push({
+        id: otherDoc.id,
+        data: otherDoc.data(),
+      });
+    });
+
+    keychains.reverse();
     productsJSON.push(keychains);
+    productsJSON.push(stickers);
+    productsJSON.push(trackers);
+    productsJSON.push(others);
   } catch (err) {
     productsJSON = null;
   }
