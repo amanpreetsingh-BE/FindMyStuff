@@ -46,7 +46,7 @@ export async function getServerSideProps({ req, locale }) {
   const admin = require("firebase-admin");
 
   const serviceAccount = JSON.parse(
-    Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
+    Buffer.from(env.SECRET_SERVICE_ACCOUNT, "base64")
   );
   const app = !admin.apps.length
     ? admin.initializeApp({

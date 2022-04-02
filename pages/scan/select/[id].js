@@ -39,7 +39,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   const axios = require("axios");
 
   const serviceAccount = JSON.parse(
-    Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
+    Buffer.from(env.SECRET_SERVICE_ACCOUNT, "base64")
   );
   const app = !admin.apps.length
     ? admin.initializeApp({

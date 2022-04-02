@@ -44,7 +44,7 @@ export async function getServerSideProps({ res, req, locale }) {
   const axios = require("axios");
 
   const serviceAccount = JSON.parse(
-    Buffer.from(process.env.SECRET_SERVICE_ACCOUNT, "base64")
+    Buffer.from(env.SECRET_SERVICE_ACCOUNT, "base64")
   );
   const app = !admin.apps.length
     ? admin.initializeApp({
@@ -383,7 +383,7 @@ export async function getServerSideProps({ res, req, locale }) {
         method: "post",
         url: "https://api.sendgrid.com/v3/mail/send",
         headers: {
-          Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+          Authorization: `Bearer ${env.SENDGRID_API_KEY}`,
         },
         data: msg,
       });
