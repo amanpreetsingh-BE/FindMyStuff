@@ -494,7 +494,7 @@ export default function Sign({ locale, hostname }) {
                 </div>
 
                 <div className="flex flex-col">
-                  <SignInGoogleButton />
+                  <SignInGoogleButton locale={locale} />
 
                   {/*<SignInFacebookButton />*/}
                 </div>
@@ -508,7 +508,7 @@ export default function Sign({ locale, hostname }) {
 }
 
 // Sign in with Google button
-function SignInGoogleButton() {
+function SignInGoogleButton({ locale }) {
   const { t } = useTranslation();
   const router = useRouter();
 
