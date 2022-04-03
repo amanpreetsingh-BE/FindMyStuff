@@ -1,12 +1,10 @@
 /* React.js */
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 /* Next.js */
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
-/* Lib */
-import { UserContext } from "@lib/context";
 /* Components */
 import MobileNav from "@components/navbar/MobileNav";
 import Nav from "@components/navbar/Nav";
@@ -161,7 +159,7 @@ export async function getServerSideProps({ req, locale }) {
 export default function Home({ locale, productsJSON, hostname, isConnected }) {
   /* handle translations */
   const { t } = useTranslation();
-  //auth.signOut();
+
   /* navbar */
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => {
@@ -196,8 +194,6 @@ export default function Home({ locale, productsJSON, hostname, isConnected }) {
 
       {/* Nav */}
       <Nav
-        useContext={useContext}
-        UserContext={UserContext}
         Image={Image}
         Link={Link}
         toggle={toggle}
@@ -207,8 +203,6 @@ export default function Home({ locale, productsJSON, hostname, isConnected }) {
         t={t}
       />
       <MobileNav
-        useContext={useContext}
-        UserContext={UserContext}
         Image={Image}
         Link={Link}
         toggle={toggle}
