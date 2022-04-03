@@ -65,6 +65,13 @@ export async function getServerSideProps({ query, locale }) {
           .get();
         if (doc.exists) {
           await app.auth().updateUser(rx_uid, { emailVerified: true });
+          const userDocRef = app
+            .firestore()
+            .collection("users")
+            .doc(`${rx_uid}`);
+          await userDocRef.update({
+            verifiedAt: admin.firestore.Timestamp.now().seconds,
+          });
         } else {
           console.log("No such document!");
           return {

@@ -49,15 +49,28 @@ export default async function handler(req, res) {
       const userDoc = await userDocRef.get();
       if (!userDoc.exists) {
         // first time login with fb or google or email
-        await userDocRef.set({
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
-          signMethod: signMethod,
-          locale: locale,
-          verifySent: false,
-          admin: false,
-        });
+        if (signMethod === "email") {
+          await userDocRef.set({
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            signMethod: signMethod,
+            locale: locale,
+            verifySent: false,
+            admin: false,
+          });
+        } else {
+          await userDocRef.set({
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            signMethod: signMethod,
+            locale: locale,
+            verifySent: false,
+            admin: false,
+            verifiedAt: admin.firestore.Timestamp.now().seconds,
+          });
+        }
       }
 
       res.status(200).json({ received: true });

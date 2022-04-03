@@ -97,11 +97,6 @@ export default function Sign({ locale, hostname }) {
   /* handle signup or sigin state and loaded user */
   const [signupState, setSignupState] = useState(false);
 
-  // Reset "welcome message" and corrupt token
-  useEffect(() => {
-    cookie.remove("showDashFMS");
-  });
-
   /* Handle Modal for forgot pwd */
   const [showModal, setShowModal] = useState(false);
   function openModal() {

@@ -62,11 +62,11 @@ export async function getServerSideProps({ res, req, locale }) {
   let signMethod = null;
   let userLocale = null;
   let isAdmin = false;
-  let createdAt = null;
-  let lastLoginAt = null;
+  let verifiedAt = null;
   let uid = null;
   let emailVerified = false;
   let verifySent = false;
+  let currentTime = null;
 
   /* Check if user is connected */
   if (firebaseToken) {
@@ -77,27 +77,18 @@ export async function getServerSideProps({ res, req, locale }) {
       userEmail = user.email;
       uid = user.uid;
       emailVerified = user.emailVerified;
-      const query = app
-        .firestore()
-        .collection("users")
-        .where("email", "==", userEmail);
-      const querySnapshot = await query.get();
 
-      querySnapshot.forEach((doc) => {
-        userData = doc.data();
-        firstName = userData.firstName;
-        lastName = userData.lastName;
-        verifySent = userData.verifySent;
-        signMethod = userData.signMethod;
-        userLocale = userData.locale;
-        if (userData.admin) {
-          isAdmin = true;
-        } else {
-          isAdmin = false;
-          createdAt = user.metadata.creationTime;
-          lastLoginAt = user.metadata.lastSignInTime;
-        }
-      });
+      const userDocRef = app.firestore().collection("users").doc(`${uid}`);
+      const userDoc = await userDocRef.get();
+
+      userData = userDoc.data();
+      firstName = userData.firstName;
+      lastName = userData.lastName;
+      verifySent = userData.verifySent;
+      signMethod = userData.signMethod;
+      userLocale = userData.locale;
+      isAdmin = userData.admin;
+      verifiedAt = userData.verifiedAt ? userData.verifiedAt : null;
     } catch (err) {
       console.log(err.message); // debug on server
       // Corrupted token, try to login again to erase corrupt one
@@ -340,16 +331,6 @@ export async function getServerSideProps({ res, req, locale }) {
       .digest("hex");
   }
 
-  /* Never send an confirmation email to a verified, normally never happened */
-  if (signMethod != "email" && !emailVerified) {
-    await app.auth().updateUser(uid, { emailVerified: true });
-    var docRef = app.firestore().collection("users").doc(`${uid}`);
-
-    await docRef.update({
-      verifySent: true,
-    });
-  }
-
   // send verification email (if only email sign method), if not sent
   if (signMethod === "email" && !verifySent) {
     const template =
@@ -401,6 +382,8 @@ export async function getServerSideProps({ res, req, locale }) {
     }
   }
 
+  currentTime = admin.firestore.Timestamp.now().seconds;
+
   return {
     props: {
       ...(await serverSideTranslations(userLocale, ["dashboard"])),
@@ -416,8 +399,8 @@ export async function getServerSideProps({ res, req, locale }) {
       findersJSON,
       isAdmin,
       hostname: env.HOSTNAME,
-      createdAt,
-      lastLoginAt,
+      verifiedAt,
+      currentTime,
       emailVerified,
       uid,
       firstName,
@@ -473,19 +456,14 @@ export default function Dashboard(props) {
   };
 
   const [showDash, setShowDash] = useState(false);
+
   useEffect(() => {
-    /* Handle popup hello */
+    /* Handle popup hello, expire after 10s */
     if (
-      !cookie.get("showDashFMS") &&
-      props.createdAt === props.lastLoginAt &&
+      props.verifiedAt &&
+      props.currentTime <= props.verifiedAt + 10 &&
       props.emailVerified
     ) {
-      var in45Minutes = 1 / 32;
-      cookie.set(
-        "showDashFMS",
-        "Cookie allowing to show or not welcome message",
-        { expires: in45Minutes }
-      );
       setShowDash(true);
     }
   });

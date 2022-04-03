@@ -45,6 +45,7 @@ export default async function handler(req, res) {
       let firstName = null;
       let lastName = null;
       let signMethod = null;
+      let userLocale = null;
       const oob = crypto
         .createHash("MD5")
         .update(`${uid}${env.SS_API_KEY}`)
@@ -60,6 +61,7 @@ export default async function handler(req, res) {
         firstName = data.firstName;
         lastName = data.lastName;
         signMethod = data.signMethod;
+        userLocale = data.locale;
       });
 
       if (signMethod != "email") {
@@ -67,7 +69,7 @@ export default async function handler(req, res) {
       }
 
       const context = {
-        url: `${req.body.hostname}/${req.body.locale}/resetPwd?oob=${oob}&uid=${uid}`,
+        url: `${req.body.hostname}/${userLocale}/resetPwd?oob=${oob}&uid=${uid}`,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
       };
