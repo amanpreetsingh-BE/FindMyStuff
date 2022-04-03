@@ -164,7 +164,6 @@ export default function ScanPage({
   const icon = require("@images/icons/icon_white.svg");
   const en_flag = require("@images/icons/gb.svg");
   const fr_flag = require("@images/icons/fr.svg");
-  const animatedFound = require("@images/scan/animatedFounNoLoopBlue.gif");
   const [step, setStep] = useState(0);
 
   /* handle signup or sigin state and loaded user */
@@ -188,14 +187,6 @@ export default function ScanPage({
   const [generating, setGenerating] = useState(false);
   const fullName = useRef();
   const iban = useRef();
-
-  /*const delay = 3;
-  useEffect(() => {
-    let timer1 = setTimeout(() => setShow(false), delay * 1000);
-    return () => {
-      clearTimeout(timer1);
-    };
-  }, []);*/
 
   const cp = useRef();
   const [center, setCenter] = useState([50.85034, 4.35171]);
@@ -285,6 +276,7 @@ export default function ScanPage({
             firstName: formFirstname.current.value,
             lastName: formLastname.current.value,
             signMethod: "email",
+            locale: locale,
           };
           const response = await fetch(`/api/user/addInfo`, {
             method: "POST",
@@ -321,10 +313,7 @@ export default function ScanPage({
           }
         }
       }
-      setFormLoading(false);
     } else {
-      setFormLoading(true);
-
       try {
         const userCredential = await signInWithEmailAndPassword(
           auth,
@@ -345,8 +334,6 @@ export default function ScanPage({
           return toast.error(t("scan:errorLogin"));
         }
       }
-
-      setFormLoading(false);
     }
   };
 
@@ -1137,6 +1124,7 @@ function SignInGoogleButton({ id, hostname, locale }) {
       firstName: userCredential.user.displayName.split(" ")[0],
       lastName: lastName,
       signMethod: "google",
+      locale: locale,
     };
     const response = await fetch(`/api/user/settings/addInfo`, {
       method: "POST",

@@ -36,7 +36,7 @@ export default function Parameters({
 
   const deleteAcc = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setDeleting(true);
     try {
       const data = {
         uid: uid,
@@ -59,23 +59,27 @@ export default function Parameters({
         });
       }
     } catch (err) {
+      setDeleting(false);
       return toast.error(err.message);
     }
   };
 
   const updateAcc = async (e) => {
     e.preventDefault();
+    setUpdating(true);
     const re = /^[a-zA-Z]*$/;
     if (
       !re.test(formFirstname.current.value) ||
       !re.test(formLastname.current.value)
     ) {
+      setUpdating(false);
       // number and special characters test
       return toast.error(t("dashboard:user:paramPage:updateSpecialC"));
     } else if (
       formFirstname.current.value.length > 26 ||
       formLastname.current.value.length > 26
     ) {
+      setUpdating(false);
       return toast.error(t("dashboard:user:paramPage:tooMuch"));
     } else if (
       (!(formFirstname.current.value == "") &&
@@ -83,6 +87,7 @@ export default function Parameters({
       (!(formLastname.current.value == "") &&
         formLastname.current.value.length < 3)
     ) {
+      setUpdating(false);
       return toast.error(t("dashboard:user:paramPage:tooSmall"));
     } else {
       try {
@@ -113,11 +118,11 @@ export default function Parameters({
           return router.reload();
         }
       } catch (err) {
+        setUpdating(false);
         return toast.error(err.message);
       }
     }
   };
-  console.log(userLocale);
   return (
     <>
       <div className="my-20 mx-12 lg:mx-auto px-12 py-12 bg-[#191919] max-w-4xl rounded-lg shadow-lg p-6">
@@ -200,6 +205,7 @@ export default function Parameters({
 
           <div className="flex justify-center items-center">
             <button
+              disabled={updating}
               onClick={updateAcc}
               className="max-w-lg py-3 px-4 mx-auto my-4 font-bold text-md border-2 border-secondary hover:border-secondaryHover rounded-lg"
             >
@@ -243,6 +249,7 @@ export default function Parameters({
                   <li>{t("dashboard:user:paramPage:del3")}</li>
                 </ul>
                 <button
+                  disabled={deleting}
                   onClick={deleteAcc}
                   className="px-8 h-12 text-white mx-auto font-bold text-md bg-red-500 hover:bg-red-600 rounded-lg"
                 >

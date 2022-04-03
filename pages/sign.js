@@ -209,10 +209,7 @@ export default function Sign({ locale, hostname }) {
           }
         }
       }
-      setFormLoading(false);
     } else {
-      setFormLoading(true);
-
       try {
         const userCredential = await signInWithEmailAndPassword(
           auth,
@@ -232,8 +229,6 @@ export default function Sign({ locale, hostname }) {
           return toast.error(t("sign:errorLogin"));
         }
       }
-
-      setFormLoading(false);
     }
   };
 
