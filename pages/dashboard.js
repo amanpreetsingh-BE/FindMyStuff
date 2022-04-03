@@ -582,6 +582,7 @@ function SignOutButton() {
 
   const signOutAndRedirect = () => {
     auth.signOut();
+    cookie.remove("firebaseToken");
     router.push("/");
   };
   return (
