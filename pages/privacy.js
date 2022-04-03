@@ -50,20 +50,20 @@ export default function Privacy(props) {
       </h1>
 
       <div className="flex flex-col mx-10">
-        <h2 className="  bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className="  bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("privacy:h1")}
         </h2>
         <p className=" text-base font-medium mb-5 py-3 px-3">
           {t("privacy:p1")} <br /> <br /> {t("privacy:p2")}
         </p>
-        <h2 className="  bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className="  bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("privacy:h2")}
         </h2>
         <p className=" text-base font-medium mb-5 py-3 px-3">
           {t("privacy:p3")} <br /> <br /> {t("privacy:p4")} <br /> <br />{" "}
           {t("privacy:p5")} <br /> <br /> {t("privacy:p6")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("privacy:h3")}
         </h2>
         <p className=" text-base font-medium mb-5 py-3 px-3">
@@ -92,7 +92,7 @@ export default function Privacy(props) {
           <li>{t("privacy:li12")}</li>
           <li>{t("privacy:li13")}</li>
         </ul>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("privacy:h4")}
         </h2>
         <p className=" text-base font-medium mb-5 py-3 px-3">
@@ -114,7 +114,7 @@ export default function Privacy(props) {
           <li>{t("privacy:li19")}</li>
           <li>{t("privacy:li20")}</li>
         </ul>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("privacy:h5")}
         </h2>
         <p className=" text-base font-medium mb-5 py-3 px-3">
@@ -168,7 +168,7 @@ export default function Privacy(props) {
         <p className=" text-base font-medium mb-5 py-3 px-3">
           {t("privacy:p28")} <br /> <br /> {t("privacy:p29")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("privacy:h6")}
         </h2>
         <p className=" text-base font-medium mb-5 py-3 px-3">
@@ -203,26 +203,26 @@ export default function Privacy(props) {
         <p className=" text-base font-medium mb-5 py-3 px-3">
           {t("privacy:p33")} <br /> <br /> {t("privacy:p34")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("privacy:h7")}
         </h2>
         <p className=" text-base font-medium mb-5 py-3 px-3">
           {t("privacy:p35")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("privacy:h8")}
         </h2>
         <p className=" text-base font-medium mb-5 py-3 px-3">
           {t("privacy:p36")}
           <br /> <br /> {t("privacy:p37")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("privacy:h9")}
         </h2>
         <p className=" text-base font-medium mb-5 py-3 px-3">
           {t("privacy:p38")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("privacy:h10")}
         </h2>
         <p className=" text-base font-medium mb-5 py-3 px-3">
@@ -243,7 +243,7 @@ export default function Privacy(props) {
           {t("privacy:p41")}
           <br /> <br /> {t("privacy:p42")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("privacy:h11")}
         </h2>
         <p className=" text-base font-medium mb-5 py-3 px-3">

@@ -109,28 +109,24 @@ export default function Notifications({
   };
 
   return (
-    <>
-      <div className="my-20 mx-12 lg:mx-auto px-12 py-12 bg-[#191919] max-w-4xl rounded-lg shadow-lg p-6">
-        <div className="flex text-center font-mono justify-center items-center font-bold text-2xl lg:text-3xl mb-8">
-          {t("dashboard:user:notifPage:heading")}
-        </div>
-
-        <div
-          className={
-            userNotificationsJSON.length > 0 ? notifClass : emptyNotifsClass
-          }
-        >
-          {userNotificationsJSON.length > 0 && notifs ? (
-            renderNotif(userNotificationsJSON)
-          ) : (
-            <div className="text-center max-w-sm">
-              {t("dashboard:user:notifPage:empty1")}
-            </div>
-          )}
-        </div>
+    <div className="mt-24 mb-8 mx-8 sm:mx-12 lg:mx-auto px-8 py-8 sm:px-12 sm:py-12 bg-[#191919] max-w-4xl rounded-lg shadow-lg">
+      <div className="flex text-center font-mono justify-center items-center font-bold text-2xl lg:text-3xl mb-8">
+        {t("dashboard:user:notifPage:heading")}
       </div>
 
-      <div className="h-20"></div>
-    </>
+      <div
+        className={
+          userNotificationsJSON.length > 0 ? notifClass : emptyNotifsClass
+        }
+      >
+        {userNotificationsJSON.length > 0 && notifs ? (
+          renderNotif(userNotificationsJSON)
+        ) : (
+          <div className="text-center max-w-sm">
+            {t("dashboard:user:notifPage:empty1")}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

@@ -57,15 +57,15 @@ export default function Terms(props) {
           <br /> {t("terms:cgvIntro8")} <br /> {t("terms:cgvIntro9")} <br />{" "}
           {t("terms:cgvIntro10")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH1")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP1")}</p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH2")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP2")}</p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH3")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -73,11 +73,11 @@ export default function Terms(props) {
           {t("terms:cgvP5")} <br /> <br /> {t("terms:cgvP6")}
           <br /> <br /> {t("terms:cgvP7")} <br /> <br /> {t("terms:cgvP8")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH4")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP9")}</p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH5")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -85,54 +85,54 @@ export default function Terms(props) {
           {t("terms:cgvP12")} <br /> <br /> {t("terms:cgvP13")}
           <br /> <br /> {t("terms:cgvP14")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH6")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
           {t("terms:cgvP18")} <br /> <br /> {t("terms:cgvP19")} <br /> <br />{" "}
           {t("terms:cgvP20")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH7")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
           {t("terms:cgvP15")} <br /> <br /> {t("terms:cgvP16")} <br /> <br />{" "}
           {t("terms:cgvP17")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH8")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP21")}</p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH9")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
           {t("terms:cgvP22")} <br /> <br /> {t("terms:cgvP23")}{" "}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH10")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP24")}</p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH11")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP25")}</p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH12")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP26")}</p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH13")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP27")}</p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH14")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
           {t("terms:cgvP28")} <br /> <br /> {t("terms:cgvP29")} <br /> <br />{" "}
           {t("terms:cgvP30")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH15")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP31")}</p>
@@ -141,19 +141,19 @@ export default function Terms(props) {
           <li>{t("terms:cgvLi2")}</li>
           <li>{t("terms:cgvLi3")}</li>
         </ul>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH16")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP32")}</p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH17")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP33")}</p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH18")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP34")}</p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH19")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">{t("terms:cgvP35")}</p>
@@ -167,13 +167,13 @@ export default function Terms(props) {
           <li>{t("terms:cgvLi10")}</li>
           <li>{t("terms:cgvLi11")}</li>
         </ul>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH20")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
           {t("terms:cgvP36")} <br /> <br /> {t("terms:cgvP37")}
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           {t("terms:cgvH21")}
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -225,7 +225,7 @@ export default function Terms(props) {
           le site. findmystuff.io se réserve le droit de modifier
           unilatéralement et à tout moment le contenu des présentes CGU.
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           Article 1 : Mentions légales
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -233,7 +233,7 @@ export default function Terms(props) {
           FindMystuff de Bruxelles dont le siège social est situé chem. du
           Cyclotron 6, 1348 Ottignies-Louvain-la-Neuve, team@findmystuff.io.
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           Article 2 : Accès au site
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -268,7 +268,7 @@ export default function Terms(props) {
           l’adresse email de l’éditeur communiqué à l'Article 1. Le Site est
           destiné aux internautes majeurs capables ou mineurs émancipés.
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           Article 3 : Service et retour de l’objet
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -288,7 +288,7 @@ export default function Terms(props) {
           disposant de zones de couvertures variables et dont nous ne
           connaissons pas les limites.
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           Article 4 : QR code
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -299,7 +299,7 @@ export default function Terms(props) {
           recyclage du code qr d’un produit est formellement interdit de la part
           de l’Acheteur, client du produit.
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           Article 5 : Produit mis en vente sur le site
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -321,7 +321,7 @@ export default function Terms(props) {
           sein du territoire belge. Toute transaction provenant d’un pays
           extérieur sera retournée.
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           Article 6 : Retour des produits FindMyStuff non conformes et droit de
           rétractation
         </h2>
@@ -354,7 +354,7 @@ export default function Terms(props) {
           l’article n’ait été utilisé ni ouvert, à l’adresse postale indiquée à
           l’article 1.
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           Article 7 : Données personnelles
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -364,7 +364,7 @@ export default function Terms(props) {
           libertés. L'Utilisateur dispose d'un droit d'accès, de rectification,
           de suppression et d'opposition de ses données personnelles.
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           Article 8 : Propriété intellectuelle
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -386,7 +386,7 @@ export default function Terms(props) {
           intellectuelle que l’Utilisateur qui reproduit, copie ou publie le
           contenu protégé doit citer l’auteur et sa source.
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           Article 9 : Responsabilité
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -409,7 +409,7 @@ export default function Terms(props) {
           La responsabilité du site ne peut être engagée en cas de force majeure
           ou du fait imprévisible et insurmontable d'un tiers.
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           Article 10 : Liens hypertextes
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -419,7 +419,7 @@ export default function Terms(props) {
           lesquelles aboutissent ces liens et ne saurait, en aucun cas, être
           responsable de leur contenu.
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           Article 11 : Cookies
         </h2>
         <p className="  font-medium mb-5 py-3 px-3">
@@ -456,7 +456,7 @@ export default function Terms(props) {
             </li>
           </ul>
         </p>
-        <h2 className=" bg-[#1B212E] rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
+        <h2 className=" bg-secondary rounded-lg text-lg sm:text-xl font-semibold mb-5 py-3 px-3">
           Article 12 : Droit applicable et juridiction compétente{" "}
         </h2>
         <p className="font-medium mb-5 py-3 px-3">

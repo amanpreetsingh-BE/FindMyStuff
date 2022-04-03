@@ -473,14 +473,16 @@ export default function Dashboard(props) {
       <main className="bg-primary min-h-screen">
         <NavReduced darkLogo={false} />
 
-        <div className="flex pb-12 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
-          <Image
-            src={mailIllustration}
-            priority
-            alt="mailConfirm"
-            width={264}
-            height={264}
-          />
+        <div className="flex py-6 mb-12 max-w-xl justify-center flex-col items-center mx-8 mt-4 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
+          <div className="-mt-8">
+            <Image
+              src={mailIllustration}
+              priority
+              alt="mailConfirm"
+              width={264}
+              height={264}
+            />
+          </div>
           <div className="font-bold text-xl">
             {t("dashboard:notVerified:heading")}
           </div>

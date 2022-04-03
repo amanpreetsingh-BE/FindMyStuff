@@ -220,59 +220,55 @@ export default function Products({
   };
 
   return (
-    <>
-      <div className="my-20 mx-12 lg:mx-auto px-12 py-12 bg-[#191919] max-w-4xl rounded-lg shadow-lg p-6">
-        <div className="flex font-mono justify-center text-center items-center font-bold text-2xl lg:text-3xl mb-8">
-          {t("dashboard:user:prodPage:heading")}
-        </div>
+    <div className="mt-24 mb-8 mx-8 sm:mx-12 lg:mx-auto px-8 py-8 sm:px-12 sm:py-12 bg-[#191919] max-w-4xl rounded-lg shadow-lg">
+      <div className="flex font-mono justify-center text-center items-center font-bold text-2xl lg:text-3xl mb-8">
+        {t("dashboard:user:prodPage:heading")}
+      </div>
 
-        <div
-          className={
-            userProductsJSON.length > 0 ? couponsClass : emptyCouponsClass
-          }
-        >
-          {userProductsJSON.length > 0 ? (
-            renderProducts(userProductsJSON)
-          ) : (
-            <div className="text-center">
-              {t("dashboard:user:prodPage:empty")}
-            </div>
-          )}
-          <div className="absolute">
-            <Modal showModal={showModal} setShowModal={setShowModal}>
-              <div className="w-full h-full flex flex-col justify-start items-center">
-                <h1
-                  className={`text-2xl font-mono ${
-                    rd || rj ? "pt-12" : "pt-24"
-                  }`}
-                >
-                  {t("dashboard:user:prodPage:h1")}
-                </h1>
-                {rd ? (
-                  renderDelivery()
-                ) : rj ? (
-                  renderJetons()
-                ) : (
-                  <div className="mt-12 grid place-items-center gap-4 grid-cols-2">
-                    <div
-                      onClick={() => setRd(true)}
-                      className="bg-secondaryHover cursor-pointer w-28 h-28 px-4 py-4 sm:w-40 sm:h-40 sm:px-12 sm:py-12 rounded-lg text-center flex justify-center items-center text-white font-bold"
-                    >
-                      {t("dashboard:user:prodPage:l1")}
-                    </div>
-                    <div
-                      onClick={() => setRj(true)}
-                      className="bg-secondaryHover cursor-pointer w-28 h-28 px-4 py-4 sm:w-40 sm:h-40 sm:px-12 sm:py-12 rounded-lg text-center flex justify-center items-center text-white font-bold"
-                    >
-                      {t("dashboard:user:prodPage:l2")}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </Modal>
+      <div
+        className={
+          userProductsJSON.length > 0 ? couponsClass : emptyCouponsClass
+        }
+      >
+        {userProductsJSON.length > 0 ? (
+          renderProducts(userProductsJSON)
+        ) : (
+          <div className="text-center">
+            {t("dashboard:user:prodPage:empty")}
           </div>
+        )}
+        <div className="absolute">
+          <Modal showModal={showModal} setShowModal={setShowModal}>
+            <div className="w-full h-full flex flex-col justify-start items-center">
+              <h1
+                className={`text-2xl font-mono ${rd || rj ? "pt-12" : "pt-24"}`}
+              >
+                {t("dashboard:user:prodPage:h1")}
+              </h1>
+              {rd ? (
+                renderDelivery()
+              ) : rj ? (
+                renderJetons()
+              ) : (
+                <div className="mt-12 grid place-items-center gap-4 grid-cols-2">
+                  <div
+                    onClick={() => setRd(true)}
+                    className="bg-secondaryHover cursor-pointer w-28 h-28 px-4 py-4 sm:w-40 sm:h-40 sm:px-12 sm:py-12 rounded-lg text-center flex justify-center items-center text-white font-bold"
+                  >
+                    {t("dashboard:user:prodPage:l1")}
+                  </div>
+                  <div
+                    onClick={() => setRj(true)}
+                    className="bg-secondaryHover cursor-pointer w-28 h-28 px-4 py-4 sm:w-40 sm:h-40 sm:px-12 sm:py-12 rounded-lg text-center flex justify-center items-center text-white font-bold"
+                  >
+                    {t("dashboard:user:prodPage:l2")}
+                  </div>
+                </div>
+              )}
+            </div>
+          </Modal>
         </div>
       </div>
-    </>
+    </div>
   );
 }

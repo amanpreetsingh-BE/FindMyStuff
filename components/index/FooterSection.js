@@ -24,7 +24,7 @@ function FooterSection({ t, Image, hostname }) {
         </div>
       </div>
 
-      <div className="pt-8 ml-6 md:ml-0 relative w-48 pl-2 h-full">
+      <div className="pt-8 ml-6 md:ml-0 relative w-48 h-full">
         <div className="text-lg text-gray-50 font-bold mb-10">
           {t("home:footer:company")}
         </div>
@@ -78,11 +78,11 @@ function FooterSection({ t, Image, hostname }) {
         </ul>
       </div>
 
-      <div className="pt-8 relative w-52 h-full">
+      <div className="pt-8 relative w-52 h-full pr-4">
         <div className="text-lg text-gray-50 font-bold mb-10">
           {t("home:footer:social")}
         </div>
-        <div className="space-x-2 md:space-x-3.5">
+        <div className="space-x-2 md:space-x-3.5 flex">
           <a
             href="https://www.linkedin.com/company/findmystuff-be/"
             target="_blank"

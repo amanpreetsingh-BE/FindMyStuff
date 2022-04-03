@@ -61,8 +61,8 @@ function UserLayout({
   const [triggerComponent, setTriggerComponent] = useState(false);
   const [renderOption, setRenderOption] = useState("");
   const classMainSection = triggerComponent
-    ? "min-h-screen"
-    : "grid place-items-center max-w-7xl mx-auto px-8 min-h-screen";
+    ? ""
+    : "grid place-items-center max-w-7xl mx-auto px-8 ";
   const gridVisibility = !triggerComponent ? " " : " hidden ";
   const closeMenu = (option) => {
     setIsMenu(false);
@@ -180,7 +180,7 @@ function UserLayout({
           animate={isMenu ? "open" : "closed"}
           variants={variants}
           className={
-            "grid bg-[#191919] rounded-lg shadow-lg p-6 -mt-12 gap-4 grid-cols-2 sm:grid-cols-3" +
+            "grid bg-[#191919] rounded-lg shadow-lg p-6 mt-24 gap-4 grid-cols-2 sm:grid-cols-3" +
             gridVisibility
           }
         >
