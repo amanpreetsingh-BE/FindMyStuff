@@ -510,6 +510,8 @@ export default function Sign({ locale, hostname }) {
 // Sign in with Google button
 function SignInGoogleButton({ locale }) {
   const { t } = useTranslation();
+  const [googleLoading, setGoogleLoading] = useState(false);
+
   const router = useRouter();
 
   async function manageGoogleUserData(userCredential) {
@@ -541,6 +543,7 @@ function SignInGoogleButton({ locale }) {
   }
 
   const signInWithGoogle = async () => {
+    setGoogleLoading(true);
     const googleProvider = new GoogleAuthProvider();
     googleProvider.setCustomParameters({
       prompt: "select_account",
@@ -553,6 +556,7 @@ function SignInGoogleButton({ locale }) {
       cookie.set("firebaseToken", token, { expires: in45Minutes });
       router.push("/dashboard");
     } catch (err) {
+      setGoogleLoading(false);
       return toast.error(t("sign:errorSignGoogle"));
     }
   };
@@ -560,6 +564,7 @@ function SignInGoogleButton({ locale }) {
   return (
     <button
       type="button"
+      disabled={googleLoading}
       className="bg-transparent border-2 border-gray-50 shadow-md hover:bg-gray-50 text-gray-700 w-full py-4 flex items-center justify-center no-underline font-md rounded cursor-pointer mx-auto my-2"
       onClick={signInWithGoogle}
     >
