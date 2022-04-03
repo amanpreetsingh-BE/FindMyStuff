@@ -40,36 +40,23 @@ export default async function handler(req, res) {
       const lastName = req.body.lastName;
       const signMethod = req.body.signMethod;
       const email = req.body.email;
-
+      const locale = req.body.locale;
       /* check user input server side TBD in V2 */
 
       await app.auth().getUser(uid); // check if the user request is legit
 
       const userDocRef = app.firestore().collection("users").doc(uid);
-      const userDoc = await userDocRef.get();
 
-      if (userDoc.exists) {
-        if (signMethod === "google" || signMethod === "facebook") {
-          // not first time login with fb or google
-          await userDocRef.update({
-            email: email,
-            firstName: firstName,
-            lastName: req.body.lastName,
-          });
-        } else {
-          throw new Error("Email user already exists");
-        }
-      } else {
-        // first time login with fb or google or email
-        await userDocRef.set({
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
-          signMethod: signMethod,
-          verifySent: false,
-          admin: false,
-        });
-      }
+      // first time login with fb or google or email
+      await userDocRef.set({
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        signMethod: signMethod,
+        locale: locale,
+        verifySent: false,
+        admin: false,
+      });
 
       res.status(200).json({ received: true });
     } catch (err) {

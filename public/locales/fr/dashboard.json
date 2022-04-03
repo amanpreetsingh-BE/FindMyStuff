@@ -44,6 +44,7 @@
       "email": "Email",
       "firstname": "Prénom",
       "lastname": "Nom",
+      "language": "Langue",
       "update": "Mettre à jour",
       "h2": "Zone de danger",
       "reset": "Modifier mon mot de passe",

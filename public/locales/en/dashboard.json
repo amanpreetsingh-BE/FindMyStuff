@@ -44,6 +44,7 @@
       "email": "Email",
       "firstname": "Firstname",
       "lastname": "Lastname",
+      "language": "Language",
       "update": "Update",
       "h2": "Danger zone",
       "reset": "Reset password by email",

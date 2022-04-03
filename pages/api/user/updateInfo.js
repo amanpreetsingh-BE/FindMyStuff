@@ -48,6 +48,7 @@ export default async function handler(req, res) {
       } else {
         const firstName = req.body.firstName;
         const lastName = req.body.lastName;
+        const locale = req.body.locale;
         /* Check user input server side */
         const re = /^[a-zA-Z]*$/;
         if (firstName == "" && lastName == "") {
@@ -69,6 +70,7 @@ export default async function handler(req, res) {
               await userRef.update({
                 firstName: firstName,
                 lastName: lastName,
+                locale: locale,
               });
               res.status(200).json({ success: true });
             } else {

@@ -173,6 +173,7 @@ export default function Sign({ locale, hostname }) {
             firstName: formFirstname.current.value,
             lastName: formLastname.current.value,
             signMethod: "email",
+            locale: locale,
           };
           const response = await fetch(`/api/user/addInfo`, {
             method: "POST",
@@ -527,6 +528,7 @@ function SignInGoogleButton() {
       firstName: userCredential.user.displayName.split(" ")[0],
       lastName: lastName,
       signMethod: "google",
+      locale: locale,
     };
     const response = await fetch(`/api/user/addInfo`, {
       method: "POST",

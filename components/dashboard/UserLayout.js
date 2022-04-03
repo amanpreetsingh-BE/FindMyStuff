@@ -45,6 +45,7 @@ function UserLayout({
   userNotificationsJSON,
   oob,
   signMethod,
+  userLocale,
 }) {
   const [showModal, setShowModal] = useState(true);
   function openModal() {
@@ -164,6 +165,7 @@ function UserLayout({
                 t={t}
                 toast={toast}
                 signMethod={signMethod}
+                userLocale={userLocale}
               />
             ) : (
               "oops .. Something went wrong"

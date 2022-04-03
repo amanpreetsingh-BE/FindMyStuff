@@ -60,6 +60,7 @@ export async function getServerSideProps({ res, req, locale }) {
   let firstName = null;
   let lastName = null;
   let signMethod = null;
+  let userLocale = null;
   let isAdmin = false;
   let createdAt = null;
   let lastLoginAt = null;
@@ -88,6 +89,7 @@ export async function getServerSideProps({ res, req, locale }) {
         lastName = userData.lastName;
         verifySent = userData.verifySent;
         signMethod = userData.signMethod;
+        userLocale = userData.locale;
         if (userData.admin) {
           isAdmin = true;
         } else {
@@ -356,7 +358,7 @@ export async function getServerSideProps({ res, req, locale }) {
         : "d-6f085881bbd9471d8c5b83e285e798d6";
 
     const context = {
-      url: `${env.HOSTNAME}/verified?oob=${oob}&uid=${uid}`,
+      url: `${env.HOSTNAME}/${userLocale}/verified?oob=${oob}&uid=${uid}`,
       firstName: firstName,
       lastName: lastName,
     };
@@ -401,7 +403,7 @@ export async function getServerSideProps({ res, req, locale }) {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["dashboard"])),
+      ...(await serverSideTranslations(userLocale, ["dashboard"])),
       locale,
       productsJSON,
       ordersJSON,
@@ -424,6 +426,7 @@ export async function getServerSideProps({ res, req, locale }) {
       oob,
       authorization,
       signMethod,
+      userLocale,
     },
   };
 }
@@ -570,6 +573,7 @@ export default function Dashboard(props) {
         userNotificationsJSON={props.userNotificationsJSON}
         oob={props.oob}
         signMethod={props.signMethod}
+        userLocale={props.userLocale}
       />
     );
   }

@@ -8,7 +8,8 @@ export default function Parameters({
   useRef,
   Modal,
   t,
-  hostname,
+  signMethod,
+  userLocale,
   toast,
   email,
   firstName,
@@ -18,19 +19,24 @@ export default function Parameters({
 }) {
   const formFirstname = useRef();
   const formLastname = useRef();
+  const type = useRef();
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
   function openModal() {
     setShowModal((prev) => !prev);
   }
 
   const resetPassword = async (e) => {
     e.preventDefault();
-    router.push(`/resetPwd?oob=${oob}&uid=${uid}`);
+    router.push(`/${userLocale}/resetPwd?oob=${oob}&uid=${uid}`);
   };
 
   const deleteAcc = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const data = {
         uid: uid,
@@ -60,9 +66,7 @@ export default function Parameters({
   const updateAcc = async (e) => {
     e.preventDefault();
     const re = /^[a-zA-Z]*$/;
-    if (formFirstname.current.value == "" && formLastname.current.value == "") {
-      return toast.error(t("dashboard:user:paramPage:updateFL"));
-    } else if (
+    if (
       !re.test(formFirstname.current.value) ||
       !re.test(formLastname.current.value)
     ) {
@@ -85,6 +89,7 @@ export default function Parameters({
         const data = {
           uid: uid,
           oob: oob,
+          locale: type.current.value == "Français" ? "fr" : "en",
           firstName:
             formFirstname.current.value == ""
               ? firstName
@@ -112,7 +117,7 @@ export default function Parameters({
       }
     }
   };
-
+  console.log(userLocale);
   return (
     <>
       <div className="my-20 mx-12 lg:mx-auto px-12 py-12 bg-[#191919] max-w-4xl rounded-lg shadow-lg p-6">
@@ -137,7 +142,6 @@ export default function Parameters({
               required
             />
           </div>
-
           <label
             htmlFor="textFirstname"
             className="block text-sm font-medium text-gray-200 mt-6"
@@ -154,7 +158,6 @@ export default function Parameters({
               required
             />
           </div>
-
           <label
             htmlFor="textLastname"
             className="block text-sm font-medium text-gray-200 mt-6"
@@ -171,6 +174,30 @@ export default function Parameters({
               required
             />
           </div>
+          <label
+            htmlFor="type"
+            className="block text-sm font-medium text-gray-200 mt-6"
+          >
+            {t("dashboard:user:paramPage:language")}
+          </label>
+          <div className="mt-1 max-w-xs">
+            <select ref={type} name="type" id="type">
+              <option>
+                {" "}
+                {userLocale ===
+                ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
+                  ? "Français"
+                  : "English"}
+              </option>
+              <option>
+                {userLocale ===
+                ("fr" || "FR" || "fr-BE" || "fr-be" || "fr-FR" || "fr-fr")
+                  ? "English"
+                  : "Français"}
+              </option>
+            </select>
+          </div>
+
           <div className="flex justify-center items-center">
             <button
               onClick={updateAcc}
