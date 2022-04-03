@@ -46,17 +46,19 @@ export default async function handler(req, res) {
       await app.auth().getUser(uid); // check if the user request is legit
 
       const userDocRef = app.firestore().collection("users").doc(uid);
-
-      // first time login with fb or google or email
-      await userDocRef.set({
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-        signMethod: signMethod,
-        locale: locale,
-        verifySent: false,
-        admin: false,
-      });
+      const userDoc = await userDocRef.get();
+      if (!userDoc.exists) {
+        // first time login with fb or google or email
+        await userDocRef.set({
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          signMethod: signMethod,
+          locale: locale,
+          verifySent: false,
+          admin: false,
+        });
+      }
 
       res.status(200).json({ received: true });
     } catch (err) {
