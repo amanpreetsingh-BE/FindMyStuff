@@ -32,6 +32,8 @@ import { Timestamp } from "firebase/firestore";
 import Modal from "@components/misc/Modal";
 /* Various animations imports */
 import toast from "react-hot-toast";
+/* Cookie handler */
+import cookie from "js-cookie";
 import { encrypted } from "@root/service-account.enc";
 
 export async function getServerSideProps({ params, locale }) {
@@ -299,6 +301,9 @@ export default function ScanPage({
           }
 
           await handleRegister(id, formEmail.current.value);
+          const token = await userCredential.user.getIdToken();
+          const in45Minutes = 1 / 32;
+          cookie.set("firebaseToken", token, { expires: in45Minutes });
           router.push(`${hostname}/${locale}/scan/select/${id}`);
         } catch (err) {
           if (err.code === "auth/invalid-email") {
@@ -321,12 +326,15 @@ export default function ScanPage({
       setFormLoading(true);
 
       try {
-        await signInWithEmailAndPassword(
+        const userCredential = await signInWithEmailAndPassword(
           auth,
           formEmail.current.value,
           formPassword.current.value
         );
         await handleRegister(id, formEmail.current.value);
+        const token = await userCredential.user.getIdToken();
+        const in45Minutes = 1 / 32;
+        cookie.set("firebaseToken", token, { expires: in45Minutes });
         router.push(`${hostname}/scan/select/${id}`);
       } catch (err) {
         if (err.code === "auth/user-not-found") {

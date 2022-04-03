@@ -187,6 +187,9 @@ export default function Sign({ locale, hostname }) {
             // error while adding info on user ...
             throw new Error(t("sign:errorMakingAccount"));
           } else {
+            const token = await userCredential.user.getIdToken();
+            const in45Minutes = 1 / 32;
+            cookie.set("firebaseToken", token, { expires: in45Minutes });
             router.push(`/dashboard`);
           }
         } catch (err) {
@@ -210,11 +213,14 @@ export default function Sign({ locale, hostname }) {
       setFormLoading(true);
 
       try {
-        await signInWithEmailAndPassword(
+        const userCredential = await signInWithEmailAndPassword(
           auth,
           formEmail.current.value,
           formPassword.current.value
         );
+        const token = await userCredential.user.getIdToken();
+        const in45Minutes = 1 / 32;
+        cookie.set("firebaseToken", token, { expires: in45Minutes });
         router.push("/dashboard");
       } catch (err) {
         if (err.code === "auth/user-not-found") {
@@ -545,6 +551,9 @@ function SignInGoogleButton() {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
       await manageGoogleUserData(userCredential);
+      const token = await userCredential.user.getIdToken();
+      const in45Minutes = 1 / 32;
+      cookie.set("firebaseToken", token, { expires: in45Minutes });
       router.push("/dashboard");
     } catch (err) {
       return toast.error(t("sign:errorSignGoogle"));

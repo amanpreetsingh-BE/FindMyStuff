@@ -33,7 +33,7 @@ function MobileNav({ Image, Link, toggle, isConnected, t, isOpen, hostname }) {
               className={"cursor-pointer"}
               src={logo}
               width={"200"}
-              height={"40"}
+              height={"38"}
               alt={"logo"}
             />
           </div>

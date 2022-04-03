@@ -20,7 +20,7 @@ function Nav({ Image, Link, locale, isConnected, toggle, t, hostname }) {
               className={"cursor-pointer"}
               src={logo}
               width={"200"}
-              height={"40"}
+              height={"37"}
               alt={"logo"}
             />
           </div>
