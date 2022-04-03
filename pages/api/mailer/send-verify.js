@@ -25,7 +25,10 @@ export default async function handler(req, res) {
   if (
     req.method === "POST" &&
     req.body.oob ===
-      crypto.createHash("MD5").update(`${uid}${env.SS_API_KEY}`).digest("hex") // sanity check
+      crypto
+        .createHash("MD5")
+        .update(`${req.body.uid}${env.SS_API_KEY}`)
+        .digest("hex") // sanity check
   ) {
     try {
       const template =

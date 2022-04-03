@@ -42,6 +42,7 @@ export default async function handler(req, res) {
   ) {
     try {
       const id = req.body.id;
+      console.log(id);
       let msg = null;
 
       const template = "d-1f4fb5bdde5842c2877676c26829064a";
@@ -110,11 +111,11 @@ export default async function handler(req, res) {
         data: msg,
       });
 
-      var docRef = app.firestore().collection("messages").doc(`${id}`);
-
-      await docRef.update({
+      await app.firestore().collection("messages").doc(`${id}`).update({
         replied: true,
       });
+
+      console.log("replied");
 
       res.status(200).json({ received: true });
     } catch (err) {
