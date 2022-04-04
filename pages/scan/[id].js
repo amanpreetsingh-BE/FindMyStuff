@@ -369,7 +369,7 @@ export default function ScanPage({
     e.preventDefault();
 
     setGenerating(true);
-    const re = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+    //const re = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
 
     if (
       !checked &&
@@ -377,18 +377,6 @@ export default function ScanPage({
     ) {
       setGenerating(false);
       return toast.error(t("scan:found:errorRew"));
-    } else if (
-      !checked &&
-      iban.current.value.substr(0, 2) != "BE" &&
-      iban.current.value.substr(0, 2) != "be" &&
-      iban.current.valuesubstr(0, 2) != "Be" &&
-      iban.current.value.length != 16
-    ) {
-      setGenerating(false);
-      return toast.error(t("scan:found:errorIBAN"));
-    } else if (!checked && !re.test(fullName.current.value)) {
-      setGenerating(false);
-      return toast.error(t("scan:errorName:specialC"));
     } else if (!checked && fullName.current.value.length > 26) {
       setGenerating(false);
       return toast.error(t("scan:errorName:tooMuchC"));
