@@ -33,7 +33,11 @@ export default async function handler(req, res) {
     const axios = require("axios");
     var parseString = require("xml2js").parseString;
     // check cp value --> TDB in V2
-    const sec = md5(`BDTEST13BE${req.body.cp}30PrivateK`).toUpperCase();
+    const sec = crypto
+      .createHash("MD5")
+      .update(`BDTEST13BE${req.body.cp}30PrivateK`)
+      .digest("hex")
+      .toUpperCase();
 
     let xmls = `<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"> \
                     <soap12:Body> \
