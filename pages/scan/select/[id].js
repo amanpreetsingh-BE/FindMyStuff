@@ -73,23 +73,18 @@ export async function getServerSideProps({ params, req, res, locale }) {
       uid = user.uid;
       userEmail = user.email;
       emailVerified = user.emailVerified;
-      const query = app
-        .firestore()
-        .collection("users")
-        .where("email", "==", userEmail);
-      const querySnapshot = await query.get();
+      const userDocRef = app.firestore().collection("users").doc(`${uid}`);
+      const userDoc = await userDocRef.get();
+      const userData = userDoc.data();
+      firstName = userData.firstName;
+      lastName = userData.lastName;
+      verifySent = userData.verifySent;
+      signMethod = userData.signMethod;
 
-      querySnapshot.forEach((doc) => {
-        const userData = doc.data();
-        firstName = userData.firstName;
-        lastName = userData.lastName;
-        verifySent = userData.verifySent;
-        signMethod = userData.signMethod;
-      });
-      const docSnapshot = await app.firestore().collection("QR").doc(id).get();
+      const qrDoc = await app.firestore().collection("QR").doc(id).get();
       // check if is the owner of the QR making the request and is connected
-      if (docSnapshot.exists) {
-        const qrData = doc.data();
+      if (qrDoc.exists) {
+        const qrData = qrDoc.data();
         qrEmail = qrData.email;
         activate = qrData.activate;
         relais = qrData.relais;
