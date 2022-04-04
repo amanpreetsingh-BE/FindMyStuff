@@ -236,6 +236,16 @@ export default function Home({ locale, productsJSON, hostname, isConnected }) {
             Script={Script}
           />
         )}
+        <div className="flex py-24 sm:py-0 justify-center items-center">
+          <iframe
+            className="w-[384px] mx-4 h-[217px] sm:w-[560px] sm:h-[315px]"
+            src="https://www.youtube.com/embed/G4GwMbNWvCs"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
 
         {/*Separator */}
         <div className="w-full border-none">

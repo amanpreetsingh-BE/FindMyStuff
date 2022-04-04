@@ -406,8 +406,8 @@ export default function SelectPage({ id, hostname, locale, oob }) {
 
   return (
     <main className="bg-primary text-white min-h-screen px-8 py-12">
-      <div className="mb-12">{LanguageBox(locale, fr_flag, en_flag)}</div>
-      <div className="flex py-12 max-w-3xl justify-center flex-col items-center  sm:mt-4 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
+      <div className="mb-2">{LanguageBox(locale, fr_flag, en_flag)}</div>
+      <div className="flex py-8 max-w-3xl justify-center flex-col items-center  sm:mt-4 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
         <div className="font-bold text-xl sm:text-2xl ">
           {t("scan:select:heading")}
         </div>

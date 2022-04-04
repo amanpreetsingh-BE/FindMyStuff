@@ -57,7 +57,6 @@ export default async function handler(req, res) {
       const qrData = (
         await app.firestore().collection("QR").doc(id).get()
       ).data();
-      console.log(qrData);
       /* RETRIEVE OWNER OF QR DATA */
       const queryQrToOwner = await app
         .firestore()
@@ -68,7 +67,6 @@ export default async function handler(req, res) {
       queryQrToOwner.forEach((doc) => {
         userData = doc.data();
       });
-      console.log(userData);
 
       /* SET/UPDATE A FINDER */
       const finderRef = app.firestore().collection("finders").doc(id);
