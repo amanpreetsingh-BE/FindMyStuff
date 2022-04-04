@@ -25,7 +25,7 @@ import { encrypted } from "@root/service-account.enc";
 export async function getServerSideProps({ req, locale }) {
   /* AES-258 decipher scheme (base64 -> utf8) to get env variables*/
   const crypto = require("crypto");
-
+  console.log("HELLO WORLD");
   var decipher = crypto.createDecipheriv(
     "AES-256-CBC",
     process.env.SERVICE_ENCRYPTION_KEY,
