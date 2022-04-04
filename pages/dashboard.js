@@ -339,7 +339,7 @@ export async function getServerSideProps({ res, req, locale }) {
         : "d-6f085881bbd9471d8c5b83e285e798d6";
 
     const context = {
-      url: `${env.HOSTNAME}/${userLocale}/verified?oob=${oob}&uid=${uid}`,
+      url: `${env.HOSTNAME}/verified?oob=${oob}&uid=${uid}`,
       firstName: firstName,
       lastName: lastName,
     };

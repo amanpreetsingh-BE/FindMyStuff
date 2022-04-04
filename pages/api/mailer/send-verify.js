@@ -38,7 +38,7 @@ export default async function handler(req, res) {
           : "d-6f085881bbd9471d8c5b83e285e798d6";
 
       const context = {
-        url: `${req.body.hostname}/${req.body.locale}/verified?oob=${req.body.oob}&uid=${req.body.uid}`,
+        url: `${req.body.hostname}/verified?oob=${req.body.oob}&uid=${req.body.uid}`,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
       };
