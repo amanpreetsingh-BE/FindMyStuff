@@ -49,33 +49,35 @@ export default async function handler(req, res) {
       ) {
         throw new Error("NOT ALLOWED");
       } else {
+        // DEL USER AUTH
         await app.auth().deleteUser(uid);
-
-        const userQuerySnap = await app
+        const userDocRef = await app
           .firestore()
           .collection("users")
-          .where("email", "==", email)
-          .get();
-        userQuerySnap.forEach(async (doc) => {
-          await doc.ref.delete();
-        });
-
+          .doc(`${uid}`);
+        await userDocRef.delete();
+        // DEL USER DATA
         const userQrQuerySnap = await app
           .firestore()
           .collection("QR")
           .where("email", "==", email)
           .get();
+        // REMOVE EACH QR
         userQrQuerySnap.forEach(async (doc) => {
-          await doc.ref.update({
-            activate: false,
-            email: "",
-            jetons: doc.data().jetons,
-            needToGenerate: false,
-            pdf: null,
-            relais: null,
-            timestamp: null,
-            trackingNumber: null,
-          });
+          try {
+            await doc.ref.update({
+              activate: false,
+              email: "",
+              jetons: doc.data().jetons,
+              needToGenerate: false,
+              pdf: null,
+              relais: null,
+              timestamp: null,
+              trackingNumber: null,
+            });
+          } catch (err) {
+            console.log(err.message);
+          }
         });
 
         const userNotifQuerySnap = await app
@@ -84,12 +86,17 @@ export default async function handler(req, res) {
           .where("email", "==", email)
           .get();
         userNotifQuerySnap.forEach(async (doc) => {
-          await doc.ref.delete();
+          try {
+            await doc.ref.delete();
+          } catch (err) {
+            console.log(err.message);
+          }
         });
       }
 
       res.status(200).json({ success: true });
     } catch (err) {
+      console.log(err.message);
       res.status(err.statusCode || 500).json(err.message);
     }
   } else {

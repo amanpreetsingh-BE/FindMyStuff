@@ -47,7 +47,7 @@
       "language": "Language",
       "update": "Update",
       "h2": "Danger zone",
-      "reset": "Reset password by email",
+      "reset": "Reset password",
       "delete": "Delete my account",
       "delConfirm": "Are you sure to delete ?",
       "del1": "Your personal informations will be deleted from our servers (firstname, lastname and email)",

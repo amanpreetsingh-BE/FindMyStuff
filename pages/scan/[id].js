@@ -834,7 +834,7 @@ export default function ScanPage({
     // SELECT RELAIS
     return (
       <main className="w-full flex flex-col justify-center items-center text-white bg-primary h-screen">
-        {LanguageBox(id, locale, fr_flag, en_flag, true)}
+        {LanguageBox(id, locale, fr_flag, en_flag, false)}
 
         <div className="flex py-12 space-y-4 max-w-xl justify-center flex-col items-center mx-8 mt-8 sm:mt-16 sm:mx-auto rounded-lg shadow-lg bg-[#191919]  ">
           <Image src={uncomplete} width={200} height={200} />

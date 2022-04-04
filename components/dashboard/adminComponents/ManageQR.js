@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { CloudUploadIcon, BackspaceIcon } from "@heroicons/react/outline";
 import { jsPDF } from "jspdf";
 
@@ -10,6 +11,7 @@ function ManageQR({
   qrToGenerateJSON,
   findersJSON,
 }) {
+  const router = useRouter();
   const formNumberQR = useRef();
   const trackingNumber = useRef();
   /* menu state to show or not */
@@ -168,7 +170,8 @@ function ManageQR({
           })
         );
         doc.save("newQR.pdf");
-        return toast.success("Success response !");
+        toast.success("Success response !");
+        return router.reload();
       }
     } catch (err) {
       return toast.error(err.message);
@@ -196,12 +199,14 @@ function ManageQR({
           },
           body: JSON.stringify(dat),
         });
-        return toast.success("QR available to the finder");
+        toast.success("QR available to the finder");
+        return router.reload();
       });
     } catch (err) {
       return toast.error(err.message);
     }
   };
+
   const handleRewardSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -217,7 +222,8 @@ function ManageQR({
         },
         body: JSON.stringify(dat),
       });
-      return toast.success("The finder is removed from the database");
+      toast.success("The finder is removed from the database");
+      return router.reload();
     } catch (err) {
       return toast.error(err.message);
     }

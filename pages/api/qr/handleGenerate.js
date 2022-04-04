@@ -73,29 +73,32 @@ export default async function handler(req, res) {
       /* SET/UPDATE A FINDER */
       const finderRef = app.firestore().collection("finders").doc(id);
       const finderDOC = await finderRef.get();
-
-      if (finderDOC.exists) {
-        await finderRef.update({
-          fullName: fullName,
-          iban: iban,
-          donation: donation,
-          id: finderDOC.id,
-          ownerFirstName: userData.firstName,
-          ownerLastName: userData.lastName,
-          relaisNum: qrData.relais.num,
-          relaisHeading: qrData.relais.heading,
-        });
-      } else {
-        await finderRef.set({
-          fullName: fullName,
-          iban: iban,
-          donation: donation,
-          id: finderDOC.id,
-          ownerFirstName: userData.firstName,
-          ownerLastName: userData.lastName,
-          relaisNum: qrData.relais.num,
-          relaisHeading: qrData.relais.heading,
-        });
+      try {
+        if (finderDOC.exists) {
+          await finderRef.update({
+            fullName: fullName,
+            iban: iban,
+            donation: donation,
+            id: finderDOC.id,
+            ownerFirstName: userData.firstName,
+            ownerLastName: userData.lastName,
+            relaisNum: qrData.relais.num,
+            relaisHeading: qrData.relais.heading,
+          });
+        } else {
+          await finderRef.set({
+            fullName: fullName,
+            iban: iban,
+            donation: donation,
+            id: finderDOC.id,
+            ownerFirstName: userData.firstName,
+            ownerLastName: userData.lastName,
+            relaisNum: qrData.relais.num,
+            relaisHeading: qrData.relais.heading,
+          });
+        }
+      } catch (err) {
+        console.log(err.message);
       }
 
       /* NOTIFY IF NEED TO GENERATE */
