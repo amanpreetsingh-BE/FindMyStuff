@@ -1115,7 +1115,7 @@ function SignInGoogleButton({ id, hostname, locale }) {
       signMethod: "google",
       locale: locale,
     };
-    const response = await fetch(`/api/user/settings/addInfo`, {
+    const response = await fetch(`/api/user/addInfo`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -1139,6 +1139,9 @@ function SignInGoogleButton({ id, hostname, locale }) {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
       await manageGoogleUserData(userCredential);
+      const token = await userCredential.user.getIdToken();
+      const in45Minutes = 1 / 32;
+      cookie.set("firebaseToken", token, { expires: in45Minutes });
       await handleRegister(id, userCredential.user.email);
       router.push(`${hostname}/${locale}/scan/select/${id}`);
     } catch (err) {

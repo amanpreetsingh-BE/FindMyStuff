@@ -505,9 +505,8 @@ export default function Sign({ locale, hostname }) {
 // Sign in with Google button
 function SignInGoogleButton({ locale }) {
   const { t } = useTranslation();
-  const [googleLoading, setGoogleLoading] = useState(false);
-
   const router = useRouter();
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   async function manageGoogleUserData(userCredential) {
     let lastName =
