@@ -1077,6 +1077,7 @@ export default function ScanPage({
                         id={id}
                         hostname={hostname}
                         locale={locale}
+                        handleRegister={handleRegister}
                       />
 
                       {/*<SignInFacebookButton
@@ -1097,7 +1098,7 @@ export default function ScanPage({
 }
 
 // Sign in with Google button
-function SignInGoogleButton({ id, hostname, locale }) {
+function SignInGoogleButton({ id, hostname, locale, handleRegister }) {
   const { t } = useTranslation();
   const router = useRouter();
   const [googleLoading, setGoogleLoading] = useState(false);
