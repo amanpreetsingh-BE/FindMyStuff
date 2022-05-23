@@ -84,6 +84,7 @@ export default async function handler(req, res) {
           shipping_address_collection: {
             allowed_countries: ["BE"],
           },
+          shipping_rates: ["shr_1L2aAwK5KPA8d9OvYaYK9REf"],
           metadata: {
             priceID: priceID,
             cat: cat,
@@ -97,6 +98,7 @@ export default async function handler(req, res) {
 
       res.status(200).json(session);
     } catch (err) {
+      console.log(err.message);
       res.status(err.statusCode || 500).json(err.message);
     }
   } else {

@@ -5,7 +5,7 @@
     "keywords": "perdu, objet, téléphone, smartphone, gsm, track, trouver, qr, code, chercher, mon, truc, oublié, clefs, portefeuille, sac, trouvé"
   },
   "heading": "Bringing back lost objects.",
-  "description": "Prends soin de tes affaires ! Ne perds plus tes objets grâce au système que nous avons mis en place. Nous rémunérons la personne qui retrouvera ton objet perdu.",
+  "description": "FindMyStuff permet de retrouver les objets perdus grâce à un système innovant basé sur des codes QR. Il suffit d'apposer des stickers ou porte-clef contenant le code QR sur tes objets personnels.",
   "nav": {
     "how": "Comment ça fonctionne",
     "prod": "Produits",
@@ -15,24 +15,29 @@
   },
   "hiw": {
     "title": "Comment ça fonctionne ?",
-    "step1": "Pour t'enregistrer, scanne le QR code au dos de ton nouveau produit.",
-    "step2": "Quiconque retrouve ton objet pourra scanner le code QR et aura accès à 1400 points relais en Belgique où il pourra déposer ton objet en échange d’une rémunération ou d’un don à la Croix-Rouge.",
-    "step3": "Tu n'as plus qu'à attendre le retour de ton objet ! Tu seras notifié lorsque ton objet aura été livré à ton point relais séléctionné lors de ton activation. Le premier retour est gratuit !",
-    "activate": "Activation",
-    "lost": "Perdu",
-    "found": "Retrouvé"
+    "step1": "FindMyStuff propose un pack contenant des stickers et un porte-clef avec comme inscription un code QR unique et la mention 'SCAN ME IF I'M LOST'. En le scannant la première fois, il est possible d'enregistrer le propriétaire.",
+    "step2": "Une fois le code QR enregistré, quiconque retrouve ton objet pourra scanner le code QR et aura accès à 1400 points relais en Belgique où il pourra déposer ton objet en échange d’une rémunération.",
+    "step3": "Tu n'as plus qu'à attendre le retour de ton objet ! Tu seras notifié lorsque ton objet aura été livré à ton point relais séléctionné lors de l'enregistrement. Le premier retour est gratuit !",
+    "activate": "Sécurise tes objets",
+    "lost": "Perte de l'objet",
+    "found": "Objet retrouvé"
   },
   "prod": {
     "title": "Configurateur de modèle",
     "configurator": {
-      "h1": "Produits",
+      "h1": "Notre pack de code QR",
       "h2": "Choisissez votre couleur",
       "h3": "Votre selection",
       "price": "Prix : € ",
-      "shipping": "Livraison gratuite",
+      "desc": "Pack contenant 1 porte-clef et 2 stickers",
+      "shipping": "2-3 jours ouvrables",
       "packaging": "Livraison en 3 jours ouvrés",
       "material": "Aucun traceur",
       "holder": "Aluminium anodisé",
+      "A1": "1 porte clé + 2 stickers compris",
+      "A2": "Aucun traceur",
+      "A3": "Remise de l’objet dans l'anonymat",
+      "A4": "Aluminium anodisé",
       "activate": "Activation après achat",
       "checkout": "Acheter",
       "stock": "En stock",

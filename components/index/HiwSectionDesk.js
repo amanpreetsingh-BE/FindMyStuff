@@ -23,11 +23,11 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
 
   /* Import images */
   const phoneIllustration = require("@images/home/phone-.png");
-  const qrIllustration = require("@images/home/qr.png");
-  const foundIllustration = require("@images/home/devices-min.png");
+  const apposeIllustration = require("@images/home/devicesv1.5.png");
+  const foundIllustration = require("@images/home/happyEnd.png");
 
   /* Handle progressBar */
-  const [illustration, setIllustration] = useState(qrIllustration);
+  const [illustration, setIllustration] = useState(apposeIllustration);
   const [illustrationText, setIllustrationText] = useState(t("home:hiw:step1"));
   const [showStep, setShowStep] = useState([false, false, false]);
   const stepColor = [
@@ -52,7 +52,7 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
     if (offsetY < base) {
       setShowStep([false, false, false]);
     } else if (offsetY > base && offsetY <= base + 400) {
-      setIllustration(qrIllustration);
+      setIllustration(apposeIllustration);
       setIllustrationText(t("home:hiw:step1"));
       setShowStep([true, false, false]);
     } else if (offsetY > base + 400 && offsetY <= base + 800) {
@@ -129,7 +129,7 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
               >
                 <div
                   className={
-                    "absolute flex items-center justify-center w-32 -ml-32 text-secondary font-bold text-base md:text-xl " +
+                    "absolute flex items-center justify-center text-center w-32 -ml-40 text-secondary font-bold text-base md:text-xl " +
                     stepColor[0]
                   }
                 >
@@ -157,7 +157,7 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
               >
                 <div
                   className={
-                    "absolute flex items-center justify-center w-32 -ml-32 text-secondary font-bold text-base md:text-xl " +
+                    "absolute flex items-center justify-center text-center w-32 -ml-40 text-secondary font-bold text-base md:text-xl " +
                     stepColor[1]
                   }
                 >
@@ -185,7 +185,7 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
               >
                 <div
                   className={
-                    "absolute flex items-center justify-center w-32 -ml-32 text-secondary font-bold text-base md:text-xl " +
+                    "absolute flex items-center justify-center text-center w-32 -ml-40 text-secondary font-bold text-base md:text-xl " +
                     stepColor[2]
                   }
                 >

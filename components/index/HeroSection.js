@@ -20,8 +20,7 @@ function HeroSection({ useState, useEffect, Image, motion, t }) {
   }, []);
 
   /* Import images */
-  const homeIllustration = require("@images/home/home-min.png");
-
+  const homeIllustration = require("@images/home/homev1.5.png");
   return (
     <section className="relative flex flex-col items-center justify-evenly bg-primary w-full h-screen -mt-20">
       <motion.div
@@ -31,7 +30,7 @@ function HeroSection({ useState, useEffect, Image, motion, t }) {
       >
         <div
           className={
-            "relative flex justify-center items-center group mt-40 w-48 h-48 sm:w-64 sm:h-64 transition ease-in-out duration-[200ms] "
+            "relative flex justify-center items-center group mt-40 w-52 h-52 sm:w-72 sm:h-72 transition ease-in-out duration-[200ms] "
           }
         >
           <div className="absolute lg:-inset-10 -inset-5 sm:-inset-7 bg-gradient-to-r from-secondary to-secondaryHover rounded-full blur-xl opacity-75 group-hover:opacity-100 group-hover:duration-200 transition duration-200 animate-tilt"></div>

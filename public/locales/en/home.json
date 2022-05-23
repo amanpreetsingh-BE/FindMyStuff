@@ -5,7 +5,7 @@
     "keywords": "lost, object, phone, smartphone, gsm, track, find, qr, code, find, my, stuff, forget, keys, wallet, bag, found"
   },
   "heading": "Bringing back lost objects.",
-  "description": "Take care of your stuff ! Never lose your items again thanks to the system we have implemented. We will reward the one who will find and give your lost item back to you !",
+  "description": "FindMyStuff helps to get your lost items back through an innovative QR code based system. Just set stickers and keychain containing the QR code on your personal objects.",
   "nav": {
     "how": "How It Works",
     "prod": "Products",
@@ -15,28 +15,33 @@
   },
   "hiw": {
     "title": "How It Works",
-    "step1": "To register, scan the QR code on the back of your new product.",
-    "step2": "Anyone who finds your lost item can now scan the QR code and report the finding. We will indicate to him the 1 400 associated pickup parcelpoints in Belgium where he will be able to deposit your item for a monetary reward or a donation offered to Red Cross.",
-    "step3": "You just have to wait for your item to get back ! You will be notified when it will be delivered into your favorite pickup parcelpoint that you have chosen during the activation. The first back shipping is free !",
-    "activate": "Activate",
-    "lost": "Lost",
-    "found": "Found"
+    "step1": "FindMyStuff offers a pack containing stickers and a keychain with an unique QR code with the mention 'SCAN ME IF I'M LOST' engraved. ",
+    "step2": "Anyone who finds your lost item can now scan the QR code and report the finding. We will indicate to him the 1 400 associated pickup parcelpoints in Belgium where he will be able to deposit your item for a monetary reward.",
+    "step3": "Just wait for your item to get back. You will be notified when it will be delivered into your favorite pickup parcelpoint that you have chosen during the activation. The first return is free.",
+    "activate": "Secure your objects",
+    "lost": "Lost object",
+    "found": "Object found"
   },
   "prod": {
     "title": "Model configurator",
     "configurator": {
-      "h1": "Products",
+      "h1": "Our pack of QR code",
       "h2": "Select your color",
       "h3": "Your selection",
+      "desc": "Pack containing 1 keychain and 2 stickers",
       "price": "Price : € ",
-      "shipping": "Free shipping",
+      "shipping": " 2-3 business days",
       "packaging": "Delivery in 3 days",
       "material": "No tracking",
       "holder": "Anodized aluminium",
       "activate": "Need to activate when received",
       "checkout": "Checkout",
       "stock": "In Stock",
-      "outStock": "Out Of Stock"
+      "outStock": "Out Of Stock",
+      "A1": "1 keychain + 2 stickers included",
+      "A2": "No tracking",
+      "A3": "Delivery of the object anonymously",
+      "A4": "Anodized aluminium"
     },
     "stickersCat": {
       "h1": "Stickers"

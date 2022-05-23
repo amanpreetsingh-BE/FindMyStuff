@@ -14,10 +14,6 @@ function ProductsSection({
   productsJSON,
   locale,
 }) {
-  /* Temp code */
-  const K1 = productsJSON[0][0].colors[0]; // K1
-  const K2 = productsJSON[0][0].colors[1]; // K2
-  const [selectedColor, setSelectedColor] = useState(K1);
   const [loading, setLoading] = useState(false);
   /* Handle products */
   const redirectToCheckout = async (e, cat, product) => {
@@ -92,17 +88,13 @@ function ProductsSection({
 
               <div className="pt-2 w-full flex flex-col justify-center items-center">
                 <button
-                  onClick={(e) =>
-                    redirectToCheckout(e, "Keychain", selectedColor)
-                  }
-                  disabled={
-                    selectedColor.quantity > 0 && !loading ? false : true
-                  }
+                  onClick={(e) => redirectToCheckout(e, "Keychain", keychain)}
+                  disabled={keychain.quantity > 0 && !loading ? false : true}
                   className="bg-secondary cursor-pointer hover:bg-secondaryHover text-white font-bold rounded-lg px-12 py-4"
                 >
                   {t("home:prod:configurator:checkout")}
                 </button>
-                {selectedColor.quantity > 0 ? (
+                {keychain.quantity > 0 ? (
                   <div className="text-green-500 text-xs italic mt-1">
                     {t("home:prod:configurator:stock")}
                   </div>
@@ -214,97 +206,10 @@ function ProductsSection({
         <div className="text-gray-300 text-center pt-8 mb-16 font-bold text-2xl sm:text-3xl md:text-4xl">
           {t("home:prod:configurator:h1")}
         </div>
-        <div className="text-gray-300 text-center mb-4 font-bold text-xl sm:text-xl md:text-2xl">
-          {t("home:prod:configurator:h2")}
-        </div>
-        <div className="space-y-5 text-center flex justify-center items-center flex-col mb-12 xl:mb-0">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="bg-[#292929] font-bold rounded-lg px-12 py-4 cursor-pointer"
-            onClick={() => setSelectedColor(K1)}
-          >
-            Dark gray
-          </motion.div>
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="bg-[#1E2655] ont-bold rounded-lg px-12 py-4 cursor-pointer"
-            onClick={() => setSelectedColor(K2)}
-          >
-            Royal blue
-          </motion.div>
-        </div>
         <div className="w-full sm:pt-20 pb-60">
           {productsJSON ? (
-            <div
-              key={selectedColor.priceID}
-              className="flex items-center justify-center w-3/4 mx-auto "
-            >
-              <div className="relative px-6 xl:px-20 py-8 bg-[#1B212E] rounded-lg flex flex-col">
-                <div className="flex flex-col xl:flex-row items-center">
-                  <motion.div whileHover={{ scale: 1.1 }}>
-                    <Image
-                      priority={true}
-                      src={selectedColor.imageURL}
-                      width={400}
-                      height={400}
-                      alt=""
-                    />
-                  </motion.div>
-                  <div className="space-y-5">
-                    <div className="pl-0 xl:pl-6">
-                      <div className="text-xl text-gray-300 font-semibold">
-                        {t("home:prod:configurator:price")}{" "}
-                        {selectedColor.price}
-                      </div>
-                      <div className="text-xs text-gray-300 flex ">
-                        <TruckIcon className="w-4 h-4 mr-1" />{" "}
-                        {t("home:prod:configurator:shipping")}
-                      </div>
-                    </div>
-                    <div className="text-gray-300 space-y-3 pb-4 xl:pb-0">
-                      <div className="text-sm w-full flex items-center justify-start font-semibold xl:pl-6">
-                        <CheckCircleIcon className="w-4 h-4 mr-2 text-secondaryHover" />{" "}
-                        {t("home:prod:configurator:A1")}
-                      </div>
-                      <div className="text-sm w-full flex items-center justify-start font-semibold xl:pl-6">
-                        <CheckCircleIcon className="w-4 h-4 mr-2 text-secondaryHover" />{" "}
-                        {t("home:prod:configurator:A2")}
-                      </div>
-                      <div className="text-sm w-full flex items-center justify-start font-semibold xl:pl-6">
-                        <CheckCircleIcon className="w-4 h-4 mr-2 text-secondaryHover" />{" "}
-                        {t("home:prod:configurator:A3")}
-                      </div>
-                      <div className="text-sm w-full flex items-center justify-start font-semibold xl:pl-6">
-                        <CheckCircleIcon className="w-4 h-4 mr-2 text-secondaryHover" />{" "}
-                        {t("home:prod:configurator:A4")}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-2 w-full flex flex-col justify-center items-center">
-                  <button
-                    onClick={(e) =>
-                      redirectToCheckout(e, "Keychain", selectedColor)
-                    }
-                    disabled={
-                      selectedColor.quantity > 0 && !loading ? false : true
-                    }
-                    className="bg-secondary cursor-pointer hover:bg-secondaryHover text-white font-bold rounded-lg px-12 py-4"
-                  >
-                    {t("home:prod:configurator:checkout")}
-                  </button>
-                  {selectedColor.quantity > 0 ? (
-                    <div className="text-green-500 text-xs italic mt-1">
-                      {t("home:prod:configurator:stock")}
-                    </div>
-                  ) : (
-                    <div className="text-red-500 text-xs italic mt-1">
-                      {t("home:prod:configurator:outStock")}
-                    </div>
-                  )}
-                </div>
-              </div>
+            <div className="grid gap-8 place-items-center grid-cols-1 lg:grid-cols-2">
+              {renderKeychains()}
             </div>
           ) : (
             <div className="text-center text-gray-300 text-sm">

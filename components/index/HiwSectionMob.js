@@ -29,9 +29,9 @@ function HiwSectionMob({ Image, motion, t }) {
   };
 
   /* Import images */
-  const qrIllustration = require("@images/home/qr.png");
+  const apposeIllustration = require("@images/home/devicesv1.5.png");
   const phoneIllustration = require("@images/home/phone-.png");
-  const foundIllustration = require("@images/home/devices-min.png");
+  const foundIllustration = require("@images/home/happyEnd.png");
 
   return (
     <section id="howitworks" className="relative bg-primary w-full">
@@ -57,7 +57,7 @@ function HiwSectionMob({ Image, motion, t }) {
               >
                 <div className="relative w-52 h-52">
                   <Image
-                    src={qrIllustration}
+                    src={apposeIllustration}
                     priority={true}
                     layout="fill"
                     alt="illustration1"
