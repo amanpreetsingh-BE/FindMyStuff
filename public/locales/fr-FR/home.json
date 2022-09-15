@@ -4,12 +4,15 @@
     "description": "Plateforme permettant de retrouver les objets perdus à l'aide de QR codes",
     "keywords": "perdu, objet, téléphone, smartphone, gsm, track, trouver, qr, code, chercher, mon, truc, oublié, clefs, portefeuille, sac, trouvé"
   },
+  "homeBtn": "Sécurise tes objets",
   "heading": "Bringing back lost objects.",
-  "description": "FindMyStuff permet de retrouver les objets perdus grâce à un système innovant basé sur des codes QR. Il suffit d'apposer des stickers ou porte-clef contenant le code QR sur tes objets personnels.",
+  "video_heading": "Le concept en vidéo",
+  "description": "Retrouve tes affaires perdues avec FindMyStuff. Il suffit d'apposer des stickers ou porte-clef contenant un code QR sur tes objets personnels.",
   "nav": {
     "how": "Comment ça fonctionne",
     "prod": "Produits",
     "contact": "Contact",
+    "b2b": "Professionnels",
     "sign": "Se connecter",
     "gotodash": "Mon compte"
   },
@@ -29,11 +32,8 @@
       "h2": "Choisissez votre couleur",
       "h3": "Votre selection",
       "price": "Prix : € ",
-      "desc": "Pack contenant 1 porte-clef et 2 stickers",
+      "desc": "Pack contenant 1 porte clef et 2 stickers",
       "shipping": "2-3 jours ouvrables",
-      "packaging": "Livraison en 3 jours ouvrés",
-      "material": "Aucun traceur",
-      "holder": "Aluminium anodisé",
       "A1": "1 porte clé + 2 stickers compris",
       "A2": "Aucun traceur",
       "A3": "Remise de l’objet dans l'anonymat",
@@ -53,6 +53,30 @@
       "h1": "Stickers"
     }
   },
+  "seen": {
+    "heading": "Ils parlent de nous"
+  },
+  "why": {
+    "title": "En quelques chiffres",
+    "desc": "En Belgique, des millions d'objets sont perdus et jamais retrouvés par leurs propriétaires. FindMyStuff propose une solution à ce problème.",
+    "h1": "+ 1 million",
+    "d1": "Objets perdus en 2022",
+    "h2": "+ 16000",
+    "d2": "Objets égarés dans les bus par an.",
+    "h3": "+ 30000",
+    "d3": "Objets égarés dans les trains par an.",
+    "h4": "+ 50000",
+    "d4": "Objets égarés dans les aéroports chaque an.",
+    "title2": "FindMyStuff, c'est",
+    "k1": "Aucun abonnement",
+    "v1": "Vous payez un prix fixe, il n'y pas besoin d'un abonnement.",
+    "k2": "Facile d'utilisation",
+    "v2": "Il suffit d'avoir un smartphone et savoir scanner un code QR",
+    "k3": "Pas de batterie",
+    "v3": "Le système fonctionne sans éléments électroniques.",
+    "k4": "Anonymat",
+    "v4": "La personne qui retrouve votre objet n'a accès à aucune de vos données."
+  },
   "contact": {
     "heading": "Avez-vous une question ?",
     "subtitle": "Contactez-nous.",
@@ -62,6 +86,12 @@
     "submit": "Envoyer",
     "success": "Votre message a été envoyé !",
     "error": "Erreur, veuillez réessayer plus tard"
+  },
+  "pro": {
+    "h1": "Êtes-vous un professionnel ?",
+    "d1": "Vous êtes dans le secteur de l’immobilier, assurance, leasing, évènementiel, box de stockage, .... et à la recherche d'un partenaire belge de confiance ?",
+    "d2": "Nous serions ravis d’apporter une solutions flexible et sur mesure pour vos besoins",
+    "d3": "Contactez-nous"
   },
   "footer": {
     "company": "Entreprise",
@@ -76,5 +106,12 @@
   },
   "stripe": {
     "error": "Erreur"
+  },
+  "cookie": {
+    "h1": "Ce site web utilise des cookies",
+    "d1": "Nous utilisons des cookies pour garantir le bon fonctionnement de notre site web et analyser notre trafic. Si vous continuez à utiliser ce site, nous supposerons que vous en êtes satisfait. ",
+    "d2": "Pour plus d'informations sur l'utilisation des cookies sur ce site web, visitez notre ",
+    "d3": "Politique de confidentialité",
+    "buttonText": "Je comprends"
   }
 }

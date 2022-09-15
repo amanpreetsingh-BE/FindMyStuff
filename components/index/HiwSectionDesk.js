@@ -31,22 +31,22 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
   const [illustrationText, setIllustrationText] = useState(t("home:hiw:step1"));
   const [showStep, setShowStep] = useState([false, false, false]);
   const stepColor = [
-    showStep[0] ? " text-secondary " : " text-gray-400 ",
-    showStep[1] ? " text-secondary " : " text-gray-400 ",
-    showStep[2] ? " text-secondary " : " text-gray-400 ",
+    showStep[0] ? " text-secondaryHover " : " text-white ",
+    showStep[1] ? " text-secondaryHover " : " text-white ",
+    showStep[2] ? " text-secondaryHover " : " text-white ",
   ];
   const stepBgOpacity = [
-    showStep[0] ? " bg-secondary " : " bg-transparent ",
-    showStep[1] ? " bg-secondary " : " bg-transparent ",
-    showStep[2] ? " bg-secondary " : " bg-transparent ",
+    showStep[0] ? " bg-secondaryHover " : " bg-transparent ",
+    showStep[1] ? " bg-secondaryHover " : " bg-transparent ",
+    showStep[2] ? " bg-secondaryHover " : " bg-transparent ",
   ];
   const stepBorderOpacity = [
-    showStep[0] ? " border-secondary " : " border-gray-400 ",
-    showStep[1] ? " border-secondary " : " border-gray-400 ",
-    showStep[2] ? " border-secondary" : " border-gray-400 ",
+    showStep[0] ? " border-secondaryHover " : " border-white ",
+    showStep[1] ? " border-secondaryHover " : " border-white ",
+    showStep[2] ? " border-secondaryHover" : " border-white ",
   ];
   const controlScrollHIW = () => {
-    const base = window.innerHeight - 96;
+    const base = 160 + 808 + window.innerHeight - 96;
     const offsetY = window.scrollY;
 
     if (offsetY < base) {
@@ -85,9 +85,10 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
     }
 
     function getScrollPercentage() {
-      if (window.scrollY > window.innerHeight - 96) {
+      if (window.scrollY > 160 + 808 + window.innerHeight - 96) {
         return Math.min(
-          ((window.scrollY - (window.innerHeight - 96)) / 400) * 100,
+          ((window.scrollY - (160 + 808 + window.innerHeight - 96)) / 400) *
+            100,
           100
         );
       } else {
@@ -96,9 +97,11 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
     }
 
     function getScrollPercentage2() {
-      if (window.scrollY > window.innerHeight + 305) {
+      if (window.scrollY > 160 + 808 + window.innerHeight + 305) {
         return Math.min(
-          ((window.scrollY - 404 - (window.innerHeight - 96)) / 404) * 100,
+          ((window.scrollY - 404 - (160 + 808 + window.innerHeight - 96)) /
+            404) *
+            100,
           100
         );
       } else {
@@ -112,7 +115,7 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
   return (
     <section id="howitworks" className="relative bg-primary w-full h-[1800px]">
       <div className="flex flex-col items-center justify-start sticky top-40 w-full h-[520px] min-h-[520px] mb-64">
-        <div className="py-10 text-gray-300 font-bold text-3xl md:text-4xl">
+        <div className="py-10 text-white font-bold text-3xl md:text-4xl">
           {t("home:hiw:title")}
         </div>
 
@@ -122,14 +125,14 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
               <div
                 onClick={() => scroll.scrollTo(window.innerHeight - 96)}
                 className={
-                  "cursor-pointer w-8 h-8 md:w-10 md:h-10 border-4 border-secondary rounded-full ml-20 mb-4" +
+                  "cursor-pointer w-8 h-8 md:w-10 md:h-10 border-4 border-secondaryHover rounded-full ml-20 mb-4" +
                   stepBgOpacity[0] +
                   stepBorderOpacity[0]
                 }
               >
                 <div
                   className={
-                    "absolute flex items-center justify-center text-center w-32 -ml-40 text-secondary font-bold text-base md:text-xl " +
+                    "absolute flex items-center justify-center text-center w-32 -ml-40 font-bold text-base md:text-xl " +
                     stepColor[0]
                   }
                 >
@@ -140,24 +143,21 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
               <div className="relative w-2 rounded-3xl bg-gray-700 h-1/5 ml-20 mb-4">
                 <div
                   id="progress-bar"
-                  style={
-                    showStep[0] ? { boxShadow: "0px 0px 8px 1px #7FFFD4" } : {}
-                  }
-                  className="absolute w-2 bg-secondary rounded-full h-0"
+                  className="absolute w-2 bg-secondaryHover rounded-full h-0"
                 ></div>
               </div>
 
               <div
                 onClick={() => scroll.scrollTo(window.innerHeight + 305)}
                 className={
-                  "cursor-pointer w-8 h-8 md:w-10 md:h-10 border-4 border-secondary rounded-full ml-20 mb-4" +
+                  "cursor-pointer w-8 h-8 md:w-10 md:h-10 border-4 border-secondaryHover rounded-full ml-20 mb-4" +
                   stepBgOpacity[1] +
                   stepBorderOpacity[1]
                 }
               >
                 <div
                   className={
-                    "absolute flex items-center justify-center text-center w-32 -ml-40 text-secondary font-bold text-base md:text-xl " +
+                    "absolute flex items-center justify-center text-center w-32 -ml-40 font-bold text-base md:text-xl " +
                     stepColor[1]
                   }
                 >
@@ -168,24 +168,21 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
               <div className="relative w-2 rounded-3xl bg-gray-700 h-1/5 ml-20 mb-4">
                 <div
                   id="progress-bar2"
-                  style={
-                    showStep[1] ? { boxShadow: "0px 0px 8px 1px #7FFFD4" } : {}
-                  }
-                  className="absolute w-2 bg-secondary rounded-full h-0"
+                  className="absolute w-2 bg-secondaryHover rounded-full h-0"
                 ></div>
               </div>
 
               <div
                 onClick={() => scroll.scrollTo(window.innerHeight + 705)}
                 className={
-                  "cursor-pointer w-8 h-8 md:w-10 md:h-10 border-4 border-secondary rounded-full ml-20" +
+                  "cursor-pointer w-8 h-8 md:w-10 md:h-10 border-4 border-secondaryHover rounded-full ml-20" +
                   stepBgOpacity[2] +
                   stepBorderOpacity[2]
                 }
               >
                 <div
                   className={
-                    "absolute flex items-center justify-center text-center w-32 -ml-40 text-secondary font-bold text-base md:text-xl " +
+                    "absolute flex items-center justify-center text-center w-32 -ml-40  font-bold text-base md:text-xl " +
                     stepColor[2]
                   }
                 >
@@ -220,7 +217,7 @@ function HiwSection({ Image, useState, useEffect, motion, t, Script }) {
           </div>
 
           <div
-            className={`flex mr-8 lg:mx-12 text-gray-300 font-bold text-center text-sm  items-center justify-center h-full w-1/4 md:text-lg max-w-xs`}
+            className={`flex mr-8 lg:mx-12 text-white font-bold text-center text-sm  items-center justify-center h-full w-1/4 md:text-lg max-w-xs`}
           >
             {illustrationText}
           </div>

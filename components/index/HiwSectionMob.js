@@ -34,7 +34,7 @@ function HiwSectionMob({ Image, motion, t }) {
   const foundIllustration = require("@images/home/happyEnd.png");
 
   return (
-    <section id="howitworks" className="relative bg-primary w-full">
+    <section id="howitworks" className="relative bg-primary  w-full">
       <div className="py-10 flex justify-center items-center text-gray-300 font-bold text-2xl sm:text-3xl md:text-4xl">
         {t("home:hiw:title")}
       </div>

@@ -210,11 +210,11 @@ function ProductsSection({
   };
   function renderKeychainCat() {
     return (
-      <section id="products" className="bg-[#171C26]">
-        <div className="text-gray-300 text-center pt-8 mb-16 font-bold text-2xl sm:text-3xl md:text-4xl">
+      <section id="products" className="bg-[#171717]">
+        <div className="text-white text-center pt-8 mb-16 font-bold text-2xl sm:text-3xl md:text-4xl">
           {t("home:prod:configurator:h1")}
         </div>
-        <div className="text-gray-300 text-center mb-4 font-bold text-xl sm:text-xl md:text-2xl">
+        <div className="text-gray-200 text-center mb-4 font-bold text-xl sm:text-xl md:text-2xl">
           {t("home:prod:configurator:h2")}
         </div>
         <div className="space-y-5 text-center flex justify-center items-center flex-col mb-12 xl:mb-0">
@@ -239,7 +239,7 @@ function ProductsSection({
               key={selectedColor.priceID}
               className="flex items-center justify-center w-3/4 mx-auto "
             >
-              <div className="relative px-6 xl:px-20 py-8 bg-[#1B212E] rounded-lg flex flex-col">
+              <div className="relative px-6 xl:px-20 py-8 bg-[#191919] rounded-lg flex flex-col">
                 <div className="flex flex-col xl:flex-row items-center">
                   <motion.div whileHover={{ scale: 1.1 }}>
                     <Image
@@ -252,16 +252,16 @@ function ProductsSection({
                   </motion.div>
                   <div className="space-y-5">
                     <div className="pl-0 xl:pl-6">
-                      <div className="text-xl text-gray-300 font-semibold">
+                      <div className="text-xl text-white font-semibold">
                         {t("home:prod:configurator:price")}{" "}
                         {selectedColor.price}
                       </div>
-                      <div className="text-xs text-gray-300 flex ">
+                      <div className="text-xs text-white flex ">
                         <TruckIcon className="w-4 h-4 mr-1" />{" "}
                         {t("home:prod:configurator:shipping")}
                       </div>
                     </div>
-                    <div className="text-gray-300 space-y-3 pb-4 xl:pb-0">
+                    <div className="text-white space-y-3 pb-4 xl:pb-0">
                       <div className="text-sm w-full flex items-center justify-start font-semibold xl:pl-6">
                         <CheckCircleIcon className="w-4 h-4 mr-2 text-secondaryHover" />{" "}
                         {t("home:prod:configurator:A1")}

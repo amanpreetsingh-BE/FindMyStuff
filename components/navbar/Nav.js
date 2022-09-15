@@ -15,12 +15,12 @@ function Nav({ Image, Link, locale, isConnected, toggle, t, hostname }) {
     <nav className="z-20 font-nxt flex top-0 sticky h-24 bg-primary">
       <div className="flex justify-between pl-10 pr-10 h-full w-full">
         <Link passHref href="/" onClick={toggleHome}>
-          <div className="hidden ml-1 lg:pt-3 lg:flex lg:h-full lg:justify-center lg:items-center">
+          <div className="hidden ml-1 lg:flex lg:h-full lg:justify-center lg:items-center">
             <Image
               className={"cursor-pointer"}
               src={logo}
               width={"200"}
-              height={"37"}
+              height={"40"}
               alt={"logo"}
             />
           </div>
@@ -84,6 +84,20 @@ function Nav({ Image, Link, locale, isConnected, toggle, t, hostname }) {
               {t("home:nav:contact")}
             </LinkS>
           </li>
+          {/*<li className="flex justify-center items-center h-full">
+            <LinkS
+              to="pro"
+              smooth={true}
+              activeClass="border-b-2 border-b-secondary"
+              duration={500}
+              spy={true}
+              exact="true"
+              offset={-96}
+              className="cursor-pointer flex items-center h-full mr-10 font-bold transition ease-in-out duration-300 "
+            >
+              {t("home:nav:b2b")}
+            </LinkS>
+          </li>*/}
           <li className="flex justify-center items-center h-full">
             <Link
               passHref

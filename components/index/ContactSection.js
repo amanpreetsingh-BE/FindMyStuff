@@ -46,13 +46,12 @@ function ContactSection({ t, useState, toast }) {
   return (
     <section
       id="contact"
-      className="flex text-white flex-col md:flex-row items-center justify-evenly bg-secondary w-full h-[700px] min-h-[700px]"
+      className="flex text-white flex-col md:flex-row items-center justify-evenly bg-secondary w-full h-[800px] min-h-[800px] pb-12"
     >
       <div className="h-1/4 w-full md:h-full md:w-5/12 md:max-w-lg flex flex-col items-center justify-center font-extrabold text-2xl md:text-2xl lg:text-3xl xl:text-4xl">
         <div>{t("home:contact:heading")}</div>
         <div>{t("home:contact:subtitle")}</div>
       </div>
-
       <div className="h-3/4 w-full md:h-full md:w-7/12 md:max-w-lg flex flex-col items-center justify-center font-extrabold text-lg sm:text-xl md:text-xl lg:text-2xl">
         <div className="w-8/12 min-w-[320px] h-full md:w-5/6 md:h-3/4 min-h-[400px] bg-gray-100 rounded-3xl flex justify-center items-center">
           <form

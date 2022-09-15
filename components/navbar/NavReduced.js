@@ -15,7 +15,7 @@ function NavReduced({ darkLogo }) {
                 className={"cursor-pointer"}
                 src={darkLogo ? logo_blk : logo_white}
                 width={"200"}
-                height={"37"}
+                height={"40"}
                 alt={"logo"}
               />
             </div>

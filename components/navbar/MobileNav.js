@@ -33,7 +33,7 @@ function MobileNav({ Image, Link, toggle, isConnected, t, isOpen, hostname }) {
               className={"cursor-pointer"}
               src={logo}
               width={"200"}
-              height={"38"}
+              height={"40"}
               alt={"logo"}
             />
           </div>
@@ -76,6 +76,19 @@ function MobileNav({ Image, Link, toggle, isConnected, t, isOpen, hostname }) {
           >
             {t("home:nav:contact")}
           </LinkS>
+
+          {/* <LinkS
+            to="pro"
+            onClick={toggle}
+            smooth={true}
+            duration={500}
+            spy={true}
+            exact="true"
+            offset={-96}
+            className="flex items-center justify-center text-lg font-medium cursor-pointer transition ease-in-out duration-300"
+          >
+            {t("home:nav:b2b")}
+          </LinkS>*/}
         </ul>
         <div className="flex justify-center">
           <Link

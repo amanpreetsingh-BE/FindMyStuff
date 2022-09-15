@@ -36,4 +36,10 @@
   .swiper-pagination-bullet {
     background-color: #20b075 !important;
   }
+  .cookie-container {
+    padding: 10px 30px;
+  }
+  .cookie-content {
+    margin: auto;
+  }
 }

@@ -4,12 +4,15 @@
     "description": "Find lost object through innovative use of QR code",
     "keywords": "lost, object, phone, smartphone, gsm, track, find, qr, code, find, my, stuff, forget, keys, wallet, bag, found"
   },
+  "homeBtn": "Secure your objects",
   "heading": "Bringing back lost objects.",
+  "video_heading": "The concept in video",
   "description": "FindMyStuff helps to get your lost items back through an innovative QR code based system. Just set stickers and keychain containing the QR code on your personal objects.",
   "nav": {
     "how": "How It Works",
     "prod": "Products",
     "contact": "Contact",
+    "b2b": "Pro",
     "sign": "Sign In",
     "gotodash": "Go to dashboard"
   },
@@ -53,6 +56,30 @@
       "h1": "Stickers"
     }
   },
+  "seen": {
+    "heading": "As seen in"
+  },
+  "why": {
+    "title": "Lost objects in numbers",
+    "desc": "In Belgium, millions of objects are lost and never found back by their owners. FindMyStuff proposes a solution to this problem.",
+    "h1": "1+ million",
+    "d1": "Lost objects in 2022",
+    "h2": "16K+",
+    "d2": "Lost objects in the bus per year.",
+    "h3": "30K+",
+    "d3": "Lost objects in the train per year.",
+    "h4": "50K+",
+    "d4": "Lost objects in the airport per year.",
+    "title2": "FindMyStuff is",
+    "k1": "No reccurent fees",
+    "v1": "You pay a fixed price, no need of a membership.",
+    "k2": "Easy to use",
+    "v2": "You just need to have a smartphone and scan QR code",
+    "k3": "No batteries",
+    "v3": "The system works without any electrical components.",
+    "k4": "Anonymous",
+    "v4": "The finder has no informations about the owner."
+  },
   "contact": {
     "heading": "Any questions ?",
     "subtitle": "Contact us.",
@@ -62,6 +89,12 @@
     "submit": "Submit",
     "success": "Your message has been sent !",
     "error": "Error, please try again"
+  },
+  "pro": {
+    "h1": "Are you a business ?",
+    "d1": "Are you in insurance, real estate, leasing, events, ... and seeking for a trustworthy partner ?",
+    "d2": "We will be more than happy to provide a flexible to solution to your needs.",
+    "d3": "Contact us"
   },
   "footer": {
     "company": "Company",
@@ -76,5 +109,12 @@
   },
   "stripe": {
     "error": "Error, please try again"
+  },
+  "cookie": {
+    "h1": "This website uses cookies",
+    "d1": "We use cookies to ensure that the website works correctly and to analyze our traffic. If you continue to use our website, you agree to the usage of the cookies. ",
+    "d2": "For more informations about the usage of the cookies on our website, please see our ",
+    "d3": "Privacy policy",
+    "buttonText": "I understand"
   }
 }
