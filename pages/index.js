@@ -274,7 +274,7 @@ export default function Home({
             {t("home:video_heading")}
           </div>
           <iframe
-            className=" h-96 max-w-2xl"
+            className="w-3/4 h-96 max-w-2xl"
             src="https://www.youtube.com/embed/G4GwMbNWvCs"
             title="YouTube video player"
             frameBorder="0"
