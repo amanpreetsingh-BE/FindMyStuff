@@ -269,7 +269,7 @@ export default function Home({
         )}
 
         {/* Video Section */}
-        <div className="flex mb-24 bg-primary sm:py-0 flex-col justify-center items-center">
+        <div className="flex mb-24 bg-primary py-12 pt-16 sm:py-0 sm:pt-0 flex-col justify-center items-center">
           <div className="py-10 -mt-10 text-white font-bold text-3xl md:text-4xl">
             {t("home:video_heading")}
           </div>

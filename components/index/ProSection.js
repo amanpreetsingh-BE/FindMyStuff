@@ -5,7 +5,7 @@ function ProSection({ t, useState, toast }) {
   return (
     <section
       id="pro"
-      className="flex p-12 text-white flex-col items-center justify-evenly bg-[#171717] w-full h-96 "
+      className="flex p-12 text-white flex-col items-center justify-evenly bg-[#171717] w-full h-[500px] "
     >
       <div className="w-full text-center sm:pt-0 border-white font-bold  text-lg sm:text-xl">
         {t("home:pro:h1")}

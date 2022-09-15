@@ -29,7 +29,7 @@ function HeroSection({ useState, useEffect, Image, motion, t }) {
         <div className="order-last lg:order-first">
           <h1
             className={
-              "relative text-white font-extrabold text-center text-xl sm:text-3xl md:text-4xl lg:text-5xl "
+              "relative text-white py-8 sm:py-0 font-extrabold text-center text-xl sm:text-3xl md:text-4xl lg:text-5xl "
             }
           >
             {t("home:heading")}
@@ -55,17 +55,13 @@ function HeroSection({ useState, useEffect, Image, motion, t }) {
             </div>
           </LinkS>
         </div>
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
+        <motion.div>
           <div
             className={
               "relative flex justify-center items-center group w-52 h-52 sm:w-64 sm:h-64 lg:w-80 lg:h-80 transition ease-in-out duration-[200ms] "
             }
           >
-            <div className="absolute lg:-inset-15 -inset-5 lg:-inset-7 bg-gradient-to-r from-secondary to-secondaryHover rounded-full blur-xl opacity-75 group-hover:opacity-90 group-hover:duration-200 transition duration-200 "></div>
+            <div className="absolute -inset-5 lg:-inset-7 bg-gradient-to-r from-secondary to-secondaryHover rounded-full blur-xl opacity-75 group-hover:opacity-90 group-hover:duration-200 transition duration-200 "></div>
             <Image
               src={homeIllustration}
               priority={true}
@@ -76,7 +72,7 @@ function HeroSection({ useState, useEffect, Image, motion, t }) {
         </motion.div>
       </div>
 
-      <div className="relative w-10 h-10 mb-10">
+      <div className="relative w-10 h-10 mb-10 py-8 sm:py-0">
         <ChevronDownIcon
           className={
             "animate-bounce text-white transition ease-in-out duration-[200ms] " +
